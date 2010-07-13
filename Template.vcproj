@@ -130,7 +130,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="SDK; lib\stb_image; lib\SDL\headers; lib\FreeImage\headers; lib\OpenGL\headers; lib\Toolbox\headers; lib\CEGUI\headers"
+				AdditionalIncludeDirectories="SDK\headers; lib\stb_image; lib\SDL\headers; lib\FreeImage\headers; lib\OpenGL\headers; lib\Toolbox\headers; lib\CEGUI\headers"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="0"

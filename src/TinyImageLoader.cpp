@@ -1,15 +1,15 @@
-#include "..\SDK\TinyImageLoader.h"
+#include "..\SDK\headers\TinyImageLoader.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
-	#include "..\SDK\TILImagePNG.h"
+	#include "..\SDK\headers\TILImagePNG.h"
 #endif
 
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
-	#include "..\SDK\TILImageGIF.h"
+	#include "..\SDK\headers\TILImageGIF.h"
 #endif
 
 #if (TIL_FORMAT & TIL_FORMAT_TGA)
-	#include "..\SDK\TILImageTGA.h"
+	#include "..\SDK\headers\TILImageTGA.h"
 #endif
 
 namespace til

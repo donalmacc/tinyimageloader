@@ -26,7 +26,7 @@
 
 */
 
-#include "..\SDK\TILImageGIF.h"
+#include "..\SDK\headers\TILImageGIF.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
 

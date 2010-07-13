@@ -1,4 +1,4 @@
-#include "..\SDK\TILImageTGA.h"
+#include "..\SDK\headers\TILImageTGA.h"
 
 #define TGA_DEBUG(msg, ...)            printf(msg"\n", __VA_ARGS__)
 

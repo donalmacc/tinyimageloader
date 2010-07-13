@@ -156,7 +156,7 @@
 			Name="Settings"
 			>
 			<File
-				RelativePath=".\SDK\TILSettings.h"
+				RelativePath=".\SDK\headers\TILSettings.h"
 				>
 			</File>
 		</Filter>
@@ -168,7 +168,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\TILImageGIF.h"
+				RelativePath=".\SDK\headers\TILImageGIF.h"
 				>
 			</File>
 			<File
@@ -176,7 +176,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\TILImagePNG.h"
+				RelativePath=".\SDK\headers\TILImagePNG.h"
 				>
 			</File>
 			<File
@@ -184,7 +184,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\TILImageTGA.h"
+				RelativePath=".\SDK\headers\TILImageTGA.h"
 				>
 			</File>
 		</Filter>
@@ -196,7 +196,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\TILImage.h"
+				RelativePath=".\SDK\headers\TILImage.h"
 				>
 			</File>
 			<File
@@ -204,7 +204,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\TinyImageLoader.h"
+				RelativePath=".\SDK\headers\TinyImageLoader.h"
 				>
 			</File>
 		</Filter>

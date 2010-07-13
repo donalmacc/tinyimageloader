@@ -5,6 +5,10 @@
 // Defines
 // =========================================
 
+#define TIL_VERSION_MAJOR                 1
+#define TIL_VERSION_MINOR                 0
+#define TIL_VERSION_BUGFIX                0
+
 #define TIL_FILE_ABSOLUTEPATH             0x000000001
 #define TIL_FILE_ADDWORKDINGDIR           0x000000002
 

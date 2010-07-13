@@ -1,4 +1,4 @@
-#include "..\SDK\TILImage.h"
+#include "..\SDK\headers\TILImage.h"
 
 #include <stdlib.h>
 

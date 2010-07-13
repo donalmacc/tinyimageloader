@@ -1,4 +1,4 @@
-#include "..\SDK\TILImagePNG.h"
+#include "..\SDK\headers\TILImagePNG.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
 
