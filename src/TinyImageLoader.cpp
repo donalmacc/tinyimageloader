@@ -12,55 +12,43 @@
 	#include "..\SDK\headers\TILImageTGA.h"
 #endif
 
+#if (TIL_FORMAT & TIL_FORMAT_BMP)
+	#include "..\SDK\headers\TILImageBMP.h"
+#endif
+
 namespace til
 {
 
 	Image* TinyImageLoader::Load(const char* a_FileName, uint32 a_Options)
 	{
 		Image* result = NULL;
-		uint32 tag = *(uint32*)&a_FileName[strlen(a_FileName) - 4];
 
-		switch (tag)
+		uint32 end = strlen(a_FileName) - 4;
+		if (end < 4)
 		{
+			TIL_ERROR_EXPLAIN("Filename isn't long enough.");
+			return NULL;
+		}
 
+		// lol hack
+		if (1 == 0) { }
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
-
-		case TIL_FORMAT_PNG_EXT:
-			{
-				result = new ImagePNG();
-				break;
-			}
-			
+		else if (!strncmp(a_FileName + end, ".png", 4)) { result = new ImagePNG(); }
 #endif
-
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
-
-		case TIL_FORMAT_GIF_EXT:
-			{
-				result = new ImageGIF();
-				break;
-			}
-
+		else if (!strncmp(a_FileName + end, ".gif", 4)) { result = new ImageGIF(); }
 #endif
-
 #if (TIL_FORMAT & TIL_FORMAT_TGA)
-
-		case TIL_FORMAT_TGA_EXT:
-			{
-				result = new ImageTGA();
-				break;
-			}
-
+		else if (!strncmp(a_FileName + end, ".tga", 4)) { result = new ImageTGA(); }
 #endif
-
-		default:
-			{
-				TIL_ERROR_EXPLAIN("Can't parse file: unknown format.");
-				result = NULL;
-				break;
-			}
-
-		};
+#if (TIL_FORMAT & TIL_FORMAT_BMP)
+		else if (!strncmp(a_FileName + end, ".bmp", 4)) { result = new ImageBMP(); }
+#endif
+		else
+		{
+			TIL_ERROR_EXPLAIN("Can't parse file: unknown format.");
+			result = NULL;
+		}
 
 		if (result)
 		{

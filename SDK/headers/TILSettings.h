@@ -66,6 +66,19 @@ namespace til
 	typedef unsigned short                    word;
 	typedef unsigned long                     dword;
 
+	typedef char                              sstr;
+	typedef unsigned short                    wstr;
+
+#if (defined(TIL_STRINGS_WIDE))
+
+	typedef wstr                              str;
+
+#else
+
+	typedef sstr                              str;
+
+#endif
+
 	// =========================================
 	// Colors
 	// =========================================
@@ -73,26 +86,6 @@ namespace til
 	typedef uint8                             color_8b;
 	typedef uint16                            color_16b;
 	typedef uint32                            color_32b;
-
-	// just checking the extension for now
-
-	#define TIL_EXTENSION_MAKE(a, b, c, d)    (((d) << 24) + ((c) << 16) + ((b) << 8) + (a))
-
-	#if (TIL_FORMAT & TIL_FORMAT_PNG)
-		const uint32 TIL_FORMAT_PNG_EXT =      TIL_EXTENSION_MAKE('.', 'p', 'n', 'g');
-	#endif
-
-	#if (TIL_FORMAT & TIL_FORMAT_GIF)
-		const uint32 TIL_FORMAT_GIF_EXT =      TIL_EXTENSION_MAKE('.', 'g', 'i', 'f');
-	#endif
-
-	#if (TIL_FORMAT & TIL_FORMAT_BMP)
-		const uint32 TIL_FORMAT_BMP_EXT =      TIL_EXTENSION_MAKE('.', 'b', 'm', 'p');
-	#endif
-
-	#if (TIL_FORMAT & TIL_FORMAT_TGA)
-		const uint32 TIL_FORMAT_TGA_EXT =      TIL_EXTENSION_MAKE('.', 't', 'g', 'a');
-	#endif
 
 }; // namespace til
 

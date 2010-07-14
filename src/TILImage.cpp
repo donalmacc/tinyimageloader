@@ -34,12 +34,28 @@ namespace til
 		}
 		else if (a_Options == TIL_FILE_ADDWORKDINGDIR)
 		{
-			char* dir = new char[256];	
 
+#if (defined(TIL_STRINGS_WIDE))
+
+			wchar_t* dir = new wchar_t[256];
+			GetModuleFileNameW(NULL, dir, _MAX_PATH);
+			wchar_t* lastslash = wcsrchr(dir, '\\');
+
+			wchar_t widepath[256] = { 0 };
+			wcsncpy(widepath, dir, lastslash - dir + 1);
+
+			wcstombs(path, widepath, 256);
+
+#else
+
+			char* dir = new char[256];	
 			GetModuleFileNameA(NULL, dir, _MAX_PATH);
 			char* lastslash = strrchr(dir, '\\');
 
 			strncpy(path, dir, lastslash - dir + 1);
+
+#endif
+
 			strcat(path, a_FileName);
 		}
 		

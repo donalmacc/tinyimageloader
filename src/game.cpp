@@ -27,7 +27,8 @@ bool flip = true;
 bool allow_16bit = true;
 
 //char image[] = "F:\\GameLab 3\\stable build\\Data\\Textures\\LightSuport_F2_Diffuse(512).png";
-char image[] = "media\\irrlichtlogoalpha2.tga";
+//char image[] = "media\\irrlichtlogoalpha2.tga";
+char image[] = "media\\Viper_Mark_II.bmp";
 //char image[] = "jump.gif";
 //char image[] = "img_test.png";
 //char image[] = "tooltileset.tga";

@@ -19,7 +19,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="bin"
-			IntermediateDirectory="int"
+			IntermediateDirectory="int\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -81,7 +81,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="bin"
-			IntermediateDirectory="int"
+			IntermediateDirectory="int\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -163,6 +163,14 @@
 		<Filter
 			Name="Formats"
 			>
+			<File
+				RelativePath=".\src\TILImageBMP.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SDK\headers\TILImageBMP.h"
+				>
+			</File>
 			<File
 				RelativePath=".\src\TILImageGIF.cpp"
 				>
