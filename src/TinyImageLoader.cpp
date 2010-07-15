@@ -19,6 +19,19 @@
 namespace til
 {
 
+	void TinyImageLoader::Init()
+	{
+		byte swaptest[] = { 1, 0 };
+		if (*(word*)swaptest == 1)
+		{
+			TIL_PRINT_DEBUG("Little endian.");
+		}
+		else
+		{
+			TIL_PRINT_DEBUG("Big endian.");
+		}
+	}
+
 	Image* TinyImageLoader::Load(const char* a_FileName, uint32 a_Options)
 	{
 		Image* result = NULL;
@@ -31,7 +44,7 @@ namespace til
 		}
 
 		// lol hack
-		if (1 == 0) { }
+		if (0) { }
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
 		else if (!strncmp(a_FileName + end, ".png", 4)) { result = new ImagePNG(); }
 #endif

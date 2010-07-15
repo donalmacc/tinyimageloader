@@ -31,6 +31,10 @@
 	#define TIL_FORMAT                    (TIL_FORMAT_PNG | TIL_FORMAT_GIF | TIL_FORMAT_GIF_ANIMATED | TIL_FORMAT_BMP | TIL_FORMAT_TGA)
 #endif
 
+#ifndef TIL_PRINT_DEBUG
+	#define TIL_PRINT_DEBUG(msg, ...)      printf("TinyImageLoader Debug: "msg" (line %i)\n", __VA_ARGS__, __LINE__)
+#endif
+
 #ifndef TIL_ERROR_EXPLAIN
 	#define	TIL_ERROR_EXPLAIN(msg, ...)    printf("TinyImageLoader Error: "msg" (line %i)\n", __VA_ARGS__, __LINE__)
 #endif

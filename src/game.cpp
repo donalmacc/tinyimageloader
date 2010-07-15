@@ -92,6 +92,8 @@ static uint32 Convert_R5G6B5_R8G8B8(uint16 a_Color)
 
 void Game::Init()
 {
+	TinyImageLoader::Init();
+
 	Math::Seed();
 
 	int width, height, channels;
