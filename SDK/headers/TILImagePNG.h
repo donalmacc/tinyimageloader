@@ -77,6 +77,15 @@ namespace til
 			for (int i = 0; i <= 31; ++i) { default_distance[i] = 5; }
 		}
 
+		uint32 GetWidth(uint32 a_Frame = 0)
+		{
+			return m_Width;
+		}
+		uint32 GetHeight(uint32 a_Frame = 0)
+		{
+			return m_Height;
+		}
+
 		byte* GetPixels(uint32 a_Frame = 0)
 		{
 			/*if (a_ColorDepth == TIL_DEPTH_A8R8G8B8)
@@ -116,6 +125,7 @@ namespace til
 		~ImagePNG() { }
 
 		byte* m_Pixels;
+		uint32 m_Width, m_Height, m_Pitch;
 
 		uint8 *idata, *expanded, *out;
 		uint32 ioff, m_RawLength;

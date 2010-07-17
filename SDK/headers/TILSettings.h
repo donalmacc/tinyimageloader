@@ -6,11 +6,11 @@
 // =========================================
 
 #define TIL_VERSION_MAJOR                 1
-#define TIL_VERSION_MINOR                 0
+#define TIL_VERSION_MINOR                 1
 #define TIL_VERSION_BUGFIX                0
 
 #define TIL_FILE_ABSOLUTEPATH             0x000000001
-#define TIL_FILE_ADDWORKDINGDIR           0x000000002
+#define TIL_FILE_ADDWORKINGDIR            0x000000002
 
 #define TIL_DEPTH_A8R8G8B8                0x000010000
 #define TIL_DEPTH_R8G8B8A8                0x000020000
@@ -19,16 +19,16 @@
 
 #define TIL_FORMAT_PNG                    0x000000001
 #define TIL_FORMAT_GIF                    0x000000002
-#define TIL_FORMAT_GIF_ANIMATED           0x000000004
-#define TIL_FORMAT_BMP                    0x000000008
-#define TIL_FORMAT_TGA                    0x000000010
+#define TIL_FORMAT_BMP                    0x000000004
+#define TIL_FORMAT_TGA                    0x000000008
+#define TIL_FORMAT_ICO                    0x000000010
 
 #ifndef _CRT_SECURE_NO_WARNINGS
 	#define _CRT_SECURE_NO_WARNINGS
 #endif
 
 #ifndef TIL_FORMAT
-	#define TIL_FORMAT                    (TIL_FORMAT_PNG | TIL_FORMAT_GIF | TIL_FORMAT_GIF_ANIMATED | TIL_FORMAT_BMP | TIL_FORMAT_TGA)
+	#define TIL_FORMAT                    (TIL_FORMAT_PNG | TIL_FORMAT_GIF | TIL_FORMAT_TGA | TIL_FORMAT_BMP | TIL_FORMAT_ICO)
 #endif
 
 #ifndef TIL_PRINT_DEBUG
@@ -69,19 +69,6 @@ namespace til
 	typedef unsigned char                     byte;
 	typedef unsigned short                    word;
 	typedef unsigned long                     dword;
-
-	typedef char                              sstr;
-	typedef unsigned short                    wstr;
-
-#if (defined(TIL_STRINGS_WIDE))
-
-	typedef wstr                              str;
-
-#else
-
-	typedef sstr                              str;
-
-#endif
 
 	// =========================================
 	// Colors

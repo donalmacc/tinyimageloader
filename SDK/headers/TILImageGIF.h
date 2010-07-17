@@ -23,18 +23,21 @@ namespace til
 
 	public:
 
-		bool Parse(uint32 a_ColorDepth);
-
 		uint32 GetFrameCount();
 		byte* GetPixels(uint32 a_Frame = 0);
 
-		void AddBuffer();
-		void CompileColors();
+		uint32 GetWidth(uint32 a_Frame = 0);
+		uint32 GetHeight(uint32 a_Frame = 0);
 
 	private:
 
 		ImageGIF();
 		~ImageGIF();
+
+		bool Parse(uint32 a_ColorDepth);
+
+		void AddBuffer();
+		void CompileColors();
 
 		BufferLinked* m_First;
 		BufferLinked* m_Current;
@@ -45,6 +48,8 @@ namespace til
 		uint32 m_ColorTableSize;
 		char* m_Palette;
 		byte* m_Colors;
+
+		uint32 m_Width, m_Height, m_Pitch;
 		
 	}; // class ImageGIF
 

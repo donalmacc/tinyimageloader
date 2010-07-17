@@ -180,6 +180,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\TILImageICO.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SDK\headers\TILImageICO.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\TILImagePNG.cpp"
 				>
 			</File>
@@ -205,6 +213,14 @@
 			</File>
 			<File
 				RelativePath=".\SDK\headers\TILImage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TILImageTemplate.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SDK\headers\TILImageTemplate.h"
 				>
 			</File>
 			<File

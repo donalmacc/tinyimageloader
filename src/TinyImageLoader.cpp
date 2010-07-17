@@ -16,6 +16,10 @@
 	#include "..\SDK\headers\TILImageBMP.h"
 #endif
 
+#if (TIL_FORMAT & TIL_FORMAT_BMP)
+	#include "..\SDK\headers\TILImageICO.h"
+#endif
+
 namespace til
 {
 
@@ -56,6 +60,9 @@ namespace til
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_BMP)
 		else if (!strncmp(a_FileName + end, ".bmp", 4)) { result = new ImageBMP(); }
+#endif
+#if (TIL_FORMAT & TIL_FORMAT_ICO)
+		else if (!strncmp(a_FileName + end, ".ico", 4)) { result = new ImageICO(); }
 #endif
 		else
 		{

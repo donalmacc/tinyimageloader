@@ -30,12 +30,14 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
 
+#ifdef TIL_PRINT_DEBUG
+	#define GIF_DEBUG(msg, ...)        TIL_PRINT_DEBUG("GIF: "msg, __VA_ARGS__)
+#endif
+
 namespace til
 {
 
 #define GIF_TYPE(a, b, c, d)           (((d) << 24) + ((c) << 16) + ((b) << 8) + (a))
-
-#define GIF_DEBUG(msg, ...)            printf(msg"\n", __VA_ARGS__)
 
 	ImageGIF::ImageGIF() : Image()
 	{
@@ -439,6 +441,15 @@ namespace til
 	uint32 ImageGIF::GetFrameCount()
 	{
 		return m_Frames;
+	}
+
+	uint32 ImageGIF::GetWidth(uint32 a_Frame)
+	{
+		return m_Width;
+	}
+	uint32 ImageGIF::GetHeight(uint32 a_Frame)
+	{
+		return m_Height;
 	}
 
 }; // namespace til

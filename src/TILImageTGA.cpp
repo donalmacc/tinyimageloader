@@ -1,6 +1,10 @@
 #include "..\SDK\headers\TILImageTGA.h"
 
-#define TGA_DEBUG(msg, ...)            printf(msg"\n", __VA_ARGS__)
+#if (TIL_FORMAT & TIL_FORMAT_TGA)
+
+#ifdef TIL_PRINT_DEBUG
+	#define TGA_DEBUG(msg, ...)        TIL_PRINT_DEBUG("TGA: "msg, __VA_ARGS__)
+#endif
 
 namespace til
 {
@@ -268,4 +272,15 @@ namespace til
 		return m_Pixels;
 	}
 
+	uint32 ImageTGA::GetWidth(uint32 a_Frame)
+	{
+		return m_Width;
+	}
+	uint32 ImageTGA::GetHeight(uint32 a_Frame)
+	{
+		return m_Height;
+	}
+
 }; // namespace til
+
+#endif

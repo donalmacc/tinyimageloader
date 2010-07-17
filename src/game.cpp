@@ -18,6 +18,9 @@ using namespace til;
 Surface* show;
 Surface* compare;
 
+Image* loaded_32b;
+uint32 frames;
+
 Surface* show_16b;
 Surface* show_32b;
 
@@ -28,10 +31,13 @@ bool allow_16bit = true;
 
 //char image[] = "F:\\GameLab 3\\stable build\\Data\\Textures\\LightSuport_F2_Diffuse(512).png";
 //char image[] = "media\\irrlichtlogoalpha2.tga";
-char image[] = "media\\Viper_Mark_II.bmp";
-//char image[] = "jump.gif";
-//char image[] = "img_test.png";
-//char image[] = "tooltileset.tga";
+//char image[] = "media\\Viper_Mark_II.bmp";
+//char image[] = "media\\jump.gif";
+//char image[] = "media\\img_test.png";
+//char image[] = "media\\tooltileset.tga";
+//char image[] = "media\\Tank.ico";
+char image[] = "media\\Package.ico";
+//char image[] = "media\\crossword.ico";
 //char image[] = "BitComet.png";
 
 static uint16 PixelConstruct(uint8 a_Red, uint8 a_Green, uint8 a_Blue)
@@ -99,7 +105,7 @@ void Game::Init()
 	int width, height, channels;
 	stbi_uc* data = stbi_load(image, &width, &height, &channels, 0);	
 
-	til::uint32 option = TIL_FILE_ADDWORKDINGDIR;
+	til::uint32 option = TIL_FILE_ADDWORKINGDIR;
 	if (allow_16bit)
 	{
 		til::Image* loaded_16b = TinyImageLoader::Load(image, option | TIL_DEPTH_R5G6B5);
@@ -123,16 +129,18 @@ void Game::Init()
 		);
 	}
 	
-	Image* loaded_32b = TinyImageLoader::Load(image, option | TIL_DEPTH_A8R8G8B8);
+	loaded_32b = TinyImageLoader::Load(image, option | TIL_DEPTH_R8G8B8);
 
-	uint32 frames = loaded_32b->GetFrameCount();
+	frames = loaded_32b->GetFrameCount();
 	for (uint32 i = 0; i < frames; i++)
 	{
+		til::uint32 width = loaded_32b->GetWidth(i);
+		til::uint32 height = loaded_32b->GetHeight(i);
 		animation[i] = new Surface(
-			loaded_32b->GetWidth(), 
-			loaded_32b->GetHeight(), 
+			width, 
+			height, 
 			(Pixel*)loaded_32b->GetPixels(i),
-			loaded_32b->GetWidth()
+			loaded_32b->GetWidth(i)
 		);
 	}
 
@@ -166,13 +174,13 @@ void Game::Render()
 
 	//show->CopyTo(m_Screen, 0, 0);
 
-	/*animation[current]->CopyTo(m_Screen, 0, 0);
-	timestep += 0.1f;
+	animation[current]->CopyTo(m_Screen, SCRWIDTH / 2, 0);
+	timestep += 0.01f;
 	if (timestep > delay)
 	{
-		current = (current++ > 9) ? 0 : current;
+		current = (++current > (frames - 1)) ? 0 : current;
 		timestep -= delay;
-	}*/
+	}
 
 	if (allow_16bit)
 	{

@@ -6,12 +6,14 @@
 #include <string.h>
 #include <malloc.h>
 
+#ifdef TIL_PRINT_DEBUG
+	#define PNG_DEBUG(msg, ...)        TIL_PRINT_DEBUG("PNG: "msg, __VA_ARGS__)
+#endif
+
 namespace til
 {
 
 	#define PNG_TYPE(a, b, c, d)           (((a) << 24) + ((b) << 16) + ((c) << 8) + (d))
-
-	#define PNG_DEBUG(msg, ...)            printf(msg"\n", __VA_ARGS__)
 
 	// fast-way is faster to check than jpeg huffman, but slow way is slower
 	#define ZFAST_BITS     9 // accelerate all cases in default tables

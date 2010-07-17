@@ -1,6 +1,10 @@
 #include "..\SDK\headers\TILImageBMP.h"
 
-#define BMP_DEBUG(msg, ...)        printf(msg"\n", __VA_ARGS__)
+#if (TIL_FORMAT & TIL_FORMAT_BMP)
+
+#ifdef TIL_PRINT_DEBUG
+	#define BMP_DEBUG(msg, ...)        TIL_PRINT_DEBUG("BMP: "msg, __VA_ARGS__)
+#endif
 
 namespace til
 {
@@ -138,4 +142,16 @@ namespace til
 	{
 		return m_Pixels;
 	}
+
+	uint32 ImageBMP::GetWidth(uint32 a_Frame)
+	{
+		return m_Width;
+	}
+	uint32 ImageBMP::GetHeight(uint32 a_Frame)
+	{
+		return m_Height;
+	}
+
 }; // namespace til
+
+#endif

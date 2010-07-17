@@ -34,6 +34,61 @@ namespace til
 			((a_Blue  & 0xFF));
 	}
 
+	inline color_32b Construct_32b_R8G8B8(color_8b a_Color)
+	{
+		
+		color_32b r = (a_Color & 0xD0) >> 5;
+		color_32b g = (a_Color & 0x1C) >> 2;
+		color_32b b = (a_Color & 0x03);	
+
+		return (
+			(((r * 0x0000FF00) >> 8) & 0x000000FF) |
+			(((g * 0x00FF0000) >> 8) & 0x0000FF00) |
+			(((b * 0xFF000000) >> 8) & 0x00FF0000)
+		);
+
+		/*return
+			((a_Red   & 0xFF) << 16) |
+			((a_Green & 0xFF) << 8) |
+			((a_Blue  & 0xFF));*/
+	}
+
+
+	inline color_32b AlphaBlend_32b_R8G8B8(color_32b a_Color, uint8 a_Amount)
+	{
+		const color_32b rb = (a_Color & 0x00FF00FF);
+		const color_32b g = (a_Color & 0x0000FF00);
+
+		return (
+			(((rb * a_Amount) >> 8) & 0x00FF00FF) | 
+			(((g * a_Amount) >> 8) & 0x0000FF00)
+		);
+	}
+
+	inline color_32b AlphaBlend_32b_R8G8B8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
+	{
+		const color_32b rb  = ((a_Red << 16) | (a_Blue))  & 0x00FF00FF;
+		const color_32b g   = (a_Green << 8)              & 0x0000FF00;
+
+		return (
+			(((rb * a_Alpha) >> 8) & 0x00FF00FF) | 
+			(((g  * a_Alpha) >> 8) & 0x0000FF00)
+		);
+	}
+
+	inline color_16b AlphaBlend_16b_R5G6B5(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
+	{
+		color_16b r = (((a_Red   * 0xF800) >> 8) & 0xF800);
+		color_16b g = (((a_Green * 0x07E0) >> 8) & 0x07E0);
+		color_16b b = (((a_Blue  * 0x001F) >> 8) & 0x001F);
+
+		return (
+			(((r * a_Alpha) >> 8) & 0xF800) |
+			(((g * a_Alpha) >> 8) & 0x07E0) |
+			(((b * a_Alpha) >> 8) & 0x001F)
+		);
+	}
+
 	struct TinyImageLoader;
 
 	class Image
@@ -57,8 +112,8 @@ namespace til
 		virtual uint32 GetFrameCount() { return 1; }
 		virtual byte* GetPixels(uint32 a_Frame = 0) = 0;
 
-		uint32 GetWidth() { return m_Width; }
-		uint32 GetHeight() { return m_Height; }
+		virtual uint32 GetWidth(uint32 a_Frame = 0) = 0;
+		virtual uint32 GetHeight(uint32 a_Frame = 0) = 0;
 		BitDepth GetBitDepth() { return m_BPPIdent; }
 
 	protected:
@@ -70,7 +125,6 @@ namespace til
 
 		FILE* m_Handle;
 		char* m_FileName;
-		uint32 m_Width, m_Height, m_Pitch;
 		BitDepth m_BPPIdent;
 		uint8 m_BPP;
 

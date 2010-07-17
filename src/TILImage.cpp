@@ -32,7 +32,7 @@ namespace til
 		{
 			strcpy(path, a_FileName);
 		}
-		else if (a_Options == TIL_FILE_ADDWORKDINGDIR)
+		else if (a_Options == TIL_FILE_ADDWORKINGDIR)
 		{
 
 #if (defined(TIL_STRINGS_WIDE))

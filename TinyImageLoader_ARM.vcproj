@@ -810,14 +810,6 @@
 			Name="Formats"
 			>
 			<File
-				RelativePath=".\src\TILImage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\SDK\headers\TILImage.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\TILImageBMP.cpp"
 				>
 			</File>
@@ -853,6 +845,14 @@
 		<Filter
 			Name="Root"
 			>
+			<File
+				RelativePath=".\src\TILImage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SDK\headers\TILImage.h"
+				>
+			</File>
 			<File
 				RelativePath=".\src\TinyImageLoader.cpp"
 				>

@@ -36,6 +36,9 @@ namespace til
 
 		uint32 GetFrameCount();
 		byte* GetPixels(uint32 a_Frame = 0);
+
+		uint32 GetWidth(uint32 a_Frame = 0);
+		uint32 GetHeight(uint32 a_Frame = 0);
 		
 	private:
 
@@ -44,6 +47,8 @@ namespace til
 		byte* m_Pixels;
 		byte* m_Target;
 		byte m_Src[4];
+
+		uint32 m_Width, m_Height, m_Pitch;
 
 	}; // class ImageTGA
 
