@@ -1,3 +1,21 @@
+/*
+    TinyImageLoader - load images, just like that
+    Copyright (C) 2010 Quinten Lansu (knight666)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "..\SDK\headers\TILImageTGA.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_TGA)
@@ -24,6 +42,8 @@ namespace til
 		// silly TGA, why do you store your pixels in reverse y?
 		// now i can't just memcpy it :(
 
+		color_func_32b func_work_32b;
+
 		if (m_BPP == 4)
 		{
 			if (m_BPPIdent == BPP_32B_A8R8G8B8)
@@ -34,10 +54,10 @@ namespace til
 
 					for (uint32 x = 0; x < m_Width; x++)
 					{
-						fread(m_Src, 1, 4, m_Handle);
+						fread(m_Src, 1, m_Depth, m_Handle);
 
 						color_32b* write = (color_32b*)dst;
-						*write = Construct_32b_A8R8G8B8(m_Src[0], m_Src[1], m_Src[2], m_Src[3]);
+						*write = Construct_32b_A8R8G8B8(m_Src[2], m_Src[1], m_Src[0], (m_Depth > 3) ? m_Src[3] : 0);
 
 						dst += m_BPP;
 					}
@@ -45,7 +65,7 @@ namespace til
 					m_Target -= m_Pitch;
 				}
 			}
-			else if (m_BPPIdent == BPP_32B_R8G8B8)
+			else if (m_BPPIdent == BPP_32B_R8G8B8A8)
 			{
 				for (uint32 y = 0; y < m_Height; y++)
 				{
@@ -53,10 +73,36 @@ namespace til
 
 					for (uint32 x = 0; x < m_Width; x++)
 					{
-						fread(m_Src, 1, 4, m_Handle);
+						fread(m_Src, 1, m_Depth, m_Handle);
+
+						color_32b* write = (color_32b*)dst;
+						*write = Construct_32b_R8G8B8A8(m_Src[0], m_Src[1], m_Src[2], (m_Depth > 3) ? m_Src[3] : 0);
+
+						dst += m_BPP;
+					}
+
+					m_Target -= m_Pitch;
+				}
+			}
+		}
+		else if (m_BPP == 3)
+		{
+			if (m_BPPIdent == BPP_32B_R8G8B8)
+			{
+				for (uint32 y = 0; y < m_Height; y++)
+				{
+					byte* dst = m_Target;
+
+					for (uint32 x = 0; x < m_Width; x++)
+					{
+						fread(m_Src, 1, m_Depth, m_Handle);
 
 						color_32b* write = (color_32b*)dst;
 						*write = Construct_32b_R8G8B8(m_Src[0], m_Src[1], m_Src[2]);
+
+						/*dst[0] = m_Src[2];
+						dst[1] = m_Src[1];
+						dst[2] = m_Src[0];*/
 
 						dst += m_BPP;
 					}
@@ -73,7 +119,7 @@ namespace til
 
 				for (uint32 x = 0; x < m_Width; x++)
 				{
-					fread(m_Src, 1, 4, m_Handle);
+					fread(m_Src, 1, m_Depth, m_Handle);
 
 					color_16b* write = (color_16b*)dst;
 					*write = Construct_16b_R5G6B5(m_Src[0], m_Src[1], m_Src[2]);
@@ -84,6 +130,9 @@ namespace til
 				m_Target -= m_Pitch;
 			}
 		}
+
+		
+			
 
 		return true;
 	}
@@ -227,7 +276,8 @@ namespace til
 		word width;           fread(&width, 2, 1, m_Handle);
 		word height;          fread(&height, 2, 1, m_Handle);
 
-		byte depth;           fread(&depth, 1, 1, m_Handle);
+		fread(&m_Depth, 1, 1, m_Handle);
+		m_Depth >>= 3;
 
 		byte img_descriptor;  fread(&img_descriptor, 1, 1, m_Handle);
 

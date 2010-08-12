@@ -1,4 +1,22 @@
 /*
+    TinyImageLoader - load images, just like that
+    Copyright (C) 2010 Quinten Lansu (knight666)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*
 
 	About this loader:
 
@@ -44,6 +62,7 @@ namespace til
 		m_First = m_Current = NULL;
 		m_Palette = NULL;
 		m_Colors = NULL;
+		m_Delay = 0.f;
 	}
 
 	ImageGIF::~ImageGIF()
@@ -78,21 +97,22 @@ namespace til
 
 		if (m_Colors) { delete m_Colors; }
 		m_Colors = new byte[m_ColorTableSize * m_BPP];
-		byte* colors_write = m_Colors;
 
 		switch (m_ColorDepth)
 		{
 
 		case TIL_DEPTH_A8R8G8B8:
 			{
+				byte* dst = m_Colors;
+
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{
-					colors_write[3] = 255;
-					colors_write[2] = m_Palette[(i * 3) + 0];
-					colors_write[1] = m_Palette[(i * 3) + 1];
-					colors_write[0] = m_Palette[(i * 3) + 2];
+					dst[3] = 255;
+					dst[2] = m_Palette[(i * 3) + 0];
+					dst[1] = m_Palette[(i * 3) + 1];
+					dst[0] = m_Palette[(i * 3) + 2];
 
-					colors_write += m_BPP;
+					dst += m_BPP;
 				}
 
 				break;
@@ -100,14 +120,32 @@ namespace til
 
 		case TIL_DEPTH_R8G8B8A8:
 			{
+				byte* dst = m_Colors;
+
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{					
-					colors_write[3] = m_Palette[(i * 3) + 0];
-					colors_write[2] = m_Palette[(i * 3) + 1];
-					colors_write[1] = m_Palette[(i * 3) + 2];
-					colors_write[0] = 255;
+					dst[3] = m_Palette[(i * 3) + 0];
+					dst[2] = m_Palette[(i * 3) + 1];
+					dst[1] = m_Palette[(i * 3) + 2];
+					dst[0] = 255;
 
-					colors_write += m_BPP;
+					dst += m_BPP;
+				}
+
+				break;
+			}
+
+		case TIL_DEPTH_R8G8B8:
+			{
+				byte* dst = m_Colors;
+
+				for (uint32 i = 0; i < m_ColorTableSize; i++)
+				{
+					dst[3] = m_Palette[(i * 3) + 0];
+					dst[2] = m_Palette[(i * 3) + 1];
+					dst[1] = m_Palette[(i * 3) + 2];
+
+					dst += m_BPP;
 				}
 
 				break;
@@ -115,7 +153,7 @@ namespace til
 
 		case TIL_DEPTH_R5G6B5:
 			{
-				color_16b* dst = (color_16b*)colors_write;
+				color_16b* dst = (color_16b*)m_Colors;
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{
@@ -124,8 +162,7 @@ namespace til
 						(((m_Palette[(i * 3) + 1] * 0x07E0) >> 8) & 0x07E0) |
 						(((m_Palette[(i * 3) + 2] * 0x001F) >> 8) & 0x001F);
 
-					colors_write += m_BPP;
-					dst++;
+					dst += m_BPP;
 				}
 
 				break;
@@ -143,12 +180,12 @@ namespace til
 			return false;
 		}
 
+		m_ColorDepth = a_ColorDepth;
+
 		fread(m_Buffer, 7, 1, m_Handle);
 
 		bool colortable = ((m_Buffer[4] & 0x80) == 0x80);
 		m_ColorTableSize = 2 << (m_Buffer[4] & 0x07);
-
-		m_ColorDepth = a_ColorDepth;
 		CompileColors();
 
 		bool animation = false;
@@ -178,6 +215,8 @@ namespace til
 
 					fread(m_Buffer, 1, 1, m_Handle);  // end;
 
+					GIF_DEBUG("Animation found");
+
 					animation = true;
 
 					break;
@@ -188,8 +227,10 @@ namespace til
 				{
 					fread(m_Buffer, 2, 1, m_Handle);  // rest of header
 
-					uint16 seconds;
-					fread(&seconds, 1, 2, m_Handle);
+					uint16 delay;
+					fread(&delay, 1, 2, m_Handle);
+					GIF_DEBUG("Delay: %i ms", delay);
+					m_Delay = (float)(delay) / 1000.f;
 
 					fread(m_Buffer, 2, 1, m_Handle);					
 					
@@ -197,7 +238,8 @@ namespace til
 					break;
 				}
 
-			default: /* Other extension */
+				// Other extension
+			default: 
 				{
 					fread(m_Buffer, 1, 1, m_Handle);
 					
@@ -219,11 +261,8 @@ namespace til
 			TIL_ERROR_EXPLAIN("No image descriptor found.");
 			return false;
 		}
-		if (!fread(m_Buffer, 9, 1, m_Handle)) 
-		{
-			TIL_ERROR_EXPLAIN("No image descriptor found.");
-			return false;
-		}
+
+		fread(m_Buffer, 9, 1, m_Handle);
 
 		m_Width  = ((int)m_Buffer[5] * 256) | (int)m_Buffer[4];
 		m_Height = ((int)m_Buffer[7] * 256) | (int)m_Buffer[6];
@@ -249,15 +288,18 @@ namespace til
 
 		byte* target;
 
-		m_Frames = 1;
+		m_Frames = 0;
 
 		while (1)
 		{
-			GIF_DEBUG("Images: %i", m_Frames);
 			m_Frames++;
+			GIF_DEBUG("Images: %i", m_Frames);
 
 			AddBuffer();
 			target = m_Current->buffer;
+
+			uint32 pixels_total = m_Width * m_Height;
+			uint32 pixels_found = 0;
 
 			fread(m_Buffer, 1, 1, m_Handle);
 
@@ -276,6 +318,8 @@ namespace til
 			first = 0;
 			sp = 0;
 
+			bool zerolength = false;
+
 			/* Decode until we find an End-of-Information code */
 			int code = -1;
 			while (code != eoi_code) 
@@ -289,15 +333,32 @@ namespace til
 						fread(m_Buffer, 1, 1, m_Handle);
 						if (m_Buffer[0] == 0)
 						{
-							GIF_DEBUG("Zero length of buffer.");
-							return false;
+							GIF_DEBUG("Buffer without a length, found enough pixels.");
+							zerolength = true;
+							//return false;
+							break;
 						}
-						buflen = m_Buffer[0];
-						fread(m_Buffer, buflen, 1, m_Handle);
-						bufidx = 0;
+						else
+						{
+							buflen = m_Buffer[0];
+							fread(m_Buffer, buflen, 1, m_Handle);
+							bufidx = 0;
+						}
 					}
 					workbits |= ((uint32)m_Buffer[bufidx++]) << work_number;
 					work_number += 8;
+				}
+
+				if (zerolength)
+				{
+					GIF_DEBUG("Pixels: %i vs %i.", pixels_found, pixels_total);
+					if (pixels_found != pixels_total)
+					{
+						TIL_ERROR_EXPLAIN("Didn't find enough pixels: %i vs %i.", pixels_found, pixels_total);
+						return false;
+					}
+
+					break;
 				}
 
 				/* Get next code */
@@ -325,6 +386,7 @@ namespace til
 				else if (code == eoi_code) 
 				{         
 					GIF_DEBUG("End of info.");
+					GIF_DEBUG("Pixels: %i vs %i.", pixels_found, pixels_total);
 					fread(m_Buffer, 1, 1, m_Handle);
 					break;
 				} 
@@ -332,7 +394,7 @@ namespace til
 				else if (prev_code == -1) 
 				{
 					/* Add to image */
-					
+
 					if (m_BPP == 2)
 					{
 						*(color_16b*)target = *(color_16b*)&m_Colors[code * m_BPP];
@@ -342,6 +404,7 @@ namespace til
 						*(color_32b*)target = *(color_32b*)&m_Colors[code * m_BPP];
 					}
 					target += m_BPP;
+					pixels_found++;
 
 					first = prev_code = code;
 				} 
@@ -382,6 +445,7 @@ namespace til
 						}
 
 						target += m_BPP;
+						pixels_found++;
 					}
 					prefix[free_code] = prev_code;
 					extnsn[free_code++] = first;
@@ -401,7 +465,7 @@ namespace til
 			fread(&header, 1, 3, m_Handle);
 			if (header != 0x0004F921)
 			{
-				fread(m_Buffer, 100, 1, m_Handle);
+				//fread(m_Buffer, 100, 1, m_Handle);
 
 				GIF_DEBUG("End of file.");
 				break;
@@ -418,9 +482,18 @@ namespace til
 			fread(m_Buffer, 9, 1, m_Handle);
 
 			// get the new colors
-			colortable = (m_Buffer[8] & 0x80) == 0x80;
-			m_ColorTableSize = 2 << (m_Buffer[8] & 0x07);
-			if (colortable) { CompileColors(); }
+			bool localtable = (m_Buffer[8] & (1 << 7)) == (1 << 7);
+			bool interlaced = (m_Buffer[8] & (1 << 6)) == (1 << 6);
+
+			if (localtable)
+			{ 
+				m_ColorTableSize = 2 << (m_Buffer[8] & 0x07);
+				CompileColors(); 
+			}
+			else
+			{
+				GIF_DEBUG("TODO: Use global color table");
+			}
 		}
 
 		return true;
@@ -428,7 +501,7 @@ namespace til
 
 	byte* ImageGIF::GetPixels(uint32 a_Frame)
 	{
-		if (a_Frame >= 0 && a_Frame < m_Frames - 1)
+		if (a_Frame >= 0 && a_Frame < m_Frames)
 		{
 			BufferLinked* current = m_First;
 			for (uint32 i = 0; i < a_Frame; i++) { current = current->next; }
@@ -441,6 +514,11 @@ namespace til
 	uint32 ImageGIF::GetFrameCount()
 	{
 		return m_Frames;
+	}
+
+	float ImageGIF::GetDelay()
+	{
+		return m_Delay;
 	}
 
 	uint32 ImageGIF::GetWidth(uint32 a_Frame)

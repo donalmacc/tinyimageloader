@@ -1,3 +1,21 @@
+/*
+    TinyImageLoader - load images, just like that
+    Copyright (C) 2010 Quinten Lansu (knight666)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "..\SDK\headers\TILImagePNG.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
@@ -1076,13 +1094,16 @@ namespace til
 
 					case BPP_32B_R8G8B8:
 						{
-							uint32* dst = (uint32*)m_Pixels;
+							uint8* dst = (uint8*)m_Pixels;
 
 							for (uint32 i = 0; i < m_Width * m_Height; i++)
 							{
-								*dst = Construct_32b_R8G8B8(src[0], src[1], src[2]);
+								//*dst++ = Construct_32b_R8G8B8(src[0], src[1], src[2]);
 
-								dst++;
+								color_32b* write = (color_32b*)dst;
+								*write = AlphaBlend_32b_R8G8B8(src[2], src[1], src[0], src[3]);
+								dst += 3;
+
 								src += 4;
 							}
 
@@ -1095,9 +1116,8 @@ namespace til
 
 							for (uint32 i = 0; i < m_Width * m_Height; i++)
 							{
-								*dst = 0xFF000000 | Construct_32b_R8G8B8(src[0], src[1], src[2]);
-
-								dst++;
+								//*dst++ = Construct_32b_A8R8G8B8(src[0], src[1], src[2], 0);
+								*dst++ = AlphaBlend_32b_R8G8B8(src[0], src[1], src[2], src[3]);
 								src += 4;
 							}
 
@@ -1106,13 +1126,12 @@ namespace til
 
 					case BPP_32B_R8G8B8A8:
 						{
-							uint32* dst = (uint32*)m_Pixels;
+							color_32b* dst = (color_32b*)m_Pixels;
 
 							for (uint32 i = 0; i < m_Width * m_Height; i++)
 							{
-								*dst = (Construct_32b_R8G8B8(src[0], src[1], src[2]) << 4) | 0x000000FF;
-
-								dst++;
+								//*dst++ = Construct_32b_R8G8B8A8(src[0], src[1], src[2], 0);
+								*dst++ = AlphaBlend_32b_R8G8B8(src[2], src[1], src[0], src[3]);
 								src += 4;
 							}
 
