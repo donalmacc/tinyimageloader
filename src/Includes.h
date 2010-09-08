@@ -61,19 +61,6 @@ extern "C"
 #include "TBQuaternion.h"
 #include "TBMath.h"
 
-#ifdef USE_CEGUI
-
-	// CEGUI
-	#pragma warning (disable : 4250)    // warning C4250: 'class' : inherits 'class::function' via dominance
-	#undef max
-	#undef min
-	#include "CEGUI.h"
-	#include "RendererModules/OpenGL/CEGUIOpenGLRenderer.h"
-	#include "RendererModules/OpenGL/CEGUIOpenGLTexture.h"
-	#include "RendererModules/OpenGL/CEGUIOpenGLTextureTarget.h"
-
-#endif
-
 #include "Input.h"
 
 #endif

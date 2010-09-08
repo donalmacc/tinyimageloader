@@ -19,24 +19,27 @@ Surface* show;
 Surface* compare;
 
 Image* loaded_32b;
+Image* loaded_32b_ext;
 uint32 frames;
 
 Surface* show_16b;
 Surface* show_32b;
+Surface* show_32b_ext;
 
 Surface* animation[11];
 
 bool flip = true;
-bool allow_16bit = true;
+bool allow_16bit = false;
 
-//char image[] = "F:\\GameLab 3\\stable build\\Data\\Textures\\LightSuport_F2_Diffuse(512).png";
+//char image[] = "media\\flame.png";
 //char image[] = "media\\irrlichtlogoalpha2.tga";
 //char image[] = "media\\Viper_Mark_II.bmp";
 //char image[] = "media\\jump.gif";
+char image[] = "media\\jacket_of_smiting.gif";
 //char image[] = "media\\img_test.png";
-//char image[] = "media\\tooltileset.tga";
+//char image[] = "media\\ali_flesh500.tga";
 //char image[] = "media\\Tank.ico";
-char image[] = "media\\Package.ico";
+//char image[] = "media\\Package.ico";
 //char image[] = "media\\crossword.ico";
 //char image[] = "BitComet.png";
 
@@ -95,6 +98,7 @@ static uint32 Convert_R5G6B5_R8G8B8(uint16 a_Color)
 	return (r | g | b);
 }
 
+float delay = 5.f;
 
 void Game::Init()
 {
@@ -129,29 +133,53 @@ void Game::Init()
 		);
 	}
 	
-	loaded_32b = TinyImageLoader::Load(image, option | TIL_DEPTH_R8G8B8);
+	loaded_32b = TinyImageLoader::Load(image, option | TIL_DEPTH_A8R8G8B8);
+	til::Image* temp = loaded_32b;
 
-	frames = loaded_32b->GetFrameCount();
+	frames = temp->GetFrameCount();
+	delay = temp->GetDelay();
+	frames = 14;
+	
+	til::uint32 width_ani = temp->GetWidth();
+	til::uint32 height_ani = temp->GetHeight();
+
 	for (uint32 i = 0; i < frames; i++)
 	{
-		til::uint32 width = loaded_32b->GetWidth(i);
-		til::uint32 height = loaded_32b->GetHeight(i);
+		Pixel* pixels = (Pixel*)temp->GetPixels(i);
+
 		animation[i] = new Surface(
-			width, 
-			height, 
-			(Pixel*)loaded_32b->GetPixels(i),
-			loaded_32b->GetWidth(i)
+			width_ani, 
+			height_ani, 
+			pixels,
+			width_ani
 		);
 	}
 
 	show_32b = new Surface(
-		loaded_32b->GetWidth(), 
-		loaded_32b->GetHeight(),	
-		(Pixel*)loaded_32b->GetPixels(), 
-		loaded_32b->GetWidth()
+		temp->GetWidth(), 
+		temp->GetHeight(),	
+		(Pixel*)temp->GetPixels(), 
+		temp->GetWidth()
 	);
 
+	/*loaded_32b_ext = TinyImageLoader::Load(image, option | TIL_DEPTH_R8G8B8);
 
+	show_32b_ext = new Surface(
+		loaded_32b_ext->GetWidth(), 
+		loaded_32b_ext->GetHeight()
+	);
+
+	Pixel* write = show_32b_ext->GetBuffer();
+	uint8* get = loaded_32b_ext->GetPixels();
+	for (unsigned int y = 0; y < loaded_32b_ext->GetHeight(); ++y)
+	{
+		for (unsigned int x = 0; x < loaded_32b_ext->GetWidth(); ++x)
+		{
+			write[x] = (get[0] << 16) | (get[1] << 8) | (get[2]);
+			get += 3;
+		}
+		write += loaded_32b_ext->GetWidth();
+	}*/
 
 	//compare = new Surface(width, height, (Pixel*)data, width);
 
@@ -159,14 +187,20 @@ void Game::Init()
 	//test->Load("testimage.png");
 }
 
+int current = 0;
+float timestep = 0.f;
+
 void Game::Tick(float a_DT)
 {
 	if (Keyboard::Released(QKEY_SPACE)) { flip = !flip; }
-}
 
-int current = 0;
-float timestep = 0.f;
-float delay = 5.f;
+	timestep += 0.001f;
+	if (timestep > delay)
+	{
+		current = (++current == (frames - 1)) ? 0 : current;
+		timestep -= delay;
+	}
+}
 
 void Game::Render()
 {
@@ -175,12 +209,6 @@ void Game::Render()
 	//show->CopyTo(m_Screen, 0, 0);
 
 	animation[current]->CopyTo(m_Screen, SCRWIDTH / 2, 0);
-	timestep += 0.01f;
-	if (timestep > delay)
-	{
-		current = (++current > (frames - 1)) ? 0 : current;
-		timestep -= delay;
-	}
 
 	if (allow_16bit)
 	{
@@ -192,6 +220,7 @@ void Game::Render()
 		show_32b->CopyTo(m_Screen, 0, 0);
 	}
 	
+	//show_32b_ext->CopyTo(m_Screen, 0, SCRHEIGHT / 2);
 }
 
 void Game::Quit()
