@@ -162,7 +162,7 @@ namespace til
 				// run length packet
 				if (packet & 0x80)
 				{
-					fread(src_buffer, 1, 4, m_Handle);
+					fread(src_buffer, 1, m_Depth, m_Handle);
 					src = src_buffer;
 
 					repeat = count;
@@ -170,7 +170,7 @@ namespace til
 				// raw packet
 				else
 				{
-					fread(buffer, 1, count * 4, m_Handle);
+					fread(buffer, 1, count * m_Depth, m_Handle);
 					src = buffer;
 
 					unique = count;
@@ -185,7 +185,7 @@ namespace til
 
 						for (uint8 i = 0; i < repeat; i++) { *write_32b++ = final; }
 
-						src += 4;
+						src += m_Depth;
 					}
 				}
 				else if (m_BPP == 2)
@@ -197,7 +197,7 @@ namespace til
 
 						for (uint8 i = 0; i < repeat; i++) { *write_16b++ = final; }
 
-						src += 4;
+						src += m_Depth;
 					}
 				}
 
@@ -278,6 +278,8 @@ namespace til
 
 		fread(&m_Depth, 1, 1, m_Handle);
 		m_Depth >>= 3;
+
+		TGA_DEBUG("Depth: %i", m_Depth);
 
 		byte img_descriptor;  fread(&img_descriptor, 1, 1, m_Handle);
 
