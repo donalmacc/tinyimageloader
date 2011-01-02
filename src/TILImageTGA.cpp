@@ -1,6 +1,6 @@
 /*
     TinyImageLoader - load images, just like that
-    Copyright (C) 2010 Quinten Lansu (knight666)
+    Copyright (C) 2010 - 2011 Quinten Lansu (knight666)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,12 +20,98 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_TGA)
 
-#ifdef TIL_PRINT_DEBUG
+#ifdef TIL_DEBUG
 	#define TGA_DEBUG(msg, ...)        TIL_PRINT_DEBUG("TGA: "msg, __VA_ARGS__)
+#else
+	#define TGA_DEBUG(msg, ...)
 #endif
 
 namespace til
 {
+
+	typedef uint8* (*ColorFuncComp)(uint8*, uint8*, int, int);
+
+	int g_Depth;
+
+	uint8* ColorFunc_R8G8B8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+
+		for (int j = 0; j < a_Unique; j++)
+		{
+			color_32b comp = AlphaBlend_32b_R8G8B8(a_Src[2], a_Src[1], a_Src[0], 255);
+			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+			a_Src += g_Depth;
+		}
+		return (uint8*)dst;
+	}
+
+	uint8* ColorFunc_A8R8G8B8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+
+		for (int j = 0; j < a_Unique; j++)
+		{
+			color_32b comp = AlphaBlend_32b_A8R8G8B8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+			a_Src += g_Depth;
+		}
+		return (uint8*)dst;
+	}
+
+	uint8* ColorFunc_A8B8G8R8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+
+		for (int j = 0; j < a_Unique; j++)
+		{
+			color_32b comp = AlphaBlend_32b_A8B8G8R8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+			a_Src += g_Depth;
+		}
+		return (uint8*)dst;
+	}
+
+	uint8* ColorFunc_R8G8B8A8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+
+		for (int j = 0; j < a_Unique; j++)
+		{
+			color_32b comp = AlphaBlend_32b_R8G8B8A8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+			a_Src += g_Depth;
+		}
+		return (uint8*)dst;
+	}
+
+	uint8* ColorFunc_B8G8R8A8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+
+		for (int j = 0; j < a_Unique; j++)
+		{
+			color_32b comp = AlphaBlend_32b_B8G8R8A8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+			a_Src += g_Depth;
+		}
+		return (uint8*)dst;
+	}
+
+	uint8* ColorFunc_R5G6B5_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	{
+		color_16b* dst = (color_16b*)a_Dst;
+
+		for (int j = 0; j < a_Unique; j++)
+		{
+			color_16b comp = AlphaBlend_16b_R5G6B5(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+			a_Src += g_Depth;
+		}
+		return (uint8*)dst;
+	}
+
+	ColorFuncComp g_ColorFunc = NULL;
 
 	ImageTGA::ImageTGA()
 	{
@@ -42,113 +128,34 @@ namespace til
 		// silly TGA, why do you store your pixels in reverse y?
 		// now i can't just memcpy it :(
 
-		color_func_32b func_work_32b;
+		uint8* src = new uint8[m_Width * m_Depth];
 
-		if (m_BPP == 4)
+		for (uint32 y = 0; y < m_Height; y++)
 		{
-			if (m_BPPIdent == BPP_32B_A8R8G8B8)
-			{
-				for (uint32 y = 0; y < m_Height; y++)
-				{
-					byte* dst = m_Target;
+			byte* dst = m_Target;
 
-					for (uint32 x = 0; x < m_Width; x++)
-					{
-						fread(m_Src, 1, m_Depth, m_Handle);
+			fread(src, m_Width, m_Depth, m_Handle);
 
-						color_32b* write = (color_32b*)dst;
-						*write = Construct_32b_A8R8G8B8(m_Src[2], m_Src[1], m_Src[0], (m_Depth > 3) ? m_Src[3] : 0);
+			uint8* src_copy = src;
+			dst = g_ColorFunc(dst, src_copy, 1, m_Width);
 
-						dst += m_BPP;
-					}
-
-					m_Target -= m_Pitch;
-				}
-			}
-			else if (m_BPPIdent == BPP_32B_R8G8B8A8)
-			{
-				for (uint32 y = 0; y < m_Height; y++)
-				{
-					byte* dst = m_Target;
-
-					for (uint32 x = 0; x < m_Width; x++)
-					{
-						fread(m_Src, 1, m_Depth, m_Handle);
-
-						color_32b* write = (color_32b*)dst;
-						*write = Construct_32b_R8G8B8A8(m_Src[0], m_Src[1], m_Src[2], (m_Depth > 3) ? m_Src[3] : 0);
-
-						dst += m_BPP;
-					}
-
-					m_Target -= m_Pitch;
-				}
-			}
-		}
-		else if (m_BPP == 3)
-		{
-			if (m_BPPIdent == BPP_32B_R8G8B8)
-			{
-				for (uint32 y = 0; y < m_Height; y++)
-				{
-					byte* dst = m_Target;
-
-					for (uint32 x = 0; x < m_Width; x++)
-					{
-						fread(m_Src, 1, m_Depth, m_Handle);
-
-						color_32b* write = (color_32b*)dst;
-						*write = Construct_32b_R8G8B8(m_Src[0], m_Src[1], m_Src[2]);
-
-						/*dst[0] = m_Src[2];
-						dst[1] = m_Src[1];
-						dst[2] = m_Src[0];*/
-
-						dst += m_BPP;
-					}
-
-					m_Target -= m_Pitch;
-				}
-			}
-		}
-		else if (m_BPP == 2)
-		{
-			for (uint32 y = 0; y < m_Height; y++)
-			{
-				byte* dst = m_Target;
-
-				for (uint32 x = 0; x < m_Width; x++)
-				{
-					fread(m_Src, 1, m_Depth, m_Handle);
-
-					color_16b* write = (color_16b*)dst;
-					*write = Construct_16b_R5G6B5(m_Src[0], m_Src[1], m_Src[2]);
-
-					dst += m_BPP;
-				}
-
-				m_Target -= m_Pitch;
-			}
+			m_Target -= m_Pitch;
 		}
 
-		
-			
-
-		return true;
+		return false;
 	}
 
 	bool ImageTGA::CompileRunLengthEncoded()
 	{
 		byte buffer[128 * 4];
 		byte src_buffer[4];
-		byte* src;
+		byte* src_color;
 
 		uint32 total = m_Width * m_Height;
 
 		for (uint32 y = 0; y < m_Height; y++)
 		{
-			color_16b* write_16b = (color_16b*)m_Target;
-			color_32b* write_32b = (color_32b*)m_Target;
+			uint8* dst = m_Target;
 
 			for (uint32 x = 0; x < m_Width;)
 			{
@@ -163,7 +170,7 @@ namespace til
 				if (packet & 0x80)
 				{
 					fread(src_buffer, 1, m_Depth, m_Handle);
-					src = src_buffer;
+					src_color = src_buffer;
 
 					repeat = count;
 				}
@@ -171,35 +178,12 @@ namespace til
 				else
 				{
 					fread(buffer, 1, count * m_Depth, m_Handle);
-					src = buffer;
+					src_color = buffer;
 
 					unique = count;
 				}
 
-				if (m_BPP == 4)
-				{
-					color_32b final;
-					for (int j = 0; j < unique; j++)
-					{
-						final = Construct_32b_R8G8B8(src[2], src[1], src[0]);
-
-						for (uint8 i = 0; i < repeat; i++) { *write_32b++ = final; }
-
-						src += m_Depth;
-					}
-				}
-				else if (m_BPP == 2)
-				{
-					color_16b final;
-					for (int j = 0; j < unique; j++)
-					{
-						final = Construct_16b_R5G6B5(src[2], src[1], src[0]);
-
-						for (uint8 i = 0; i < repeat; i++) { *write_16b++ = final; }
-
-						src += m_Depth;
-					}
-				}
+				dst = g_ColorFunc(dst, src_color, repeat, unique);
 
 				x += count;
 			}
@@ -279,6 +263,8 @@ namespace til
 		fread(&m_Depth, 1, 1, m_Handle);
 		m_Depth >>= 3;
 
+		g_Depth = m_Depth;
+
 		TGA_DEBUG("Depth: %i", m_Depth);
 
 		byte img_descriptor;  fread(&img_descriptor, 1, 1, m_Handle);
@@ -301,6 +287,38 @@ namespace til
 		m_Pixels = new byte[width * height * m_BPP];
 		m_Pitch = m_Width * m_BPP;
 		m_Target = m_Pixels + ((m_Height - 1) * m_Pitch);
+
+		switch (m_BPPIdent)
+		{
+
+		case BPP_32B_R8G8B8: 
+			g_ColorFunc = ColorFunc_R8G8B8_Comp; 
+			break;
+
+		case BPP_32B_A8R8G8B8: 
+			g_ColorFunc = ColorFunc_A8R8G8B8_Comp; 
+			break;
+
+		case BPP_32B_A8B8G8R8:
+			g_ColorFunc = ColorFunc_A8B8G8R8_Comp;
+			break;
+
+		case BPP_32B_R8G8B8A8: 
+			g_ColorFunc = ColorFunc_R8G8B8A8_Comp; 
+			break;
+
+		case BPP_32B_B8G8R8A8: 
+			g_ColorFunc = ColorFunc_B8G8R8A8_Comp; 
+			break;
+
+		case BPP_16B_R5G6B5: 
+			g_ColorFunc = ColorFunc_R5G6B5_Comp; 
+			break;
+
+		default:
+			TIL_ERROR_EXPLAIN("Unhandled color format: %i", m_BPPIdent);
+			break;
+		}
 
 		if (m_Comp == COMP_RLE)
 		{

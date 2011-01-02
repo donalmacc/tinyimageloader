@@ -1,6 +1,6 @@
 /*
     TinyImageLoader - load images, just like that
-    Copyright (C) 2010 Quinten Lansu (knight666)
+    Copyright (C) 2010 - 2011 Quinten Lansu (knight666)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,8 +20,10 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_ICO)
 
-#ifdef TIL_PRINT_DEBUG
+#ifdef TIL_DEBUG
 	#define ICO_DEBUG(msg, ...)        TIL_PRINT_DEBUG("ICO: "msg, __VA_ARGS__)
+#else
+	#define ICO_DEBUG(msg, ...)
 #endif
 
 namespace til

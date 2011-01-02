@@ -1,6 +1,6 @@
 /*
     TinyImageLoader - load images, just like that
-    Copyright (C) 2010 Quinten Lansu (knight666)
+    Copyright (C) 2010 - 2011 Quinten Lansu (knight666)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -48,8 +48,10 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
 
-#ifdef TIL_PRINT_DEBUG
+#ifdef TIL_DEBUG
 	#define GIF_DEBUG(msg, ...)        TIL_PRINT_DEBUG("GIF: "msg, __VA_ARGS__)
+#else
+	#define GIF_DEBUG(msg, ...)
 #endif
 
 namespace til
@@ -62,6 +64,7 @@ namespace til
 		m_First = m_Current = NULL;
 		m_Palette = NULL;
 		m_Colors = NULL;
+		m_CurrentColors = NULL;
 		m_Delay = 0.f;
 	}
 
@@ -89,30 +92,51 @@ namespace til
 		}
 	}
 
-	void ImageGIF::CompileColors()
+	void ImageGIF::CompileColors(bool a_LocalTable)
 	{
-		if (m_Palette) { delete m_Palette; }
-		m_Palette = new char[m_ColorTableSize * 3];
-		fread(m_Palette, m_ColorTableSize * 3, 1, m_Handle);
+		byte* palette = m_Palette;
+		byte* colors = m_Colors;
 
-		if (m_Colors) { delete m_Colors; }
-		m_Colors = new byte[m_ColorTableSize * m_BPP];
+		if (palette) { delete palette; }
+		palette = new byte[m_ColorTableSize * 3];
+		fread(palette, m_ColorTableSize * 3, 1, m_Handle);
+
+		if (colors) { delete colors; }
+		colors = new byte[m_ColorTableSize * m_BPP];
+		memset(colors, 0, m_ColorTableSize * m_BPP);
 
 		switch (m_ColorDepth)
 		{
 
 		case TIL_DEPTH_A8R8G8B8:
 			{
-				byte* dst = m_Colors;
+				color_32b* dst = (color_32b*)colors;
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{
-					dst[3] = 255;
-					dst[2] = m_Palette[(i * 3) + 0];
-					dst[1] = m_Palette[(i * 3) + 1];
-					dst[0] = m_Palette[(i * 3) + 2];
+					*dst++ = Construct_32b_A8R8G8B8(
+						palette[(i * 3) + 0],
+						palette[(i * 3) + 1],
+						palette[(i * 3) + 2],
+						255
+					);
+				}
 
-					dst += m_BPP;
+				break;
+			}
+
+		case TIL_DEPTH_A8B8G8R8:
+			{
+				color_32b* dst = (color_32b*)colors;
+
+				for (uint32 i = 0; i < m_ColorTableSize; i++)
+				{
+					*dst++ = Construct_32b_A8B8G8R8(
+						palette[(i * 3) + 0],
+						palette[(i * 3) + 1],
+						palette[(i * 3) + 2],
+						255
+					);
 				}
 
 				break;
@@ -120,16 +144,40 @@ namespace til
 
 		case TIL_DEPTH_R8G8B8A8:
 			{
-				byte* dst = m_Colors;
+				color_32b* dst = (color_32b*)colors;
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{					
-					dst[3] = m_Palette[(i * 3) + 0];
-					dst[2] = m_Palette[(i * 3) + 1];
-					dst[1] = m_Palette[(i * 3) + 2];
+					*dst++ = Construct_32b_R8G8B8A8(
+						palette[(i * 3) + 0],
+						palette[(i * 3) + 1],
+						palette[(i * 3) + 2],
+						255
+					);
+
+					/*dst[3] = palette[(i * 3) + 0];
+					dst[2] = palette[(i * 3) + 1];
+					dst[1] = palette[(i * 3) + 2];
 					dst[0] = 255;
 
-					dst += m_BPP;
+					dst += m_BPP;*/
+				}
+
+				break;
+			}
+
+		case TIL_DEPTH_B8G8R8A8:
+			{
+				color_32b* dst = (color_32b*)colors;
+
+				for (uint32 i = 0; i < m_ColorTableSize; i++)
+				{					
+					*dst++ = Construct_32b_B8G8R8A8(
+						palette[(i * 3) + 0],
+						palette[(i * 3) + 1],
+						palette[(i * 3) + 2],
+						255
+					);
 				}
 
 				break;
@@ -137,13 +185,13 @@ namespace til
 
 		case TIL_DEPTH_R8G8B8:
 			{
-				byte* dst = m_Colors;
+				byte* dst = colors;
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{
-					dst[3] = m_Palette[(i * 3) + 0];
-					dst[2] = m_Palette[(i * 3) + 1];
-					dst[1] = m_Palette[(i * 3) + 2];
+					dst[3] = palette[(i * 3) + 0];
+					dst[2] = palette[(i * 3) + 1];
+					dst[1] = palette[(i * 3) + 2];
 
 					dst += m_BPP;
 				}
@@ -153,21 +201,37 @@ namespace til
 
 		case TIL_DEPTH_R5G6B5:
 			{
-				color_16b* dst = (color_16b*)m_Colors;
+				color_16b* dst = (color_16b*)colors;
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{
-					*dst =
-						(((m_Palette[(i * 3) + 0] * 0xF800) >> 8) & 0xF800) |
-						(((m_Palette[(i * 3) + 1] * 0x07E0) >> 8) & 0x07E0) |
-						(((m_Palette[(i * 3) + 2] * 0x001F) >> 8) & 0x001F);
+					/**dst =
+						(((palette[(i * 3) + 0] * 0xF800) >> 8) & 0xF800) |
+						(((palette[(i * 3) + 1] * 0x07E0) >> 8) & 0x07E0) |
+						(((palette[(i * 3) + 2] * 0x001F) >> 8) & 0x001F);
 
-					dst += m_BPP;
+					dst += m_BPP;*/
+
+					*dst++ = Construct_16b_R5G6B5(
+						palette[(i * 3) + 0],
+						palette[(i * 3) + 1],
+						palette[(i * 3) + 2],
+						255
+					);
 				}
 
 				break;
 			}
+
+		default:
+			{
+				TIL_ERROR_EXPLAIN("Unhandled color format: %i", m_BPPIdent);
+				break;
+			}
 		}
+
+		m_Colors = colors;
+		m_CurrentColors = m_Colors;
 	}
 
 	bool ImageGIF::Parse(uint32 a_ColorDepth/*= TIL_DEPTH_A8R8G8B8*/)
@@ -188,6 +252,8 @@ namespace til
 		m_ColorTableSize = 2 << (m_Buffer[4] & 0x07);
 		CompileColors();
 
+		m_Transparency = false;
+
 		bool animation = false;
 		bool transparancy = false;
 		bool looping = false;
@@ -205,6 +271,8 @@ namespace til
 				// Animation
 			case 0xFF:
 				{
+					GIF_DEBUG("Block: animation");
+
 					fread(m_Buffer, 1, 1, m_Handle);  // rest of header
 					fread(m_Buffer, 11, 1, m_Handle); // NETSCAPE2.0
 					fread(m_Buffer, 2, 1, m_Handle);  // data follows
@@ -213,9 +281,9 @@ namespace til
 					fread(&set_looping, 1, 2, m_Handle);
 					looping = (set_looping & 0xFFFF) ? true : false;
 
-					fread(m_Buffer, 1, 1, m_Handle);  // end;
+					GIF_DEBUG("Looping: %s", looping ? "true" : "false");
 
-					GIF_DEBUG("Animation found");
+					fread(m_Buffer, 1, 1, m_Handle);  // end;
 
 					animation = true;
 
@@ -225,7 +293,14 @@ namespace til
 				// Graphic Control Extension
 			case 0xF9: 
 				{
+					GIF_DEBUG("Block: Graphic Control Extension");
+
 					fread(m_Buffer, 2, 1, m_Handle);  // rest of header
+
+					if (m_Buffer[1] & 0x01) 
+					{
+						GIF_DEBUG("Transparent: true");
+					}
 
 					uint16 delay;
 					fread(&delay, 1, 2, m_Handle);
@@ -241,6 +316,8 @@ namespace til
 				// Other extension
 			default: 
 				{
+					GIF_DEBUG("Block: Unknown (%x)", m_Buffer[0]);
+
 					fread(m_Buffer, 1, 1, m_Handle);
 					
 					while (m_Buffer[0] != 0) 
@@ -253,7 +330,6 @@ namespace til
 			}
 
 			fread(m_Buffer, 1, 1, m_Handle);
-			bool bleh = true;
 		}
 
 		if (m_Buffer[0] != 0x2c) 
@@ -264,14 +340,28 @@ namespace til
 
 		fread(m_Buffer, 9, 1, m_Handle);
 
+		m_OffsetX = 0;
+		m_OffsetY = 0;
+
 		m_Width  = ((int)m_Buffer[5] * 256) | (int)m_Buffer[4];
 		m_Height = ((int)m_Buffer[7] * 256) | (int)m_Buffer[6];
+
+		m_LocalWidth = m_Width;
+		m_LocalHeight = m_Height;
+		m_LocalPitch = m_Width * m_BPP;
+
+		m_TotalBytes = m_Width * m_Height * m_BPP;
+		m_PrevBuffer = new byte[m_TotalBytes];
+		memset(m_PrevBuffer, 0, m_TotalBytes);
+
+		GIF_DEBUG("Width: %i", m_Width);
+		GIF_DEBUG("Height: %i", m_Height);
 		
 		//m_Buffer = new byte[m_Width * m_Height * m_BPP];
 		
-		/*colortable = (buffer[8] & 0x80) == 0x80;
-		bool interlaced = (buffer[8] & 0x40) == 0x40;
-		m_ColorTableSize = 2 << (buffer[8] & 0x07);*/
+		//bool global_colortable = (m_Buffer[8] & 0x80) == 0x80;
+		//bool interlaced = (m_Buffer[8] & 0x40) == 0x40;
+		//int global_colortable_size = 2 << (m_Buffer[8] & 0x07);
 
 		// =========================================
 		// LZW
@@ -298,12 +388,22 @@ namespace til
 			AddBuffer();
 			target = m_Current->buffer;
 
+			memcpy(target, m_PrevBuffer, m_TotalBytes);
+
+			uint32 xy = (m_OffsetY * m_Width) + (m_OffsetX);
+
+			m_Pitch = m_LocalPitch;
+			byte* dst = target + (m_OffsetY * m_LocalPitch) + (m_OffsetX * m_BPP);
+			int width = m_LocalWidth - 1;
+
 			uint32 pixels_total = m_Width * m_Height;
 			uint32 pixels_found = 0;
 
 			fread(m_Buffer, 1, 1, m_Handle);
 
 			min_code_size = m_Buffer[0];
+			GIF_DEBUG("Min code size: %i", min_code_size);
+
 			clear_code = 1 << min_code_size;
 			eoi_code = clear_code + 1;
 			free_code = clear_code + 2;
@@ -395,18 +495,33 @@ namespace til
 				{
 					/* Add to image */
 
-					if (m_BPP == 2)
+					if (width-- == 0)
 					{
-						*(color_16b*)target = *(color_16b*)&m_Colors[code * m_BPP];
+						target += m_LocalPitch;
+						dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP;
+						width = m_LocalWidth - 1;
 					}
-					else if (m_BPP == 4)
-					{
-						*(color_32b*)target = *(color_32b*)&m_Colors[code * m_BPP];
-					}
-					target += m_BPP;
-					pixels_found++;
 
-					first = prev_code = code;
+					//if (code != 127)
+					if (!m_Transparency || code != m_TransparentIndex)
+					{
+						if (m_BPP == 2)
+						{
+							*(color_16b*)dst = *(color_16b*)&m_CurrentColors[code * m_BPP];
+						}
+						else if (m_BPP == 4)
+						{
+							*(color_32b*)dst = *(color_32b*)&m_CurrentColors[code * m_BPP];
+						}
+					}
+
+					first = code;
+					prev_code = code;
+
+					//first = prev_code = code;
+
+					dst += m_BPP;
+					pixels_found++;
 				} 
 				/* We've got a normal code */
 				else 
@@ -424,7 +539,7 @@ namespace til
 					}
 
 					/* Push string of pixels */
-					while (first >= clear_code) 
+					while (first >= clear_code)
 					{       
 						stack[sp++] = extnsn[first];
 						first = prefix[first];
@@ -435,16 +550,22 @@ namespace til
 					/* Now add pixels to image */
 					while (sp != 0) 
 					{
-						if (m_BPP == 2)
+						if (width-- == 0)
 						{
-							*(color_16b*)target = *(color_16b*)&m_Colors[stack[--sp] * m_BPP];
-						}
-						else if (m_BPP == 4)
-						{
-							*(color_32b*)target = *(color_32b*)&m_Colors[stack[--sp] * m_BPP];
+							target += m_LocalPitch;
+							dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP;
+							width = m_LocalWidth - 1;
 						}
 
-						target += m_BPP;
+						sp--;
+						if (!m_Transparency || stack[sp] != m_TransparentIndex)
+						{
+							byte* pixel_dst = dst;
+							byte* src = &m_CurrentColors[stack[sp] * m_BPP];
+							for (int i = 0; i < m_BPP; i++) { *pixel_dst++ = *src++; }
+						}
+
+						dst += m_BPP;
 						pixels_found++;
 					}
 					prefix[free_code] = prev_code;
@@ -463,7 +584,7 @@ namespace til
 			// image block identifier: 21 F9 04
 			uint32 header = 0;
 			fread(&header, 1, 3, m_Handle);
-			if (header != 0x0004F921)
+			if (header != 0x04F921)
 			{
 				//fread(m_Buffer, 100, 1, m_Handle);
 
@@ -472,6 +593,16 @@ namespace til
 			}
 
 			fread(m_Buffer, 6, 1, m_Handle);
+
+			m_Transparency = (m_Buffer[0] & 0x01) == 0x01;
+			GIF_DEBUG("Transparancy: %s", (m_Transparency) ? "true" : "false");
+			if (m_Transparency)
+			{
+				m_TransparentIndex = m_Buffer[3];
+
+				GIF_DEBUG("Transparant index: %i", m_TransparentIndex);
+			}
+
 			if (m_Buffer[5] != 0x2c)
 			{
 				TIL_ERROR_EXPLAIN("No start of data.");
@@ -481,9 +612,23 @@ namespace til
 			// get header of next block
 			fread(m_Buffer, 9, 1, m_Handle);
 
+			m_OffsetX = (m_Buffer[0]) + (m_Buffer[1] << 8);
+			m_OffsetY = (m_Buffer[2]) + (m_Buffer[3] << 8);
+
+			m_LocalWidth = (m_Buffer[4]) + (m_Buffer[5] << 8);
+			m_LocalHeight = (m_Buffer[6]) + (m_Buffer[7] << 8);
+
+			GIF_DEBUG(
+				"Dimensions: (%i, %i)(%i, %i)", 
+				m_OffsetX, m_OffsetY, 
+				m_LocalWidth, m_LocalHeight
+			);
+
 			// get the new colors
 			bool localtable = (m_Buffer[8] & (1 << 7)) == (1 << 7);
 			bool interlaced = (m_Buffer[8] & (1 << 6)) == (1 << 6);
+
+			GIF_DEBUG("Bitfield: %i", m_Buffer[8] & (1 << 7));
 
 			if (localtable)
 			{ 
@@ -494,6 +639,10 @@ namespace til
 			{
 				GIF_DEBUG("TODO: Use global color table");
 			}
+
+			// copy the current frame to be used as the background
+			// for the next frame
+			memcpy(m_PrevBuffer, m_Current->buffer, m_TotalBytes);
 		}
 
 		return true;

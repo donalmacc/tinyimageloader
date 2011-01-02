@@ -1,6 +1,6 @@
 /*
     TinyImageLoader - load images, just like that
-    Copyright (C) 2010 Quinten Lansu (knight666)
+    Copyright (C) 2010 - 2011 Quinten Lansu (knight666)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,9 +20,11 @@
 
 #include <stdlib.h>
 
-#ifndef WIN32_LEAN_AND_MEAN
-	#define WIN32_LEAN_AND_MEAN
-	#include <windows.h>
+#if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
+	#ifndef WIN32_LEAN_AND_MEAN
+		#define WIN32_LEAN_AND_MEAN
+		#include <windows.h>
+	#endif
 #endif
 
 namespace til
@@ -40,11 +42,11 @@ namespace til
 
 	bool Image::Load(const char* a_FileName, uint32 a_Options)
 	{
-		uint32 length = strlen(a_FileName);
+		size_t length = strlen(a_FileName);
 		m_FileName = new char[length + 1];
 		strcpy(m_FileName, a_FileName);
 
-		char path[256] = { 0 };
+		char path[TIL_MAX_PATH] = { 0 };
 
 		if (a_Options == TIL_FILE_ABSOLUTEPATH)
 		{
@@ -53,10 +55,12 @@ namespace til
 		else if (a_Options == TIL_FILE_ADDWORKINGDIR)
 		{
 
-#if (defined(TIL_STRINGS_WIDE))
+/*#if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
+	
+	#if (defined(TIL_STRINGS_WIDE))
 
 			wchar_t* dir = new wchar_t[256];
-			GetModuleFileNameW(NULL, dir, _MAX_PATH);
+			GetModuleFileNameW(NULL, dir, TIL_MAX_PATH);
 			wchar_t* lastslash = wcsrchr(dir, '\\');
 
 			wchar_t widepath[256] = { 0 };
@@ -64,27 +68,48 @@ namespace til
 
 			wcstombs(path, widepath, 256);
 
-#else
+	#else
 
-			char* dir = new char[256];	
-			GetModuleFileNameA(NULL, dir, _MAX_PATH);
+			char* dir = new char[256];
+			GetModuleFileNameA(NULL, dir, TIL_MAX_PATH);
 			char* lastslash = strrchr(dir, '\\');
 
 			strncpy(path, dir, lastslash - dir + 1);
 
+	#endif
+
+#else
+
+			strcpy(path, "");
+
 #endif
 
-			strcat(path, a_FileName);
+			strcat(path, a_FileName);*/
+
+			AddWorkingDirectory(path, TIL_MAX_PATH, a_FileName);
+
+			TIL_PRINT_DEBUG("Final path: %s", path);
 		}
 		
 		m_Handle = fopen(path, "rb");
 		if (!m_Handle)
 		{
-			TIL_ERROR_EXPLAIN("Could not find file '%s'.", a_FileName);
+			TIL_ERROR_EXPLAIN("Could not open '%s'.", path);
 			return false;
 		}
 
 		return true;
+	}
+
+	bool Image::Close()
+	{
+		if (m_Handle)
+		{
+			fclose(m_Handle);
+			return true;
+		}
+
+		return false;
 	}
 
 	void Image::SetBPP(uint32 a_Options)
@@ -93,7 +118,9 @@ namespace til
 		{
 
 		case TIL_DEPTH_A8R8G8B8:
+		case TIL_DEPTH_A8B8G8R8:
 		case TIL_DEPTH_R8G8B8A8:
+		case TIL_DEPTH_B8G8R8A8:
 			{
 				m_BPP = 4;
 				break;

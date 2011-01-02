@@ -1,6 +1,6 @@
 /*
     TinyImageLoader - load images, just like that
-    Copyright (C) 2010 Quinten Lansu (knight666)
+    Copyright (C) 2010 - 2011 Quinten Lansu (knight666)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,12 +20,54 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_BMP)
 
-#ifdef TIL_PRINT_DEBUG
+#ifdef TIL_DEBUG
 	#define BMP_DEBUG(msg, ...)        TIL_PRINT_DEBUG("BMP: "msg, __VA_ARGS__)
+#else
+	#define BMP_DEBUG(msg, ...)
 #endif
 
 namespace til
 {
+
+	typedef void (*ColorFuncBMP)(uint8*, uint8*);
+
+	void ColorFuncBMP_R8G8B8(uint8* a_Dst, uint8* a_Src)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		*dst = Construct_32b_R8G8B8(a_Src[0], a_Src[1], a_Src[2]);
+	}
+
+	void ColorFuncBMP_A8R8G8B8(uint8* a_Dst, uint8* a_Src)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		*dst = Construct_32b_A8R8G8B8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
+	}
+
+	void ColorFuncBMP_A8B8G8R8(uint8* a_Dst, uint8* a_Src)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		*dst = Construct_32b_A8B8G8R8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
+	}
+
+	void ColorFuncBMP_R8G8B8A8(uint8* a_Dst, uint8* a_Src)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		*dst = Construct_32b_R8G8B8A8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
+	}
+
+	void ColorFuncBMP_B8G8R8A8(uint8* a_Dst, uint8* a_Src)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		*dst = Construct_32b_B8G8R8A8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
+	}
+
+	void ColorFuncBMP_R5G6B5(uint8* a_Dst, uint8* a_Src)
+	{
+		color_16b* dst = (color_16b*)a_Dst;
+		*dst = Construct_16b_R5G6B5(a_Src[0], a_Src[1], a_Src[2]);
+	}
+
+	ColorFuncBMP g_ColorFuncBMP = NULL;
 
 	ImageBMP::ImageBMP()
 	{
@@ -35,6 +77,43 @@ namespace til
 	ImageBMP::~ImageBMP()
 	{
 
+	}
+
+	void GetComponents(byte* a_Dst, byte* a_Src, word a_Size)
+	{
+		switch (a_Size)
+		{
+
+		case 3:
+			{
+				a_Dst[0] = a_Src[2];
+				a_Dst[1] = a_Src[1];
+				a_Dst[2] = a_Src[0];
+				a_Dst[3] = 255;
+
+				break;
+			}
+
+		case 2:
+			{
+				break;
+			}
+
+		case 1:
+			{
+				byte r = (((a_Src[0] & 0xD0) >> 5) * 0xFF) >> 3;
+				byte g = (((a_Src[0] & 0x1C) >> 2) * 0xFF) >> 3;
+				byte b = (((a_Src[0] & 0x03)     ) * 0xFF) >> 2;
+
+				a_Dst[0] = b;
+				a_Dst[1] = g;
+				a_Dst[2] = r;
+				a_Dst[3] = 255;
+
+				break;
+			}
+
+		}
 	}
 
 	dword ImageBMP::GetDWord()
@@ -77,6 +156,8 @@ namespace til
 
 		word color_planes;      fread(&color_planes, 2, 1, m_Handle);
 		word bpp;               fread(&bpp, 2, 1, m_Handle);
+		BMP_DEBUG("BPP: %i", bpp);
+		word bytesperpixel = bpp >> 3;
 
 		dword compresion =      GetDWord();
 		switch (compresion)
@@ -104,48 +185,93 @@ namespace til
 		}
 
 		dword raw_size =        GetDWord();
+		BMP_DEBUG("Raw size: %i", raw_size);
 
-		fseek(m_Handle, 16, SEEK_CUR);
+		dword XPelsPerMeter = GetDWord();
+		dword YPelsPermeter = GetDWord();
+
+		dword colors_used = GetDWord();
+		dword colors_important = GetDWord();
+
+		BMP_DEBUG("Colors used: %i", colors_used);
+		BMP_DEBUG("Colors important: %i", colors_important);
+
+		//fseek(m_Handle, 16, SEEK_CUR);
 
 		m_Pixels = new byte[m_Width * m_Height * m_BPP];
 
-		byte data[8];
 		uint32 total = (m_Width * m_Height) >> 1;
 		m_Pitch = m_Width * m_BPP;
 
 		m_Target = m_Pixels + ((m_Height - 1) * m_Pitch);
+		
+		uint32 readpitch = m_Width * bytesperpixel;
+		uint32 readbytes = readpitch * m_Height;
+		byte* data = new byte[readbytes];
+		fread(data, 1, readbytes, m_Handle);
+
+		byte* read = data;
+
+		byte color[4];
+
+		switch (m_BPPIdent)
+		{
+
+		case BPP_32B_R8G8B8: 
+			g_ColorFuncBMP = ColorFuncBMP_R8G8B8; 
+			break;
+
+		case BPP_32B_A8R8G8B8: 
+			g_ColorFuncBMP = ColorFuncBMP_A8R8G8B8; 
+			break;
+
+		case BPP_32B_A8B8G8R8:
+			g_ColorFuncBMP = ColorFuncBMP_A8B8G8R8;
+			break;
+
+		case BPP_32B_R8G8B8A8: 
+			g_ColorFuncBMP = ColorFuncBMP_R8G8B8A8; 
+			break;
+
+		case BPP_32B_B8G8R8A8: 
+			g_ColorFuncBMP = ColorFuncBMP_B8G8R8A8; 
+			break;
+
+		case BPP_16B_R5G6B5: 
+			g_ColorFuncBMP = ColorFuncBMP_R5G6B5; 
+			break;
+
+		default:
+			TIL_ERROR_EXPLAIN("Unhandled color format: %i", m_BPPIdent);
+			return false;
+		}
 
 		// uncompressed
 
-		if (m_BPP == 4)
+		if (compresion == COMP_RGB)
 		{
 			for (uint32 y = 0; y < m_Height; y++)
 			{
-				color_32b* dst = (color_32b*)m_Target;
+				byte* src = read;
+				uint8* dst = m_Target;
 
 				for (uint32 x = 0; x < m_Width; x++)
 				{
-					fread(data, 1, 3, m_Handle);
-					dst[x] = Construct_32b_R8G8B8(data[2], data[1], data[0]);
+					GetComponents(color, src, bytesperpixel);
+					g_ColorFuncBMP(dst, color);
+
+					src += bytesperpixel;
+					dst += m_BPP;
 				}
 
+				read += readpitch;
 				m_Target -= m_Pitch;
 			}
 		}
-		else if (m_BPP == 2)
+		else
 		{
-			for (uint32 y = 0; y < m_Height; y++)
-			{
-				color_16b* dst = (color_16b*)m_Target;
-
-				for (uint32 x = 0; x < m_Width; x++)
-				{
-					fread(data, 1, 3, m_Handle);
-					dst[x] = Construct_16b_R5G6B5(data[2], data[1], data[0]);
-				}
-
-				m_Target -= m_Pitch;
-			}
+			TIL_ERROR_EXPLAIN("Unhandled compression method: %i", compresion);
+			return false;
 		}
 
 		return true;
