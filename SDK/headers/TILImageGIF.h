@@ -1,6 +1,6 @@
 /*
     TinyImageLoader - load images, just like that
-    Copyright (C) 2010 Quinten Lansu (knight666)
+    Copyright (C) 2010 - 2011 Quinten Lansu (knight666)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -32,14 +32,15 @@ namespace til
 		BufferLinked* next;
 	};
 
-	struct TinyImageLoader;
-
 	class ImageGIF : public Image
 	{
 
-		friend struct TinyImageLoader;
-
 	public:
+
+		ImageGIF();
+		~ImageGIF();
+
+		bool Parse(uint32 a_ColorDepth);
 
 		uint32 GetFrameCount();
 		float GetDelay();
@@ -50,13 +51,8 @@ namespace til
 
 	private:
 
-		ImageGIF();
-		~ImageGIF();
-
-		bool Parse(uint32 a_ColorDepth);
-
 		void AddBuffer();
-		void CompileColors();
+		void CompileColors(bool a_LocalTable = true);
 
 		BufferLinked* m_First;
 		BufferLinked* m_Current;
@@ -64,12 +60,29 @@ namespace til
 		float m_Delay;
 
 		byte m_Buffer[256];
+
+		byte* m_PrevBuffer;
+
+		byte* m_CurrentColors;
+		
 		uint32 m_ColorDepth;
-		uint32 m_ColorTableSize;
-		char* m_Palette;
+
+		byte* m_Palette;
 		byte* m_Colors;
+		uint32 m_ColorTableSize;
+
+		byte* m_GlobalPalette;
+		byte* m_GlobalColorTable;
+		uint32 m_GlobalColorTableSize;
+
+		bool m_Transparency;
+		uint8 m_TransparentIndex;
 
 		uint32 m_Width, m_Height, m_Pitch;
+
+		uint32 m_OffsetX, m_OffsetY;
+		uint32 m_LocalWidth, m_LocalHeight, m_LocalPitch;
+		uint32 m_TotalBytes;
 		
 	}; // class ImageGIF
 

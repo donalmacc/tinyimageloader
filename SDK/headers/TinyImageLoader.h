@@ -1,6 +1,6 @@
 /*
     TinyImageLoader - load images, just like that
-    Copyright (C) 2010 Quinten Lansu (knight666)
+    Copyright (C) 2010 - 2011 Quinten Lansu (knight666)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,13 +25,20 @@
 namespace til
 {
 
-	struct TinyImageLoader
-	{
-	
-		static void Init();
-		static Image* Load(const char* a_FileName, uint32 a_Options = (TIL_FILE_ABSOLUTEPATH | TIL_DEPTH_A8R8G8B8));
-		
-	}; // class TinyImageLoader
+	extern void TIL_Init(uint32 a_Settings = TIL_SETTINGS);
+	extern Image* TIL_Load(const char* a_FileName, uint32 a_Options = (TIL_FILE_ABSOLUTEPATH | TIL_DEPTH_A8R8G8B8));
+
+	extern size_t TIL_SetWorkingDirectory(const char* a_Path, size_t a_Length);
+
+	extern void TIL_GetVersion(char* a_Target, size_t a_MaxLength);
+
+	extern void TIL_SetErrorFunc(MessageFunc a_Func);
+	extern char* TIL_GetError();
+	extern size_t TIL_GetErrorLength();
+
+	extern void TIL_SetDebugFunc(MessageFunc a_Func);
+	extern char* TIL_GetDebug();
+	extern size_t TIL_GetDebugLength();
 
 }; // namespace til
 

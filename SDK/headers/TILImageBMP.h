@@ -1,6 +1,6 @@
 /*
     TinyImageLoader - load images, just like that
-    Copyright (C) 2010 Quinten Lansu (knight666)
+    Copyright (C) 2010 - 2011 Quinten Lansu (knight666)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -71,6 +71,8 @@ namespace til
 	private:
 
 		dword GetDWord();
+
+		uint32 m_Depth;
 
 		byte m_Data[4];
 		byte* m_Pixels;

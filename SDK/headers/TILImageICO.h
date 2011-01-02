@@ -1,6 +1,6 @@
 /*
     TinyImageLoader - load images, just like that
-    Copyright (C) 2010 Quinten Lansu (knight666)
+    Copyright (C) 2010 - 2011 Quinten Lansu (knight666)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,14 +35,15 @@ namespace til
 		BufferICO* next;
 	};
 
-	struct TinyImageLoader;
-
 	class ImageICO : public Image
 	{
 
-		friend struct TinyImageLoader;
-
 	public:
+
+		ImageICO();
+		~ImageICO();
+
+		bool Parse(uint32 a_ColorDepth);
 
 		uint32 GetFrameCount();
 		byte* GetPixels(uint32 a_Frame = 0);
@@ -51,11 +52,6 @@ namespace til
 		uint32 GetHeight(uint32 a_Frame = 0);
 
 	private:
-
-		ImageICO();
-		~ImageICO();
-
-		bool Parse(uint32 a_ColorDepth);
 
 		void AddBuffer(uint32 a_Width, uint32 a_Height);
 

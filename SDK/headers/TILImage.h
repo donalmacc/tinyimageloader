@@ -1,6 +1,6 @@
 /*
     TinyImageLoader - load images, just like that
-    Copyright (C) 2010 Quinten Lansu (knight666)
+    Copyright (C) 2010 - 2011 Quinten Lansu (knight666)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ namespace til
 	}
 
 	typedef color_32b (*color_func_32b)(uint8, uint8, uint8, uint8);
+	typedef color_16b (*color_func_16b)(uint8, uint8, uint8, uint8);
 
 	inline color_32b Construct_32b_R8G8B8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha = 0)
 	{
@@ -64,22 +65,30 @@ namespace til
 			((a_Blue  & 0xFF));*/
 	}
 
+	inline color_32b Construct_32b_A8B8G8R8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
+	{
+		return (a_Alpha << 24) | (a_Blue << 16) | (a_Green << 8) | (a_Red);
+	}
+
 	inline color_32b Construct_32b_A8R8G8B8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
-		return
-			((a_Alpha & 0xFF) << 24) |
-			((a_Red   & 0xFF) << 16) |
-			((a_Green & 0xFF) << 8 ) |
-			((a_Blue  & 0xFF));
+		return (a_Alpha << 24) | (a_Red << 16) | (a_Green << 8) | (a_Blue);
+	}
+
+	inline color_32b Construct_32b_B8G8R8A8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
+	{
+		return (a_Blue << 24) | (a_Green << 16) | (a_Red << 8) | (a_Alpha);
 	}
 
 	inline color_32b Construct_32b_R8G8B8A8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
-		return
+		return (a_Red << 24) | (a_Green << 16) | (a_Blue << 8) | (a_Alpha);
+
+		/*return
 			((a_Red   & 0xFF) << 24) |
 			((a_Green & 0xFF) << 16) |
 			((a_Blue  & 0xFF) << 8 ) |
-			((a_Alpha & 0xFF));
+			((a_Alpha & 0xFF));*/
 	}
 
 
@@ -105,6 +114,76 @@ namespace til
 		);
 	}
 
+	inline color_32b AlphaBlend_32b_A8R8G8B8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
+	{
+		const color_32b rb  = ((a_Red << 16) | (a_Blue))  & 0x00FF00FF;
+		const color_32b g   = (a_Green << 8)              & 0x0000FF00;
+
+		return (
+			((a_Alpha << 24)       & 0xFF000000) |
+			(((rb * a_Alpha) >> 8) & 0x00FF00FF) | 
+			(((g  * a_Alpha) >> 8) & 0x0000FF00)
+		);
+	}
+
+	inline color_32b AlphaBlend_32b_A8B8G8R8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
+	{
+		const color_32b br  = ((a_Blue << 16) | (a_Red)) & 0x00FF00FF;
+		const color_32b g   = (a_Green << 8)             & 0x0000FF00;
+
+		const color_32b a    = (a_Alpha << 24) & 0xFF000000; 
+		const color_32b br_a = ((br * a_Alpha) >> 8) & 0x00FF00FF;
+		const color_32b g_a  = ((g  * a_Alpha) >> 8) & 0x0000FF00;
+
+		return (a | br_a | g_a);
+
+		/*return (
+			((a_Alpha << 24)       & 0xFF000000) |
+			(((br * a_Alpha) >> 8) & 0x00FF00FF) | 
+			(((g  * a_Alpha) >> 8) & 0x0000FF00)
+		);*/
+	}
+
+	inline color_32b AlphaBlend_32b_B8G8R8A8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
+	{
+		const color_32b br  = ((a_Blue << 16) | (a_Red)) & 0xFF00FF;
+		const color_32b g   = (a_Green << 8);
+
+		const color_32b br_a = (br * a_Alpha) & 0xFF00FF00;
+		const color_32b g_a  = (g  * a_Alpha) & 0x00FF0000;
+		const color_32b a    = a_Alpha        & 0x000000FF;
+
+		return br_a | g_a | a;
+
+		/*return (
+			(((rb * a_Alpha) >> 8) & 0xFF00FF00) | 
+			(((g  * a_Alpha) >> 8) & 0x00FF0000) |
+			(a_Alpha               & 0x000000FF)
+		);*/
+	}
+
+
+	inline color_32b AlphaBlend_32b_R8G8B8A8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
+	{
+		const color_32b rb  = ((a_Red << 16) | (a_Blue)) & 0xFF00FF;
+		const color_32b g   = (a_Green << 8);
+
+		return (
+			((rb * a_Alpha) & 0xFF00FF00) | 
+			((g  * a_Alpha) & 0x00FF0000) | 
+			(a_Alpha        & 0x000000FF)
+		);
+
+		/*const color_32b rb  = ((a_Red  << 24) | (a_Blue << 8)) & 0xFF00FF00;
+		const color_32b g   = (a_Green << 16)                  & 0x00FF0000;
+
+		return (
+			(((rb * a_Alpha) >> 8) & 0xFF00FF00) | 
+			(((g  * a_Alpha) >> 8) & 0x00FF0000) |
+			(a_Alpha               & 0x000000FF)
+		);*/
+	}
+
 	inline color_16b AlphaBlend_16b_R5G6B5(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		color_16b r = (((a_Red   * 0xF800) >> 8) & 0xF800);
@@ -118,25 +197,29 @@ namespace til
 		);
 	}
 
-	struct TinyImageLoader;
-
 	class Image
 	{
-
-		friend struct TinyImageLoader;
 
 	public:
 
 		enum BitDepth
 		{
 			BPP_32B_A8R8G8B8 = 1,
-			BPP_32B_R8G8B8A8 = 2,
-			BPP_32B_R8G8B8 = 3,
-			BPP_16B_R5G6B5 = 4,
+			BPP_32B_A8B8G8R8 = 2,
+			BPP_32B_R8G8B8A8 = 3,
+			BPP_32B_B8G8R8A8 = 4,
+			BPP_32B_R8G8B8   = 5,
+			BPP_16B_R5G6B5   = 6,
 		};
+
+		Image();
+		~Image();
+
+		void SetBPP(uint32 a_Options);
 	
 		bool Load(const char* a_FileName, uint32 a_Options = TIL_FILE_ABSOLUTEPATH);
 		virtual bool Parse(uint32 a_ColorDepth) { return false; }
+		bool Close();
 
 		virtual uint32 GetFrameCount() { return 1; }
 		virtual float GetDelay() { return 0; }
@@ -147,11 +230,6 @@ namespace til
 		BitDepth GetBitDepth() { return m_BPPIdent; }
 
 	protected:
-
-		Image();
-		~Image();
-
-		void SetBPP(uint32 a_Options);
 
 		FILE* m_Handle;
 		char* m_FileName;

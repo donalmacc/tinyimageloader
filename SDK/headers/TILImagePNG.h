@@ -1,6 +1,6 @@
 /*
     TinyImageLoader - load images, just like that
-    Copyright (C) 2010 Quinten Lansu (knight666)
+    Copyright (C) 2010 - 2011 Quinten Lansu (knight666)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,8 +35,25 @@ namespace til
 		uint32 type;
 	};
 
-	struct zbuf
+	class zbuf
 	{
+
+	public:
+
+		zbuf();
+		~zbuf();
+
+		uint32 GetLength();
+		byte* GetData();
+
+		int32 GetByte();
+		bool ParseUncompressedBlock();
+		int HuffmanDecode(Huffman* a_Huffman);
+		Huffman* ZLibDecode(uint8* a_Data, uint32 a_Length);
+		uint32 GetCode(uint32 a_Amount);
+		bool Expand(int32 a_Amount);
+
+		char* buffer;
 		uint8* zbuffer;
 		uint8* zbuffer_end;
 		uint32 num_bits;
@@ -49,16 +66,23 @@ namespace til
 
 		Huffman* z_length;
 		Huffman* z_distance;
+
+		uint8 default_length[288];
+		uint8 default_distance[32];
 	};
 
-	struct TinyImageLoader;
+	struct AnimationData;
 
 	class ImagePNG : public Image
 	{
 
-		friend struct TinyImageLoader;
-
 	public:
+
+		ImagePNG() : Image()
+		{
+
+		}
+		~ImagePNG() { }
 
 		int32 GetByte();
 		int32 GetWord();
@@ -66,34 +90,11 @@ namespace til
 
 		void Skip(uint32 a_Bytes);
 
-		int32 GetZBufByte();
-
-		uint32 GetZCode(uint32 a_Amount);
-
 		chunk GetChunkHeader();
-
-		int HuffmanDecode(Huffman* a_Huffman);
-
-		bool ZLibExpand(int a_Amount);
-
-		bool ZLibDecode();
 
 		bool Compile();
 
 		bool Parse(uint32 a_ColorDepth);
-
-		void InitDefaults()
-		{
-			for (int i = 0; i <= 287; i++)
-			{
-				if (i <= 143)      { default_length[i] = 8; }
-				else if (i <= 255) { default_length[i] = 9; }
-				else if (i <= 279) { default_length[i] = 7; }
-				else               { default_length[i] = 8; }
-			}
-
-			for (int i = 0; i <= 31; ++i) { default_distance[i] = 5; }
-		}
 
 		uint32 GetWidth(uint32 a_Frame = 0)
 		{
@@ -104,45 +105,14 @@ namespace til
 			return m_Height;
 		}
 
-		byte* GetPixels(uint32 a_Frame = 0)
-		{
-			/*if (a_ColorDepth == TIL_DEPTH_A8R8G8B8)
-			{
-				// 390 468
-				// 237, 156, 64
-				COLORDATA* data = (COLORDATA*)out;
-				for (uint32 i = 0; i < m_Width * m_Height; i++)
-				{
-					//m_Pixels[i] = ((out[i] & 0xFF000000) >> 24) + (out[i] & 0x00FFFF00) + ((out[i] & 0x000000FF) << 24);
-					//m_Pixels[i] = ((data[i] & 0xFF000000) >> 24) + (data[i] & 0x00FFFF00) + ((data[i] & 0x000000FF) << 24);
-					//m_Pixels[i] = (data[i] & 0x00FFFF00) >> 8;
-					//m_Pixels[i] = ((data[i] & 0x00FFFFFF) << 8) + 0x000000FF;
-
-					uint32 r = (data[i] & 0xFF0000) >> 16;
-					uint32 g = (data[i] & 0x00FF00) >> 8;
-					uint32 b = (data[i] & 0x0000FF);
-
-					//m_Pixels[i] = (data[i] & 0xFFFFFF) >> 8; 
-					//m_Pixels[i] = data[i];
-					m_Pixels[i] = (b << 16) + (g << 8) + (r);
-				}
-
-				return m_Pixels;
-			}*/
-
-			//return (unsigned char*)out;
-			return m_Pixels;
-		}
+		uint32 GetFrameCount();
+		byte* GetPixels(uint32 a_Frame = 0);
 
 	private:
 
-		ImagePNG() : Image()
-		{
+		bool Compose();
 
-		}
-		~ImagePNG() { }
-
-		byte* m_Pixels;
+		byte** m_Pixels;
 		uint32 m_Width, m_Height, m_Pitch;
 
 		uint8 *idata, *expanded, *out;
@@ -152,6 +122,14 @@ namespace til
 		uint8* img_buffer_end;
 		zbuf m_ZBuffer;
 		Huffman* m_Huffman;
+
+		int req_comp;
+		uint8 has_trans;
+		uint8 pal_img_n;
+
+		uint32 m_Frames;
+		uint32 m_DefaultImage;
+		AnimationData* m_Ani;
 
 		uint8 default_length[288];
 		uint8 default_distance[32];
