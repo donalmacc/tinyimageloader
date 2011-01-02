@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="bin"
-			IntermediateDirectory="int\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)..\SDK"
+			IntermediateDirectory="$(SolutionDir)int\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -60,7 +60,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="SDK\$(ProjectName)_d.lib"
+				OutputFile="$(OutDir)\$(ProjectName)_d.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -156,7 +156,7 @@
 			Name="Settings"
 			>
 			<File
-				RelativePath=".\SDK\headers\TILSettings.h"
+				RelativePath="..\SDK\headers\TILSettings.h"
 				>
 			</File>
 		</Filter>
@@ -164,43 +164,43 @@
 			Name="Formats"
 			>
 			<File
-				RelativePath=".\src\TILImageBMP.cpp"
+				RelativePath="..\src\TILImageBMP.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\headers\TILImageBMP.h"
+				RelativePath="..\SDK\headers\TILImageBMP.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\TILImageGIF.cpp"
+				RelativePath="..\src\TILImageGIF.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\headers\TILImageGIF.h"
+				RelativePath="..\SDK\headers\TILImageGIF.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\TILImageICO.cpp"
+				RelativePath="..\src\TILImageICO.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\headers\TILImageICO.h"
+				RelativePath="..\SDK\headers\TILImageICO.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\TILImagePNG.cpp"
+				RelativePath="..\src\TILImagePNG.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\headers\TILImagePNG.h"
+				RelativePath="..\SDK\headers\TILImagePNG.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\TILImageTGA.cpp"
+				RelativePath="..\src\TILImageTGA.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\headers\TILImageTGA.h"
+				RelativePath="..\SDK\headers\TILImageTGA.h"
 				>
 			</File>
 		</Filter>
@@ -208,27 +208,27 @@
 			Name="Root"
 			>
 			<File
-				RelativePath=".\src\TILImage.cpp"
+				RelativePath="..\src\TILImage.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\headers\TILImage.h"
+				RelativePath="..\SDK\headers\TILImage.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\TILImageTemplate.cpp"
+				RelativePath="..\src\TILImageTemplate.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\headers\TILImageTemplate.h"
+				RelativePath="..\SDK\headers\TILImageTemplate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\TinyImageLoader.cpp"
+				RelativePath="..\src\TinyImageLoader.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SDK\headers\TinyImageLoader.h"
+				RelativePath="..\SDK\headers\TinyImageLoader.h"
 				>
 			</File>
 		</Filter>

@@ -1,10 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Template", "Template.vcproj", "{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5877A03F-9A70-4E20-B8DA-D877BED3B3A2} = {5877A03F-9A70-4E20-B8DA-D877BED3B3A2}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyImageLoader", "TinyImageLoader.vcproj", "{5877A03F-9A70-4E20-B8DA-D877BED3B3A2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyImageLoader_ARM", "TinyImageLoader_ARM.vcproj", "{9A3961A8-FD80-4FEC-9D5C-FFDBAE21146C}"
@@ -27,23 +22,6 @@ Global
 		Release|Windows Mobile 6 Professional SDK (ARMV4I) = Release|Windows Mobile 6 Professional SDK (ARMV4I)
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Debug|Pocket PC 2003 (ARMV4).ActiveCfg = Debug|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Debug|Smartphone 2003 (ARMV4).ActiveCfg = Debug|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Debug|Win32.Build.0 = Debug|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Debug|Windows Mobile 5.0 Smartphone SDK (ARMV4I).ActiveCfg = Debug|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Release|Pocket PC 2003 (ARMV4).ActiveCfg = Release|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Release|Smartphone 2003 (ARMV4).ActiveCfg = Release|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Release|Win32.ActiveCfg = Release|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Release|Win32.Build.0 = Release|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Release|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Release|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Release|Windows Mobile 5.0 Smartphone SDK (ARMV4I).ActiveCfg = Release|Win32
-		{02D93BEA-3224-45D0-8E5A-DF3EC2E8E88E}.Release|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Release|Win32
 		{5877A03F-9A70-4E20-B8DA-D877BED3B3A2}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{5877A03F-9A70-4E20-B8DA-D877BED3B3A2}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{5877A03F-9A70-4E20-B8DA-D877BED3B3A2}.Debug|Pocket PC 2003 (ARMV4).ActiveCfg = Debug|Win32
