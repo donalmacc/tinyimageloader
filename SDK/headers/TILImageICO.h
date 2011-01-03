@@ -32,6 +32,8 @@
 namespace til
 {
 
+	/**	@cond IGNORE */
+	
 	struct BufferICO
 	{
 		byte* buffer;
@@ -40,6 +42,9 @@ namespace til
 		uint32 bytespp, bitspp;
 		BufferICO* next;
 	};
+	
+	/** @endcond IGNORE */
+	
 
 	class ImageICO : public Image
 	{

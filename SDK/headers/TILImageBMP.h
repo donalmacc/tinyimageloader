@@ -86,7 +86,7 @@ namespace til
 
 		uint32 m_Width, m_Height, m_Pitch;
 
-	}; // class ImageTGA
+	}; // class ImageBMP
 
 }; // namespace til
 

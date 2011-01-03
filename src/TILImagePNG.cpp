@@ -22,6 +22,29 @@
 	THE SOFTWARE.
 */
 
+/*
+
+	The following PNG loader is entirely based on the works of Sean Barrett 
+	a.k.a. nothings. You can download the original stb_image.c from his website 
+	at http://www.nothings.org/stb_image.c
+
+	stb_image is a legendary compact file loader that implements multiple file
+	formats in a single C file. It does so in an opague, but easy to use way.
+
+	The original idea for TinyImageLoader came from reimplementing stb_image.c
+	in such a way that it would be readable to me. When I was done I started
+	implementing other formats as well. Without stb_image, no TinyImageLoader.
+
+	What I changed:
+	* Support for different color depths
+	* Added Animated PNG support
+
+	Everything else is Mr. Barrett's code implemented in a different manner.
+
+	-knight666
+
+*/
+
 #include "..\SDK\headers\TILImagePNG.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
@@ -277,6 +300,7 @@ namespace til
 	// Huffman
 	// =========================================
 
+	/** @cond IGNORE */
 	class Huffman
 	{
 
@@ -349,10 +373,14 @@ namespace til
 		uint16 value[288];
 
 	}; // class Huffman
+	
+	/** @endcond IGNORE */
 
 	// ================================
 	// zbuf
 	// ================================
+
+	/** @cond IGNORE */
 
 	zbuf::zbuf()
 	{
@@ -767,6 +795,8 @@ namespace til
 		return true;
 	}
 
+	/** @endcond IGNORE */
+
 	bool Decompile(
 		byte* a_Dst, byte* a_Src, 
 		uint32 a_Width, uint32 a_Height, uint32 a_Pitch, 
@@ -841,6 +871,8 @@ namespace til
 		return true;
 	}
 
+	/**	@cond IGNORE */
+	
 	struct AnimationData
 	{
 		AnimationData()
@@ -941,6 +973,9 @@ namespace til
 
 		byte dispose, blend;
 	};
+	
+	/** @endcond IGNORE */
+	
 
 	// =========================================
 	// ImagePNG

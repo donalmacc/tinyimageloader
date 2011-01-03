@@ -34,13 +34,19 @@ namespace til
 
 	class Huffman;
 
+	/** @cond IGNORE */
+	
 	struct chunk
 	{
 		uint32 length;
 		char header[5];
 		uint32 type;
 	};
+	
+	/** @endcond IGNORE */
 
+	/** @cond IGNORE */
+	
 	class zbuf
 	{
 
@@ -76,6 +82,8 @@ namespace til
 		uint8 default_length[288];
 		uint8 default_distance[32];
 	};
+	
+	/** @endcond IGNORE */
 
 	struct AnimationData;
 

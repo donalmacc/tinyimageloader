@@ -210,12 +210,12 @@ namespace til
 
 		enum BitDepth
 		{
-			BPP_32B_A8R8G8B8 = 1,
-			BPP_32B_A8B8G8R8 = 2,
-			BPP_32B_R8G8B8A8 = 3,
-			BPP_32B_B8G8R8A8 = 4,
-			BPP_32B_R8G8B8   = 5,
-			BPP_16B_R5G6B5   = 6,
+			BPP_32B_A8R8G8B8 = 1, /**< 32-bit ARGB color */
+			BPP_32B_A8B8G8R8 = 2, /**< 32-bit ABGR color */
+			BPP_32B_R8G8B8A8 = 3, /**< 32-bit RGBA color */
+			BPP_32B_B8G8R8A8 = 4, /**< 32-bit BGRA color */
+			BPP_32B_R8G8B8   = 5, /**< 32-bit RGB color */
+			BPP_16B_R5G6B5   = 6, /**< 16-bit RGB color */
 		};
 
 		Image();

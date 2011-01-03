@@ -32,11 +32,13 @@
 namespace til
 {
 
+	/** @cond IGNORE */
 	struct BufferLinked
 	{
 		byte* buffer;
 		BufferLinked* next;
 	};
+	/** @endcond IGNORE */
 
 	class ImageGIF : public Image
 	{
