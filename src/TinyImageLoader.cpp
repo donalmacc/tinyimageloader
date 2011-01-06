@@ -71,6 +71,7 @@ namespace til
 
 	static MessageData g_Msg;
 
+	/*! Initializes TinyImageLoader. */
 	void TIL_Init(uint32 a_Settings)
 	{
 		g_Options = a_Settings;
@@ -117,11 +118,11 @@ namespace til
 			{
 				strcpy(g_LineFeed, "\r\n");
 			}
-			else if (g_Options * TIL_FILE_LF)
+			else if (g_Options & TIL_FILE_LF)
 			{
 				strcpy(g_LineFeed, "\n");
 			}
-			else if (g_Options * TIL_FILE_CR)
+			else if (g_Options & TIL_FILE_CR)
 			{
 				strcpy(g_LineFeed, "\r");
 			}

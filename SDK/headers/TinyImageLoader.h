@@ -25,17 +25,40 @@
 #ifndef _TINYIMAGELOADER_H_
 #define _TINYIMAGELOADER_H_
 
+/*! \file TinyImageLoader.h
+    \brief The main include for using TinyImageLoader in your project.
+    
+    Details.
+*/
+
+
 #include "TILSettings.h"
 #include "TILImage.h"
 
 namespace til
 {
 
+	//! Initializes TinyImageLoader. 
+	/*! 
+		\param a_Settings Bla bla.
+
+		Starts TinyImageLoader and determines vital settings.
+	*/
 	extern void TIL_Init(uint32 a_Settings = TIL_SETTINGS);
+
+
+	//! Main interface for loading images.
 	extern Image* TIL_Load(const char* a_FileName, uint32 a_Options = (TIL_FILE_ABSOLUTEPATH | TIL_DEPTH_A8R8G8B8));
 
 	extern size_t TIL_SetWorkingDirectory(const char* a_Path, size_t a_Length);
 
+	//! Get the version as a string.
+	/*!
+		\param a_Target The string to write to.
+		\param a_MaxLength The size of the destination buffer.
+
+		Bla bla.
+	*/
 	extern void TIL_GetVersion(char* a_Target, size_t a_MaxLength);
 
 	extern void TIL_SetErrorFunc(MessageFunc a_Func);

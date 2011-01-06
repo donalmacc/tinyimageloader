@@ -25,6 +25,11 @@
 #ifndef _TILIMAGE_H_
 #define _TILIMAGE_H_
 
+/*!
+	\file TILImage.h
+	\brief Image interface
+*/
+
 #include "TILSettings.h"
 
 #include <stdio.h>
@@ -33,6 +38,17 @@
 namespace til
 {
 
+	//! Construct a 16-bit RGB color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha Not used.
+
+		\return 16-bit color
+
+		Stuff.
+	*/
 	inline color_16b Construct_16b_R5G6B5(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha = 0)
 	{
 		return
@@ -71,11 +87,33 @@ namespace til
 			((a_Blue  & 0xFF));*/
 	}
 
+	//! Construct a 32-bit ABGR color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
+
+		\return 32-bit color
+
+		Stuff.
+	*/
 	inline color_32b Construct_32b_A8B8G8R8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		return (a_Alpha << 24) | (a_Blue << 16) | (a_Green << 8) | (a_Red);
 	}
 
+	//! Construct a 32-bit ARGB color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
+
+		\return 32-bit color
+
+		Stuff.
+	*/
 	inline color_32b Construct_32b_A8R8G8B8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		return (a_Alpha << 24) | (a_Red << 16) | (a_Green << 8) | (a_Blue);
@@ -208,6 +246,7 @@ namespace til
 
 	public:
 
+		//! The amount of bits per pixel and its arrangement.
 		enum BitDepth
 		{
 			BPP_32B_A8R8G8B8 = 1, /**< 32-bit ARGB color */
@@ -221,8 +260,30 @@ namespace til
 		Image();
 		~Image();
 
+		//! Sets the bit depth to convert to when parsing.
 		void SetBPP(uint32 a_Options);
 	
+		//! Loads a filepath using a series of options.
+		/*!
+			\param a_FileName A path to an image file.
+			\param a_Options A number of options bitwise or'd together.
+
+			\return A boolean indicating success or failure.
+
+			The main entrypoint for #TIL_Load().
+
+			Valid options include a combination of a file option:
+			- TIL_FILE_ABSOLUTEPATH
+			- TIL_FILE_ADDWORKINGDIR
+			
+			And a color depth option:
+			- TIL_DEPTH_A8R8G8B8
+			- TIL_DEPTH_A8B8G8R8
+			- TIL_DEPTH_R8G8B8A8
+			- TIL_DEPTH_B8G8R8A8
+			- TIL_DEPTH_R8G8B8
+			- TIL_DEPTH_R5G6B5
+		*/
 		bool Load(const char* a_FileName, uint32 a_Options = TIL_FILE_ABSOLUTEPATH);
 		virtual bool Parse(uint32 a_ColorDepth) { return false; }
 		bool Close();

@@ -42,6 +42,7 @@ namespace til
 			COLOR_TRUECOLOR
 		};
 		
+		//! Compression type.
 		enum Compression
 		{
 			COMP_NONE,
