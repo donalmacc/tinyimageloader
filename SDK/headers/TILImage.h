@@ -270,37 +270,91 @@ namespace til
 
 			\return A boolean indicating success or failure.
 
-			The main entrypoint for #TIL_Load().
-
-			Valid options include a combination of a file option:
-			- TIL_FILE_ABSOLUTEPATH
-			- TIL_FILE_ADDWORKINGDIR
-			
-			And a color depth option:
-			- TIL_DEPTH_A8R8G8B8
-			- TIL_DEPTH_A8B8G8R8
-			- TIL_DEPTH_R8G8B8A8
-			- TIL_DEPTH_B8G8R8A8
-			- TIL_DEPTH_R8G8B8
-			- TIL_DEPTH_R5G6B5
+			The main entrypoint for #til::TIL_Load().
 		*/
 		bool Load(const char* a_FileName, uint32 a_Options = TIL_FILE_ABSOLUTEPATH);
-		virtual bool Parse(uint32 a_ColorDepth) { return false; }
+
+		//! Parses the actual image data.
+		/*!
+			\param a_ColorDepth The color depth received from #SetBPP;
+			
+			This method is pure virtual and should be overwritten by an
+			image loading implementation.
+		*/
+		virtual bool Parse(uint32 a_ColorDepth) = 0;
+
+		//! Not actually used. Maybe I should do something about that.
 		bool Close();
 
+		//! Returns the amount of frames this image contains.
+		/*!
+			Used when dealing with formats that support animation or multiple images.
+
+			\note There is never going to be support for other video formats.
+			This is because TinyImageLoader is an *image* loader, not a video loader.
+			The exception to the rule are GIF89 and APNG, because it concerns an extension
+			to a normally single-framed format.
+		*/
 		virtual uint32 GetFrameCount() { return 1; }
+
+		//! Returns the delay between frames.
+		/*!
+			\return The delay in seconds between frames
+
+			Used when dealing with formats that support animation.
+		*/
 		virtual float GetDelay() { return 0; }
+
+		//! Get the pixel data from this image.
+		/*!
+			\param a_Frame The frame of an animation to return.
+
+			\return Pixel array as a byte array.
+
+			The data is encoded according to the color depth specified.
+			For instance, when loading images as 32-bit ARGB, the stream
+			of bytes must be converted to unsigned long before being
+			used.
+
+			\code
+			til::Image* load = TIL_Load("media\\texture.png", TIL_DEPTH_A8B8G8R8 | TIL_FILE_ADDWORKINGDIR);
+			unsigned long* pixels = (unsigned long*)load->GetPixels();
+			\endcode
+		*/
 		virtual byte* GetPixels(uint32 a_Frame = 0) = 0;
 
+		//! Get the width of a frame
+		/*!
+			\param a_Frame The frame of an animation or image to return.
+
+			\return The width as a uint32.
+
+			Some formats support multiple frames or images with different dimensions.
+			You can call this function with a frame number to get the correct dimensions.
+		*/
 		virtual uint32 GetWidth(uint32 a_Frame = 0) = 0;
+
+		//! Get the height of a frame
+		/*!
+			\param a_Frame The frame of an animation or image to return.
+
+			\return The height as a uint32.
+
+			Some formats support multiple frames or images with different dimensions.
+			You can call this function with a frame number to get the correct dimensions.
+		*/
 		virtual uint32 GetHeight(uint32 a_Frame = 0) = 0;
+
+		//! Get the color depth as an enum
+		/*!
+		*/
 		BitDepth GetBitDepth() { return m_BPPIdent; }
 
 	protected:
 
-		FILE* m_Handle;
-		char* m_FileName;
-		BitDepth m_BPPIdent;
+		FILE* m_Handle; //!< The file handle
+		char* m_FileName; //!< The filename
+		BitDepth m_BPPIdent; //!< The bit depth to convert to
 		uint8 m_BPP;
 
 	}; // class Image

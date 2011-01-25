@@ -32,8 +32,6 @@
 namespace til
 {
 
-	//! Ohi sup.
-
 	class ImageBMP : public Image
 	{
 

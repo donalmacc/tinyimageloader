@@ -54,7 +54,7 @@
 
 #define TIL_FILE_MASK                     0x0000FFFF
 
-//! The image path is absolute
+//! The image path is absolute.
 /*!
 	Useful for loading images from a networked drive.
 
@@ -63,7 +63,7 @@
 	\endcode
 */
 #define TIL_FILE_ABSOLUTEPATH             0x00000001
-//! The image path is relative to the working directory
+//! The image path is relative to the working directory.
 /*!
 	The most common way to load an image.
 
@@ -85,7 +85,7 @@
 
 //! Default settings for initialization
 #ifndef TIL_SETTINGS
-	#define TIL_SETTINGS                  (TIL_FILE_CRLF | TIL_DEBUG_LOGGING)
+	#define TIL_SETTINGS                  (TIL_FILE_CRLF)
 #endif
 
 #define TIL_DEPTH_MASK                    0xFFFF0000
