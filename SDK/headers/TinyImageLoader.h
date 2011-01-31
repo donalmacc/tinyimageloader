@@ -167,6 +167,9 @@ namespace til
 	*/
 	extern size_t TIL_GetDebugLength();
 
+	extern void TIL_SetMemoryFunc();
+	extern size_t TIL_GetMemoryUsed();
+
 }; // namespace til
 
 #endif

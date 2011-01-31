@@ -65,6 +65,8 @@ namespace til
 		uint32 GetCode(uint32 a_Amount);
 		bool Expand(int32 a_Amount);
 
+		char* bigger_data;
+
 		char* buffer;
 		uint8* zbuffer;
 		uint8* zbuffer_end;
@@ -92,11 +94,8 @@ namespace til
 
 	public:
 
-		ImagePNG() : Image()
-		{
-
-		}
-		~ImagePNG() { }
+		ImagePNG();
+		~ImagePNG();
 
 		int32 GetByte();
 		int32 GetWord();

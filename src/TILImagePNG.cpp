@@ -306,8 +306,13 @@ namespace til
 
 	public:
 
-		Huffman() { }
-		~Huffman() { }
+		Huffman() 
+		{
+		}
+		~Huffman() 
+		{
+			
+		}
 
 		bool Build(uint8* a_SizeList, uint32 a_Amount)
 		{
@@ -393,11 +398,18 @@ namespace til
 		}
 
 		for (int i = 0; i <= 31; ++i) { default_distance[i] = 5; }
+
+		bigger_data = NULL;
+		z_length = NULL;
+		z_distance = NULL;
 	}
 
 	zbuf::~zbuf()
 	{
 		//delete buffer;
+		if (bigger_data) { delete bigger_data; }
+		if (z_length) { delete z_length; }
+		if (z_distance) { delete z_distance; }
 	}
 
 
@@ -513,7 +525,7 @@ namespace til
 		// double until greater
 		while (cur + a_Amount > limit) { limit *= 2; }
 
-		char* bigger_data = new char[limit];
+		bigger_data = new char[limit];
 		memcpy(bigger_data, zout_start, limit / 2);
 		delete [] zout_start;
 
@@ -893,6 +905,11 @@ namespace til
 			dispose = blend = 0;
 		}
 
+		~AnimationData()
+		{
+
+		}
+
 		void NextFrame(byte** a_Data)
 		{
 			if (data_offset > 0)
@@ -980,6 +997,30 @@ namespace til
 	// =========================================
 	// ImagePNG
 	// =========================================
+
+	ImagePNG::ImagePNG() : Image()
+	{
+		m_Ani = NULL;
+		m_Pixels = NULL;
+		m_Huffman = NULL;
+
+		idata = NULL;
+		expanded = NULL;
+		out = NULL;
+		img_buffer = NULL;
+	}
+
+	ImagePNG::~ImagePNG()
+	{
+		if (idata) { delete idata; }
+		if (expanded) { delete expanded; }
+		if (out) { delete out; }
+		if (img_buffer) { delete img_buffer; }
+
+		if (m_Ani) { delete m_Ani; }
+		if (m_Pixels) { delete [] m_Pixels; }
+		if (m_Huffman) { delete m_Huffman; }
+	}
 
 	int32 ImagePNG::GetByte()
 	{

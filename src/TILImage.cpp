@@ -38,12 +38,14 @@ namespace til
 
 	Image::Image()
 	{
-
+		m_Handle = NULL;
+		m_FileName = NULL;
 	}
 
 	Image::~Image()
-	{
-
+	{ 
+		Close();
+		if (m_FileName) { delete m_FileName; }
 	}
 
 	bool Image::Load(const char* a_FileName, uint32 a_Options)

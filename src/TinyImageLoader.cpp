@@ -47,6 +47,7 @@
 #include <stdarg.h>
 #include <windows.h>
 #include <MMSystem.h>
+#include <new.h>
 
 namespace til
 {
@@ -69,12 +70,22 @@ namespace til
 	static char* g_DebugTemp = NULL;
 	static size_t g_DebugMaxSize = 1024;
 
+	void* MemAllocDefault(size_t a_Size, size_t* a_Allocated = 0);
+	MemAllocFunc g_MemAlloc = MemAllocDefault;
+	void MemFreeDefault(void* a_Free, size_t a_Size);
+	MemFreeFunc g_MemFree = MemFreeDefault;
+
 	static MessageData g_Msg;
 
 	/*! Initializes TinyImageLoader. */
 	void TIL_Init(uint32 a_Settings)
 	{
 		g_Options = a_Settings;
+
+		//byte* bleh = TIL_NEW(byte, 4);
+		//byte* bleh = new byte[4];
+		//Image* bleh = TIL_NEW(Image, 1);
+		Image* bleh = new ImageBMP();
 
 		byte swaptest[] = { 1, 0 };
 		if (*(word*)swaptest == 1)
@@ -335,8 +346,6 @@ namespace til
 			}
 		}
 
-
-
 		return result;
 	}
 
@@ -361,5 +370,22 @@ namespace til
 		strcat(a_Dst, a_Path);
 	}
 
+
+	extern void* MemAllocDefault( size_t a_Size, size_t* a_Allocated )
+	{
+		void* result = malloc(a_Size);
+		/*if (_callnewh(a_Size) == 0)
+		{
+			if (a_Allocated) { *a_Allocated = 0; }	
+			return NULL;
+		}*/
+		if (a_Allocated) { *a_Allocated = a_Size; }
+		return result;
+	}
+
+	extern void MemFreeDefault( void* a_Free, size_t a_Size )
+	{
+		free(a_Free);
+	}
 
 }; // namespace til

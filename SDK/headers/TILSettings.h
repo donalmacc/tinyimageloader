@@ -187,7 +187,7 @@ namespace til
 	//! Message structure
 	struct MessageData
 	{
-		char* message;      /**< Contains the message provided TinyImageLoader. */
+		char* message;      /**< Contains the message provided by TinyImageLoader. */
 		char* source_file;  /**< The file where the message originated. */
 		int source_line;    /**< The line the message came from. */
 	};
@@ -198,19 +198,28 @@ namespace til
 	*/
 	typedef void (*MessageFunc)(MessageData*);
 
+	//! Memory allocation function
+	typedef void* (*MemAllocFunc)(size_t a_Size, size_t* a_Allocated);
+	//! Memory freeing function
+	typedef void (*MemFreeFunc)(void* a_Free, size_t a_Size);
 
 	// =========================================
 	// Internal functions
 	// =========================================
-
-	/**	@cond IGNORE */
 
 	extern void AddError(char* a_Message, char* a_File, int a_Line, ...);
 	extern void AddDebug(char* a_Message, char* a_File, int a_Line, ...);
 
 	extern void AddWorkingDirectory(char* a_Dst, size_t a_MaxLength, const char* a_Path);
 
-	/**	@endcond IGNORE */
+	#define TIL_NEW(type, size)       (type*)g_MemAlloc(size * sizeof(type), NULL)
+	#define TIL_DELETE(handle, size)  g_MemFree((void*)handle, size)
+
+	extern MemAllocFunc g_MemAlloc;
+	extern MemFreeFunc g_MemFree;
+
+	//extern void* MemAlloc(size_t a_Size, size_t* a_Allocated = 0);
+	//extern void MemFree(void* a_Free, size_t a_Size);
 	
 }; // namespace til
 

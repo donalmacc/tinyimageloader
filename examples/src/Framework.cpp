@@ -109,7 +109,7 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 		LoadCursor(NULL, IDC_ARROW),        // cursor
 		NULL,                               // background brush
 		NULL,                               // menu name
-		"Framework"                        // window title
+		"Framework"                         // window title
 	};
 	if (!RegisterClass(&temp)) { return 0; }
 
@@ -129,9 +129,9 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 
 	g_Window = CreateWindowEx (
 		0,
-		"Framework",                   // window class
-		"Framework",                   // window title
-		style,                          // visibility settings
+		"Framework",       // window class
+		"Framework",       // window title
+		style,             // visibility settings
 		x, y,
 		w, h,
 		NULL, 

@@ -258,7 +258,7 @@ namespace til
 		};
 
 		Image();
-		~Image();
+		virtual ~Image();
 
 		//! Sets the bit depth to convert to when parsing.
 		void SetBPP(uint32 a_Options);
