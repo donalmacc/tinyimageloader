@@ -32,6 +32,8 @@
 namespace til
 {
 
+	//! Halloooow.
+
 	class ImageBMP : public Image
 	{
 
@@ -76,6 +78,7 @@ namespace til
 
 	private:
 
+		//! Bla bla
 		dword GetDWord();
 
 		uint32 m_Depth;

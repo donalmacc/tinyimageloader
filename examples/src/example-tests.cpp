@@ -18,6 +18,9 @@
 #include <direct.h>
 #include <sys\stat.h>
 
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+
 void TILFW::Setup()
 {
 	s_WindowWidth = 640;
@@ -50,19 +53,31 @@ unsigned long GetMemoryUsage()
 
 void TILFW::Init()
 {
+	_CrtMemState mem_start, mem_end, mem_diff;
+
 	// Initialize TinyImageLoader
 
 	til::TIL_Init();
 
-	unsigned long size_before = GetMemoryUsage();
+	_CrtMemCheckpoint(&mem_start);
 
-	til::Image* load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-
-	unsigned long size_between = GetMemoryUsage();
-
+	til::Image* load = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 	delete load;
 
-	unsigned long size_after = GetMemoryUsage();
+	_CrtMemCheckpoint(&mem_end);
+
+	til::TIL_ShutDown();
+
+	//til::Image* load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	//delete load;
+
+	if (_CrtMemDifference(&mem_diff, &mem_start, &mem_end))
+	{
+		//_CrtMemDumpStatistics(&mem_diff);
+		_CrtDumpMemoryLeaks();
+
+		int j = 0;
+	}
 
 	int i = 0;
 }

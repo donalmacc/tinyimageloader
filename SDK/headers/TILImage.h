@@ -57,8 +57,8 @@ namespace til
 			(((a_Blue  * 0x001F) >> 8) & 0x001F);
 	}
 
-	typedef color_32b (*color_func_32b)(uint8, uint8, uint8, uint8);
-	typedef color_16b (*color_func_16b)(uint8, uint8, uint8, uint8);
+	typedef color_32b *color_func_32b(uint8, uint8, uint8, uint8);
+	typedef color_16b *color_func_16b(uint8, uint8, uint8, uint8);
 
 	inline color_32b Construct_32b_R8G8B8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha = 0)
 	{

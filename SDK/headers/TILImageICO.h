@@ -32,7 +32,7 @@
 namespace til
 {
 
-	/**	@cond IGNORE */
+	/** @cond IGNORE */
 	
 	struct BufferICO
 	{

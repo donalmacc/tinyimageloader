@@ -103,7 +103,7 @@ namespace til
 
 		void Skip(uint32 a_Bytes);
 
-		chunk GetChunkHeader();
+		chunk* GetChunkHeader();
 
 		bool Compile();
 
@@ -131,10 +131,9 @@ namespace til
 		uint8 *idata, *expanded, *out;
 		uint32 ioff, m_RawLength;
 		int32 img_n, img_out_n;
-		uint8* img_buffer;
-		uint8* img_buffer_end;
 		zbuf m_ZBuffer;
 		Huffman* m_Huffman;
+		chunk* m_Chunk;
 
 		int req_comp;
 		uint8 has_trans;

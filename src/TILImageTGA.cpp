@@ -35,9 +35,15 @@
 namespace til
 {
 
-	typedef uint8* (*ColorFuncComp)(uint8*, uint8*, int, int);
+/** @cond IGNORE */
 
 	int g_Depth;
+
+/** @endcond IGNORE */
+
+/** @cond IGNORE */
+
+	typedef uint8* *ColorFuncComp(uint8*, uint8*, int, int);
 
 	uint8* ColorFunc_R8G8B8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
@@ -118,6 +124,8 @@ namespace til
 	}
 
 	ColorFuncComp g_ColorFunc = NULL;
+
+/** @endcond IGNORE */
 
 	ImageTGA::ImageTGA()
 	{

@@ -54,6 +54,8 @@ namespace til
 	*/
 	extern void TIL_Init(uint32 a_Settings = TIL_SETTINGS);
 
+	extern void TIL_ShutDown();
+
 	//! Interprets data in memory as an image loaded from disk.
 	extern Image* TIL_LoadFromMemory(byte* a_Data, uint32 a_Options = TIL_DEPTH_A8R8G8B8);
 
@@ -166,9 +168,6 @@ namespace til
 		If no debug messages were posted, this function returns 0.
 	*/
 	extern size_t TIL_GetDebugLength();
-
-	extern void TIL_SetMemoryFunc();
-	extern size_t TIL_GetMemoryUsed();
 
 }; // namespace til
 

@@ -68,6 +68,7 @@ namespace til
 	#define ZFAST_BITS     9 // accelerate all cases in default tables
 	#define ZFAST_MASK     ((1 << ZFAST_BITS) - 1)
 
+/** @cond IGNORE */
 	int paeth(int a, int b, int c)
 	{
 		int p = a + b - c;
@@ -114,6 +115,7 @@ namespace til
 		if (b > 0) { return b; }
 		return 0;
 	}
+/** @endcond IGNORE */
 
 	#define F_none         0
 	#define F_sub          1
@@ -134,7 +136,8 @@ namespace til
 		F_none, F_none, F_up, F_avg_first, F_paeth_first
 	};
 
-	typedef uint8 (*FilterFunc)(uint8*, uint8*, uint8*, int, int);
+/** @cond IGNORE */
+	typedef uint8 *FilterFunc(uint8*, uint8*, uint8*, int, int);
 
 	uint8 FilterFuncNone       (uint8* a_Cur, uint8* a_Target, uint8* a_Prior, int a_Index, int a_Size) 
 	{ 
@@ -194,7 +197,7 @@ namespace til
 		FilterFuncNone             // PaethFirst
 	};
 
-	typedef void (*ColorFunc)(uint8*, uint8*);
+	typedef void *ColorFunc(uint8*, uint8*);
 
 	void ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src)
 	{
@@ -237,6 +240,7 @@ namespace til
 	}
 
 	ColorFunc g_ColorFunc = NULL;
+/** @endcond IGNORE */
 
 	static int length_base[31] = {
 		3,4,5,6,7,8,9,10,11,13,
@@ -279,6 +283,7 @@ namespace til
 	#define APNG_BLEND_OP_SOURCE        0
 	#define APNG_BLEND_OP_OVER          1
 
+	/** @cond IGNORE */
 	int32 BitReverse16(int32 a_Number)
 	{
 		a_Number  = ((a_Number & 0xAAAA) >> 1) | ((a_Number & 0x5555) << 1);
@@ -295,6 +300,7 @@ namespace til
 		// e.g. 11 bits, bit reverse and shift away 5
 		return BitReverse16(a_Number) >> (16 - a_Bits);
 	}
+	/** @endcond IGNORE */
 
 	// =========================================
 	// Huffman
@@ -311,7 +317,7 @@ namespace til
 		}
 		~Huffman() 
 		{
-			
+			int i = 0;
 		}
 
 		bool Build(uint8* a_SizeList, uint32 a_Amount)
@@ -399,6 +405,7 @@ namespace til
 
 		for (int i = 0; i <= 31; ++i) { default_distance[i] = 5; }
 
+		buffer = NULL;
 		bigger_data = NULL;
 		z_length = NULL;
 		z_distance = NULL;
@@ -407,9 +414,12 @@ namespace til
 	zbuf::~zbuf()
 	{
 		//delete buffer;
+		//if (buffer) { delete buffer; }
 		if (bigger_data) { delete bigger_data; }
 		if (z_length) { delete z_length; }
 		if (z_distance) { delete z_distance; }
+
+		int i = 0;
 	}
 
 
@@ -755,7 +765,10 @@ namespace til
 		} 
 		while (!final);
 
-		return result;
+		//return result;
+		delete result;
+
+		return NULL;
 	}
 
 	bool zbuf::ParseUncompressedBlock()
@@ -989,10 +1002,7 @@ namespace til
 		word delay_num, delay_den;
 
 		byte dispose, blend;
-	};
-	
-	/** @endcond IGNORE */
-	
+	};	
 
 	// =========================================
 	// ImagePNG
@@ -1003,22 +1013,30 @@ namespace til
 		m_Ani = NULL;
 		m_Pixels = NULL;
 		m_Huffman = NULL;
+		m_Chunk = new chunk;
 
 		idata = NULL;
 		expanded = NULL;
 		out = NULL;
-		img_buffer = NULL;
 	}
 
 	ImagePNG::~ImagePNG()
 	{
+		delete m_Chunk;
+
 		if (idata) { delete idata; }
 		if (expanded) { delete expanded; }
 		if (out) { delete out; }
-		if (img_buffer) { delete img_buffer; }
 
 		if (m_Ani) { delete m_Ani; }
-		if (m_Pixels) { delete [] m_Pixels; }
+		if (m_Pixels) 
+		{ 
+			for (uint32 i = 0; i < m_Frames; i++)
+			{
+				delete m_Pixels[i];
+			}
+			delete [] m_Pixels; 
+		}
 		if (m_Huffman) { delete m_Huffman; }
 	}
 
@@ -1044,20 +1062,23 @@ namespace til
 		fseek(m_Handle, a_Bytes, SEEK_CUR);
 	}
 
-	chunk ImagePNG::GetChunkHeader()
+	chunk* ImagePNG::GetChunkHeader()
 	{
-		chunk result;
-		result.length    = GetDWord();
+		m_Chunk->length    = GetDWord();
 
-		result.header[0] = (char)GetByte();
-		result.header[1] = (char)GetByte();
-		result.header[2] = (char)GetByte();
-		result.header[3] = (char)GetByte();
-		result.header[4] = 0;
+		m_Chunk->header[0] = (char)GetByte();
+		m_Chunk->header[1] = (char)GetByte();
+		m_Chunk->header[2] = (char)GetByte();
+		m_Chunk->header[3] = (char)GetByte();
+		m_Chunk->header[4] = 0;
 
-		result.type      = (result.header[0] << 24) | (result.header[1] << 16) | (result.header[2] << 8) | (result.header[3]);
+		m_Chunk->type = 
+			(m_Chunk->header[0] << 24) | 
+			(m_Chunk->header[1] << 16) | 
+			(m_Chunk->header[2] << 8) | 
+			(m_Chunk->header[3]);
 
-		return result;
+		return m_Chunk;
 	}
 
 	bool ImagePNG::Compile()
@@ -1068,7 +1089,6 @@ namespace til
 	bool ImagePNG::Parse(uint32 a_ColorDepth /*= TIL_DEPTH_A8R8G8B8*/)
 	{
 		req_comp = 1;
-		uint8* result = NULL;
 		expanded = NULL;
 		idata = NULL;
 		out = NULL;
@@ -1142,15 +1162,16 @@ namespace til
 
 		for (;;first = 0)
 		{
-			chunk current = GetChunkHeader();
+			//chunk current = GetChunkHeader();
+			m_Chunk = GetChunkHeader();
 
-			if (first && current.type != PNG_TYPE('I','H','D','R'))
+			if (first && m_Chunk->type != PNG_TYPE('I','H','D','R'))
 			{
 				TIL_ERROR_EXPLAIN("Could not find IHDR tag.");
 				return NULL;
 			}
 
-			switch (current.type) 
+			switch (m_Chunk->type) 
 			{
 
 			case PNG_TYPE('I','H','D','R'): 
@@ -1165,7 +1186,7 @@ namespace til
 						return NULL;
 					}
 
-					if (current.length != 13) 
+					if (m_Chunk->length != 13) 
 					{
 						TIL_ERROR_EXPLAIN("Bad IHDR length.");
 						return NULL;
@@ -1329,14 +1350,14 @@ namespace til
 				{
 					PNG_DEBUG("Found tag 'PLTE'");
 
-					if (current.length > 256 * 3) 
+					if (m_Chunk->length > 256 * 3) 
 					{
-						TIL_ERROR_EXPLAIN("Invalid PLTE, chunk is too long: %i.", current.length);
+						TIL_ERROR_EXPLAIN("Invalid PLTE, chunk is too long: %i.", m_Chunk->length);
 						return NULL;
 					}
 
-					pal_len = current.length / 3;
-					if (pal_len * 3 != current.length) 
+					pal_len = m_Chunk->length / 3;
+					if (pal_len * 3 != m_Chunk->length) 
 					{
 						TIL_ERROR_EXPLAIN("Invalid PLTE.");
 						return NULL;
@@ -1369,14 +1390,14 @@ namespace til
 							TIL_ERROR_EXPLAIN("tRNS before PLTE.");
 							return NULL;
 						}
-						if (current.length > pal_len) 
+						if (m_Chunk->length > pal_len) 
 						{
-							TIL_ERROR_EXPLAIN("Chunk length is greater than specified. (%i > %i)", current.length, pal_len);
+							TIL_ERROR_EXPLAIN("Chunk length is greater than specified. (%i > %i)", m_Chunk->length, pal_len);
 							return NULL;
 						}
 
 						pal_img_n = 4;
-						for (uint32 i = 0; i < current.length; ++i)
+						for (uint32 i = 0; i < m_Chunk->length; ++i)
 						{
 							palette[i * 4 + 3] = (uint8)GetByte();
 						}
@@ -1389,9 +1410,9 @@ namespace til
 							return NULL;
 						}
 
-						if (current.length != (uint32)img_n * 2) 
+						if (m_Chunk->length != (uint32)img_n * 2) 
 						{
-							TIL_ERROR_EXPLAIN("Chunk length does not equal specified length. (%i != %i)", current.length, (uint32)img_n);
+							TIL_ERROR_EXPLAIN("Chunk length does not equal specified length. (%i != %i)", m_Chunk->length, (uint32)img_n);
 							return NULL;
 						}
 
@@ -1420,13 +1441,13 @@ namespace til
 						return NULL;
 					}
 
-					if (ioff + current.length > idata_limit) 
+					if (ioff + m_Chunk->length > idata_limit) 
 					{
 						if (idata_limit == 0) 
 						{ 
-							idata_limit = current.length > 4096 ? current.length : 4096; 
+							idata_limit = m_Chunk->length > 4096 ? m_Chunk->length : 4096; 
 						}
-						while (ioff + current.length > idata_limit)
+						while (ioff + m_Chunk->length > idata_limit)
 						{
 							idata_limit *= 2;
 						}
@@ -1439,13 +1460,13 @@ namespace til
 						idata = p;
 					}
 
-					if (fread(idata + ioff, 1, current.length, m_Handle) != current.length) 
+					if (fread(idata + ioff, 1, m_Chunk->length, m_Handle) != m_Chunk->length) 
 					{	
 						TIL_ERROR_EXPLAIN("Not enough data.");
 						return NULL;
 					}
 
-					ioff += current.length;
+					ioff += m_Chunk->length;
 
 					break;
 				}
@@ -1591,15 +1612,15 @@ namespace til
 
 					PNG_DEBUG("Index: %i", sequence_nr);
 
-					uint32 len = current.length - 4;
+					uint32 len = m_Chunk->length - 4;
 
-					//Skip(current.length - 4);
+					//Skip(m_Chunk->length - 4);
 
 					if (m_Ani->data_offset + len > m_Ani->data_limit) 
 					{
 						if (m_Ani->data_limit == 0) 
 						{ 
-							 m_Ani->data_limit = len > 4096 ? current.length : 4096; 
+							 m_Ani->data_limit = len > 4096 ? m_Chunk->length : 4096; 
 						}
 						while (m_Ani->data_offset + len > m_Ani->data_limit)
 						{
@@ -1668,7 +1689,7 @@ namespace til
 
 					int32 comp = GetByte();
 
-					uint32 len = current.length - i - 1;
+					uint32 len = m_Chunk->length - i - 1;
 					byte* datastream = new byte[len];
 					fread(datastream, 1, len, m_Handle);
 
@@ -1685,16 +1706,16 @@ namespace til
 
 			default:
 				{
-					PNG_DEBUG("Skipping chunk: %s", current.header);
+					PNG_DEBUG("Skipping chunk: %s", m_Chunk->header);
 
 					// if critical, fail
-					if ((current.type & (1 << 29)) == 0) 
+					if ((m_Chunk->type & (1 << 29)) == 0) 
 					{
-						TIL_ERROR_EXPLAIN("Corrupt chunk. (%s)", current.header);
+						TIL_ERROR_EXPLAIN("Corrupt chunk. (%s)", m_Chunk->header);
 						return NULL;
 					}
 
-					Skip(current.length);
+					Skip(m_Chunk->length);
 
 					break;
 				}

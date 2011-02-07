@@ -52,6 +52,12 @@
 	#define TIL_PLATFORM                  TIL_PLATFORM_WINDOWS
 #endif
 
+#define TIL_DEBUG                         1
+#define TIL_RELEASE                       2
+#ifndef TIL_RUN_TARGET
+	#define TIL_RUN_TARGET                TIL_RELEASE
+#endif
+
 #define TIL_FILE_MASK                     0x0000FFFF
 
 //! The image path is absolute.
@@ -127,7 +133,7 @@
 /*!
 	If in release mode, no debug info is printed.	
 */
-#ifdef TIL_RELEASE
+#if (TIL_RUN_TARGET == TIL_RELEASE)
 	#define TIL_PRINT_DEBUG(msg, ...)
 #else
 	#define TIL_PRINT_DEBUG(msg, ...)  til::AddDebug("TinyImageLoader - Debug: "msg" ", __FILE__, __LINE__, __VA_ARGS__)
@@ -136,6 +142,14 @@
 
 #if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
 	#define TIL_MAX_PATH _MAX_PATH
+
+	#if (TIL_RUN_TARGET == TIL_DEBUG)
+		#define _CRTDBG_MAP_ALLOC
+		#include <crtdbg.h>
+
+		#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+		#define new DEBUG_NEW
+	#endif
 #else
 	#define TIL_MAX_PATH 256
 #endif
@@ -175,7 +189,7 @@ namespace til
 
 	typedef uint8                             color_8b;  //!< 8-bit color
 	typedef uint16                            color_16b; //!< 16-bit color
-	/**	@cond IGNORE */
+	/** @cond IGNORE */
 	typedef struct { uint8 d[3]; }            color_24b; //!< 24-bit color
 	/** @endcond IGNORE */
 	typedef uint32                            color_32b; //!< 32-bit color
@@ -196,12 +210,12 @@ namespace til
 	/*! 
 		\param MessageData* A pointer containing the message data.
 	*/
-	typedef void (*MessageFunc)(MessageData*);
+	typedef void *MessageFunc(MessageData*);
 
 	//! Memory allocation function
-	typedef void* (*MemAllocFunc)(size_t a_Size, size_t* a_Allocated);
+	typedef void* *MemAllocFunc(size_t a_Size, size_t* a_Allocated);
 	//! Memory freeing function
-	typedef void (*MemFreeFunc)(void* a_Free, size_t a_Size);
+	typedef void *MemFreeFunc(void* a_Free, size_t a_Size);
 
 	// =========================================
 	// Internal functions
@@ -211,15 +225,6 @@ namespace til
 	extern void AddDebug(char* a_Message, char* a_File, int a_Line, ...);
 
 	extern void AddWorkingDirectory(char* a_Dst, size_t a_MaxLength, const char* a_Path);
-
-	#define TIL_NEW(type, size)       (type*)g_MemAlloc(size * sizeof(type), NULL)
-	#define TIL_DELETE(handle, size)  g_MemFree((void*)handle, size)
-
-	extern MemAllocFunc g_MemAlloc;
-	extern MemFreeFunc g_MemFree;
-
-	//extern void* MemAlloc(size_t a_Size, size_t* a_Allocated = 0);
-	//extern void MemFree(void* a_Free, size_t a_Size);
 	
 }; // namespace til
 

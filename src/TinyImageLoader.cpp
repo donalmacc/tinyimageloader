@@ -47,7 +47,6 @@
 #include <stdarg.h>
 #include <windows.h>
 #include <MMSystem.h>
-#include <new.h>
 
 namespace til
 {
@@ -70,53 +69,7 @@ namespace til
 	static char* g_DebugTemp = NULL;
 	static size_t g_DebugMaxSize = 1024;
 
-	void* MemAllocDefault(size_t a_Size, size_t* a_Allocated = 0);
-	MemAllocFunc g_MemAlloc = MemAllocDefault;
-	void MemFreeDefault(void* a_Free, size_t a_Size);
-	MemFreeFunc g_MemFree = MemFreeDefault;
-
 	static MessageData g_Msg;
-
-	/*! Initializes TinyImageLoader. */
-	void TIL_Init(uint32 a_Settings)
-	{
-		g_Options = a_Settings;
-
-		//byte* bleh = TIL_NEW(byte, 4);
-		//byte* bleh = new byte[4];
-		//Image* bleh = TIL_NEW(Image, 1);
-		Image* bleh = new ImageBMP();
-
-		byte swaptest[] = { 1, 0 };
-		if (*(word*)swaptest == 1)
-		{
-			TIL_PRINT_DEBUG("Little endian.");
-		}
-		else
-		{
-			TIL_PRINT_DEBUG("Big endian.");
-		}
-
-#if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
-
-		char path[TIL_MAX_PATH];
-
-		char* dir = new char[TIL_MAX_PATH];
-		GetModuleFileNameA(NULL, dir, TIL_MAX_PATH);
-		char* lastslash = strrchr(dir, '\\');
-
-		strncpy(path, dir, lastslash - dir + 1);
-		path[lastslash - dir + 1] = 0;
-
-		TIL_SetWorkingDirectory(path, strlen(path));
-
-#else
-
-		// do nothing, for now
-
-#endif
-
-	}
 
 	void InitLineFeed()
 	{
@@ -140,8 +93,11 @@ namespace til
 		}
 	}
 
-	void AddErrorDefault(MessageData* a_Data)
+	/*! Initializes TinyImageLoader. */
+	void TIL_Init(uint32 a_Settings)
 	{
+		g_Options = a_Settings;
+
 		if (!g_Error) 
 		{
 			g_Error = new char[g_ErrorMaxSize];
@@ -150,6 +106,64 @@ namespace til
 			InitLineFeed();
 		}
 
+#if (TIL_RUN_TARGET == TIL_DEBUG)
+
+		if (!g_Debug) 
+		{
+			g_Debug = new char[g_DebugMaxSize];
+			memset(g_Debug, 0, g_DebugMaxSize);
+
+			InitLineFeed();
+		}
+
+#endif
+
+#if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
+
+		char path[TIL_MAX_PATH];
+		char dir[TIL_MAX_PATH];
+
+		GetModuleFileNameA(NULL, dir, TIL_MAX_PATH);
+		char* lastslash = strrchr(dir, '\\');
+
+		strncpy(path, dir, lastslash - dir + 1);
+		path[lastslash - dir + 1] = 0;
+
+		TIL_SetWorkingDirectory(path, strlen(path));
+
+#else
+
+		// do nothing, for now
+
+#endif
+
+		byte swaptest[] = { 1, 0 };
+		if (*(word*)swaptest == 1)
+		{
+			TIL_PRINT_DEBUG("Little endian.");
+		}
+		else
+		{
+			TIL_PRINT_DEBUG("Big endian.");
+		}
+	}
+
+	void TIL_ShutDown()
+	{
+		if (g_WorkingDir)
+		{
+//			delete g_WorkingDir;
+			g_WorkingDir = NULL;
+		}
+		delete g_Error;       g_Error = NULL;
+		delete g_ErrorTemp;   g_ErrorTemp = NULL;
+		delete g_Debug;       g_Debug = NULL;
+		delete g_DebugTemp;   g_DebugTemp = NULL;
+		delete g_LineFeed;    g_LineFeed = NULL;
+	}
+
+	void AddErrorDefault(MessageData* a_Data)
+	{
 		sprintf(
 			g_ErrorTemp, 
 			"%s (in file %s at line %i)", 
@@ -195,28 +209,6 @@ namespace til
 		vsprintf(g_ErrorTemp, a_Message, args);
 		va_end(args);
 
-		/*if (!g_Error) 
-		{
-			g_Error = new char[g_ErrorMaxSize];
-			memset(g_Error, 0, g_ErrorMaxSize);
-
-			InitLineFeed();
-		}
-
-		sprintf(g_ErrorTemp, "%s (in file %s at line %i)", g_ErrorTemp, a_File, a_Line);
-		strcat(g_ErrorTemp, g_LineFeed);
-
-		bool resize = false;
-		while (strlen(g_ErrorTemp) + strlen(g_Error) > g_ErrorMaxSize) { g_ErrorMaxSize *= 2; resize = true; }
-		if (resize)
-		{
-			char* move = new char[g_ErrorMaxSize];
-			strcpy(move, g_Error);
-			g_Error = move;
-		}
-
-		strcat(g_Error, g_ErrorTemp);*/
-
 		g_Msg.message = g_ErrorTemp;
 		g_Msg.source_file = a_File;
 		g_Msg.source_line = a_Line;
@@ -242,14 +234,6 @@ namespace til
 
 	void AddDebugDefault(MessageData* a_Data)
 	{
-		if (!g_Debug) 
-		{
-			g_Debug = new char[g_DebugMaxSize];
-			memset(g_Debug, 0, g_DebugMaxSize);
-
-			InitLineFeed();
-		}
-
 		sprintf(g_DebugTemp, "%s", a_Data->message);
 		strcat(g_DebugTemp, g_LineFeed);
 
@@ -367,25 +351,7 @@ namespace til
 	extern void AddWorkingDirectory( char* a_Dst, size_t a_MaxLength, const char* a_Path )
 	{
 		if (g_WorkingDir) { strncpy(a_Dst, g_WorkingDir, g_WorkingDirLength); }
-		strcat(a_Dst, a_Path);
-	}
-
-
-	extern void* MemAllocDefault( size_t a_Size, size_t* a_Allocated )
-	{
-		void* result = malloc(a_Size);
-		/*if (_callnewh(a_Size) == 0)
-		{
-			if (a_Allocated) { *a_Allocated = 0; }	
-			return NULL;
-		}*/
-		if (a_Allocated) { *a_Allocated = a_Size; }
-		return result;
-	}
-
-	extern void MemFreeDefault( void* a_Free, size_t a_Size )
-	{
-		free(a_Free);
+		strcat_s(a_Dst, a_MaxLength, a_Path);
 	}
 
 }; // namespace til

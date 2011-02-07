@@ -35,7 +35,9 @@
 namespace til
 {
 
-	typedef void (*ColorFuncBMP)(uint8*, uint8*);
+/** @cond IGNORE */
+
+	typedef void *ColorFuncBMP(uint8*, uint8*);
 
 	void ColorFuncBMP_R8G8B8(uint8* a_Dst, uint8* a_Src)
 	{
@@ -74,6 +76,8 @@ namespace til
 	}
 
 	ColorFuncBMP g_ColorFuncBMP = NULL;
+
+/** @endcond IGNORE */
 
 	ImageBMP::ImageBMP()
 	{
@@ -204,8 +208,7 @@ namespace til
 
 		//fseek(m_Handle, 16, SEEK_CUR);
 
-		//m_Pixels = new byte[m_Width * m_Height * m_BPP];
-		m_Pixels = TIL_NEW(byte, m_Width * m_Height * m_BPP);
+		m_Pixels = new byte[m_Width * m_Height * m_BPP];
 
 		uint32 total = (m_Width * m_Height) >> 1;
 		m_Pitch = m_Width * m_BPP;
