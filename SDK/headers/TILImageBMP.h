@@ -32,10 +32,20 @@
 namespace til
 {
 
-	//! Halloooow.
+	// this seemingly pointless forward declaration
+	// is necessary to fool doxygen into documenting
+	// the class
+	class DoxygenSaysWhat;
 
+	/*!
+		\brief til::Image implementation of a BMP loader.
+	*/
 	class ImageBMP : public Image
 	{
+
+	public:
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 		enum ColorType
 		{
@@ -63,7 +73,7 @@ namespace til
 			COMP_PNG = 5
 		};
 
-	public:
+#endif
 
 		ImageBMP();
 		~ImageBMP();
@@ -78,8 +88,15 @@ namespace til
 
 	private:
 
-		//! Bla bla
+		/*!
+			@name Internal
+			These functions are internal and shouldn't be called by developers.
+		*/
+		//@{
+
 		dword GetDWord();
+
+		//@}
 
 		uint32 m_Depth;
 

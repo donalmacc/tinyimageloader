@@ -38,16 +38,17 @@
 namespace til
 {
 
+	// very strange doxygen workaround
+	; // do not remove!
+
 	//! Construct a 16-bit RGB color
 	/*!
 		\param a_Red A value between 0 - 255
 		\param a_Green A value between 0 - 255
 		\param a_Blue A value between 0 - 255
-		\param a_Alpha Not used.
+		\param a_Alpha Not used
 
 		\return 16-bit color
-
-		Stuff.
 	*/
 	inline color_16b Construct_16b_R5G6B5(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha = 0)
 	{
@@ -57,9 +58,17 @@ namespace til
 			(((a_Blue  * 0x001F) >> 8) & 0x001F);
 	}
 
-	typedef color_32b *color_func_32b(uint8, uint8, uint8, uint8);
-	typedef color_16b *color_func_16b(uint8, uint8, uint8, uint8);
+	//! Construct a 32-bit RGB color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha Not used
 
+		\return 32-bit color
+
+		Alpha is ignored, it's a parameter only to allow fast changing between this function and Construct_32b_R8G8B8A8.
+	*/
 	inline color_32b Construct_32b_R8G8B8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha = 0)
 	{
 		return
@@ -68,6 +77,12 @@ namespace til
 			((a_Blue  & 0xFF));
 	}
 
+	//! Construct a 32-bit RGB color from an 8-bit RGB color
+	/*!
+		\param a_Color An 8-bit RGB color
+
+		\return 32-bit color
+	*/
 	inline color_32b Construct_32b_R8G8B8(color_8b a_Color)
 	{
 		
@@ -95,8 +110,6 @@ namespace til
 		\param a_Alpha A value between 0 - 255
 
 		\return 32-bit color
-
-		Stuff.
 	*/
 	inline color_32b Construct_32b_A8B8G8R8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
@@ -111,19 +124,37 @@ namespace til
 		\param a_Alpha A value between 0 - 255
 
 		\return 32-bit color
-
-		Stuff.
 	*/
 	inline color_32b Construct_32b_A8R8G8B8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		return (a_Alpha << 24) | (a_Red << 16) | (a_Green << 8) | (a_Blue);
 	}
 
+	//! Construct a 32-bit BGRA color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
+
+		\return 32-bit color
+	*/
 	inline color_32b Construct_32b_B8G8R8A8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		return (a_Blue << 24) | (a_Green << 16) | (a_Red << 8) | (a_Alpha);
 	}
 
+	//! Construct a 32-bit RGBA color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
+
+		\return 32-bit color
+
+		Does not do alpha blending. Simply takes the a_Alpha parameter and puts it in the right place in the color.
+	*/
 	inline color_32b Construct_32b_R8G8B8A8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		return (a_Red << 24) | (a_Green << 16) | (a_Blue << 8) | (a_Alpha);
@@ -135,7 +166,15 @@ namespace til
 			((a_Alpha & 0xFF));*/
 	}
 
+	//! Alpha blend a 32-bit RGB color
+	/*!
+		\param a_Color A 32-bit RGB color
+		\param a_Amount A value between 0 - 255
 
+		\return 32-bit color
+
+		Alpha blends the color with the specified amount.
+	*/
 	inline color_32b AlphaBlend_32b_R8G8B8(color_32b a_Color, uint8 a_Amount)
 	{
 		const color_32b rb = (a_Color & 0x00FF00FF);
@@ -147,6 +186,17 @@ namespace til
 		);
 	}
 
+	//! Alpha blend a 32-bit RGB color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
+
+		\return 32-bit color
+
+		Alpha blends the color with the specified amount.
+	*/
 	inline color_32b AlphaBlend_32b_R8G8B8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		const color_32b rb  = ((a_Red << 16) | (a_Blue))  & 0x00FF00FF;
@@ -158,6 +208,17 @@ namespace til
 		);
 	}
 
+	//! Alpha blend a 32-bit ARGB color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
+
+		\return 32-bit color
+
+		Alpha blends the color with the specified amount and sets the alpha channel.
+	*/
 	inline color_32b AlphaBlend_32b_A8R8G8B8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		const color_32b rb  = ((a_Red << 16) | (a_Blue))  & 0x00FF00FF;
@@ -170,6 +231,17 @@ namespace til
 		);
 	}
 
+	//! Alpha blend a 32-bit ABGR color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
+
+		\return 32-bit color
+
+		Alpha blends the color with the specified amount and sets the alpha channel.
+	*/
 	inline color_32b AlphaBlend_32b_A8B8G8R8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		const color_32b br  = ((a_Blue << 16) | (a_Red)) & 0x00FF00FF;
@@ -188,6 +260,17 @@ namespace til
 		);*/
 	}
 
+	//! Alpha blend a 32-bit BGRA color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
+
+		\return 32-bit color
+
+		Alpha blends the color with the specified amount and sets the alpha channel.
+	*/
 	inline color_32b AlphaBlend_32b_B8G8R8A8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		const color_32b br  = ((a_Blue << 16) | (a_Red)) & 0xFF00FF;
@@ -206,7 +289,17 @@ namespace til
 		);*/
 	}
 
+	//! Alpha blend a 32-bit RGBA color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
 
+		\return 32-bit color
+
+		Alpha blends the color with the specified amount and sets the alpha channel.
+	*/
 	inline color_32b AlphaBlend_32b_R8G8B8A8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		const color_32b rb  = ((a_Red << 16) | (a_Blue)) & 0xFF00FF;
@@ -228,6 +321,17 @@ namespace til
 		);*/
 	}
 
+	//! Alpha blend a 16-bit RGB color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
+
+		\return 16-bit color
+
+		Alpha blends the color with the specified amount.
+	*/
 	inline color_16b AlphaBlend_16b_R5G6B5(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		color_16b r = (((a_Red   * 0xF800) >> 8) & 0xF800);
@@ -241,6 +345,16 @@ namespace til
 		);
 	}
 
+	// this seemingly pointless forward declaration
+	// is necessary to fool doxygen into documenting
+	// the class
+	class DoxygenSaysWhat;
+
+	/*!
+		\brief The virtual interface for loading images and extracting image data.
+
+		All image operations go through this interface. Every image loader is an implementation of this class.
+	*/
 	class Image
 	{
 
@@ -355,7 +469,7 @@ namespace til
 		FILE* m_Handle; //!< The file handle
 		char* m_FileName; //!< The filename
 		BitDepth m_BPPIdent; //!< The bit depth to convert to
-		uint8 m_BPP;
+		uint8 m_BPP; //!< The amount of bytes per pixel
 
 	}; // class Image
 

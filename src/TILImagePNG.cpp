@@ -68,7 +68,8 @@ namespace til
 	#define ZFAST_BITS     9 // accelerate all cases in default tables
 	#define ZFAST_MASK     ((1 << ZFAST_BITS) - 1)
 
-/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 	int paeth(int a, int b, int c)
 	{
 		int p = a + b - c;
@@ -115,7 +116,8 @@ namespace til
 		if (b > 0) { return b; }
 		return 0;
 	}
-/** @endcond IGNORE */
+
+#endif
 
 	#define F_none         0
 	#define F_sub          1
@@ -136,8 +138,9 @@ namespace til
 		F_none, F_none, F_up, F_avg_first, F_paeth_first
 	};
 
-/** @cond IGNORE */
-	typedef uint8 *FilterFunc(uint8*, uint8*, uint8*, int, int);
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+	typedef uint8 (*FilterFunc)(uint8*, uint8*, uint8*, int, int);
 
 	uint8 FilterFuncNone       (uint8* a_Cur, uint8* a_Target, uint8* a_Prior, int a_Index, int a_Size) 
 	{ 
@@ -197,7 +200,7 @@ namespace til
 		FilterFuncNone             // PaethFirst
 	};
 
-	typedef void *ColorFunc(uint8*, uint8*);
+	typedef void (*ColorFunc)(uint8*, uint8*);
 
 	void ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src)
 	{
@@ -240,7 +243,8 @@ namespace til
 	}
 
 	ColorFunc g_ColorFunc = NULL;
-/** @endcond IGNORE */
+
+#endif
 
 	static int length_base[31] = {
 		3,4,5,6,7,8,9,10,11,13,
@@ -283,7 +287,8 @@ namespace til
 	#define APNG_BLEND_OP_SOURCE        0
 	#define APNG_BLEND_OP_OVER          1
 
-	/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 	int32 BitReverse16(int32 a_Number)
 	{
 		a_Number  = ((a_Number & 0xAAAA) >> 1) | ((a_Number & 0x5555) << 1);
@@ -300,13 +305,15 @@ namespace til
 		// e.g. 11 bits, bit reverse and shift away 5
 		return BitReverse16(a_Number) >> (16 - a_Bits);
 	}
-	/** @endcond IGNORE */
+
+#endif
 
 	// =========================================
 	// Huffman
 	// =========================================
 
-	/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 	class Huffman
 	{
 
@@ -385,13 +392,13 @@ namespace til
 
 	}; // class Huffman
 	
-	/** @endcond IGNORE */
+#endif
 
 	// ================================
 	// zbuf
 	// ================================
 
-	/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 	zbuf::zbuf()
 	{
@@ -820,7 +827,9 @@ namespace til
 		return true;
 	}
 
-	/** @endcond IGNORE */
+#endif
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 	bool Decompile(
 		byte* a_Dst, byte* a_Src, 
@@ -896,7 +905,9 @@ namespace til
 		return true;
 	}
 
-	/**	@cond IGNORE */
+#endif
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 	
 	struct AnimationData
 	{
@@ -1003,6 +1014,8 @@ namespace til
 
 		byte dispose, blend;
 	};	
+
+#endif
 
 	// =========================================
 	// ImagePNG
@@ -1870,6 +1883,16 @@ namespace til
 	{
 		if (a_Frame > m_Frames - 1) { a_Frame = m_Frames - 1; }
 		return m_Pixels[a_Frame];
+	}
+
+	til::uint32 ImagePNG::GetHeight(uint32 a_Frame /*= 0*/)
+	{
+		return m_Height;
+	}
+
+	til::uint32 ImagePNG::GetWidth(uint32 a_Frame /*= 0*/)
+	{
+		return m_Width;
 	}
 
 }; // namespace til

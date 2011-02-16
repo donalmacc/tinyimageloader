@@ -34,7 +34,7 @@ namespace til
 
 	class Huffman;
 
-	/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 	
 	struct chunk
 	{
@@ -43,9 +43,9 @@ namespace til
 		uint32 type;
 	};
 	
-	/** @endcond IGNORE */
+#endif
 
-	/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 	
 	class zbuf
 	{
@@ -85,10 +85,13 @@ namespace til
 		uint8 default_distance[32];
 	};
 	
-	/** @endcond IGNORE */
+#endif
 
 	struct AnimationData;
 
+	/*!
+		\brief til::Image implementation of a PNG loader.
+	*/
 	class ImagePNG : public Image
 	{
 
@@ -97,6 +100,22 @@ namespace til
 		ImagePNG();
 		~ImagePNG();
 
+		
+
+		bool Parse(uint32 a_ColorDepth);
+
+		uint32 GetWidth(uint32 a_Frame = 0);
+		uint32 GetHeight(uint32 a_Frame = 0);
+
+		uint32 GetFrameCount();
+		byte* GetPixels(uint32 a_Frame = 0);
+
+		/*!
+			@name Internal
+			These functions are internal and shouldn't be called by developers.
+		*/
+		//@{
+		
 		int32 GetByte();
 		int32 GetWord();
 		int32 GetDWord();
@@ -107,23 +126,11 @@ namespace til
 
 		bool Compile();
 
-		bool Parse(uint32 a_ColorDepth);
-
-		uint32 GetWidth(uint32 a_Frame = 0)
-		{
-			return m_Width;
-		}
-		uint32 GetHeight(uint32 a_Frame = 0)
-		{
-			return m_Height;
-		}
-
-		uint32 GetFrameCount();
-		byte* GetPixels(uint32 a_Frame = 0);
+		bool Compose();
+		
+		//@}
 
 	private:
-
-		bool Compose();
 
 		byte** m_Pixels;
 		uint32 m_Width, m_Height, m_Pitch;

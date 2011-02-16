@@ -32,7 +32,7 @@
 namespace til
 {
 
-	/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 	
 	struct BufferICO
 	{
@@ -43,9 +43,16 @@ namespace til
 		BufferICO* next;
 	};
 	
-	/** @endcond IGNORE */
-	
+#endif
 
+	// this seemingly pointless forward declaration
+	// is necessary to fool doxygen into documenting
+	// the class
+	class DoxygenSaysWhat;
+
+	/*!
+		\brief til::Image implementation of an ICO loader.
+	*/
 	class ImageICO : public Image
 	{
 
@@ -62,9 +69,17 @@ namespace til
 		uint32 GetWidth(uint32 a_Frame = 0);
 		uint32 GetHeight(uint32 a_Frame = 0);
 
-	private:
-
+		/*!
+			@name Internal
+			These functions are internal and shouldn't be called by developers.
+		*/
+		//@{
+		
 		void AddBuffer(uint32 a_Width, uint32 a_Height);
+		
+		//@}
+
+	private:
 
 		uint32 m_Images;
 

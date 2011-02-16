@@ -57,6 +57,8 @@ namespace til
 	static char* g_WorkingDir = NULL;
 	static size_t g_WorkingDirLength = 0;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 	void AddErrorDefault(MessageData* a_Data);
 	static MessageFunc g_ErrorFunc = AddErrorDefault;
 	static char* g_Error = NULL;
@@ -69,7 +71,11 @@ namespace til
 	static char* g_DebugTemp = NULL;
 	static size_t g_DebugMaxSize = 1024;
 
+#endif
+
 	static MessageData g_Msg;
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 	void InitLineFeed()
 	{
@@ -92,6 +98,8 @@ namespace til
 			}
 		}
 	}
+
+#endif
 
 	/*! Initializes TinyImageLoader. */
 	void TIL_Init(uint32 a_Settings)
@@ -152,7 +160,6 @@ namespace til
 	{
 		if (g_WorkingDir)
 		{
-//			delete g_WorkingDir;
 			g_WorkingDir = NULL;
 		}
 		delete g_Error;       g_Error = NULL;
@@ -161,6 +168,8 @@ namespace til
 		delete g_DebugTemp;   g_DebugTemp = NULL;
 		delete g_LineFeed;    g_LineFeed = NULL;
 	}
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 	void AddErrorDefault(MessageData* a_Data)
 	{
@@ -184,6 +193,8 @@ namespace til
 
 		strcat(g_Error, g_ErrorTemp);
 	}
+
+#endif
 
 	void TIL_SetErrorFunc( MessageFunc a_Func )
 	{
@@ -232,6 +243,8 @@ namespace til
 		return 0;
 	}
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 	void AddDebugDefault(MessageData* a_Data)
 	{
 		sprintf(g_DebugTemp, "%s", a_Data->message);
@@ -263,6 +276,7 @@ namespace til
 		g_DebugFunc(&g_Msg);
 	}
 
+#endif
 
 	void TIL_GetVersion(char* a_Target, size_t a_MaxLength)
 	{

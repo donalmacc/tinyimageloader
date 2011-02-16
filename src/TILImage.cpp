@@ -22,6 +22,11 @@
 	THE SOFTWARE.
 */
 
+/*!
+	\file ..\SDK\headers\TILImage.h
+	\class til::Image "../SDK/headers/TILImage.h"
+*/
+
 #include "..\SDK\headers\TILImage.h"
 
 #include <stdlib.h>

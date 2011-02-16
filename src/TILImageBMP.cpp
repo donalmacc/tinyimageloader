@@ -22,6 +22,10 @@
 	THE SOFTWARE.
 */
 
+/*!
+	\file TILImageBMP.h
+*/
+
 #include "..\SDK\headers\TILImageBMP.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_BMP)
@@ -35,9 +39,9 @@
 namespace til
 {
 
-/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-	typedef void *ColorFuncBMP(uint8*, uint8*);
+	typedef void (*ColorFuncBMP)(uint8*, uint8*);
 
 	void ColorFuncBMP_R8G8B8(uint8* a_Dst, uint8* a_Src)
 	{
@@ -77,7 +81,7 @@ namespace til
 
 	ColorFuncBMP g_ColorFuncBMP = NULL;
 
-/** @endcond IGNORE */
+#endif
 
 	ImageBMP::ImageBMP()
 	{
@@ -88,6 +92,8 @@ namespace til
 	{
 
 	}
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 	void GetComponents(byte* a_Dst, byte* a_Src, word a_Size)
 	{
@@ -125,6 +131,8 @@ namespace til
 
 		}
 	}
+
+#endif
 
 	dword ImageBMP::GetDWord()
 	{

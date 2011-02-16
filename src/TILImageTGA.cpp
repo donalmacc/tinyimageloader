@@ -35,15 +35,15 @@
 namespace til
 {
 
-/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 	int g_Depth;
 
-/** @endcond IGNORE */
+#endif
 
-/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-	typedef uint8* *ColorFuncComp(uint8*, uint8*, int, int);
+	typedef uint8* (*ColorFuncComp)(uint8*, uint8*, int, int);
 
 	uint8* ColorFunc_R8G8B8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
@@ -125,7 +125,7 @@ namespace til
 
 	ColorFuncComp g_ColorFunc = NULL;
 
-/** @endcond IGNORE */
+#endif
 
 	ImageTGA::ImageTGA()
 	{

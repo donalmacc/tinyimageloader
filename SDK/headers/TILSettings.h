@@ -36,13 +36,14 @@
 // Defines
 // =========================================
 
-#define TIL_VERSION_MAJOR                 1
-#define TIL_VERSION_MINOR                 5
-#define TIL_VERSION_BUGFIX                0
+#define TIL_VERSION_MAJOR                 1 //!< The version major
+#define TIL_VERSION_MINOR                 5 //!< The version minor
+#define TIL_VERSION_BUGFIX                5 //!< The bugfix version
 
-#define TIL_PLATFORM_WINDOWS              0
-#define TIL_PLATFORM_WINMO                1
-#define TIL_PLATFORM_PSP                  2
+#define TIL_PLATFORM_WINDOWS              0 //!< Windows platform
+#define TIL_PLATFORM_WINMO                1 //!< Windows Mobile platform
+#define TIL_PLATFORM_LINUX                2 //!< Linux platform
+#define TIL_PLATFORM_PSP                  3 //!< PSP platform
 
 //! The platform TinyImageLoader should be built for.
 /*!
@@ -52,12 +53,17 @@
 	#define TIL_PLATFORM                  TIL_PLATFORM_WINDOWS
 #endif
 
-#define TIL_DEBUG                         1
-#define TIL_RELEASE                       2
+#define TIL_DEBUG                         1 //!< Debug target
+#define TIL_RELEASE                       2 //!< Release target
+//! The target to build for
+/*!
+	If no target was set in the preprocessor, the library will compile for release mode.
+*/
 #ifndef TIL_RUN_TARGET
 	#define TIL_RUN_TARGET                TIL_RELEASE
 #endif
 
+//! Internal define used to extract file options from the options
 #define TIL_FILE_MASK                     0x0000FFFF
 
 //! The image path is absolute.
@@ -85,15 +91,15 @@
 //! Add \\n as the line ending
 #define TIL_FILE_LF                       0x00000010
 
+//! Internal define used to extract debug options from the options
 #define TIL_DEBUG_MASK                    0xFFFF0000
-#define TIL_DEBUG_LOGGING                 0x00010000
-#define TIL_DEBUG_TIMER                   0x00020000
 
 //! Default settings for initialization
 #ifndef TIL_SETTINGS
 	#define TIL_SETTINGS                  (TIL_FILE_CRLF)
 #endif
 
+//! Internal define used to extract color depth options from the options
 #define TIL_DEPTH_MASK                    0xFFFF0000
 #define TIL_DEPTH_A8R8G8B8                0x00010000 //!< 32-bit ARGB color depth
 #define TIL_DEPTH_A8B8G8R8                0x00020000 //!< 32-bit ABGR color depth
@@ -102,6 +108,7 @@
 #define TIL_DEPTH_R8G8B8                  0x00050000 //!< 32-bit RGB color depth
 #define TIL_DEPTH_R5G6B5                  0x00060000 //!< 16-bit RGB color depth
 
+//! Internal define used to extract format options from the options
 #define TIL_FORMAT_MASK                   0x0000FFFF
 #define TIL_FORMAT_PNG                    0x00000001 //!< PNG format
 #define TIL_FORMAT_GIF                    0x00000002 //!< GIF format
@@ -125,13 +132,22 @@
 	#define TIL_FORMAT                    (TIL_FORMAT_PNG | TIL_FORMAT_GIF | TIL_FORMAT_TGA | TIL_FORMAT_BMP | TIL_FORMAT_ICO)
 #endif
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 #ifndef _CRT_SECURE_NO_WARNINGS
 	#define _CRT_SECURE_NO_WARNINGS
 #endif
 
-//! Print debug info
+#endif
+
 /*!
-	If in release mode, no debug info is printed.	
+	\def TIL_PRINT_DEBUG
+	\brief Print a debug message
+	If in release mode, no debug info is printed.
+
+	\def TIL_ERROR_EXPLAIN
+	\brief Prints an error message
+	Error messages are always posted, even in release mode.
 */
 #if (TIL_RUN_TARGET == TIL_RELEASE)
 	#define TIL_PRINT_DEBUG(msg, ...)
@@ -140,16 +156,12 @@
 #endif
 #define TIL_ERROR_EXPLAIN(msg, ...)    til::AddError("TinyImageLoader - Error: "msg" ", __FILE__, __LINE__, __VA_ARGS__)
 
+/*!
+	\def TIL_MAX_PATH
+	The maximum path length for the platform
+*/
 #if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
 	#define TIL_MAX_PATH _MAX_PATH
-
-	#if (TIL_RUN_TARGET == TIL_DEBUG)
-		#define _CRTDBG_MAP_ALLOC
-		#include <crtdbg.h>
-
-		#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-		#define new DEBUG_NEW
-	#endif
 #else
 	#define TIL_MAX_PATH 256
 #endif
@@ -189,9 +201,9 @@ namespace til
 
 	typedef uint8                             color_8b;  //!< 8-bit color
 	typedef uint16                            color_16b; //!< 16-bit color
-	/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 	typedef struct { uint8 d[3]; }            color_24b; //!< 24-bit color
-	/** @endcond IGNORE */
+#endif
 	typedef uint32                            color_32b; //!< 32-bit color
 
 	// =========================================
@@ -209,22 +221,67 @@ namespace til
 	//! Message function
 	/*! 
 		\param MessageData* A pointer containing the message data.
+
+		Message functions are used for logging. You can create your own and attach them to TinyImageLoader.
 	*/
-	typedef void *MessageFunc(MessageData*);
+	typedef void (*MessageFunc)(MessageData*);
 
 	//! Memory allocation function
-	typedef void* *MemAllocFunc(size_t a_Size, size_t* a_Allocated);
+	typedef void* (*MemAllocFunc)(size_t a_Size, size_t* a_Allocated);
 	//! Memory freeing function
-	typedef void *MemFreeFunc(void* a_Free, size_t a_Size);
+	typedef void (*MemFreeFunc)(void* a_Free, size_t a_Size);
 
 	// =========================================
 	// Internal functions
 	// =========================================
 
+	/*!
+		@name Internal
+		These functions are internal and shouldn't be called by developers.
+	*/
+	//@{
+
+	//! Adds an error to the logging stack
+	/*!
+		\param a_Message The message to post
+		\param a_File The file it originated from
+		\param a_Line The line it originated from
+
+		\note Internal method. 
+
+		An implementation of printf for errors. 
+		The parameters in a_Message are parsed and sent to the attached logging function.
+		This can be the internal logger or one of your own.
+	*/
 	extern void AddError(char* a_Message, char* a_File, int a_Line, ...);
+	//! Adds a debug message to the logging stack
+	/*!
+		\param a_Message The message to post
+		\param a_File The file it originated from
+		\param a_Line The line it originated from
+
+		\note Internal method. 
+
+		An implementation of printf for debug messages. 
+		The parameters in a_Message are parsed and sent to the attached logging function.
+		This can be the internal logger or one of your own.
+	*/
 	extern void AddDebug(char* a_Message, char* a_File, int a_Line, ...);
 
+	//! Adds working directory to a path
+	/*!
+		\param a_Dst Where to put it
+		\param a_MaxLength The length of the destination buffer
+		\param a_Path The path to add
+
+		\note Internal method. 
+		
+		Adds the working directory to a path and puts it in the destination buffer.
+		If the destination buffer is too small, the path is truncated to fit.
+	*/
 	extern void AddWorkingDirectory(char* a_Dst, size_t a_MaxLength, const char* a_Path);
+
+	//@}
 	
 }; // namespace til
 

@@ -32,6 +32,9 @@
 namespace til
 {
 
+	/*!
+		\brief til::Image implementation of a TGA loader.
+	*/
 	class ImageTGA : public Image
 	{
 
@@ -54,9 +57,6 @@ namespace til
 		ImageTGA();
 		~ImageTGA();
 
-		bool CompileUncompressed();
-		bool CompileRunLengthEncoded();
-
 		bool Parse(uint32 a_ColorDepth);
 
 		uint32 GetFrameCount();
@@ -64,6 +64,19 @@ namespace til
 
 		uint32 GetWidth(uint32 a_Frame = 0);
 		uint32 GetHeight(uint32 a_Frame = 0);
+
+		/*!
+			@name Internal
+			These functions are internal and shouldn't be called by developers.
+		*/
+		//@{
+
+		//! Compile uncompressed image data to pixel information.
+		bool CompileUncompressed();
+
+		//! Compile compressed image data to pixel information.
+		bool CompileRunLengthEncoded();
+		//@}
 		
 	private:
 

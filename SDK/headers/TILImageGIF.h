@@ -32,14 +32,19 @@
 namespace til
 {
 
-	/** @cond IGNORE */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 	struct BufferLinked
 	{
 		byte* buffer;
 		BufferLinked* next;
 	};
-	/** @endcond IGNORE */
 
+#endif
+
+	/*!
+		\brief til::Image implementation of a GIF loader.
+	*/
 	class ImageGIF : public Image
 	{
 
@@ -57,10 +62,18 @@ namespace til
 		uint32 GetWidth(uint32 a_Frame = 0);
 		uint32 GetHeight(uint32 a_Frame = 0);
 
-	private:
-
+		/*!
+			@name Internal
+			These functions are internal and shouldn't be called by developers.
+		*/
+		//@{
+		
 		void AddBuffer();
 		void CompileColors(bool a_LocalTable = true);
+		
+		//@}
+
+	private:
 
 		BufferLinked* m_First;
 		BufferLinked* m_Current;
