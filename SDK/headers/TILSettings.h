@@ -162,6 +162,15 @@
 */
 #if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
 	#define TIL_MAX_PATH _MAX_PATH
+
+	// used for detecting memory leaks
+	#ifdef _DEBUG
+		#define _CRTDBG_MAP_ALLOC
+		#include <crtdbg.h>
+
+		#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+		#define new DEBUG_NEW
+	#endif
 #else
 	#define TIL_MAX_PATH 256
 #endif

@@ -29,7 +29,7 @@
 	at http://www.nothings.org/stb_image.c
 
 	stb_image is a legendary compact file loader that implements multiple file
-	formats in a single C file. It does so in an opague, but easy to use way.
+	formats in a single C file. It does so in an opaque, but easy to use way.
 
 	The original idea for TinyImageLoader came from reimplementing stb_image.c
 	in such a way that it would be readable to me. When I was done I started

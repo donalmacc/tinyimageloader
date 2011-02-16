@@ -27,6 +27,11 @@ void TILFW::Setup()
 	s_WindowHeight = 480;
 }
 
+void MyError(til::MessageData* a_Data)
+{
+	MessageBoxA(NULL, a_Data->message, "Error!", MB_OK | MB_ICONERROR);
+}
+
 unsigned long GetMemoryUsage()
 {
 	HANDLE process;
@@ -59,21 +64,28 @@ void TILFW::Init()
 
 	til::TIL_Init();
 
+	til::TIL_SetErrorFunc(MyError);
+
 	_CrtMemCheckpoint(&mem_start);
 
-	til::Image* load = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-	delete load;
+	til::Image* load_bmp = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	delete load_bmp;
+
+	til::Image* load_png = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	delete load_png;
+
+	til::Image* load_gif = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	delete load_gif;
+
+	til::Image* load_ico = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	delete load_ico;
 
 	_CrtMemCheckpoint(&mem_end);
 
 	til::TIL_ShutDown();
 
-	//til::Image* load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-	//delete load;
-
 	if (_CrtMemDifference(&mem_diff, &mem_start, &mem_end))
 	{
-		//_CrtMemDumpStatistics(&mem_diff);
 		_CrtDumpMemoryLeaks();
 
 		int j = 0;
@@ -95,5 +107,7 @@ void TILFW::Render()
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	TILFW* app = new TILFW;
-	return app->Exec(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+	app->Exec(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+	delete app;
+	return 0;
 }

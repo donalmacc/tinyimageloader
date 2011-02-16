@@ -70,6 +70,7 @@ namespace til
 		
 		void AddBuffer();
 		void CompileColors(bool a_LocalTable = true);
+		void ReleaseMemory(BufferLinked* a_Buffer);
 		
 		//@}
 

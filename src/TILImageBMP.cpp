@@ -85,12 +85,14 @@ namespace til
 
 	ImageBMP::ImageBMP()
 	{
-
+		m_ReadData = NULL;
+		m_Pixels = NULL;
 	}
 
 	ImageBMP::~ImageBMP()
 	{
-
+		if (m_ReadData) { delete m_ReadData; }
+		if (m_Pixels) { delete m_Pixels; }
 	}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -225,10 +227,10 @@ namespace til
 		
 		uint32 readpitch = m_Width * bytesperpixel;
 		uint32 readbytes = readpitch * m_Height;
-		byte* data = new byte[readbytes];
-		fread(data, 1, readbytes, m_Handle);
+		m_ReadData = new byte[readbytes];
+		fread(m_ReadData, 1, readbytes, m_Handle);
 
-		byte* read = data;
+		byte* read = m_ReadData;
 
 		byte color[4];
 

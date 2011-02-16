@@ -160,6 +160,7 @@ namespace til
 	{
 		if (g_WorkingDir)
 		{
+			delete g_WorkingDir;
 			g_WorkingDir = NULL;
 		}
 		delete g_Error;       g_Error = NULL;
@@ -256,6 +257,7 @@ namespace til
 		{
 			char* move = new char[g_DebugMaxSize];
 			strcpy(move, g_Debug);
+			delete g_Debug;
 			g_Debug = move;
 		}
 
@@ -351,7 +353,7 @@ namespace til
 	{
 		if (!g_WorkingDir)
 		{
-			g_WorkingDir = new char[a_Length];
+			g_WorkingDir = new char[a_Length + 1];
 		}
 
 		strcpy(g_WorkingDir, a_Path);

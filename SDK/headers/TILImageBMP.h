@@ -101,6 +101,7 @@ namespace til
 		uint32 m_Depth;
 
 		byte m_Data[4];
+		byte* m_ReadData;
 		byte* m_Pixels;
 		byte* m_Target;
 

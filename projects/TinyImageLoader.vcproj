@@ -19,7 +19,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)..\SDK"
-			IntermediateDirectory="$(SolutionDir)int\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)..\SDK\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>

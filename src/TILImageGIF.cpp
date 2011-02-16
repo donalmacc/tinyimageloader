@@ -71,23 +71,27 @@ namespace til
 		m_Palette = NULL;
 		m_Colors = NULL;
 		m_CurrentColors = NULL;
+		m_PrevBuffer = NULL;
 		m_Delay = 0.f;
 	}
 
 	ImageGIF::~ImageGIF()
 	{
-
+		ReleaseMemory(m_First);
+		if (m_First) { delete m_First; }
+		if (m_PrevBuffer) { delete m_PrevBuffer; }
+		if (m_Colors) { delete m_Colors; }
+		if (m_Palette) { delete m_Palette; }
 	}
 
 	void ImageGIF::AddBuffer()
 	{
 		if (m_First)
 		{
-			BufferLinked* temp = new BufferLinked;
-			m_Current->next = temp;
-			temp->next    = NULL;
-			temp->buffer  = new byte[m_Width * m_Height * m_BPP];
-			m_Current = temp;
+			m_Current->next = new BufferLinked;
+			m_Current->next->next    = NULL;
+			m_Current->next->buffer  = new byte[m_Width * m_Height * m_BPP];
+			m_Current = m_Current->next;
 		}
 		else
 		{ 
@@ -103,27 +107,27 @@ namespace til
 		byte* palette = m_Palette;
 		byte* colors = m_Colors;
 
-		if (palette) { delete palette; }
-		palette = new byte[m_ColorTableSize * 3];
-		fread(palette, m_ColorTableSize * 3, 1, m_Handle);
+		if (m_Palette) { delete m_Palette; }
+		m_Palette = new byte[m_ColorTableSize * 3];
+		fread(m_Palette, m_ColorTableSize * 3, 1, m_Handle);
 
-		if (colors) { delete colors; }
-		colors = new byte[m_ColorTableSize * m_BPP];
-		memset(colors, 0, m_ColorTableSize * m_BPP);
+		if (m_Colors) { delete m_Colors; }
+		m_Colors = new byte[m_ColorTableSize * m_BPP];
+		memset(m_Colors, 0, m_ColorTableSize * m_BPP);
 
 		switch (m_ColorDepth)
 		{
 
 		case TIL_DEPTH_A8R8G8B8:
 			{
-				color_32b* dst = (color_32b*)colors;
+				color_32b* dst = (color_32b*)m_Colors;
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{
 					*dst++ = Construct_32b_A8R8G8B8(
-						palette[(i * 3) + 0],
-						palette[(i * 3) + 1],
-						palette[(i * 3) + 2],
+						m_Palette[(i * 3) + 0],
+						m_Palette[(i * 3) + 1],
+						m_Palette[(i * 3) + 2],
 						255
 					);
 				}
@@ -133,14 +137,14 @@ namespace til
 
 		case TIL_DEPTH_A8B8G8R8:
 			{
-				color_32b* dst = (color_32b*)colors;
+				color_32b* dst = (color_32b*)m_Colors;
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{
 					*dst++ = Construct_32b_A8B8G8R8(
-						palette[(i * 3) + 0],
-						palette[(i * 3) + 1],
-						palette[(i * 3) + 2],
+						m_Palette[(i * 3) + 0],
+						m_Palette[(i * 3) + 1],
+						m_Palette[(i * 3) + 2],
 						255
 					);
 				}
@@ -150,14 +154,14 @@ namespace til
 
 		case TIL_DEPTH_R8G8B8A8:
 			{
-				color_32b* dst = (color_32b*)colors;
+				color_32b* dst = (color_32b*)m_Colors;
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{					
 					*dst++ = Construct_32b_R8G8B8A8(
-						palette[(i * 3) + 0],
-						palette[(i * 3) + 1],
-						palette[(i * 3) + 2],
+						m_Palette[(i * 3) + 0],
+						m_Palette[(i * 3) + 1],
+						m_Palette[(i * 3) + 2],
 						255
 					);
 
@@ -174,14 +178,14 @@ namespace til
 
 		case TIL_DEPTH_B8G8R8A8:
 			{
-				color_32b* dst = (color_32b*)colors;
+				color_32b* dst = (color_32b*)m_Colors;
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{					
 					*dst++ = Construct_32b_B8G8R8A8(
-						palette[(i * 3) + 0],
-						palette[(i * 3) + 1],
-						palette[(i * 3) + 2],
+						m_Palette[(i * 3) + 0],
+						m_Palette[(i * 3) + 1],
+						m_Palette[(i * 3) + 2],
 						255
 					);
 				}
@@ -191,13 +195,13 @@ namespace til
 
 		case TIL_DEPTH_R8G8B8:
 			{
-				byte* dst = colors;
+				byte* dst = m_Colors;
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{
-					dst[3] = palette[(i * 3) + 0];
-					dst[2] = palette[(i * 3) + 1];
-					dst[1] = palette[(i * 3) + 2];
+					dst[3] = m_Palette[(i * 3) + 0];
+					dst[2] = m_Palette[(i * 3) + 1];
+					dst[1] = m_Palette[(i * 3) + 2];
 
 					dst += m_BPP;
 				}
@@ -207,7 +211,7 @@ namespace til
 
 		case TIL_DEPTH_R5G6B5:
 			{
-				color_16b* dst = (color_16b*)colors;
+				color_16b* dst = (color_16b*)m_Colors;
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{
@@ -219,9 +223,9 @@ namespace til
 					dst += m_BPP;*/
 
 					*dst++ = Construct_16b_R5G6B5(
-						palette[(i * 3) + 0],
-						palette[(i * 3) + 1],
-						palette[(i * 3) + 2],
+						m_Palette[(i * 3) + 0],
+						m_Palette[(i * 3) + 1],
+						m_Palette[(i * 3) + 2],
 						255
 					);
 				}
@@ -236,7 +240,6 @@ namespace til
 			}
 		}
 
-		m_Colors = colors;
 		m_CurrentColors = m_Colors;
 	}
 
@@ -683,6 +686,19 @@ namespace til
 	uint32 ImageGIF::GetHeight(uint32 a_Frame)
 	{
 		return m_Height;
+	}
+
+	void ImageGIF::ReleaseMemory(BufferLinked* a_Buffer)
+	{
+		if (a_Buffer) 
+		{
+			if (a_Buffer->next)
+			{
+				ReleaseMemory(a_Buffer->next); 
+				delete a_Buffer->next;
+			}
+		}
+		delete a_Buffer->buffer;
 	}
 
 }; // namespace til
