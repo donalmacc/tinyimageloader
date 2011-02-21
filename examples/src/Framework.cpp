@@ -31,6 +31,9 @@ void CheckOGLerror(int a_Line)
 	}
 }
 
+bool TILFW::s_KeysPressed[256];
+bool TILFW::s_KeysReleased[256];
+
 static unsigned long g_TimeCurrent, g_TimeStart;
 static float         g_TimeDelta;
 static float         g_PhysicsTime = 0;
@@ -56,12 +59,15 @@ LRESULT CALLBACK Win32Messages(HWND hWnd, UINT message, WPARAM wParam, LPARAM lP
 
 	case WM_KEYDOWN:
 		{
+			TILFW::s_KeysPressed[wParam] = true;
 
 			break;
 		}
 
 	case WM_KEYUP:
 		{
+			TILFW::s_KeysPressed[wParam] = false;
+			TILFW::s_KeysReleased[wParam] = true;
 
 			break;
 		}
@@ -201,6 +207,12 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 		return -1;
 	}
 
+	for (int i = 0; i < 256; i++) 
+	{ 
+		TILFW::s_KeysPressed[i] = false; 
+		TILFW::s_KeysReleased[i] = false; 
+	}
+
 	TILFW::Init();
 
 	ShowWindow(g_Window, 1);
@@ -228,6 +240,8 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 			while (g_PhysicsTime > frame_physics)
 			{
 				TILFW::Tick(frame_physics);
+
+				for (int i = 0; i < 256; i++) { TILFW::s_KeysReleased[i] = false; }
 
 				g_PhysicsTime -= frame_physics;
 			}

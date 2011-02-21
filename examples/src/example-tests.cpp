@@ -11,15 +11,24 @@
 
 #include "Framework.h"
 
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+
+// We overload the new operator so that we get 
+// information of the leak's whereabouts (line and file)
+
+#ifdef _DEBUG
+	#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+	#define new DEBUG_NEW
+#endif
+
 #include "TinyImageLoader.h"
 
 #include "windows.h"
-#include <psapi.h>
 #include <direct.h>
 #include <sys\stat.h>
 
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
+_CrtMemState g_MemStart, g_MemEnd, g_MemDiff;
 
 void TILFW::Setup()
 {
@@ -29,44 +38,16 @@ void TILFW::Setup()
 
 void MyError(til::MessageData* a_Data)
 {
-	MessageBoxA(NULL, a_Data->message, "Error!", MB_OK | MB_ICONERROR);
-}
-
-unsigned long GetMemoryUsage()
-{
-	HANDLE process;
-	PROCESS_MEMORY_COUNTERS pmc;
-
-	process = OpenProcess ( 
-		PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-		FALSE, 
-		GetCurrentProcessId()
-	);
-
-	if (!process) { return 0; }
-
-	SIZE_T size = 0;
-	if (GetProcessMemoryInfo(process, &pmc, sizeof(pmc)))
-	{
-		size = pmc.WorkingSetSize;
-	}
-
-	CloseHandle(process);
-
-	return (unsigned long)size;
+	MessageBoxA(NULL, a_Data->message, "TinyImageLoader - Tests", MB_OK | MB_ICONERROR);
 }
 
 void TILFW::Init()
 {
-	_CrtMemState mem_start, mem_end, mem_diff;
-
 	// Initialize TinyImageLoader
 
 	til::TIL_Init();
 
 	til::TIL_SetErrorFunc(MyError);
-
-	_CrtMemCheckpoint(&mem_start);
 
 	til::Image* load_bmp = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 	delete load_bmp;
@@ -80,18 +61,23 @@ void TILFW::Init()
 	til::Image* load_ico = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 	delete load_ico;
 
-	_CrtMemCheckpoint(&mem_end);
+	til::Image* load_tga = til::TIL_Load("media\\TGA\\earth.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	delete load_tga;
 
 	til::TIL_ShutDown();
 
-	if (_CrtMemDifference(&mem_diff, &mem_start, &mem_end))
+	_CrtMemCheckpoint(&g_MemEnd);
+
+	if (_CrtMemDifference(&g_MemDiff, &g_MemStart, &g_MemEnd))
 	{
 		_CrtDumpMemoryLeaks();
 
-		int j = 0;
+		MessageBoxA(NULL, "Memory leaks detected!", "TinyImageLoader - Tests", MB_OK | MB_ICONERROR);
+
+		return;
 	}
 
-	int i = 0;
+	MessageBoxA(NULL, "Rejoice! No memory leaks detected.", "TinyImageLoader - Tests", MB_OK | MB_ICONINFORMATION);
 }
 
 void TILFW::Tick(float a_DT)
@@ -107,7 +93,11 @@ void TILFW::Render()
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	TILFW* app = new TILFW;
+
+	_CrtMemCheckpoint(&g_MemStart);
+
 	app->Exec(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
 	delete app;
+
 	return 0;
 }

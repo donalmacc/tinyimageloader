@@ -30,7 +30,7 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_BMP)
 
-#ifdef TIL_DEBUG
+#ifdef TIL_TARGET_DEBUG
 	#define BMP_DEBUG(msg, ...)        TIL_PRINT_DEBUG("BMP: "msg, __VA_ARGS__)
 #else
 	#define BMP_DEBUG(msg, ...)

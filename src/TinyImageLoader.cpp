@@ -46,7 +46,7 @@
 
 #include <stdarg.h>
 #include <windows.h>
-#include <MMSystem.h>
+//#include <MMSystem.h>
 
 namespace til
 {
@@ -86,15 +86,15 @@ namespace til
 
 			if (g_Options & TIL_FILE_CRLF)
 			{
-				strcpy(g_LineFeed, "\r\n");
+				strcpy_s(g_LineFeed, 4, "\r\n");
 			}
 			else if (g_Options & TIL_FILE_LF)
 			{
-				strcpy(g_LineFeed, "\n");
+				strcpy_s(g_LineFeed, 4, "\n");
 			}
 			else if (g_Options & TIL_FILE_CR)
 			{
-				strcpy(g_LineFeed, "\r");
+				strcpy_s(g_LineFeed, 4, "\r");
 			}
 		}
 	}
@@ -114,7 +114,7 @@ namespace til
 			InitLineFeed();
 		}
 
-#if (TIL_RUN_TARGET == TIL_DEBUG)
+#if (TIL_RUN_TARGET == TIL_TARGET_DEBUG)
 
 		if (!g_Debug) 
 		{
@@ -134,7 +134,7 @@ namespace til
 		GetModuleFileNameA(NULL, dir, TIL_MAX_PATH);
 		char* lastslash = strrchr(dir, '\\');
 
-		strncpy(path, dir, lastslash - dir + 1);
+		strncpy_s(path, TIL_MAX_PATH, dir, lastslash - dir + 1);
 		path[lastslash - dir + 1] = 0;
 
 		TIL_SetWorkingDirectory(path, strlen(path));
@@ -174,25 +174,26 @@ namespace til
 
 	void AddErrorDefault(MessageData* a_Data)
 	{
-		sprintf(
-			g_ErrorTemp, 
+		sprintf_s(
+			g_ErrorTemp,
+			g_ErrorMaxSize,
 			"%s (in file %s at line %i)", 
 			a_Data->message, 
 			a_Data->source_file, 
 			a_Data->source_line
 		);
-		strcat(g_ErrorTemp, g_LineFeed);
+		strcat_s(g_ErrorTemp, g_ErrorMaxSize, g_LineFeed);
 
 		bool resize = false;
 		while (strlen(g_ErrorTemp) + strlen(g_Error) > g_ErrorMaxSize) { g_ErrorMaxSize *= 2; resize = true; }
 		if (resize)
 		{
 			char* move = new char[g_ErrorMaxSize];
-			strcpy(move, g_Error);
+			strcpy_s(move, g_ErrorMaxSize, g_Error);
 			g_Error = move;
 		}
 
-		strcat(g_Error, g_ErrorTemp);
+		strcat_s(g_Error, g_ErrorMaxSize, g_ErrorTemp);
 	}
 
 #endif
@@ -217,8 +218,8 @@ namespace til
 	{
 		va_list args;
 		va_start(args, a_Line);
-		if (!g_ErrorTemp) { g_ErrorTemp = new char[1024]; }
-		vsprintf(g_ErrorTemp, a_Message, args);
+		if (!g_ErrorTemp) { g_ErrorTemp = new char[g_ErrorMaxSize]; }
+		vsprintf_s(g_ErrorTemp, g_ErrorMaxSize, a_Message, args);
 		va_end(args);
 
 		g_Msg.message = g_ErrorTemp;
@@ -248,28 +249,28 @@ namespace til
 
 	void AddDebugDefault(MessageData* a_Data)
 	{
-		sprintf(g_DebugTemp, "%s", a_Data->message);
-		strcat(g_DebugTemp, g_LineFeed);
+		sprintf_s(g_DebugTemp, g_DebugMaxSize, "%s", a_Data->message);
+		strcat_s(g_DebugTemp, g_DebugMaxSize, g_LineFeed);
 
 		bool resize = false;
 		while (strlen(g_DebugTemp) + strlen(g_Debug) > g_DebugMaxSize) { g_DebugMaxSize *= 2; resize = true; }
 		if (resize)
 		{
 			char* move = new char[g_DebugMaxSize];
-			strcpy(move, g_Debug);
+			strcpy_s(move, g_DebugMaxSize, g_Debug);
 			delete g_Debug;
 			g_Debug = move;
 		}
 
-		strcat(g_Debug, g_DebugTemp);
+		strcat_s(g_Debug, g_DebugMaxSize, g_DebugTemp);
 	}
 
 	void AddDebug(char* a_Message, char* a_File, int a_Line, ...)
 	{
 		va_list args;
 		va_start(args, a_Line);
-		if (!g_DebugTemp) { g_DebugTemp = new char[1024]; }
-		vsprintf(g_DebugTemp, a_Message, args);
+		if (!g_DebugTemp) { g_DebugTemp = new char[g_DebugMaxSize]; }
+		vsprintf_s(g_DebugTemp, g_DebugMaxSize, a_Message, args);
 		va_end(args);
 
 		g_Msg.message = g_DebugTemp;
@@ -282,7 +283,7 @@ namespace til
 
 	void TIL_GetVersion(char* a_Target, size_t a_MaxLength)
 	{
-		sprintf(a_Target, "%i.%i.%i", TIL_VERSION_MAJOR, TIL_VERSION_MINOR, TIL_VERSION_BUGFIX);
+		sprintf_s(a_Target, a_MaxLength, "%i.%i.%i", TIL_VERSION_MAJOR, TIL_VERSION_MINOR, TIL_VERSION_BUGFIX);
 	}
 
 	Image* TIL_Load(const char* a_FileName, uint32 a_Options)
@@ -356,8 +357,8 @@ namespace til
 			g_WorkingDir = new char[a_Length + 1];
 		}
 
-		strcpy(g_WorkingDir, a_Path);
-		g_WorkingDirLength = strlen(g_WorkingDir);
+		g_WorkingDirLength = strlen(a_Path);
+		strcpy_s(g_WorkingDir, g_WorkingDirLength + 1, a_Path);
 
 		TIL_PRINT_DEBUG("Setting working directory to '%s'", g_WorkingDir);
 
@@ -366,7 +367,10 @@ namespace til
 
 	extern void AddWorkingDirectory( char* a_Dst, size_t a_MaxLength, const char* a_Path )
 	{
-		if (g_WorkingDir) { strncpy(a_Dst, g_WorkingDir, g_WorkingDirLength); }
+		if (g_WorkingDir) 
+		{ 
+			strncpy_s(a_Dst, a_MaxLength, g_WorkingDir, g_WorkingDirLength); 
+		}
 		strcat_s(a_Dst, a_MaxLength, a_Path);
 	}
 

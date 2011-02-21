@@ -37,9 +37,13 @@ namespace til
 	struct BufferICO
 	{
 		byte* buffer;
-		uint32 width, height;
+		uint32 width, height, pitch;
+		uint32 pitchy;
 		uint32 datasize, offset;
 		uint32 bytespp, bitspp;
+		color_32b* colors;
+		uint16 palette;
+		byte* andmask;
 		BufferICO* next;
 	};
 	
@@ -76,6 +80,8 @@ namespace til
 		//@{
 		
 		void AddBuffer(uint32 a_Width, uint32 a_Height);
+		void ReleaseMemory(BufferICO* a_Buffer);
+		void ExpandPalette(BufferICO* a_Buffer);
 		
 		//@}
 

@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;TIL_RUN_TARGET=TIL_DEBUG"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;TIL_RUN_TARGET=TIL_TARGET_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -110,7 +110,7 @@
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="true"
 				WholeProgramOptimization="false"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;TIL_RUN_TARGET=TIL_TARGET_RELEASE"
 				StringPooling="true"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -156,6 +156,10 @@
 		<Filter
 			Name="Settings"
 			>
+			<File
+				RelativePath="..\SDK\headers\TILInternal.h"
+				>
+			</File>
 			<File
 				RelativePath="..\SDK\headers\TILSettings.h"
 				>

@@ -26,7 +26,7 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_TGA)
 
-#ifdef TIL_DEBUG
+#ifdef TIL_TARGET_DEBUG
 	#define TGA_DEBUG(msg, ...)        TIL_PRINT_DEBUG("TGA: "msg, __VA_ARGS__)
 #else
 	#define TGA_DEBUG(msg, ...)
@@ -134,7 +134,7 @@ namespace til
 
 	ImageTGA::~ImageTGA()
 	{
-
+		if (m_Pixels) { delete m_Pixels; }
 	}
 
 	bool ImageTGA::CompileUncompressed()
@@ -204,8 +204,6 @@ namespace til
 
 			m_Target -= m_Pitch;
 		}
-
-		bool bleh = true;
 
 		return true;
 	}

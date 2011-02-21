@@ -54,7 +54,7 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
 
-#ifdef TIL_DEBUG
+#ifdef TIL_TARGET_DEBUG
 	#define GIF_DEBUG(msg, ...)        TIL_PRINT_DEBUG("GIF: "msg, __VA_ARGS__)
 #else
 	#define GIF_DEBUG(msg, ...)

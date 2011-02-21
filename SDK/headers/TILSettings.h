@@ -43,7 +43,8 @@
 #define TIL_PLATFORM_WINDOWS              0 //!< Windows platform
 #define TIL_PLATFORM_WINMO                1 //!< Windows Mobile platform
 #define TIL_PLATFORM_LINUX                2 //!< Linux platform
-#define TIL_PLATFORM_PSP                  3 //!< PSP platform
+#define TIL_PLATFORM_ANDROID              4 //!< Android platform
+#define TIL_PLATFORM_PSP                  5 //!< PSP platform
 
 //! The platform TinyImageLoader should be built for.
 /*!
@@ -53,14 +54,20 @@
 	#define TIL_PLATFORM                  TIL_PLATFORM_WINDOWS
 #endif
 
-#define TIL_DEBUG                         1 //!< Debug target
-#define TIL_RELEASE                       2 //!< Release target
+#define TIL_TARGET_DEBUG                  1 //!< Debug target
+#define TIL_TARGET_RELEASE                2 //!< Release target
+#define TIL_TARGET_DEVEL                  3 //!< Development target
 //! The target to build for
 /*!
 	If no target was set in the preprocessor, the library will compile for release mode.
+
+	Targets:
+	* TIL_TARGET_DEBUG
+	* TIL_TARGET_RELEASE
+	* TIL_TARGET_DEVEL
 */
 #ifndef TIL_RUN_TARGET
-	#define TIL_RUN_TARGET                TIL_RELEASE
+	#define TIL_RUN_TARGET                TIL_TARGET_RELEASE
 #endif
 
 //! Internal define used to extract file options from the options
@@ -132,14 +139,6 @@
 	#define TIL_FORMAT                    (TIL_FORMAT_PNG | TIL_FORMAT_GIF | TIL_FORMAT_TGA | TIL_FORMAT_BMP | TIL_FORMAT_ICO)
 #endif
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-#ifndef _CRT_SECURE_NO_WARNINGS
-	#define _CRT_SECURE_NO_WARNINGS
-#endif
-
-#endif
-
 /*!
 	\def TIL_PRINT_DEBUG
 	\brief Print a debug message
@@ -149,7 +148,7 @@
 	\brief Prints an error message
 	Error messages are always posted, even in release mode.
 */
-#if (TIL_RUN_TARGET == TIL_RELEASE)
+#if (TIL_RUN_TARGET == TIL_TARGET_RELEASE)
 	#define TIL_PRINT_DEBUG(msg, ...)
 #else
 	#define TIL_PRINT_DEBUG(msg, ...)  til::AddDebug("TinyImageLoader - Debug: "msg" ", __FILE__, __LINE__, __VA_ARGS__)
@@ -163,11 +162,10 @@
 #if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
 	#define TIL_MAX_PATH _MAX_PATH
 
-	// used for detecting memory leaks
-	#ifdef _DEBUG
-		#define _CRTDBG_MAP_ALLOC
-		#include <crtdbg.h>
+	#define _CRTDBG_MAP_ALLOC
+	#include <crtdbg.h>
 
+	#ifdef _DEBUG
 		#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 		#define new DEBUG_NEW
 	#endif
@@ -239,58 +237,6 @@ namespace til
 	typedef void* (*MemAllocFunc)(size_t a_Size, size_t* a_Allocated);
 	//! Memory freeing function
 	typedef void (*MemFreeFunc)(void* a_Free, size_t a_Size);
-
-	// =========================================
-	// Internal functions
-	// =========================================
-
-	/*!
-		@name Internal
-		These functions are internal and shouldn't be called by developers.
-	*/
-	//@{
-
-	//! Adds an error to the logging stack
-	/*!
-		\param a_Message The message to post
-		\param a_File The file it originated from
-		\param a_Line The line it originated from
-
-		\note Internal method. 
-
-		An implementation of printf for errors. 
-		The parameters in a_Message are parsed and sent to the attached logging function.
-		This can be the internal logger or one of your own.
-	*/
-	extern void AddError(char* a_Message, char* a_File, int a_Line, ...);
-	//! Adds a debug message to the logging stack
-	/*!
-		\param a_Message The message to post
-		\param a_File The file it originated from
-		\param a_Line The line it originated from
-
-		\note Internal method. 
-
-		An implementation of printf for debug messages. 
-		The parameters in a_Message are parsed and sent to the attached logging function.
-		This can be the internal logger or one of your own.
-	*/
-	extern void AddDebug(char* a_Message, char* a_File, int a_Line, ...);
-
-	//! Adds working directory to a path
-	/*!
-		\param a_Dst Where to put it
-		\param a_MaxLength The length of the destination buffer
-		\param a_Path The path to add
-
-		\note Internal method. 
-		
-		Adds the working directory to a path and puts it in the destination buffer.
-		If the destination buffer is too small, the path is truncated to fit.
-	*/
-	extern void AddWorkingDirectory(char* a_Dst, size_t a_MaxLength, const char* a_Path);
-
-	//@}
 	
 }; // namespace til
 

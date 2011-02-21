@@ -31,6 +31,7 @@
 */
 
 #include "TILSettings.h"
+#include "TILInternal.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -39,7 +40,12 @@ namespace til
 {
 
 	// very strange doxygen workaround
-	; // do not remove!
+	//; // do not remove!
+
+	// this seemingly pointless forward declaration
+	// is necessary to fool doxygen into documenting
+	// the class
+	class DoxygenSaysWhat;
 
 	//! Construct a 16-bit RGB color
 	/*!
@@ -348,7 +354,7 @@ namespace til
 	// this seemingly pointless forward declaration
 	// is necessary to fool doxygen into documenting
 	// the class
-	class DoxygenSaysWhat;
+	//class DoxygenSaysWhat;
 
 	/*!
 		\brief The virtual interface for loading images and extracting image data.
@@ -460,8 +466,6 @@ namespace til
 		virtual uint32 GetHeight(uint32 a_Frame = 0) = 0;
 
 		//! Get the color depth as an enum
-		/*!
-		*/
 		BitDepth GetBitDepth() { return m_BPPIdent; }
 
 	protected:

@@ -35,6 +35,9 @@ struct TILFW
 	unsigned int s_WindowWidth, s_WindowHeight;
 	bool s_Exit;
 
+	static bool s_KeysPressed[256];
+	static bool s_KeysReleased[256];
+
 };
 
 #endif

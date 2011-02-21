@@ -31,13 +31,6 @@
 
 #include <stdlib.h>
 
-#if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
-	#ifndef WIN32_LEAN_AND_MEAN
-		#define WIN32_LEAN_AND_MEAN
-		#include <windows.h>
-	#endif
-#endif
-
 namespace til
 {
 
@@ -55,56 +48,24 @@ namespace til
 
 	bool Image::Load(const char* a_FileName, uint32 a_Options)
 	{
-		size_t length = strlen(a_FileName);
-		m_FileName = new char[length + 1];
-		strcpy(m_FileName, a_FileName);
+		size_t length = strlen(a_FileName) + 1;
+		m_FileName = new char[length];
+		strcpy_s(m_FileName, length, a_FileName);
 
 		char path[TIL_MAX_PATH] = { 0 };
 
 		if (a_Options == TIL_FILE_ABSOLUTEPATH)
 		{
-			strcpy(path, a_FileName);
+			strcpy_s(path, length, a_FileName);
 		}
 		else if (a_Options == TIL_FILE_ADDWORKINGDIR)
 		{
-
-/*#if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
-	
-	#if (defined(TIL_STRINGS_WIDE))
-
-			wchar_t* dir = new wchar_t[256];
-			GetModuleFileNameW(NULL, dir, TIL_MAX_PATH);
-			wchar_t* lastslash = wcsrchr(dir, '\\');
-
-			wchar_t widepath[256] = { 0 };
-			wcsncpy(widepath, dir, lastslash - dir + 1);
-
-			wcstombs(path, widepath, 256);
-
-	#else
-
-			char* dir = new char[256];
-			GetModuleFileNameA(NULL, dir, TIL_MAX_PATH);
-			char* lastslash = strrchr(dir, '\\');
-
-			strncpy(path, dir, lastslash - dir + 1);
-
-	#endif
-
-#else
-
-			strcpy(path, "");
-
-#endif
-
-			strcat(path, a_FileName);*/
-
 			AddWorkingDirectory(path, TIL_MAX_PATH, a_FileName);
 
 			TIL_PRINT_DEBUG("Final path: %s", path);
 		}
 		
-		m_Handle = fopen(path, "rb");
+		fopen_s(&m_Handle, path, "rb");
 		if (!m_Handle)
 		{
 			TIL_ERROR_EXPLAIN("Could not open '%s'.", path);
