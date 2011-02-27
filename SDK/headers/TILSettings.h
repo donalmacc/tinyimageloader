@@ -113,7 +113,9 @@
 #define TIL_DEPTH_R8G8B8A8                0x00030000 //!< 32-bit RGBA color depth
 #define TIL_DEPTH_B8G8R8A8                0x00040000 //!< 32-bit BGRA color depth
 #define TIL_DEPTH_R8G8B8                  0x00050000 //!< 32-bit RGB color depth
-#define TIL_DEPTH_R5G6B5                  0x00060000 //!< 16-bit RGB color depth
+#define TIL_DEPTH_B8G8R8                  0x00060000 //!< 32-bit BGR color depth
+#define TIL_DEPTH_R5G6B5                  0x00070000 //!< 16-bit RGB color depth
+#define TIL_DEPTH_B5G6R5                  0x00070000 //!< 16-bit BGR color depth
 
 //! Internal define used to extract format options from the options
 #define TIL_FORMAT_MASK                   0x0000FFFF
@@ -122,6 +124,7 @@
 #define TIL_FORMAT_BMP                    0x00000004 //!< BMP format
 #define TIL_FORMAT_TGA                    0x00000008 //!< TGA format
 #define TIL_FORMAT_ICO                    0x00000010 //!< ICO format
+#define TIL_FORMAT_DDS                    0x00000020 //!< DDS format
 
 //! Determine which formats should be included in compilation.
 /*!
@@ -134,9 +137,10 @@
 	- TGA
 	- BMP
 	- ICO
+	- DDS
 */
 #ifndef TIL_FORMAT
-	#define TIL_FORMAT                    (TIL_FORMAT_PNG | TIL_FORMAT_GIF | TIL_FORMAT_TGA | TIL_FORMAT_BMP | TIL_FORMAT_ICO)
+	#define TIL_FORMAT                    (TIL_FORMAT_PNG | TIL_FORMAT_GIF | TIL_FORMAT_TGA | TIL_FORMAT_BMP | TIL_FORMAT_ICO | TIL_FORMAT_DDS)
 #endif
 
 /*!

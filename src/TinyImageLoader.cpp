@@ -44,6 +44,10 @@
 	#include "..\SDK\headers\TILImageICO.h"
 #endif
 
+#if (TIL_FORMAT & TIL_FORMAT_DDS)
+	#include "..\SDK\headers\TILImageDDS.h"
+#endif
+
 #include <stdarg.h>
 #include <windows.h>
 //#include <MMSystem.h>
@@ -313,6 +317,9 @@ namespace til
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_ICO)
 		else if (!strncmp(a_FileName + end, ".ico", 4)) { result = new ImageICO(); }
+#endif
+#if (TIL_FORMAT & TIL_FORMAT_DDS)
+		else if (!strncmp(a_FileName + end, ".dds", 4)) { result = new ImageDDS(); }
 #endif
 		else
 		{

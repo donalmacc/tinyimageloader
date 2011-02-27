@@ -177,6 +177,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\TILImageDDS.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\SDK\headers\TILImageDDS.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\TILImageGIF.cpp"
 				>
 			</File>

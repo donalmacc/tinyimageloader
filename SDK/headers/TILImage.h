@@ -101,11 +101,6 @@ namespace til
 			(((g * 0x00FF0000) >> 8) & 0x0000FF00) |
 			(((b * 0xFF000000) >> 8) & 0x00FF0000)
 		);
-
-		/*return
-			((a_Red   & 0xFF) << 16) |
-			((a_Green & 0xFF) << 8) |
-			((a_Blue  & 0xFF));*/
 	}
 
 	//! Construct a 32-bit ABGR color
@@ -348,6 +343,80 @@ namespace til
 			(((r * a_Alpha) >> 8) & 0xF800) |
 			(((g * a_Alpha) >> 8) & 0x07E0) |
 			(((b * a_Alpha) >> 8) & 0x001F)
+		);
+	}
+
+	//! Blend between two 16-bit RGB colors
+	/*!
+		\param a_Left Color one
+		\param a_Right Color two
+		\param a_Factor The amount of blending, between 0 - 255
+
+		\return 16-bit result
+
+		Blends between colors. The higher the factor parameter, the more the blend is shifted towards the second color.
+	*/
+	inline color_16b Blend_16b_R5G6B5(color_16b a_Left, color_16b a_Right, uint8 a_Factor)
+	{
+		uint8 inv_fact = 255 - a_Factor;
+
+		color_32b r = ((((a_Left & 0xF800) * a_Factor) + ((a_Right & 0xF800) * inv_fact)) >> 8) & 0xF800;
+		color_32b g = ((((a_Left & 0x07E0) * a_Factor) + ((a_Right & 0x07E0) * inv_fact)) >> 8) & 0x07E0;
+		color_32b b = ((((a_Left & 0x001F) * a_Factor) + ((a_Right & 0x001F) * inv_fact)) >> 8) & 0x001F;
+
+		return (color_16b)(r | g | b);
+	}
+
+	//! Blend between two 32-bit RGB colors
+	/*!
+		\param a_Left Color one
+		\param a_Right Color two
+		\param a_Factor The amount of blending, between 0 - 255
+
+		\return 32-bit result
+
+		Blends between colors. The higher the factor parameter, the more the blend is shifted towards the second color.
+	*/
+	inline color_32b Blend_32b_R8G8B8(color_32b a_Left, color_32b a_Right, uint8 a_Factor)
+	{
+		uint8 inv_fact = 255 - a_Factor;
+
+		color_32b r = ((((a_Left & 0xFF0000) * a_Factor) + ((a_Right & 0xFF0000) * inv_fact)) >> 8) & 0xFF0000;
+		color_32b g = ((((a_Left & 0x00FF00) * a_Factor) + ((a_Right & 0x00FF00) * inv_fact)) >> 8) & 0x00FF00;
+		color_32b b = ((((a_Left & 0x0000FF) * a_Factor) + ((a_Right & 0x0000FF) * inv_fact)) >> 8) & 0x0000FF;
+
+		return r | g | b;
+	}
+
+	//! Convert a 16-bit RGB color to a 32-bit ARGB color
+	/*!
+		\param a_Color a 16-bit RGB color
+
+		\return 32-bit ARGB color
+	*/
+	inline color_32b Convert_From_16b_R5G6B5_To_32b_A8R8G8B8(color_16b a_Color)
+	{
+		return (
+			(((a_Color & 0xF800) * 0xFF) / 0xF800) << 16 |
+			(((a_Color & 0x07E0) * 0xFF) / 0x07E0) << 8  |
+			(((a_Color & 0x001F) * 0xFF) / 0x001F)       |
+			0xFF000000
+		);
+	}
+
+	//! Convert a 16-bit BGR color to a 32-bit ARGB color
+	/*!
+		\param a_Color a 16-bit BGR color
+
+		\return 32-bit ARGB color
+	*/
+	inline color_32b Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(color_16b a_Color)
+	{
+		return (
+			(((a_Color & 0xF800) * 0xFF) / 0xF800)       |
+			(((a_Color & 0x07E0) * 0xFF) / 0x07E0) << 8  |
+			(((a_Color & 0x001F) * 0xFF) / 0x001F) << 16 |
+			0xFF000000
 		);
 	}
 

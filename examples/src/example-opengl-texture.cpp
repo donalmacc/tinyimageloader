@@ -73,8 +73,10 @@ void TILFW::Init()
 	// TIL_DEPTH_A8B8G8R8 = GL_RGBA
 
 	//til::Image* load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-	til::Image* load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	//til::Image* load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 	//til::Image* load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	til::Image* load = til::TIL_Load("media\\DDS\\chasm_edge.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	//til::Image* load = til::TIL_Load("media\\DDS\\pic_arms_nord.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 
 	g_TextureTotal = load->GetFrameCount();
 	g_Texture = new GLuint[g_TextureTotal];
@@ -105,10 +107,13 @@ void TILFW::Init()
 
 		// Center the image on the screen
 
-		g_ScaleX[i] = (float)load->GetWidth(i) * 10.f;
-		g_ScaleY[i] = (float)load->GetHeight(i) * 10.f;
+		float scale = 1.f;
+		g_ScaleX[i] = (float)load->GetWidth(i) * scale;
+		g_ScaleY[i] = (float)load->GetHeight(i) * scale;
 		g_PosX[i] = ((float)s_WindowWidth / 2.f) - (g_ScaleX[i] / 2.f);
 		g_PosY[i] = ((float)s_WindowHeight / 2.f) - (g_ScaleY[i] / 2.f);
+		//g_PosX[i] = 0;
+		//g_PosY[i] = 0;
 	}
 }
 
