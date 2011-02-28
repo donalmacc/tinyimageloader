@@ -22,52 +22,42 @@
 	THE SOFTWARE.
 */
 
-/*!
-	\file ..\SDK\headers\TILImage.h
-	\class til::Image "../SDK/headers/TILImage.h"
-*/
-
-#include "..\SDK\headers\TILImage.h"
-
-#include <stdlib.h>
+#include "..\SDK\headers\TILFileStreamStd.h"
 
 namespace til
 {
 
-	Image::Image()
+	FileStreamStd::FileStreamStd() : FileStream()
 	{
-		m_Handle = NULL;
-		m_FileName = NULL;
+
 	}
 
-	Image::~Image()
-	{ 
-		Close();
-		if (m_FileName) { delete m_FileName; }
+	FileStreamStd::~FileStreamStd()
+	{
+
 	}
 
-	bool Image::Load(const char* a_FileName, uint32 a_Options)
+	bool FileStreamStd::Open(const char* a_File, uint32 a_Options)
 	{
-		m_Stream = g_FileFunc(a_FileName, a_Options);
-
-		size_t length = strlen(a_FileName) + 1;
-		m_FileName = new char[length];
-		strcpy_s(m_FileName, length, a_FileName);
-
 		char path[TIL_MAX_PATH] = { 0 };
+		size_t length = strlen(a_File);
 
 		if (a_Options == TIL_FILE_ABSOLUTEPATH)
 		{
-			strcpy_s(path, length, a_FileName);
+			strcpy_s(path, TIL_MAX_PATH, a_File);
 		}
 		else if (a_Options == TIL_FILE_ADDWORKINGDIR)
 		{
-			TIL_AddWorkingDirectory(path, TIL_MAX_PATH, a_FileName);
+			TIL_AddWorkingDirectory(path, TIL_MAX_PATH, a_File);
 
 			TIL_PRINT_DEBUG("Final path: %s", path);
 		}
-		
-		fopen_s(&m_Handle, path, "rb");
+
+		length = strlen(path);
+		m_FilePath = new char[length + 1];
+		strcpy_s(m_FilePath, length + 1, path);
+
+		fopen_s(&m_Handle, m_FilePath, "rb");
 		if (!m_Handle)
 		{
 			TIL_ERROR_EXPLAIN("Could not open '%s'.", path);
@@ -77,7 +67,54 @@ namespace til
 		return true;
 	}
 
-	bool Image::Close()
+	bool FileStreamStd::Read(void* a_Dst, uint32 a_Size, uint32 a_Count)
+	{
+		fread(a_Dst, a_Size, a_Count, m_Handle);
+		return true;
+	}
+
+	bool FileStreamStd::ReadByte(byte* a_Dst, uint32 a_Count)
+	{
+		fread(a_Dst, sizeof(byte), a_Count, m_Handle);
+		return true;
+	}
+
+	bool FileStreamStd::ReadWord(word* a_Dst, uint32 a_Count)
+	{
+		fread(a_Dst, sizeof(word), a_Count, m_Handle);
+		return true;
+	}
+
+	bool FileStreamStd::ReadDWord(dword* a_Dst, uint32 a_Count)
+	{
+		fread(a_Dst, sizeof(dword), a_Count, m_Handle);
+		return true;
+	}
+
+	bool FileStreamStd::Seek(uint32 a_Bytes, uint32 a_Options)
+	{
+		if (a_Options & TIL_FILE_SEEK_START) 
+		{ 
+			fseek(m_Handle, a_Bytes, SEEK_SET); 
+		}
+		else if (a_Options & TIL_FILE_SEEK_CURR) 
+		{ 
+			fseek(m_Handle, a_Bytes, SEEK_CUR); 
+		}
+		else if (a_Options & TIL_FILE_SEEK_END) 
+		{ 
+			fseek(m_Handle, a_Bytes, SEEK_END);
+		}
+
+		return true;
+	}
+
+	bool FileStreamStd::EndOfFile()
+	{
+		return false;
+	}
+
+	bool FileStreamStd::Close()
 	{
 		if (m_Handle)
 		{
@@ -88,34 +125,4 @@ namespace til
 		return false;
 	}
 
-	void Image::SetBPP(uint32 a_Options)
-	{
-		switch (a_Options)
-		{
-
-		case TIL_DEPTH_A8R8G8B8:
-		case TIL_DEPTH_A8B8G8R8:
-		case TIL_DEPTH_R8G8B8A8:
-		case TIL_DEPTH_B8G8R8A8:
-			{
-				m_BPP = 4;
-				break;
-			}
-		case TIL_DEPTH_R8G8B8:
-			{
-				m_BPP = 3;
-				break;
-			}
-			
-		case TIL_DEPTH_R5G6B5:
-			{
-				m_BPP = 2;
-				break;
-			}
-
-		}	
-
-		m_BPPIdent = (BitDepth)(a_Options >> 16);
-	}
-
-}; // namespace til
+}

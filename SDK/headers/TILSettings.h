@@ -91,12 +91,21 @@
 	\endcode
 */
 #define TIL_FILE_ADDWORKINGDIR            0x00000002
+//! The specified path is unicode.
+#define TIL_FILE_WIDEPATH                 0x00000004
 //! Add \\r\\n as the line ending
-#define TIL_FILE_CRLF                     0x00000004
+#define TIL_FILE_CRLF                     0x00000008
 //! Add \\r as the line ending
-#define TIL_FILE_CR                       0x00000008
+#define TIL_FILE_CR                       0x00000010
 //! Add \\n as the line ending
-#define TIL_FILE_LF                       0x00000010
+#define TIL_FILE_LF                       0x00000020
+
+//! Seek from the start of the file
+#define TIL_FILE_SEEK_START               0x00000100
+//! Seek from the current position in the file
+#define TIL_FILE_SEEK_CURR                0x00000200
+//! Seek from the end of the file
+#define TIL_FILE_SEEK_END                 0x00000400
 
 //! Internal define used to extract debug options from the options
 #define TIL_DEBUG_MASK                    0xFFFF0000
@@ -235,12 +244,19 @@ namespace til
 
 		Message functions are used for logging. You can create your own and attach them to TinyImageLoader.
 	*/
-	typedef void (*MessageFunc)(MessageData*);
+	typedef void (*MessageFunc)(MessageData* a_Data);
 
 	//! Memory allocation function
 	typedef void* (*MemAllocFunc)(size_t a_Size, size_t* a_Allocated);
 	//! Memory freeing function
 	typedef void (*MemFreeFunc)(void* a_Free, size_t a_Size);
+
+	class FileStream;
+	//! FileStream creation function
+	/*!
+		Opens a FileStream with the specified path and options. Used to create your own implementation of file handling.
+	*/
+	typedef FileStream* (*FileStreamFunc)(const char* a_Path, uint32 a_Options);
 	
 }; // namespace til
 

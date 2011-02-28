@@ -32,6 +32,7 @@
 */
 
 #include "TILSettings.h"
+#include "TILFileStream.h"
 #include "TILImage.h"
 
 /*! 
@@ -111,6 +112,27 @@ namespace til
 		On other systems, this value is left blank.
 	*/
 	extern size_t TIL_SetWorkingDirectory(const char* a_Path, size_t a_Length);
+
+	//! Adds working directory to a path
+	/*!
+		\param a_Dst Where to put it
+		\param a_MaxLength The length of the destination buffer
+		\param a_Path The path to add
+		
+		Adds the working directory to a path and puts it in the destination buffer.
+		If the destination buffer is too small, the path is truncated to fit.
+	*/
+	extern void TIL_AddWorkingDirectory(char* a_Dst, size_t a_MaxLength, const char* a_Path);
+
+	//! Set the callback for creating FileStream's.
+	/*!
+		\param a_Func The creation function
+
+		Used for implementing your own file handling system. Especially useful on embedded platforms.
+		Whenever an Image opens a file, it goes through a FileStream. Write your own implementation
+		and attach it to TinyImageLoader using this function.
+	*/
+	extern void TIL_SetFileStreamFunc(FileStreamFunc a_Func);
 
 	//! Get the version as a string.
 	/*!

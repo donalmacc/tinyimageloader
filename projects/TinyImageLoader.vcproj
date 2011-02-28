@@ -245,6 +245,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Files"
+			>
+			<File
+				RelativePath="..\src\TILFileStream.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\SDK\headers\TILFileStream.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\TILFileStreamStd.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\SDK\headers\TILFileStreamStd.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

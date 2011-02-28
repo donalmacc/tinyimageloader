@@ -86,7 +86,8 @@ void TILFW::Init(const char** a_CommandLine, int a_Commands)
 	//}
 	if (a_Commands == 1)
 	{
-		g_Load = til::TIL_Load("media\\DDS\\pic_arms_nord.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		//g_Load = til::TIL_Load("media\\DDS\\pic_arms_nord.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		g_Load = til::TIL_Load("D:\\Steam\\steamapps\\common\\mountblade warband\\Textures\\khergit_lady_dress_b.dds", TIL_FILE_ABSOLUTEPATH | TIL_DEPTH_A8B8G8R8);
 	}
 	else
 	{

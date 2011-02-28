@@ -48,6 +48,8 @@
 	#include "..\SDK\headers\TILImageDDS.h"
 #endif
 
+#include "..\SDK\headers\TILFileStreamStd.h"
+
 #include <stdarg.h>
 #include <windows.h>
 //#include <MMSystem.h>
@@ -357,7 +359,7 @@ namespace til
 		return result;
 	}
 
-	extern size_t TIL_SetWorkingDirectory(const char* a_Path, size_t a_Length )
+	size_t TIL_SetWorkingDirectory(const char* a_Path, size_t a_Length )
 	{
 		if (!g_WorkingDir)
 		{
@@ -372,13 +374,26 @@ namespace til
 		return g_WorkingDirLength;
 	}
 
-	extern void AddWorkingDirectory( char* a_Dst, size_t a_MaxLength, const char* a_Path )
+	void TIL_AddWorkingDirectory( char* a_Dst, size_t a_MaxLength, const char* a_Path )
 	{
 		if (g_WorkingDir) 
 		{ 
 			strncpy_s(a_Dst, a_MaxLength, g_WorkingDir, g_WorkingDirLength); 
 		}
 		strcat_s(a_Dst, a_MaxLength, a_Path);
+	}
+
+	void TIL_SetFileStreamFunc(FileStreamFunc a_Func)
+	{
+		g_FileFunc = a_Func;
+	}
+
+	FileStream* OpenStreamDefault(const char* a_Path, uint32 a_Options)
+	{
+		FileStream* result = new FileStreamStd();
+		if (result->Open(a_Path, a_Options)) { return result; }
+		
+		return NULL;
 	}
 
 }; // namespace til

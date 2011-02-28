@@ -290,7 +290,8 @@ namespace til
 	bool ImageDDS::Parse(uint32 a_ColorDepth)
 	{
 		dword header;
-		fread(&header, sizeof(dword), 1, m_Handle);
+		//fread(&header, sizeof(dword), 1, m_Handle);
+		m_Stream->ReadDWord(&header);
 
 		if (header != DDS_FOURCC_DDS)
 		{
@@ -300,7 +301,8 @@ namespace til
 
 		DDSurfaceDesc ddsd;
 		//in.read(reinterpret_cast<char*>(&ddsd), sizeof ddsd);
-		fread(&ddsd, 1, sizeof(DDSurfaceDesc), m_Handle);
+		//fread(&ddsd, 1, sizeof(DDSurfaceDesc), m_Handle);
+		m_Stream->Read(&ddsd, sizeof(DDSurfaceDesc));
 
 		m_Format = 0;
 		m_InternalBPP = 0;
@@ -425,8 +427,6 @@ namespace til
 
 		m_Colors = new byte[m_BPP * 6];
 
-		fread(m_Data, m_Size, 1, m_Handle);
-
 		m_Pixels = new byte[m_Width * m_Height * m_BPP];
 
 		if (m_Format == DDS_FOURCC_DXT1)
@@ -503,6 +503,8 @@ namespace til
 		}
 
 		m_Data = new byte[m_Size];
+		//fread(m_Data, m_Size, 1, m_Handle);
+		m_Stream->ReadByte(m_Data, m_Size);
 	}
 
 	void ImageDDS::DecompressDXT1()

@@ -32,6 +32,7 @@
 
 #include "TILSettings.h"
 #include "TILInternal.h"
+#include "TILFileStream.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -560,6 +561,7 @@ namespace til
 
 	protected:
 
+		FileStream* m_Stream;
 		FILE* m_Handle; //!< The file handle
 		char* m_FileName; //!< The filename
 		BitDepth m_BPPIdent; //!< The bit depth to convert to

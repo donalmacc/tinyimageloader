@@ -40,18 +40,27 @@ namespace til
 	*/
 	extern void AddDebug(char* a_Message, char* a_File, int a_Line, ...);
 
-	//! Adds working directory to a path
-	/*!
-		\param a_Dst Where to put it
-		\param a_MaxLength The length of the destination buffer
-		\param a_Path The path to add
+	extern void TIL_AddWorkingDirectory(char* a_Dst, size_t a_MaxLength, const char* a_Path);
 
-		\note Internal method. 
-		
-		Adds the working directory to a path and puts it in the destination buffer.
-		If the destination buffer is too small, the path is truncated to fit.
+	//! Default FileStream function.
+	/*!
+		\param a_Path File path
+		\param a_Options Options to load with
+
+		\return FileStream handle
+
+		\note Internal method.
+
+		Opens a file and returns a FileStream handle. If unsuccessful, it returns NULL.
 	*/
-	extern void AddWorkingDirectory(char* a_Dst, size_t a_MaxLength, const char* a_Path);
+	extern FileStream* OpenStreamDefault(const char* a_Path, uint32 a_Options);
+	//! Opens a FileStream.
+	/*!
+		\note Internal method.	
+
+		This function pointer is called by implementations to get a handle to a file.
+	*/
+	static FileStreamFunc g_FileFunc = OpenStreamDefault;
 
 	//@}
 }
