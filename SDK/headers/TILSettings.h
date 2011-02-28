@@ -124,7 +124,7 @@
 #define TIL_DEPTH_R8G8B8                  0x00050000 //!< 32-bit RGB color depth
 #define TIL_DEPTH_B8G8R8                  0x00060000 //!< 32-bit BGR color depth
 #define TIL_DEPTH_R5G6B5                  0x00070000 //!< 16-bit RGB color depth
-#define TIL_DEPTH_B5G6R5                  0x00070000 //!< 16-bit BGR color depth
+#define TIL_DEPTH_B5G6R5                  0x00080000 //!< 16-bit BGR color depth
 
 //! Internal define used to extract format options from the options
 #define TIL_FORMAT_MASK                   0x0000FFFF
@@ -193,7 +193,7 @@ namespace til
 	// Unsigned
 	// =========================================
 
-	typedef long long                         uint64; //!< 64-bit unsigned integer
+	typedef unsigned __int64                  uint64; //!< 64-bit unsigned integer
 	typedef unsigned long                     uint32; //!< 32-bit unsigned integer
 	typedef unsigned short                    uint16; //!< 16-bit unsigned integer
 	typedef unsigned char                     uint8;  //!< 8-bit unsigned integer
@@ -202,7 +202,7 @@ namespace til
 	// Signed
 	// =========================================
 
-	typedef unsigned long long                int64;  //!< 64-bit signed integer
+	typedef __int64                           int64;  //!< 64-bit signed integer
 	typedef long                              int32;  //!< 32-bit signed integer
 	typedef short                             int16;  //!< 16-bit signed integer
 	typedef char                              int8;   //!< 8-bit signed integer

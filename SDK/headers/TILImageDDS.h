@@ -80,7 +80,9 @@ namespace til
 	private:
 		
 		void ReadData();
+		void GetOffsets();
 		void DecompressDXT1();
+		void DecompressDXT5();
 
 		uint32 m_Width, m_Height, m_Depth;
 		uint32 m_MipMaps;
@@ -92,6 +94,7 @@ namespace til
 		uint32 m_BlockSize;
 
 		byte* m_Colors;
+		byte* m_Alpha;
 
 		byte* m_Data;
 		byte* m_Pixels;

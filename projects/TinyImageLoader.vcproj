@@ -157,6 +157,10 @@
 			Name="Settings"
 			>
 			<File
+				RelativePath="..\SDK\headers\TILConvert.h"
+				>
+			</File>
+			<File
 				RelativePath="..\SDK\headers\TILInternal.h"
 				>
 			</File>

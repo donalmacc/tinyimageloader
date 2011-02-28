@@ -78,7 +78,7 @@ void TILFW::Init(const char** a_CommandLine, int a_Commands)
 	//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 
 	//g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-	//g_Load = til::TIL_Load("media\\DDS\\chasm_edge.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	//
 
 	//if (a_Commands > 1)
 	//{
@@ -87,7 +87,9 @@ void TILFW::Init(const char** a_CommandLine, int a_Commands)
 	if (a_Commands == 1)
 	{
 		//g_Load = til::TIL_Load("media\\DDS\\pic_arms_nord.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-		g_Load = til::TIL_Load("D:\\Steam\\steamapps\\common\\mountblade warband\\Textures\\khergit_lady_dress_b.dds", TIL_FILE_ABSOLUTEPATH | TIL_DEPTH_A8B8G8R8);
+		//g_Load = til::TIL_Load("media\\DDS\\blood_stain_large.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		//g_Load = til::TIL_Load("media\\DDS\\chasm_edge.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 	}
 	else
 	{
@@ -167,6 +169,9 @@ void TILFW::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glEnable(GL_BLEND); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glBindTexture(GL_TEXTURE_2D, g_Texture[g_TextureCurrent]);
 
 	// Make sure we don't screw up our meticulously designed matrices
@@ -187,6 +192,8 @@ void TILFW::Render()
 		glEnd();
 
 	glPopMatrix();
+
+	glDisable(GL_BLEND);
 }
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)

@@ -108,176 +108,52 @@ namespace til
 		byte bits_0, bits_1, bits_2, bits_3;
 	};
 
+	struct DataDXT5
+	{
+		byte alpha0, alpha1;
+		byte a_bits_0, a_bits_1, a_bits_2, a_bits_3, a_bits_4, a_bits_5;
+
+		byte c0_lo, c0_hi, c1_lo, c1_hi;
+		byte bits_0, bits_1, bits_2, bits_3;
+	};
+
 #define GETCODE(x, y, data) (data & ((2 * (4 * y + x)) + 1))
 
 	typedef void (*ColorFuncDDS_DXT1)(byte* a_DstColors, color_16b& a_Color0, color_16b& a_Color1);
 
-	void ColorFuncDDS_DXT1_A8R8G8B8(byte* a_DstColors, color_16b& a_Color0, color_16b& a_Color1)
+	void ColorFuncDDS_DXT1_A8B8G8R8(byte* a_DstColors, color_16b& a_Color0, color_16b& a_Color1)
 	{
 		color_32b* colors = (color_32b*)a_DstColors;
 
-		colors[0] = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(a_Color0);
-		colors[1] = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(a_Color1);
-		colors[2] = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0xAA));
-		colors[3] = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0x55));
-		colors[4] = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0x80));
-		colors[5] = 0;
+		colors[0] = Convert_From_16b_B5G6R5_To_32b_A8B8G8R8(a_Color0);
+		colors[1] = Convert_From_16b_B5G6R5_To_32b_A8B8G8R8(a_Color1);
+		colors[2] = Convert_From_16b_B5G6R5_To_32b_A8B8G8R8(Blend_16b_B5G6R5(a_Color0, a_Color1, 0xAA));
+		colors[3] = Convert_From_16b_B5G6R5_To_32b_A8B8G8R8(Blend_16b_B5G6R5(a_Color0, a_Color1, 0x55));
+
+		colors[4] = colors[0];
+		colors[5] = colors[1];
+		colors[6] = Convert_From_16b_B5G6R5_To_32b_A8B8G8R8(Blend_16b_B5G6R5(a_Color0, a_Color1, 0x80));
+		colors[7] = 0;
 	}
 
-	void Decompress_DXT1_A8R8G8B8(byte* a_Dst, byte* a_Src, uint32 a_Blocks, uint32 a_Width)
+	void ColorFuncDDS_DXT5_A8B8G8R8(byte* a_Dst, byte* a_Src, byte& a_Alpha)
 	{
-		color_32b* write = (color_32b*)a_Dst;
-		color_32b* dst_x = write;
+		color_32b* colors = (color_32b*)a_Dst;
+		color_32b* src = (color_32b*)a_Src;
 
-		uint32 pitch = a_Width * 4;
-		uint32 pitch_blocks = a_Width / 4;
-		uint32 curr = 0;
+		*colors = Construct_32b_A8B8G8R8(*(color_32b*)a_Src, a_Alpha);
+		//*colors = Construct_32b_A8R8G8B8(*(color_32b*)a_Src, 0);
+		//*colors = (*src & 0xFFFFFF);
 
-		DataDXT1* src = (DataDXT1*)a_Src;
-
-		/*
-			RGB0,              if color0 > color1 and code(x,y) == 0
-			RGB1,              if color0 > color1 and code(x,y) == 1
-			(2*RGB0+RGB1)/3,   if color0 > color1 and code(x,y) == 2
-			(RGB0+2*RGB1)/3,   if color0 > color1 and code(x,y) == 3
-		*/
-
-		int glob_x = 0;
-		int glob_y = 0;
-		int pos_x = 0;
-		int pos_y = 0;
-
-		for (int i = 0; i < a_Blocks; i++)
-		{
-			color_16b color0 = (src->c0_lo + (src->c0_hi * 256));
-			color_16b color1 = (src->c1_lo + (src->c1_hi * 256));
-			dword bits = src->bits_0 + (256 * (src->bits_1 + 256 * (src->bits_2 + 256 * src->bits_3)));
-
-			color_32b color_dst0 = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(color0);
-			color_32b color_dst1 = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(color1);
-			color_32b color_dst2 = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(Blend_16b_R5G6B5(color0, color1, 0x55));
-			color_32b color_dst3 = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(Blend_16b_R5G6B5(color0, color1, 0xAA)); 
-			color_32b color_dst4 = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(Blend_16b_R5G6B5(color0, color1, 0x80));
-
-			if (color0 > color1)
-			{
-				pos_y = glob_y;
-
-				for (int y = 0; y < 4; y++)
-				{
-					pos_x = glob_x;
-
-					for (int x = 0; x < 4; x++)
-					{
-						bool bit0 = (bits & (1 << ((2 * (4 * y + x)) + 0))) ? true : false;
-						bool bit1 = (bits & (1 << ((2 * (4 * y + x)) + 1))) ? true : false;
-
-						color_32b* dst = &write[pos_x + (pos_y * a_Width)];
-
-						if (bit0) // 1 or 3
-						{
-							if (bit1) // 3
-							{
-								*dst = color_dst3;
-							}
-							else // 1
-							{
-								*dst = color_dst1;	
-							}
-						}
-						else // 0 or 2
-						{
-							if (bit1) // 2
-							{
-								*dst = color_dst2;
-							}
-							else // 0
-							{
-								*dst = color_dst0;
-							}
-						}
-
-						pos_x++;
-					}
-
-					pos_y++;
-				}
-			}
-			else
-			{
-				/*
-					RGB0,              if color0 <= color1 and code(x,y) == 0
-					RGB1,              if color0 <= color1 and code(x,y) == 1
-					(RGB0+RGB1)/2,     if color0 <= color1 and code(x,y) == 2
-					BLACK,             if color0 <= color1 and code(x,y) == 3
-				*/
-
-				pos_y = glob_y;
-
-				for (int y = 0; y < 4; y++)
-				{
-					pos_x = glob_x;
-
-					for (int x = 0; x < 4; x++)
-					{
-						bool bit0 = (bits & (1 << ((2 * (4 * y + x)) + 0))) ? true : false;
-						bool bit1 = (bits & (1 << ((2 * (4 * y + x)) + 1))) ? true : false;
-
-						color_32b* dst = &write[pos_x + (pos_y * a_Width)];
-
-						if (bit0) // 1 or 3
-						{
-							if (bit1) // 3
-							{
-								*dst = 0;
-							}
-							else // 1
-							{
-								*dst = color_dst1;	
-							}
-						}
-						else // 0 or 2
-						{
-							if (bit1) // 2
-							{
-								*dst = color_dst4;
-							}
-							else // 0
-							{
-								*dst = color_dst0;
-							}
-						}
-
-						pos_x++;
-					}
-
-					pos_y++;
-				}
-			}
-
-			glob_x += 4;
-			//dst_x += 4;
-			if (++curr == pitch_blocks)
-			{
-				//write += pitch * 4;
-				//dst_x = write;
-				curr = 0;
-
-				glob_y += 4;
-				glob_x = 0;
-			}
-
-			src++;
-		}
+		int i = 0;
 	}
-
-	//ColorFuncDDS g_ColorFunc;
 
 	ImageDDS::ImageDDS() : Image()
 	{
 		m_Data = NULL;
 		m_Pixels = NULL;
 		m_Colors = NULL;
+		m_Alpha = NULL;
 	}
 
 	ImageDDS::~ImageDDS()
@@ -285,6 +161,7 @@ namespace til
 		if (m_Data) { delete m_Data; }
 		if (m_Pixels) { delete m_Pixels; }
 		if (m_Colors) { delete m_Colors; }
+		if (m_Alpha) { delete m_Alpha; }
 	}
 
 	bool ImageDDS::Parse(uint32 a_ColorDepth)
@@ -386,7 +263,6 @@ namespace til
 				{
 					m_InternalDepth = TIL_DEPTH_A8B8G8R8;
 				}
-				m_InternalBPP = 4;
 			}
 			else if (ddsd.format.bpp == 24)
 			{
@@ -398,7 +274,6 @@ namespace til
 				{
 					m_InternalDepth = TIL_DEPTH_B8G8R8;
 				}
-				m_InternalBPP = 3;
 			}
 			else
 			{
@@ -406,6 +281,8 @@ namespace til
 				return false;
 			}
 		}
+
+		m_InternalBPP = ddsd.format.bpp;
 
 		m_Width = ddsd.width;
 		m_Height = ddsd.height;
@@ -424,14 +301,22 @@ namespace til
 		}
 
 		ReadData();
+		GetOffsets();
 
-		m_Colors = new byte[m_BPP * 6];
+		DDS_DEBUG("Blocks: %d", m_Blocks);
 
 		m_Pixels = new byte[m_Width * m_Height * m_BPP];
+
+		m_Colors = new byte[m_BPP * 8];
 
 		if (m_Format == DDS_FOURCC_DXT1)
 		{
 			DecompressDXT1();
+		}
+		else if (m_Format == DDS_FOURCC_DXT5)
+		{
+			m_Alpha = new byte[16 * sizeof(dword)];
+			DecompressDXT5();
 		}
 		else
 		{
@@ -459,6 +344,69 @@ namespace til
 	uint32 ImageDDS::GetHeight(uint32 a_Frame /*= 0*/)
 	{
 		return m_Height;
+	}
+
+	void ImageDDS::GetOffsets()
+	{
+		uint32 size = 128; // sizeof(DDSHeader);
+		uint32 faces = 1;
+
+		if (m_CubeMap)
+		{
+			faces = 6;
+		}
+
+		/*if (header.hasDX10Header())
+		{
+			size += 20; // sizeof(DDSHeader10);
+		}*/
+
+		for (int i = 0; i < faces; i++)
+		{
+			uint32 count = m_MipMaps;
+			uint32 size = 0;
+
+			for (uint32 m = 0; m < count; m++)
+			{
+				uint32 w = m_Width;
+				uint32 h = m_Height;
+				uint32 d = m_Depth;
+
+				for (uint32 m = 0; m < m_MipMaps; m++)
+				{
+					w = (w / 2);
+					h = (h / 2);
+					d = (d / 2);
+				}
+
+				if (m_Format)
+				{
+					// @@ How are 3D textures aligned?
+					w = (w + 3) / 4;
+					h = (h + 3) / 4;
+					size += m_BlockSize * w * h;
+				}
+				else
+				{
+					// Align pixels to bytes.
+					uint32 byteCount = (m_InternalBPP + 7) / 8;
+
+					// Align pitch to 4 bytes.
+					uint32 pitch = 4 * ((w * byteCount + 3) / 4);
+
+					size += pitch * h * d;
+				}
+			}
+
+			int i = 0;
+		}
+
+		/*for (uint m = 0; m < mipmap; m++)
+		{
+			size += mipmapSize(m);
+		}*/
+
+		//return size;
 	}
 
 	void ImageDDS::ReadData()
@@ -518,13 +466,6 @@ namespace til
 
 		DataDXT1* src = (DataDXT1*)m_Data;
 
-		/*
-			RGB0,              if color0 > color1 and code(x,y) == 0
-			RGB1,              if color0 > color1 and code(x,y) == 1
-			(2*RGB0+RGB1)/3,   if color0 > color1 and code(x,y) == 2
-			(RGB0+2*RGB1)/3,   if color0 > color1 and code(x,y) == 3
-		*/
-
 		int glob_x = 0;
 		int glob_y = 0;
 		int pos_x = 0;
@@ -536,127 +477,125 @@ namespace til
 			color_16b color1 = (src->c1_lo + (src->c1_hi * 256));
 			dword bits = src->bits_0 + (256 * (src->bits_1 + 256 * (src->bits_2 + 256 * src->bits_3)));
 
-			/*color_32b color_dst0 = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(color0);
-			color_32b color_dst1 = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(color1);
-			color_32b color_dst2 = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(Blend_16b_R5G6B5(color0, color1, 0x55));
-			color_32b color_dst3 = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(Blend_16b_R5G6B5(color0, color1, 0xAA)); 
-			color_32b color_dst4 = Convert_From_16b_B5G6R5_To_32b_A8R8G8B8(Blend_16b_R5G6B5(color0, color1, 0x80));*/
-
-			ColorFuncDDS_DXT1_A8R8G8B8(m_Colors, color0, color1);
+			ColorFuncDDS_DXT1_A8B8G8R8(m_Colors, color0, color1);
 			color_32b* colors = (color_32b*)m_Colors;
 
-			if (color0 > color1)
+			int offset = (color0 > color1) ? 0 : 4;
+		
+			pos_y = glob_y;
+
+			for (int y = 0; y < 4; y++)
 			{
-				pos_y = glob_y;
+				pos_x = glob_x;
 
-				for (int y = 0; y < 4; y++)
+				for (int x = 0; x < 4; x++)
 				{
-					pos_x = glob_x;
+					int curr = (2 * (4 * y + x));
+					int enabled = ((bits & (0x3 << curr)) >> curr) + offset;
 
-					for (int x = 0; x < 4; x++)
-					{
-						//int enabled = (bits & (1 << ((2 * (4 * y + x)) + 0))) + (bits & (1 << ((2 * (4 * y + x)) + 1)));
-						int curr = (2 * (4 * y + x));
-						int enabled = 
-							((bits & (1 << (curr + 0))) >> (curr + 0)) +
-							((bits & (1 << (curr + 1))) >> (curr + 0));
+					color_32b* dst = &write[pos_x + (pos_y * m_Width)];
 
-						color_32b* dst = &write[pos_x + (pos_y * m_Width)];
+					*dst = colors[enabled];
 
-						*dst = colors[enabled];
-
-						/*bool bit0 = (bits & (1 << ((2 * (4 * y + x)) + 0))) ? true : false;
-						bool bit1 = (bits & (1 << ((2 * (4 * y + x)) + 1))) ? true : false;
-
-						color_32b* dst = &write[pos_x + (pos_y * m_Width)];
-
-						if (bit0) // 1 or 3
-						{
-							if (bit1) // 3
-							{
-								*dst = colors[3];
-							}
-							else // 1
-							{
-								*dst = colors[1];	
-							}
-						}
-						else // 0 or 2
-						{
-							if (bit1) // 2
-							{
-								*dst = colors[2];
-							}
-							else // 0
-							{
-								*dst = colors[0];
-							}
-						}*/
-
-						pos_x++;
-					}
-
-					pos_y++;
+					pos_x++;
 				}
+
+				pos_y++;
 			}
-			else
+
+			glob_x += 4;
+			if (++curr == pitch_blocks)
 			{
-				/*
-					RGB0,              if color0 <= color1 and code(x,y) == 0
-					RGB1,              if color0 <= color1 and code(x,y) == 1
-					(RGB0+RGB1)/2,     if color0 <= color1 and code(x,y) == 2
-					BLACK,             if color0 <= color1 and code(x,y) == 3
-				*/
+				curr = 0;
 
-				pos_y = glob_y;
+				glob_y += 4;
+				glob_x = 0;
+			}
 
-				for (int y = 0; y < 4; y++)
+			src++;
+		}
+	}
+
+	void ImageDDS::DecompressDXT5()
+	{
+		color_32b* write = (color_32b*)m_Pixels;
+		color_32b* dst_x = write;
+
+		uint32 pitch = m_Width * 4;
+		uint32 pitch_blocks = m_Width / 4;
+		uint32 curr = 0;
+
+		DataDXT5* src = (DataDXT5*)m_Data;
+
+		int glob_x = 0;
+		int glob_y = 0;
+		int pos_x = 0;
+		int pos_y = 0;
+
+		for (int i = 0; i < m_Blocks; i++)
+		{
+			uint64 a_bits_total = 
+				((uint64)src->a_bits_0      ) | ((uint64)src->a_bits_1 << 8 ) | 
+				((uint64)src->a_bits_2 << 16) | ((uint64)src->a_bits_3 << 24) |
+				((uint64)src->a_bits_4 << 32) | ((uint64)src->a_bits_5 << 40);
+
+			color_16b color0 = (src->c0_lo + (src->c0_hi << 8));
+			color_16b color1 = (src->c1_lo + (src->c1_hi << 8));
+			dword bits = (src->bits_0) | (src->bits_1 << 8) | (src->bits_2 << 16) | (src->bits_3 << 24);
+
+			byte* alpha = (byte*)m_Alpha;
+
+			alpha[0] = src->alpha0;
+			alpha[1] = src->alpha1;
+			alpha[2] = (6 * src->alpha0 + 1 * src->alpha1) / 7;
+			alpha[3] = (5 * src->alpha0 + 2 * src->alpha1) / 7;
+			alpha[4] = (4 * src->alpha0 + 3 * src->alpha1) / 7;
+			alpha[5] = (3 * src->alpha0 + 4 * src->alpha1) / 7;
+			alpha[6] = (2 * src->alpha0 + 5 * src->alpha1) / 7;
+			alpha[7] = (1 * src->alpha0 + 6 * src->alpha1) / 7;
+
+			alpha[8] = src->alpha0;
+			alpha[9] = src->alpha1;
+			alpha[10] = (4 * src->alpha0 + 1 * src->alpha1) / 5;
+			alpha[11] = (3 * src->alpha0 + 2 * src->alpha1) / 5;
+			alpha[12] = (2 * src->alpha0 + 3 * src->alpha1) / 5;
+			alpha[13] = (1 * src->alpha0 + 4 * src->alpha1) / 5;
+			alpha[14] = 0;
+			alpha[15] = 255;
+
+			ColorFuncDDS_DXT1_A8B8G8R8(m_Colors, color0, color1);
+			color_32b* colors = (color_32b*)m_Colors;
+
+			pos_y = glob_y;
+
+			int offset = 0;
+			if (src->alpha0 <= src->alpha1)
+			{
+				offset = 8;
+			}
+
+			for (int y = 0; y < 4; y++)
+			{
+				pos_x = glob_x;
+
+				for (int x = 0; x < 4; x++)
 				{
-					pos_x = glob_x;
+					uint64 bits_alpha = 0;
 
-					for (int x = 0; x < 4; x++)
-					{
-						int curr = (2 * (4 * y + x));
-						int enabled = 
-							((bits & (1 << (curr + 0))) >> (curr + 0)) +
-							((bits & (1 << (curr + 1))) >> (curr - 1));
-							
-						color_32b* dst = &write[pos_x + (pos_y * m_Width)];
-						*dst = colors[enabled];
+					int curr_a = (3 * (4 * y + x));
+					bits_alpha = (a_bits_total & ((uint64)0x7 << curr_a)) >> curr_a;
 
-						/*bool bit0 = (bits & (1 << ((2 * (4 * y + x)) + 0))) ? true : false;
-						bool bit1 = (bits & (1 << ((2 * (4 * y + x)) + 1))) ? true : false;
+					int curr = (2 * (4 * y + x));
+					int enabled = ((bits & (0x3 << curr)) >> curr);
 
-						color_32b* dst = &write[pos_x + (pos_y * m_Width)];
+					color_32b* dst = &write[pos_x + (pos_y * m_Width)];
 
-						if (bit0) // 1 or 3
-						{
-							if (bit1) // 3
-							{
-								*dst = colors[5];
-							}
-							else // 1
-							{
-								*dst = colors[1];	
-							}
-						}
-						else // 0 or 2
-						{
-							if (bit1) // 2
-							{
-								*dst = colors[4];
-							}
-							else // 0
-							{
-								*dst = colors[0];
-							}
-						}*/
+					ColorFuncDDS_DXT5_A8B8G8R8((byte*)dst, (byte*)&colors[enabled], alpha[bits_alpha + offset]);
 
-						pos_x++;
-					}
-
-					pos_y++;
+					pos_x++;
 				}
+
+				pos_y++;
 			}
 
 			glob_x += 4;
