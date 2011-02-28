@@ -119,7 +119,7 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 	};
 	if (!RegisterClass(&temp)) { return 0; }
 
-	// determine window position and dimensions
+	// center windows on screen
 
 	const int x = GetSystemMetrics(SM_CXSCREEN) / 2 - s_WindowWidth / 2;
 	const int y = GetSystemMetrics(SM_CYSCREEN) / 2 - s_WindowHeight / 2;
@@ -213,7 +213,50 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 		TILFW::s_KeysReleased[i] = false; 
 	}
 
-	TILFW::Init();
+	char* cmd = GetCommandLineA();
+	char* src = cmd;
+	char* start = src;
+
+	char** cmdline = new char*[nCmdShow];
+	int curr = 0;
+	bool parameter = false;
+	int len = 0;
+	
+	while (*src)
+	{
+		if (*src == '"')
+		{
+			if (parameter)
+			{
+				cmdline[curr] = new char[len + 1];
+				strncpy(cmdline[curr], start, len);
+				cmdline[curr][len] = 0;
+				curr++;
+
+				parameter = false;
+				len = 0;
+				src++;
+				continue;
+			}
+			else
+			{
+				parameter = true;
+				len = 0;
+				start = src + 1;
+				src++;
+				continue;
+			}
+		}
+
+		if (parameter)
+		{
+			len++;
+		}
+
+		src++;
+	}
+
+	TILFW::Init((const char**)cmdline, curr);
 
 	ShowWindow(g_Window, 1);
 	UpdateWindow(g_Window);

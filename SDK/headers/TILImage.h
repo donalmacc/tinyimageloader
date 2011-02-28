@@ -367,6 +367,27 @@ namespace til
 		return (color_16b)(r | g | b);
 	}
 
+	//! Blend between two 16-bit BGR colors
+	/*!
+		\param a_Left Color one
+		\param a_Right Color two
+		\param a_Factor The amount of blending, between 0 - 255
+
+		\return 16-bit result
+
+		Blends between colors. The higher the factor parameter, the more the blend is shifted towards the second color.
+	*/
+	inline color_16b Blend_16b_B5G6R5(color_16b a_Left, color_16b a_Right, uint8 a_Factor)
+	{
+		uint8 inv_fact = 255 - a_Factor;
+
+		color_32b r = ((((a_Left & 0x001F) * a_Factor) + ((a_Right & 0x001F) * inv_fact)) >> 8) & 0x001F;
+		color_32b g = ((((a_Left & 0x07E0) * a_Factor) + ((a_Right & 0x07E0) * inv_fact)) >> 8) & 0x07E0;
+		color_32b b = ((((a_Left & 0xF800) * a_Factor) + ((a_Right & 0xF800) * inv_fact)) >> 8) & 0xF800;
+		
+		return (color_16b)(b | g | r);
+	}
+
 	//! Blend between two 32-bit RGB colors
 	/*!
 		\param a_Left Color one

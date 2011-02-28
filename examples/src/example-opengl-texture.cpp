@@ -15,11 +15,12 @@
 
 static GLuint* g_Texture;
 static unsigned int g_TextureTotal;
-static unsigned int g_TextureCurrent = 2;
-float* g_PosX;
-float* g_PosY;
-float* g_ScaleX;
-float* g_ScaleY;
+static unsigned int g_TextureCurrent = 0;
+til::Image* g_Load;
+float g_PosX, g_PosY;
+float g_ScaleX, g_ScaleY;
+float g_Scale;
+bool g_Change = true;
 
 FILE* g_Log;
 
@@ -39,7 +40,7 @@ void TILFW::Setup()
 	s_WindowHeight = 480;
 }
 
-void TILFW::Init()
+void TILFW::Init(const char** a_CommandLine, int a_Commands)
 {
 	// Open log for writing
 
@@ -72,19 +73,30 @@ void TILFW::Init()
 	// Note: OpenGL reverses the pixel components
 	// TIL_DEPTH_A8B8G8R8 = GL_RGBA
 
-	//til::Image* load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-	//til::Image* load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-	//til::Image* load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-	til::Image* load = til::TIL_Load("media\\DDS\\chasm_edge.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-	//til::Image* load = til::TIL_Load("media\\DDS\\pic_arms_nord.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	//g_Load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 
-	g_TextureTotal = load->GetFrameCount();
+	//g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	//g_Load = til::TIL_Load("media\\DDS\\chasm_edge.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+
+	//if (a_Commands > 1)
+	//{
+	//	MessageBoxA(NULL, a_CommandLine[1], "Sup.", MB_OK);
+	//}
+	if (a_Commands == 1)
+	{
+		g_Load = til::TIL_Load("media\\DDS\\pic_arms_nord.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+	}
+	else
+	{
+		g_Load = til::TIL_Load(a_CommandLine[1], TIL_FILE_ABSOLUTEPATH | TIL_DEPTH_A8B8G8R8);
+	}
+
+	g_TextureTotal = g_Load->GetFrameCount();
 	g_Texture = new GLuint[g_TextureTotal];
 
-	g_ScaleX = new float[g_TextureTotal];
-	g_ScaleY = new float[g_TextureTotal];
-	g_PosX = new float[g_TextureTotal];
-	g_PosY = new float[g_TextureTotal];
+	g_Scale = 1.f;
 
 	// Load the pixel data into the texture
 
@@ -92,6 +104,7 @@ void TILFW::Init()
 	{
 		glEnable(GL_TEXTURE_2D);
 		glGenTextures(1, &g_Texture[i]);
+
 		glBindTexture(GL_TEXTURE_2D, g_Texture[i]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -99,29 +112,54 @@ void TILFW::Init()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexImage2D(
 			GL_TEXTURE_2D, 0, GL_RGBA, 
-			load->GetWidth(i), load->GetHeight(i),
+			g_Load->GetWidth(i), g_Load->GetHeight(i),
 			0, 
-			GL_RGBA, GL_UNSIGNED_BYTE, load->GetPixels(i)
+			GL_RGBA, GL_UNSIGNED_BYTE, g_Load->GetPixels(i)
 		);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		// Center the image on the screen
-
-		float scale = 1.f;
-		g_ScaleX[i] = (float)load->GetWidth(i) * scale;
-		g_ScaleY[i] = (float)load->GetHeight(i) * scale;
-		g_PosX[i] = ((float)s_WindowWidth / 2.f) - (g_ScaleX[i] / 2.f);
-		g_PosY[i] = ((float)s_WindowHeight / 2.f) - (g_ScaleY[i] / 2.f);
-		//g_PosX[i] = 0;
-		//g_PosY[i] = 0;
 	}
 }
 
 void TILFW::Tick(float a_DT)
 {
-	if (s_KeysReleased['q'] || s_KeysReleased['Q']) { g_TextureCurrent--; }
-	if (s_KeysReleased['w'] || s_KeysReleased['W']) { g_TextureCurrent++; }
-	g_TextureCurrent = g_TextureCurrent % g_TextureTotal;
+	if (s_KeysReleased['q'] || s_KeysReleased['Q']) 
+	{ 
+		g_TextureCurrent--;
+		g_Change = true;
+	}
+	if (s_KeysReleased['w'] || s_KeysReleased['W']) 
+	{ 
+		g_TextureCurrent++;
+		g_Change = true;
+	}
+	
+	if (s_KeysReleased['O'])
+	{
+		g_Scale += 0.05f;
+		g_Change = true;
+	}
+	if (s_KeysReleased['P'])
+	{
+		if (g_Scale > 0.05f)
+		{
+			g_Scale -= 0.05f;
+			g_Change = true;
+		}
+	}
+
+	if (g_Change)
+	{
+		g_TextureCurrent = g_TextureCurrent % g_TextureTotal;
+
+		g_ScaleX = (float)g_Load->GetWidth(g_TextureCurrent) * g_Scale;
+		g_ScaleY = (float)g_Load->GetHeight(g_TextureCurrent) * g_Scale;
+		g_PosX = ((float)s_WindowWidth / 2.f) - (g_ScaleX / 2.f);
+		g_PosY = ((float)s_WindowHeight / 2.f) - (g_ScaleY / 2.f);
+	}
+
+	g_Change = false;
 }
 
 void TILFW::Render()
@@ -135,9 +173,9 @@ void TILFW::Render()
 	glPushMatrix();
 		
 		// Push it to the correct position
-		glTranslatef(g_PosX[g_TextureCurrent], g_PosY[g_TextureCurrent], 0.0f);
+		glTranslatef(g_PosX, g_PosY, 0.0f);
 		// Set the image size
-		glScalef(g_ScaleX[g_TextureCurrent], g_ScaleY[g_TextureCurrent], 1.0f);
+		glScalef(g_ScaleX, g_ScaleY, 1.0f);
 
 		// Draw a quad
 		glBegin(GL_QUADS);

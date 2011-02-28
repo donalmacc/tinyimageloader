@@ -41,7 +41,7 @@ void MyError(til::MessageData* a_Data)
 	MessageBoxA(NULL, a_Data->message, "TinyImageLoader - Tests", MB_OK | MB_ICONERROR);
 }
 
-void TILFW::Init()
+void TILFW::Init(const char** a_CommandLine, int a_Commands)
 {
 	// Initialize TinyImageLoader
 

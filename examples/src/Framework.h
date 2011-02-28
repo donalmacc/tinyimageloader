@@ -28,7 +28,7 @@ struct TILFW
 
 	int Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 	void Setup();
-	void Init();
+	void Init(const char** a_CommandLine, int a_Commands);
 	void Tick(float a_DT);
 	void Render();
 
