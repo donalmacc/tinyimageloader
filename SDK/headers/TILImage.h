@@ -32,7 +32,7 @@
 
 #include "TILSettings.h"
 #include "TILInternal.h"
-#include "TILConvert.h"
+#include "TILColors.h"
 #include "TILFileStream.h"
 
 #include <stdio.h>
