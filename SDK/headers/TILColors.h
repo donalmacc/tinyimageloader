@@ -49,7 +49,6 @@ namespace til
 		\param a_Red A value between 0 - 255
 		\param a_Green A value between 0 - 255
 		\param a_Blue A value between 0 - 255
-		\param a_Alpha Not used
 
 		\return 16-bit color
 	*/
@@ -70,7 +69,7 @@ namespace til
 
 		\return 16-bit RGB color
 
-		Alpha blends the color with the specified amount.
+		Blends the RGB values with the alpha value.
 	*/
 	inline color_16b AlphaBlend_16b_R5G6B5(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
@@ -148,6 +147,22 @@ namespace til
 	//@{
 	/////////////////////////////////////////////////////
 
+
+	//! Construct a 16-bit BGR color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+
+		\return 16-bit BGR color
+	*/
+	inline color_16b Construct_16b_B5G6R5(uint8 a_Red, uint8 a_Green, uint8 a_Blue)
+	{
+		return
+			(((a_Red   * 0x001F) >> 8) & 0x001F) |
+			(((a_Green * 0x07E0) >> 8) & 0x07E0) |
+			(((a_Blue  * 0xF800) >> 8) & 0xF800);
+	}
 
 	//! Blend between two 16-bit BGR colors
 	/*!
@@ -305,6 +320,25 @@ namespace til
 	/////////////////////////////////////////////////////
 
 
+	//! Construct a 32-bit BGR color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha Not used
+
+		\return 32-bit BGR color
+
+		Alpha is ignored, it's a parameter only to allow fast changing between this function and Construct_32b_R8G8B8A8.
+	*/
+	inline color_32b Construct_32b_B8G8R8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha = 0)
+	{
+		return
+			((a_Blue  & 0xFF) << 16) |
+			((a_Green & 0xFF) << 8 ) |
+			((a_Red   & 0xFF)      );
+	}
+
 	//@}
 
 
@@ -322,7 +356,7 @@ namespace til
 		\param a_Blue A value between 0 - 255
 		\param a_Alpha A value between 0 - 255
 
-		\return 32-bit color
+		\return 32-bit ARGB color
 	*/
 	inline color_32b Construct_32b_A8R8G8B8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
@@ -334,7 +368,7 @@ namespace til
 		\param a_Color An ARGB color
 		\param a_Alpha A value between 0 - 255
 
-		\return 32-bit color
+		\return 32-bit ARGB color
 	*/
 	inline color_32b Construct_32b_A8R8G8B8(color_32b a_Color, uint8 a_Alpha)
 	{
@@ -348,7 +382,7 @@ namespace til
 		\param a_Blue A value between 0 - 255
 		\param a_Alpha A value between 0 - 255
 
-		\return 32-bit color
+		\return 32-bit ARGB color
 
 		Alpha blends the color with the specified amount and sets the alpha channel.
 	*/
@@ -386,6 +420,18 @@ namespace til
 	inline color_32b Construct_32b_A8B8G8R8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
 	{
 		return (a_Alpha << 24) | (a_Blue << 16) | (a_Green << 8) | (a_Red);
+	}
+
+	//! Construct a 32-bit ABGR color
+	/*!
+		\param a_Color A color value
+		\param a_Alpha A value between 0 - 255
+
+		\return 32-bit color
+	*/
+	inline color_32b Construct_32b_A8B8G8R8(color_32b a_Color, uint8 a_Alpha)
+	{
+		return (a_Alpha << 24) | (a_Color & 0x00FFFFFF);
 	}
 
 	//! Alpha blend a 32-bit ABGR color

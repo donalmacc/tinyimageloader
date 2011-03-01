@@ -35,7 +35,7 @@
 namespace til
 {
 
-
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 	#define DDSD_CAPS          0x00000001
 	#define DDSD_HEIGHT        0x00000002
@@ -125,14 +125,14 @@ namespace til
 	{
 		color_32b* colors = (color_32b*)a_DstColors;
 
-		colors[0] = Convert_From_16b_B5G6R5_To_32b_A8B8G8R8(a_Color0);
-		colors[1] = Convert_From_16b_B5G6R5_To_32b_A8B8G8R8(a_Color1);
-		colors[2] = Convert_From_16b_B5G6R5_To_32b_A8B8G8R8(Blend_16b_B5G6R5(a_Color0, a_Color1, 0xAA));
-		colors[3] = Convert_From_16b_B5G6R5_To_32b_A8B8G8R8(Blend_16b_B5G6R5(a_Color0, a_Color1, 0x55));
+		colors[0] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(a_Color0);
+		colors[1] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(a_Color1);
+		colors[2] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0xAA));
+		colors[3] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0x55));
 
 		colors[4] = colors[0];
 		colors[5] = colors[1];
-		colors[6] = Convert_From_16b_B5G6R5_To_32b_A8B8G8R8(Blend_16b_B5G6R5(a_Color0, a_Color1, 0x80));
+		colors[6] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0x80));
 		colors[7] = 0;
 	}
 
@@ -147,6 +147,8 @@ namespace til
 
 		int i = 0;
 	}
+
+#endif
 
 	ImageDDS::ImageDDS() : Image()
 	{

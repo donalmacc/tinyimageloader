@@ -157,7 +157,7 @@
 			Name="Settings"
 			>
 			<File
-				RelativePath="..\SDK\headers\TILConvert.h"
+				RelativePath="..\SDK\headers\TILColors.h"
 				>
 			</File>
 			<File

@@ -239,7 +239,7 @@ namespace til
 	{
 		color_16b* dst = (color_16b*)a_Dst;
 		//*dst = AlphaBlend_16b_R5G6B5(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
-		*dst = Construct_16b_R5G6B5(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
+		*dst = Construct_16b_R5G6B5(a_Src[0], a_Src[1], a_Src[2]);
 	}
 
 	ColorFunc g_ColorFunc = NULL;

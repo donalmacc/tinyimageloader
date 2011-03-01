@@ -109,7 +109,7 @@ namespace til
 
 		if (m_Palette) { delete m_Palette; }
 		m_Palette = new byte[m_ColorTableSize * 3];
-		fread(m_Palette, m_ColorTableSize * 3, 1, m_Handle);
+		m_Stream->ReadByte(m_Palette, m_ColorTableSize * 3);
 
 		if (m_Colors) { delete m_Colors; }
 		m_Colors = new byte[m_ColorTableSize * m_BPP];
@@ -164,13 +164,6 @@ namespace til
 						m_Palette[(i * 3) + 2],
 						255
 					);
-
-					/*dst[3] = palette[(i * 3) + 0];
-					dst[2] = palette[(i * 3) + 1];
-					dst[1] = palette[(i * 3) + 2];
-					dst[0] = 255;
-
-					dst += m_BPP;*/
 				}
 
 				break;
@@ -225,8 +218,7 @@ namespace til
 					*dst++ = Construct_16b_R5G6B5(
 						m_Palette[(i * 3) + 0],
 						m_Palette[(i * 3) + 1],
-						m_Palette[(i * 3) + 2],
-						255
+						m_Palette[(i * 3) + 2]
 					);
 				}
 
@@ -245,7 +237,7 @@ namespace til
 
 	bool ImageGIF::Parse(uint32 a_ColorDepth/*= TIL_DEPTH_A8R8G8B8*/)
 	{
-		fread(m_Buffer, 6, 1, m_Handle);
+		m_Stream->ReadByte(m_Buffer, 6);
 
 		if (*(uint32*)m_Buffer != GIF_TYPE('G', 'I', 'F', '8'))
 		{
@@ -255,7 +247,11 @@ namespace til
 
 		m_ColorDepth = a_ColorDepth;
 
-		fread(m_Buffer, 7, 1, m_Handle);
+		m_Stream->Read(m_Buffer, 7, 1);
+
+		GIF_DEBUG("Options: %x %x %x %x %x %x %x",
+			m_Buffer[0], m_Buffer[1], m_Buffer[2], 
+			m_Buffer[3], m_Buffer[4], m_Buffer[5], m_Buffer[6]);
 
 		bool colortable = ((m_Buffer[4] & 0x80) == 0x80);
 		m_ColorTableSize = 2 << (m_Buffer[4] & 0x07);
@@ -267,12 +263,12 @@ namespace til
 		bool transparancy = false;
 		bool looping = false;
 
-		fread(m_Buffer, 1, 1, m_Handle);
+		m_Stream->ReadByte(m_Buffer, 1);
 
 		/* It's an extension */
 		while (m_Buffer[0] == 0x21)
-		{                    
-			fread(m_Buffer, 1, 1, m_Handle);
+		{   
+			m_Stream->ReadByte(m_Buffer, 1);
 			
 			switch (m_Buffer[0]) 
 			{
@@ -282,17 +278,18 @@ namespace til
 				{
 					GIF_DEBUG("Block: animation");
 
-					fread(m_Buffer, 1, 1, m_Handle);  // rest of header
-					fread(m_Buffer, 11, 1, m_Handle); // NETSCAPE2.0
-					fread(m_Buffer, 2, 1, m_Handle);  // data follows
+					m_Stream->ReadByte(m_Buffer, 1);  // rest of header
+					m_Stream->ReadByte(m_Buffer, 11); // NETSCAPE2.0
+					m_Stream->ReadByte(m_Buffer, 2);  // data follows
 
 					uint16 set_looping;
-					fread(&set_looping, 1, 2, m_Handle);
+					m_Stream->ReadWord(&set_looping);
+
 					looping = (set_looping & 0xFFFF) ? true : false;
 
 					GIF_DEBUG("Looping: %s", looping ? "true" : "false");
 
-					fread(m_Buffer, 1, 1, m_Handle);  // end;
+					m_Stream->ReadByte(m_Buffer, 1); // end;
 
 					animation = true;
 
@@ -304,7 +301,7 @@ namespace til
 				{
 					GIF_DEBUG("Block: Graphic Control Extension");
 
-					fread(m_Buffer, 2, 1, m_Handle);  // rest of header
+					m_Stream->ReadByte(m_Buffer, 2); // rest of header
 
 					if (m_Buffer[1] & 0x01) 
 					{
@@ -312,11 +309,12 @@ namespace til
 					}
 
 					uint16 delay;
-					fread(&delay, 1, 2, m_Handle);
+					m_Stream->ReadWord(&delay);
+
 					GIF_DEBUG("Delay: %i ms", delay);
 					m_Delay = (float)(delay) / 1000.f;
 
-					fread(m_Buffer, 2, 1, m_Handle);					
+					m_Stream->ReadByte(m_Buffer, 2);
 					
 					//b->transparent = m_Buffer[4];            /* Index in colortable */
 					break;
@@ -327,18 +325,18 @@ namespace til
 				{
 					GIF_DEBUG("Block: Unknown (%x)", m_Buffer[0]);
 
-					fread(m_Buffer, 1, 1, m_Handle);
+					m_Stream->ReadByte(m_Buffer, 1);
 					
 					while (m_Buffer[0] != 0) 
 					{
-						fread(m_Buffer, m_Buffer[0], 1, m_Handle);
-						fread(m_Buffer, 1, 1, m_Handle);
+						m_Stream->ReadByte(m_Buffer, m_Buffer[0]);
+						m_Stream->ReadByte(m_Buffer);
 					}
 				}
 
 			}
 
-			fread(m_Buffer, 1, 1, m_Handle);
+			m_Stream->ReadByte(m_Buffer);
 		}
 
 		if (m_Buffer[0] != 0x2c) 
@@ -347,7 +345,7 @@ namespace til
 			return false;
 		}
 
-		fread(m_Buffer, 9, 1, m_Handle);
+		m_Stream->ReadByte(m_Buffer, 9);
 
 		m_OffsetX = 0;
 		m_OffsetY = 0;
@@ -408,7 +406,7 @@ namespace til
 			uint32 pixels_total = m_Width * m_Height;
 			uint32 pixels_found = 0;
 
-			fread(m_Buffer, 1, 1, m_Handle);
+			m_Stream->ReadByte(m_Buffer);
 
 			min_code_size = m_Buffer[0];
 			GIF_DEBUG("Min code size: %i", min_code_size);
@@ -439,7 +437,7 @@ namespace til
 					/* Read new data block if needed */
 					if (bufidx == buflen) 
 					{
-						fread(m_Buffer, 1, 1, m_Handle);
+						m_Stream->ReadByte(m_Buffer);
 						if (m_Buffer[0] == 0)
 						{
 							GIF_DEBUG("Buffer without a length, found enough pixels.");
@@ -450,7 +448,7 @@ namespace til
 						else
 						{
 							buflen = m_Buffer[0];
-							fread(m_Buffer, buflen, 1, m_Handle);
+							m_Stream->ReadByte(m_Buffer, buflen);
 							bufidx = 0;
 						}
 					}
@@ -496,7 +494,7 @@ namespace til
 				{         
 					GIF_DEBUG("End of info.");
 					GIF_DEBUG("Pixels: %i vs %i.", pixels_found, pixels_total);
-					fread(m_Buffer, 1, 1, m_Handle);
+					m_Stream->ReadByte(m_Buffer);
 					break;
 				} 
 				/* 1st code after clearcode */
@@ -592,7 +590,7 @@ namespace til
 
 			// image block identifier: 21 F9 04
 			uint32 header = 0;
-			fread(&header, 1, 3, m_Handle);
+			m_Stream->Read(&header, 1, 3);
 			if (header != 0x04F921)
 			{
 				//fread(m_Buffer, 100, 1, m_Handle);
@@ -601,7 +599,7 @@ namespace til
 				break;
 			}
 
-			fread(m_Buffer, 6, 1, m_Handle);
+			m_Stream->ReadByte(m_Buffer, 6);
 
 			m_Transparency = (m_Buffer[0] & 0x01) == 0x01;
 			GIF_DEBUG("Transparancy: %s", (m_Transparency) ? "true" : "false");
@@ -614,12 +612,15 @@ namespace til
 
 			if (m_Buffer[5] != 0x2c)
 			{
-				TIL_ERROR_EXPLAIN("No start of data.");
+				TIL_ERROR_EXPLAIN("No start of data. (%x %x %x %x %x %x)", 
+					m_Buffer[0], m_Buffer[1], m_Buffer[2], 
+					m_Buffer[3], m_Buffer[4], m_Buffer[5] 
+				);
 				break;
 			}
 
 			// get header of next block
-			fread(m_Buffer, 9, 1, m_Handle);
+			m_Stream->ReadByte(m_Buffer, 9);
 
 			m_OffsetX = (m_Buffer[0]) + (m_Buffer[1] << 8);
 			m_OffsetY = (m_Buffer[2]) + (m_Buffer[3] << 8);
@@ -697,8 +698,9 @@ namespace til
 				ReleaseMemory(a_Buffer->next); 
 				delete a_Buffer->next;
 			}
+
+			delete a_Buffer->buffer;
 		}
-		delete a_Buffer->buffer;
 	}
 
 }; // namespace til

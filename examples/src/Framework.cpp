@@ -216,6 +216,13 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 	char* cmd = GetCommandLineA();
 	char* src = cmd;
 	char* start = src;
+	size_t command_len = strlen(cmd) - 1;
+	int pos = 0;
+	int startpos = 0;
+
+	//char msg[256];
+	//sprintf(msg, "Commands: %s", cmd);
+	//MessageBoxA(NULL, msg, "Sup.", MB_OK);
 
 	char** cmdline = new char*[nCmdShow];
 	int curr = 0;
@@ -224,18 +231,19 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 	
 	while (*src)
 	{
-		if (*src == '"')
+		if (*src == '"' || (*src == ' ' && !parameter))
 		{
 			if (parameter)
 			{
 				cmdline[curr] = new char[len + 1];
 				strncpy(cmdline[curr], start, len);
 				cmdline[curr][len] = 0;
-				curr++;
+				curr++;	
 
 				parameter = false;
 				len = 0;
 				src++;
+				pos++;
 				continue;
 			}
 			else
@@ -243,7 +251,9 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 				parameter = true;
 				len = 0;
 				start = src + 1;
+				startpos = pos;
 				src++;
+				pos++;
 				continue;
 			}
 		}
@@ -254,6 +264,15 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 		}
 
 		src++;
+		pos++;
+	}
+
+	if (parameter && startpos != command_len)
+	{
+		cmdline[curr] = new char[len + 1];
+		strncpy(cmdline[curr], start, len);
+		cmdline[curr][len] = 0;
+		curr++;
 	}
 
 	TILFW::Init((const char**)cmdline, curr);
