@@ -326,6 +326,7 @@ namespace til
 #endif
 		else
 		{
+			TIL_PRINT_DEBUG("Filename: '%s' (end: '%s')", a_FileName, a_FileName + end);
 			TIL_ERROR_EXPLAIN("Can't parse file: unknown format.");
 			result = NULL;
 		}

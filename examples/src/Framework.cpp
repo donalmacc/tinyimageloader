@@ -225,7 +225,7 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 	//MessageBoxA(NULL, msg, "Sup.", MB_OK);
 
 	char** cmdline = new char*[nCmdShow];
-	int curr = 0;
+	/*int curr = 0;
 	bool parameter = false;
 	int len = 0;
 	
@@ -273,9 +273,18 @@ int TILFW::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, i
 		strncpy(cmdline[curr], start, len);
 		cmdline[curr][len] = 0;
 		curr++;
+	}*/
+
+
+	int argv;
+	wchar_t** argc = CommandLineToArgvW(GetCommandLineW(), &argv);
+	for (int i = 0; i < argv; i++)
+	{
+		cmdline[i] = new char[wcslen(argc[i]) + 1];
+		wcstombs(cmdline[i], argc[i], wcslen(argc[i]) + 1);
 	}
 
-	TILFW::Init((const char**)cmdline, curr);
+	TILFW::Init((const char**)cmdline, argv);
 
 	ShowWindow(g_Window, 1);
 	UpdateWindow(g_Window);

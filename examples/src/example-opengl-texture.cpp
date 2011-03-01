@@ -78,10 +78,10 @@ void TILFW::Init(const char** a_CommandLine, int a_Commands)
 
 	if (a_Commands == 1)
 	{
-		g_Load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		//g_Load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		//g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		//g_Load = til::TIL_Load("media\\DDS\\pic_arms_nord.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-		//g_Load = til::TIL_Load("media\\DDS\\blood_stain_large.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		g_Load = til::TIL_Load("media\\DDS\\blood_stain_large.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		//g_Load = til::TIL_Load("media\\DDS\\chasm_edge.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		//g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
@@ -89,6 +89,10 @@ void TILFW::Init(const char** a_CommandLine, int a_Commands)
 	}
 	else
 	{
+		/*char msg[256];
+		sprintf(msg, "Loading image: '%s' (commands: %i)", a_CommandLine[1], a_Commands);
+		MessageBoxA(NULL, msg, "TinyImageLoader", MB_OK);*/
+
 		g_Load = til::TIL_Load(a_CommandLine[1], TIL_FILE_ABSOLUTEPATH | TIL_DEPTH_A8B8G8R8);
 	}
 

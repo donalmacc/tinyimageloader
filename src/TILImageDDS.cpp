@@ -122,7 +122,7 @@ namespace til
 
 	typedef void (*ColorFuncDDS_DXT1)(byte* a_DstColors, color_16b& a_Color0, color_16b& a_Color1);
 
-	void ColorFuncDDS_DXT1_A8B8G8R8(byte* a_DstColors, color_16b& a_Color0, color_16b& a_Color1)
+	void ColorFuncDDS_DXT1_Construct_A8B8G8R8(byte* a_DstColors, color_16b& a_Color0, color_16b& a_Color1)
 	{
 		color_32b* colors = (color_32b*)a_DstColors;
 
@@ -137,14 +137,12 @@ namespace til
 		colors[7] = 0;
 	}
 
-	void ColorFuncDDS_DXT5_A8B8G8R8(byte* a_Dst, byte* a_Src, byte& a_Alpha)
+	void ColorFuncDDS_DXT5_A8B8G8R8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
 	{
-		color_32b* colors = (color_32b*)a_Dst;
-		color_32b* src = (color_32b*)a_Src;
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		color_32b* src = (color_32b*)&a_Src[a_SrcIndex * 4];
 
-		*colors = Construct_32b_A8B8G8R8(*(color_32b*)a_Src, a_Alpha);
-		//*colors = Construct_32b_A8R8G8B8(*(color_32b*)a_Src, 0);
-		//*colors = (*src & 0xFFFFFF);
+		*dst = Construct_32b_A8B8G8R8(*src, a_Alpha);
 
 		int i = 0;
 	}
@@ -476,12 +474,13 @@ namespace til
 			color_16b color1 = (src->c1_lo + (src->c1_hi * 256));
 			dword bits = src->bits_0 + (256 * (src->bits_1 + 256 * (src->bits_2 + 256 * src->bits_3)));
 
-			ColorFuncDDS_DXT1_A8B8G8R8(m_Colors, color0, color1);
+			ColorFuncDDS_DXT1_Construct_A8B8G8R8(m_Colors, color0, color1);
 			color_32b* colors = (color_32b*)m_Colors;
 
-			int offset = (color0 > color1) ? 0 : 4;
+			uint32 offset = (color0 > color1) ? 0 : 4;
 		
 			pos_y = glob_y;
+			byte alpha = 255;
 
 			for (int y = 0; y < 4; y++)
 			{
@@ -489,12 +488,14 @@ namespace til
 
 				for (int x = 0; x < 4; x++)
 				{
-					int curr = (2 * (4 * y + x));
-					int enabled = ((bits & (0x3 << curr)) >> curr) + offset;
+					uint32 curr = (2 * (4 * y + x));
+					uint32 enabled = ((bits & (0x3 << curr)) >> curr) + offset;
 
-					color_32b* dst = &write[pos_x + (pos_y * m_Width)];
+					//color_32b* dst = &write[pos_x + (pos_y * m_Width)];
+					//*dst = colors[enabled];
 
-					*dst = colors[enabled];
+					uint32 index = pos_x + (pos_y * m_Width);
+					ColorFuncDDS_DXT5_A8B8G8R8(m_Pixels, index, m_Colors, enabled, alpha);
 
 					pos_x++;
 				}
@@ -517,30 +518,28 @@ namespace til
 
 	void ImageDDS::DecompressDXT5()
 	{
-		color_32b* write = (color_32b*)m_Pixels;
-		color_32b* dst_x = write;
-
-		uint32 pitch = m_Width * 4;
 		uint32 pitch_blocks = m_Width / 4;
 		uint32 curr = 0;
 
 		DataDXT5* src = (DataDXT5*)m_Data;
 
-		int glob_x = 0;
-		int glob_y = 0;
-		int pos_x = 0;
-		int pos_y = 0;
+		uint32 glob_x = 0;
+		uint32 glob_y = 0;
+		uint32 pos_x = 0;
+		uint32 pos_y = 0;
 
-		for (int i = 0; i < m_Blocks; i++)
+		for (uint32 i = 0; i < m_Blocks; i++)
 		{
+			color_16b color0 = (src->c0_lo + (src->c0_hi << 8));
+			color_16b color1 = (src->c1_lo + (src->c1_hi << 8));
+			dword bits = (src->bits_0) | (src->bits_1 << 8) | (src->bits_2 << 16) | (src->bits_3 << 24);
+
+			ColorFuncDDS_DXT1_Construct_A8B8G8R8(m_Colors, color0, color1);
+
 			uint64 a_bits_total = 
 				((uint64)src->a_bits_0      ) | ((uint64)src->a_bits_1 << 8 ) | 
 				((uint64)src->a_bits_2 << 16) | ((uint64)src->a_bits_3 << 24) |
 				((uint64)src->a_bits_4 << 32) | ((uint64)src->a_bits_5 << 40);
-
-			color_16b color0 = (src->c0_lo + (src->c0_hi << 8));
-			color_16b color1 = (src->c1_lo + (src->c1_hi << 8));
-			dword bits = (src->bits_0) | (src->bits_1 << 8) | (src->bits_2 << 16) | (src->bits_3 << 24);
 
 			byte* alpha = (byte*)m_Alpha;
 
@@ -562,9 +561,6 @@ namespace til
 			alpha[14] = 0;
 			alpha[15] = 255;
 
-			ColorFuncDDS_DXT1_A8B8G8R8(m_Colors, color0, color1);
-			color_32b* colors = (color_32b*)m_Colors;
-
 			pos_y = glob_y;
 
 			int offset = 0;
@@ -584,12 +580,13 @@ namespace til
 					int curr_a = (3 * (4 * y + x));
 					bits_alpha = (a_bits_total & ((uint64)0x7 << curr_a)) >> curr_a;
 
-					int curr = (2 * (4 * y + x));
-					int enabled = ((bits & (0x3 << curr)) >> curr);
+					uint32 curr = (2 * (4 * y + x));
+					uint32 enabled = ((bits & (0x3 << curr)) >> curr);
 
-					color_32b* dst = &write[pos_x + (pos_y * m_Width)];
+					//color_32b* dst = &write[pos_x + (pos_y * m_Width)];
 
-					ColorFuncDDS_DXT5_A8B8G8R8((byte*)dst, (byte*)&colors[enabled], alpha[bits_alpha + offset]);
+					uint32 index = (pos_y * m_Width) + pos_x;
+					ColorFuncDDS_DXT5_A8B8G8R8(m_Pixels, index, m_Colors, enabled, alpha[bits_alpha + offset]);
 
 					pos_x++;
 				}
