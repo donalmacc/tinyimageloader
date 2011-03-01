@@ -45,7 +45,8 @@
 
 */
 
-#include "..\SDK\headers\TILImagePNG.h"
+#include "TILImagePNG.h"
+#include "TILInternal.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
 
@@ -1053,26 +1054,30 @@ namespace til
 		if (m_Huffman) { delete m_Huffman; }
 	}
 
-	int32 ImagePNG::GetByte()
+	byte ImagePNG::GetByte()
 	{
-		int32 result = fgetc(m_Handle);
-		if (result == EOF) { return 0; }
-		return result;
+		byte temp;
+		m_Stream->ReadByte(&temp);
+		return temp;
 	}
 
-	int32 ImagePNG::GetWord()
+	word ImagePNG::GetWord()
 	{
-		return ((GetByte() << 8) | GetByte());
+		byte temp[2];
+		m_Stream->ReadByte(temp, 2);
+		return ((temp[0] << 8) | temp[1]);
 	}
 
-	int32 ImagePNG::GetDWord()
+	dword ImagePNG::GetDWord()
 	{
-		return ((GetWord() << 16) | GetWord());
+		byte temp[4];
+		m_Stream->ReadByte(temp, 4);
+		return ((temp[0] << 24) | (temp[1] << 16) | (temp[2] << 8) | (temp[3]));
 	}
 
 	void ImagePNG::Skip( uint32 a_Bytes )
 	{
-		fseek(m_Handle, a_Bytes, SEEK_CUR);
+		m_Stream->Seek(a_Bytes, TIL_FILE_SEEK_CURR);
 	}
 
 	chunk* ImagePNG::GetChunkHeader()
@@ -1127,7 +1132,7 @@ namespace til
 		for (int8 i = 0; i < 8; ++i)
 		{
 			int32 c = GetByte();
-			if (c != png_sig[i]) 
+			if (c != png_sig[i])
 			{
 				TIL_ERROR_EXPLAIN("Bad PNG signature.");
 				return false;
@@ -1191,7 +1196,7 @@ namespace til
 				{
 					PNG_DEBUG("Found tag 'IHDR'");
 
-					int32 depth, color, interlace, compression, filter;
+					int8 depth, color, interlace, compression, filter;
 
 					if (!first)
 					{
@@ -1473,7 +1478,8 @@ namespace til
 						idata = p;
 					}
 
-					if (fread(idata + ioff, 1, m_Chunk->length, m_Handle) != m_Chunk->length) 
+					if (!m_Stream->ReadByte(idata + ioff, m_Chunk->length))
+					//if (fread(idata + ioff, 1, m_Chunk->length, m_Handle) != m_Chunk->length) 
 					{	
 						TIL_ERROR_EXPLAIN("Not enough data.");
 						return NULL;
@@ -1648,7 +1654,8 @@ namespace til
 						m_Ani->data = p;
 					}
 
-					if (fread(m_Ani->data + m_Ani->data_offset, 1, len, m_Handle) != len) 
+					//if (fread(m_Ani->data + m_Ani->data_offset, 1, len, m_Handle) != len) 
+					if (!m_Stream->ReadByte(m_Ani->data + m_Ani->data_offset, len))
 					{	
 						TIL_ERROR_EXPLAIN("Not enough data.");
 						return NULL;
@@ -1684,38 +1691,6 @@ namespace til
 
 					return true;
 				}
-
-			
-
-			/*case PNG_TYPE('z','T','X','t'): 
-				{
-					char keyword[80];
-					int i = 0;
-					char c;
-					do
-					{
-						c = fgetc(m_Handle);
-						keyword[i] = c;
-						i++;
-					}
-					while (c != 0);
-
-					int32 comp = GetByte();
-
-					uint32 len = m_Chunk->length - i - 1;
-					byte* datastream = new byte[len];
-					fread(datastream, 1, len, m_Handle);
-
-					zbuf decompress;
-					decompress.ZLibDecode(datastream, len);
-
-					len = (uint32)(decompress.zout - decompress.zout_start);
-					char* target = (char*)decompress.zout_start;
-
-					//Skip();
-
-					break;
-				}*/
 
 			default:
 				{

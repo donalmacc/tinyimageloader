@@ -22,7 +22,8 @@
 	THE SOFTWARE.
 */
 
-#include "..\SDK\headers\TILImageTGA.h"
+#include "TILImageTGA.h"
+#include "TILInternal.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_TGA)
 
@@ -147,8 +148,8 @@ namespace til
 		for (uint32 y = 0; y < m_Height; y++)
 		{
 			byte* dst = m_Target;
-
-			fread(src, m_Width, m_Depth, m_Handle);
+			
+			m_Stream->Read(src, m_Width, m_Depth);
 
 			uint8* src_copy = src;
 			dst = g_ColorFunc(dst, src_copy, 1, m_Width);
@@ -174,7 +175,7 @@ namespace til
 			for (uint32 x = 0; x < m_Width;)
 			{
 				byte packet;
-				fread(&packet, 1, 1, m_Handle);
+				m_Stream->ReadByte(&packet);
 
 				uint8 count = (packet & 0x7F) + 1;
 				int repeat = 1;
@@ -183,7 +184,7 @@ namespace til
 				// run length packet
 				if (packet & 0x80)
 				{
-					fread(src_buffer, 1, m_Depth, m_Handle);
+					m_Stream->ReadByte(src_buffer, m_Depth);
 					src_color = src_buffer;
 
 					repeat = count;
@@ -191,7 +192,7 @@ namespace til
 				// raw packet
 				else
 				{
-					fread(buffer, 1, count * m_Depth, m_Handle);
+					m_Stream->ReadByte(buffer, count * m_Depth);
 					src_color = buffer;
 
 					unique = count;
@@ -210,9 +211,9 @@ namespace til
 
 	bool ImageTGA::Parse(uint32 a_ColorDepth)
 	{
-		byte id;              fread(&id, 1, 1, m_Handle);
-		byte colormap;        fread(&colormap, 1, 1, m_Handle);
-		byte compression;     fread(&compression, 1, 1, m_Handle);
+		byte id;              m_Stream->ReadByte(&id);
+		byte colormap;        m_Stream->ReadByte(&colormap);
+		byte compression;     m_Stream->ReadByte(&compression);
 
 		switch (compression)
 		{
@@ -262,24 +263,24 @@ namespace til
 
 		}
 
-		word colormap_offset; fread(&colormap_offset, 2, 1, m_Handle);
-		word colormap_length; fread(&colormap_length, 2, 1, m_Handle);
-		byte colormap_bpp;    fread(&colormap_bpp, 1, 1, m_Handle);
+		word colormap_offset; m_Stream->ReadWord(&colormap_offset);
+		word colormap_length; m_Stream->ReadWord(&colormap_length);
+		byte colormap_bpp;    m_Stream->ReadByte(&colormap_bpp);
 
-		word origin_x;        fread(&origin_x, 2, 1, m_Handle);
-		word origin_y;        fread(&origin_y, 2, 1, m_Handle);
+		word origin_x;        m_Stream->ReadWord(&origin_x);
+		word origin_y;        m_Stream->ReadWord(&origin_y);
 
-		word width;           fread(&width, 2, 1, m_Handle);
-		word height;          fread(&height, 2, 1, m_Handle);
+		word width;           m_Stream->ReadWord(&width);
+		word height;          m_Stream->ReadWord(&height);
 
-		fread(&m_Depth, 1, 1, m_Handle);
+		m_Stream->ReadByte(&m_Depth);
 		m_Depth >>= 3;
 
 		g_Depth = m_Depth;
 
 		TGA_DEBUG("Depth: %i", m_Depth);
 
-		byte img_descriptor;  fread(&img_descriptor, 1, 1, m_Handle);
+		byte img_descriptor;  m_Stream->ReadByte(&img_descriptor);
 
 		if (id > 0)
 		{

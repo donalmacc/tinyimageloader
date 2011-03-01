@@ -116,9 +116,9 @@ namespace til
 		*/
 		//@{
 		
-		int32 GetByte();
-		int32 GetWord();
-		int32 GetDWord();
+		byte GetByte();
+		word GetWord();
+		dword GetDWord();
 
 		void Skip(uint32 a_Bytes);
 
@@ -154,6 +154,9 @@ namespace til
 		uint8 default_distance[32];
 		uint32 m_ColorType;
 
+		byte m_TempByte;
+		word m_TempWord;
+		dword m_TempDWord;
 	};
 
 }; // namespace til

@@ -1,6 +1,8 @@
 #ifndef _TILINTERNAL_H_
 #define _TILINTERNAL_H_
 
+#include "TILSettings.h"
+
 namespace til
 {
 	// =========================================
@@ -41,6 +43,8 @@ namespace til
 	extern void AddDebug(char* a_Message, char* a_File, int a_Line, ...);
 
 	extern void TIL_AddWorkingDirectory(char* a_Dst, size_t a_MaxLength, const char* a_Path);
+
+	class FileStream;
 
 	//! Default FileStream function.
 	/*!

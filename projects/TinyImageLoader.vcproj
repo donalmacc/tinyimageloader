@@ -41,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\SDK\headers"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;TIL_RUN_TARGET=TIL_TARGET_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

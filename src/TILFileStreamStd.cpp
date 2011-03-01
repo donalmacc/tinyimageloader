@@ -22,7 +22,8 @@
 	THE SOFTWARE.
 */
 
-#include "..\SDK\headers\TILFileStreamStd.h"
+#include "TILFileStreamStd.h"
+#include "TILInternal.h"
 
 namespace til
 {
@@ -69,26 +70,26 @@ namespace til
 
 	bool FileStreamStd::Read(void* a_Dst, uint32 a_Size, uint32 a_Count)
 	{
-		fread(a_Dst, a_Size, a_Count, m_Handle);
-		return true;
+		size_t result = fread(a_Dst, a_Size, a_Count, m_Handle);
+		return (result == a_Count * a_Size);
 	}
 
 	bool FileStreamStd::ReadByte(byte* a_Dst, uint32 a_Count)
 	{
-		fread(a_Dst, sizeof(byte), a_Count, m_Handle);
-		return true;
+		size_t result = fread(a_Dst, sizeof(byte), a_Count, m_Handle);
+		return (result == a_Count * sizeof(byte));
 	}
 
 	bool FileStreamStd::ReadWord(word* a_Dst, uint32 a_Count)
 	{
-		fread(a_Dst, sizeof(word), a_Count, m_Handle);
-		return true;
+		size_t result = fread(a_Dst, sizeof(word), a_Count, m_Handle);
+		return (result == a_Count * sizeof(word));
 	}
 
 	bool FileStreamStd::ReadDWord(dword* a_Dst, uint32 a_Count)
 	{
-		fread(a_Dst, sizeof(dword), a_Count, m_Handle);
-		return true;
+		size_t result = fread(a_Dst, sizeof(dword), a_Count, m_Handle);
+		return (result == a_Count * sizeof(dword));
 	}
 
 	bool FileStreamStd::Seek(uint32 a_Bytes, uint32 a_Options)

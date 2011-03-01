@@ -50,7 +50,8 @@
 
 */
 
-#include "..\SDK\headers\TILImageGIF.h"
+#include "TILImageGIF.h"
+#include "TILInternal.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
 

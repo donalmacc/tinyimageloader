@@ -23,10 +23,11 @@ float g_Scale;
 bool g_Change = true;
 
 FILE* g_Log;
+char* g_LogPath;
 
 void LoggingFunc(til::MessageData* a_Data)
 {
-	fopen_s(&g_Log, "til.log", "a");
+	fopen_s(&g_Log, g_LogPath, "a");
 	char msg[1024];
 	//sprintf(msg, "%s (at line %i in file %s)", a_Data->message, a_Data->source_line, a_Data->source_file);
 	sprintf_s(msg, 1024, "%s\n", a_Data->message);
@@ -42,14 +43,16 @@ void TILFW::Setup()
 
 void TILFW::Init(const char** a_CommandLine, int a_Commands)
 {
-	// Open log for writing
-
-	fopen_s(&g_Log, "til.log", "w+");
-	fclose(g_Log);
-
 	// Initialize TinyImageLoader
 
 	til::TIL_Init();
+
+	// Open log for writing
+
+	g_LogPath = new char[TIL_MAX_PATH];
+	til::TIL_AddWorkingDirectory(g_LogPath, TIL_MAX_PATH, "til.log");
+	fopen_s(&g_Log, g_LogPath, "w+");
+	fclose(g_Log);
 
 	// We want to handle incoming debug messages
 
@@ -73,27 +76,29 @@ void TILFW::Init(const char** a_CommandLine, int a_Commands)
 	// Note: OpenGL reverses the pixel components
 	// TIL_DEPTH_A8B8G8R8 = GL_RGBA
 
-	//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-	//g_Load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-
-	//g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-	//
-
 	if (a_Commands == 1)
 	{
+		g_Load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		//g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		//g_Load = til::TIL_Load("media\\DDS\\pic_arms_nord.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		//g_Load = til::TIL_Load("media\\DDS\\blood_stain_large.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		//g_Load = til::TIL_Load("media\\DDS\\chasm_edge.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		//g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-		g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 	}
 	else
 	{
-		/*char msg[256];
-		sprintf(msg, "Commands: %s", a_CommandLine[1]);
-		MessageBoxA(NULL, msg, "Sup.", MB_OK);*/
-
 		g_Load = til::TIL_Load(a_CommandLine[1], TIL_FILE_ABSOLUTEPATH | TIL_DEPTH_A8B8G8R8);
+	}
+
+	if (!g_Load)
+	{
+		char msg[256];
+		sprintf(msg, "Could not load image. Check the log for details.", a_CommandLine[1]);
+		MessageBoxA(NULL, msg, "TinyImageLoader", MB_OK);
+
+		exit(0);
 	}
 
 	g_TextureTotal = g_Load->GetFrameCount();
@@ -120,8 +125,6 @@ void TILFW::Init(const char** a_CommandLine, int a_Commands)
 			GL_RGBA, GL_UNSIGNED_BYTE, g_Load->GetPixels(i)
 		);
 		glBindTexture(GL_TEXTURE_2D, 0);
-
-		// Center the image on the screen
 	}
 }
 

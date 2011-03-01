@@ -26,7 +26,6 @@
 #define _TILFILESTREAM_H_
 
 #include "TILSettings.h"
-#include "TILInternal.h"
 
 namespace til
 {

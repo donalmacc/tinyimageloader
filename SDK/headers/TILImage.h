@@ -31,7 +31,6 @@
 */
 
 #include "TILSettings.h"
-#include "TILInternal.h"
 #include "TILColors.h"
 #include "TILFileStream.h"
 

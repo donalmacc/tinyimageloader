@@ -26,7 +26,8 @@
 	\file TILImageBMP.h
 */
 
-#include "..\SDK\headers\TILImageBMP.h"
+#include "TILInternal.h"
+#include "TILImageBMP.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_BMP)
 

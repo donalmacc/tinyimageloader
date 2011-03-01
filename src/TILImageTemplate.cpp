@@ -23,7 +23,7 @@
 */
 
 // note: the header is one directory up, in the SDK\headers folder
-#include "..\SDK\headers\TILImageTemplate.h"
+#include "TILImageTemplate.h"
 
 // change this to your format
 // or remove it if it should always be supported

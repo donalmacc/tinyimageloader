@@ -22,7 +22,7 @@
 	THE SOFTWARE.
 */
 
-#include "..\SDK\headers\TILFileStream.h"
+#include "TILFileStream.h"
 
 namespace til
 {

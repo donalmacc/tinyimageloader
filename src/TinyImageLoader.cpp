@@ -22,33 +22,34 @@
 	THE SOFTWARE.
 */
 
-#include "..\SDK\headers\TinyImageLoader.h"
+#include "TinyImageLoader.h"
+#include "TILInternal.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
-	#include "..\SDK\headers\TILImagePNG.h"
+	#include "TILImagePNG.h"
 #endif
 
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
-	#include "..\SDK\headers\TILImageGIF.h"
+	#include "TILImageGIF.h"
 #endif
 
 #if (TIL_FORMAT & TIL_FORMAT_TGA)
-	#include "..\SDK\headers\TILImageTGA.h"
+	#include "TILImageTGA.h"
 #endif
 
 #if (TIL_FORMAT & TIL_FORMAT_BMP)
-	#include "..\SDK\headers\TILImageBMP.h"
+	#include "TILImageBMP.h"
 #endif
 
 #if (TIL_FORMAT & TIL_FORMAT_ICO)
-	#include "..\SDK\headers\TILImageICO.h"
+	#include "TILImageICO.h"
 #endif
 
 #if (TIL_FORMAT & TIL_FORMAT_DDS)
-	#include "..\SDK\headers\TILImageDDS.h"
+	#include "TILImageDDS.h"
 #endif
 
-#include "..\SDK\headers\TILFileStreamStd.h"
+#include "TILFileStreamStd.h"
 
 #include <stdarg.h>
 #include <windows.h>

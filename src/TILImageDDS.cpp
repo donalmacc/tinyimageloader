@@ -22,7 +22,8 @@
 	THE SOFTWARE.
 */
 
-#include "..\SDK\headers\TILImageDDS.h"
+#include "TILImageDDS.h"
+#include "TILInternal.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_DDS)
 
@@ -169,7 +170,6 @@ namespace til
 	bool ImageDDS::Parse(uint32 a_ColorDepth)
 	{
 		dword header;
-		//fread(&header, sizeof(dword), 1, m_Handle);
 		m_Stream->ReadDWord(&header);
 
 		if (header != DDS_FOURCC_DDS)
@@ -179,8 +179,6 @@ namespace til
 		}
 
 		DDSurfaceDesc ddsd;
-		//in.read(reinterpret_cast<char*>(&ddsd), sizeof ddsd);
-		//fread(&ddsd, 1, sizeof(DDSurfaceDesc), m_Handle);
 		m_Stream->Read(&ddsd, sizeof(DDSurfaceDesc));
 
 		m_Format = 0;
@@ -453,7 +451,6 @@ namespace til
 		}
 
 		m_Data = new byte[m_Size];
-		//fread(m_Data, m_Size, 1, m_Handle);
 		m_Stream->ReadByte(m_Data, m_Size);
 	}
 

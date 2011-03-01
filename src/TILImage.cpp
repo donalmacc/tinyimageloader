@@ -23,11 +23,12 @@
 */
 
 /*!
-	\file ..\SDK\headers\TILImage.h
+	\file TILImage.h
 	\class til::Image "../SDK/headers/TILImage.h"
 */
 
-#include "..\SDK\headers\TILImage.h"
+#include "TILImage.h"
+#include "TILInternal.h"
 
 #include <stdlib.h>
 

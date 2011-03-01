@@ -22,7 +22,8 @@
 	THE SOFTWARE.
 */
 
-#include "..\SDK\headers\TILImageICO.h"
+#include "TILImageICO.h"
+#include "TILInternal.h"
 
 #include <windows.h>
 #include <wingdi.h>
@@ -34,6 +35,8 @@
 #else
 	#define ICO_DEBUG(msg, ...)
 #endif
+
+//#define OLDMETHOD
 
 //#define GETBIT(data, place) ((data >> (place)) & 1)
 #define GETBIT(data, place) ((data >> (8 - place)) & 1)
@@ -175,7 +178,8 @@ namespace til
 		for (int i = 0; i < a_Buffer->palette; i++)
 		{
 			byte read[4];
-			fread(read, 1, 4, m_Handle);
+			//fread(read, 1, 4, m_Handle);
+			m_Stream->ReadByte(read, 4);
 			*dst++ = Construct_32b_A8R8G8B8(read[0], read[1], read[2], (a_Buffer->palette == 16) ? 255 : read[3]);
 		}
 	}
@@ -183,16 +187,28 @@ namespace til
 	bool ImageICO::Parse(uint32 a_ColorDepth)
 	{
 		// empty anyway
+#ifdef OLDMETHOD
 		fseek(m_Handle, 2, SEEK_CUR);
+#else
+		m_Stream->Seek(2, TIL_FILE_SEEK_CURR);
+#endif
 
+#ifdef OLDMETHOD
 		word header;          fread(&header, 2, 1, m_Handle);
+#else
+		word header;          m_Stream->ReadWord(&header);
+#endif
 		if (header != 1 && header != 2)
 		{
 			TIL_ERROR_EXPLAIN("Not a valid ICO file!");
 			return false;
 		}
-	
+
+#ifdef OLDMETHOD
 		word imagecount;      fread(&imagecount, 2, 1, m_Handle);
+#else
+		word imagecount;      m_Stream->ReadWord(&imagecount);
+#endif
 		m_Images = imagecount;
 
 		byte width, height, palette, reserved;
@@ -201,6 +217,8 @@ namespace til
 
 		for (uint16 i = 0; i < imagecount; i++)
 		{
+
+#ifdef OLDMETHOD
 			fread(&width, 1, 1, m_Handle);
 			fread(&height, 1, 1, m_Handle);
 
@@ -212,8 +230,19 @@ namespace til
 
 			fread(&datasize, 4, 1, m_Handle);
 			fread(&offset, 4, 1, m_Handle);
+#else
+			m_Stream->ReadByte(&width);
+			m_Stream->ReadByte(&height);
 
-			//fseek(m_Handle, 4, SEEK_CUR);
+			m_Stream->ReadByte(&palette);
+			m_Stream->ReadByte(&reserved);
+
+			m_Stream->ReadWord(&planes);
+			m_Stream->ReadWord(&bpp);
+
+			m_Stream->ReadDWord(&datasize);
+			m_Stream->ReadDWord(&offset);
+#endif
 
 			AddBuffer(width, height);
 			m_Current->offset    = offset;
@@ -260,17 +289,31 @@ namespace til
 
 			unsigned long size2 = sizeof(BITMAPINFOHEADER);
 
+#ifdef OLDMETHOD
 			fseek(m_Handle, cur->offset, SEEK_SET);
+#else
+			m_Stream->Seek(cur->offset, TIL_FILE_SEEK_CURR);
+#endif
 
 			//BITMAPINFOHEADER bleh;
 			//fread(&bleh, sizeof(bleh), 1, m_Handle);
 			
-			uint32 size;     fread(&size, 4, 1, m_Handle);
+			/*uint32 size;     fread(&size, 4, 1, m_Handle);
 			int32 width;     fread(&width, 4, 1, m_Handle);
 			int32 height;    fread(&height, 4, 1, m_Handle);
 			uint16 planes;   fread(&planes, 2, 1, m_Handle);
-			uint16 bitcount; fread(&bitcount, 2, 1, m_Handle);
+			uint16 bitcount; fread(&bitcount, 2, 1, m_Handle);*/
+
+			dword size;      m_Stream->ReadDWord(&size);
+			int32 width;     m_Stream->Read(&width, sizeof(int32));
+			int32 height;    m_Stream->Read(&height, sizeof(int32));
+			word planes;     m_Stream->ReadWord(&planes);
+			word bitcount;   m_Stream->ReadWord(&bitcount);
+#ifdef OLDMETHOD
 			fseek(m_Handle, 24, SEEK_CUR);
+#else
+			m_Stream->Seek(24, TIL_FILE_SEEK_CURR);
+#endif
 
 			ICO_DEBUG("Image: %i", i);
 			ICO_DEBUG("Dimensions: (%i, %i)", cur->width, cur->height);
@@ -320,10 +363,18 @@ namespace til
 				//cur->pitchy = cur->height;
 
 				src = new byte[cur->width * cur->pitchy * cur->bytespp];
+#ifdef OLDMETHOD
 				fread(src, cur->bytespp, cur->width * cur->pitchy, m_Handle); 
+#else
+				m_Stream->Read(src, cur->bytespp, cur->width * cur->pitchy);
+#endif
 
 				cur->andmask = new byte[(cur->width / 8) * cur->height];
+#ifdef OLDMETHOD
 				fread(cur->andmask, 1, (cur->width / 8) * cur->height, m_Handle);
+#else
+				m_Stream->Read(cur->andmask, sizeof(byte), (cur->width / 8) * cur->height);
+#endif
 
 				byte* read = src;
 				byte* and = cur->andmask;
@@ -376,7 +427,11 @@ namespace til
 
 				for (uint32 y = 0; y < cur->height; y++)
 				{
+#ifdef OLDMETHOD
 					fread(src, cur->width, cur->bytespp, m_Handle); 
+#else
+					m_Stream->Read(src, cur->bytespp, cur->width);
+#endif
 
 					g_ColorFuncRow(target, src, NULL, cur);
 					target -= pitch;
