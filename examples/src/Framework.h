@@ -1,3 +1,7 @@
+/*! 
+	\file framework.h
+*/
+
 #ifndef _FRAMEWORK_H_
 #define _FRAMEWORK_H_
 
@@ -17,27 +21,43 @@ extern "C"
 #include "GL/glext.h"
 #include "GL/wglext.h"
 
-// Warnings
+/*! 
+	\namespace TILFW
+	\brief TinyImageLoader Framework namespace.
 
-#ifndef _CRT_SECURE_NO_WARNINGS
-	#define _CRT_SECURE_NO_WARNINGS
-#endif
+	The framework used by the examples.
+*/
 
-struct TILFW
+namespace TILFW
 {
 
-	int Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
-	void Setup();
-	void Init(const char** a_CommandLine, int a_Commands);
-	void Tick(float a_DT);
-	void Render();
+	class DoxygenSaysWhat;
 
-	unsigned int s_WindowWidth, s_WindowHeight;
-	bool s_Exit;
+	class Framework
+	{
 
-	static bool s_KeysPressed[256];
-	static bool s_KeysReleased[256];
+	public:
 
-};
+		//! Main entry point for the examples
+		int Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
+		//! Setting up parameters
+		void Setup();
+		//! Initializing
+		void Init(const char** a_CommandLine, int a_Commands);
+		//! Main loop
+		void Tick(float a_DT);
+		//! Rendering
+		void Render();
+
+		unsigned int s_WindowWidth; //!< Width of the window
+		unsigned int s_WindowHeight; //!< Height of the window
+		bool s_Exit; //!< Exits the program if true
+
+		static bool s_KeysPressed[256]; //!< List of keys held down
+		static bool s_KeysReleased[256]; //!< List of keys released in the last frame
+
+	}; // struct Framework
+
+}; // namespace TILFW
 
 #endif

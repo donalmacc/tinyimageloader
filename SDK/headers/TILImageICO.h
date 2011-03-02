@@ -22,6 +22,11 @@
 	THE SOFTWARE.
 */
 
+/*!
+	\file TILImageICO.h
+	\brief An ICO image loader
+*/
+
 #ifndef _TILIMAGEICO_H_
 #define _TILIMAGEICO_H_
 

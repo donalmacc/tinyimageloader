@@ -37,7 +37,6 @@ namespace til
 
 	Image::Image()
 	{
-		m_Handle = NULL;
 		m_FileName = NULL;
 	}
 
@@ -50,8 +49,9 @@ namespace til
 	bool Image::Load(const char* a_FileName, uint32 a_Options)
 	{
 		m_Stream = g_FileFunc(a_FileName, a_Options);
+		return (m_Stream != NULL);
 
-		size_t length = strlen(a_FileName) + 1;
+		/*size_t length = strlen(a_FileName) + 1;
 		m_FileName = new char[length];
 		strcpy_s(m_FileName, length, a_FileName);
 
@@ -75,14 +75,14 @@ namespace til
 			return false;
 		}
 
-		return true;
+		return true;*/
 	}
 
 	bool Image::Close()
 	{
-		if (m_Handle)
+		if (m_Stream)
 		{
-			fclose(m_Handle);
+			m_Stream->Close();
 			return true;
 		}
 
@@ -103,12 +103,14 @@ namespace til
 				break;
 			}
 		case TIL_DEPTH_R8G8B8:
+		case TIL_DEPTH_B8G8R8:
 			{
 				m_BPP = 3;
 				break;
 			}
 			
 		case TIL_DEPTH_R5G6B5:
+		case TIL_DEPTH_B5G6R5:
 			{
 				m_BPP = 2;
 				break;

@@ -1479,7 +1479,6 @@ namespace til
 					}
 
 					if (!m_Stream->ReadByte(idata + ioff, m_Chunk->length))
-					//if (fread(idata + ioff, 1, m_Chunk->length, m_Handle) != m_Chunk->length) 
 					{	
 						TIL_ERROR_EXPLAIN("Not enough data.");
 						return NULL;
@@ -1654,7 +1653,6 @@ namespace til
 						m_Ani->data = p;
 					}
 
-					//if (fread(m_Ani->data + m_Ani->data_offset, 1, len, m_Handle) != len) 
 					if (!m_Stream->ReadByte(m_Ani->data + m_Ani->data_offset, len))
 					{	
 						TIL_ERROR_EXPLAIN("Not enough data.");

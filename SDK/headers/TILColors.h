@@ -22,8 +22,13 @@
 	THE SOFTWARE.
 */
 
-#ifndef _TILCONVERT_H_
-#define _TILCONVERT_H_
+/*!
+	\file TILColors.h
+	\brief Functions for constructing colors, converting colors and blending colors
+*/
+
+#ifndef _TILCOLORS_H_
+#define _TILCOLORS_H_
 
 #include "TILSettings.h"
 
@@ -34,7 +39,6 @@ namespace til
 	// is necessary to fool doxygen into documenting
 	// the class
 	class DoxygenSaysWhat;
-
 
 	/////////////////////////////////////////////////////
 	/*!

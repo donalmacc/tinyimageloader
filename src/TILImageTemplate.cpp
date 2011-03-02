@@ -22,11 +22,10 @@
 	THE SOFTWARE.
 */
 
-// note: the header is one directory up, in the SDK\headers folder
 #include "TILImageTemplate.h"
+#include "TILInternal.h"
 
 // change this to your format
-// or remove it if it should always be supported
 #if (TIL_FORMAT & TIL_FORMAT_MYFORMAT)
 
 // change this to your format
@@ -39,12 +38,16 @@ namespace til
 
 	ImageTemplate::ImageTemplate()
 	{
-		// go wild
+		// tip: set variables you will new to NULL
+
+		// m_Example = NULL;
 	}
 
 	ImageTemplate::~ImageTemplate()
 	{
-		// probably needs to be empty
+		// make sure you delete any memory you new'd!
+
+		// if (m_Example) { delete m_Example; }
 	}
 
 	bool ImageTemplate::Parse(uint32 a_ColorDepth)
@@ -55,10 +58,10 @@ namespace til
 			TEMPLATE_DEBUG("Is this thing on?");
 		*/
 
-		// m_Handle is a valid FILE* that starts at the beginning of the file
+		// m_Stream can be used to read data from the file.
 	
 		/*
-			dword header;         fread(&header, 4, 1, m_Handle);
+			dword header;         m_Stream->ReadDWord(&header);
 		*/
 
 		// if anything goes wrong, you use TIL_ERROR_EXPLAIN to explain what went wrong
@@ -132,6 +135,22 @@ namespace til
 		// bytes.
 
 		return NULL;
+	}
+
+	uint32 ImageTemplate::GetWidth(uint32 a_Frame /*= 0*/)
+	{
+		// return the width of the frame
+		// if only 1 frame is allowed, disregard the a_Frame parameter
+
+		return 0;
+	}
+
+	uint32 ImageTemplate::GetHeight(uint32 a_Frame /*= 0*/)
+	{
+		// return the height of the frame
+		// if only 1 frame is allowed, disregard the a_Frame parameter
+
+		return 0;
 	}
 
 }; // namespace til

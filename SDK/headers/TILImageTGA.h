@@ -22,6 +22,11 @@
 	THE SOFTWARE.
 */
 
+/*!
+	\file TILImageTGA.h
+	\brief A TGA image loader
+*/
+
 #ifndef _TILIMAGETGA_H_
 #define _TILIMAGETGA_H_
 

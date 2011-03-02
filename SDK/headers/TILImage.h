@@ -22,26 +22,20 @@
 	THE SOFTWARE.
 */
 
-#ifndef _TILIMAGE_H_
-#define _TILIMAGE_H_
-
 /*!
 	\file TILImage.h
-	\brief Image interface
+	\brief Virtual interface for loading images
 */
+
+#ifndef _TILIMAGE_H_
+#define _TILIMAGE_H_
 
 #include "TILSettings.h"
 #include "TILColors.h"
 #include "TILFileStream.h"
 
-#include <stdio.h>
-#include <string.h>
-
 namespace til
 {
-
-	// very strange doxygen workaround
-	//; // do not remove!
 
 	// this seemingly pointless forward declaration
 	// is necessary to fool doxygen into documenting
@@ -78,6 +72,8 @@ namespace til
 
 	public:
 
+		// TODO: Replace enum with defines
+
 		//! The amount of bits per pixel and its arrangement.
 		enum BitDepth
 		{
@@ -86,7 +82,9 @@ namespace til
 			BPP_32B_R8G8B8A8 = 3, /**< 32-bit RGBA color */
 			BPP_32B_B8G8R8A8 = 4, /**< 32-bit BGRA color */
 			BPP_32B_R8G8B8   = 5, /**< 32-bit RGB color */
-			BPP_16B_R5G6B5   = 6, /**< 16-bit RGB color */
+			BPP_32B_B8G8R8   = 6, /**< 32-bit BGR color */
+			BPP_16B_R5G6B5   = 7, /**< 16-bit RGB color */
+			BPP_16B_B5G6R5   = 8, /**< 16-bit BGR color */
 		};
 
 		Image();
@@ -94,7 +92,12 @@ namespace til
 
 		//! Sets the bit depth to convert to when parsing.
 		void SetBPP(uint32 a_Options);
+
+		//! Get the color depth as an enum
+		BitDepth GetBitDepth() { return m_BPPIdent; }
 	
+		// TODO: Replace parameters with FileStream*
+
 		//! Loads a filepath using a series of options.
 		/*!
 			\param a_FileName A path to an image file.
@@ -106,6 +109,12 @@ namespace til
 		*/
 		bool Load(const char* a_FileName, uint32 a_Options = TIL_FILE_ABSOLUTEPATH);
 
+		//! Closes the handle to the image file
+		/*!
+			Used internally by TinyImageLoader.
+		*/
+		bool Close();
+
 		//! Parses the actual image data.
 		/*!
 			\param a_ColorDepth The color depth received from #SetBPP;
@@ -114,9 +123,6 @@ namespace til
 			image loading implementation.
 		*/
 		virtual bool Parse(uint32 a_ColorDepth) = 0;
-
-		//! Not actually used. Maybe I should do something about that.
-		bool Close();
 
 		//! Returns the amount of frames this image contains.
 		/*!
@@ -177,13 +183,9 @@ namespace til
 		*/
 		virtual uint32 GetHeight(uint32 a_Frame = 0) = 0;
 
-		//! Get the color depth as an enum
-		BitDepth GetBitDepth() { return m_BPPIdent; }
-
 	protected:
 
-		FileStream* m_Stream;
-		FILE* m_Handle; //!< The file handle
+		FileStream* m_Stream; //!< The file interface
 		char* m_FileName; //!< The filename
 		BitDepth m_BPPIdent; //!< The bit depth to convert to
 		uint8 m_BPP; //!< The amount of bytes per pixel

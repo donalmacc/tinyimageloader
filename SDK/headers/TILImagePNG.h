@@ -25,6 +25,11 @@
 #ifndef _TILIMAGEPNG_H_
 #define _TILIMAGEPNG_H_
 
+/*!
+	\file TILImagePNG.h
+	\brief A PNG image loader
+*/
+
 #include "TILImage.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_PNG)

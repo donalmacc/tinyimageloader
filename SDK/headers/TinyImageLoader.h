@@ -53,7 +53,7 @@ namespace til
 
 		Valid settings are a combination of:
 
-		Line endings
+		Line endings:
 		- #TIL_FILE_CRLF
 		- #TIL_FILE_CR
 		- #TIL_FILE_LF
@@ -65,9 +65,6 @@ namespace til
 		Makes sure all memory allocated by TinyImageLoader (outside of til::Image objects) is deallocated.
 	*/
 	void TIL_ShutDown();
-
-	//! Interprets data in memory as an image loaded from disk.
-	Image* TIL_LoadFromMemory(byte* a_Data, uint32 a_Options = TIL_DEPTH_A8R8G8B8);
 
 	//! Main interface for loading images.
 	/*!
@@ -85,6 +82,9 @@ namespace til
 		- #TIL_FILE_ABSOLUTEPATH
 		- #TIL_FILE_ADDWORKINGDIR
 
+		Optionally, you can specify that the path is wide:
+		-#TIL_FILE_WIDEPATH
+
 		And a color depth option:
 		- #TIL_DEPTH_A8R8G8B8
 		- #TIL_DEPTH_A8B8G8R8
@@ -94,6 +94,10 @@ namespace til
 		- #TIL_DEPTH_B8G8R8
 		- #TIL_DEPTH_R5G6B5
 		- #TIL_DEPTH_B5G6R5
+
+		/code
+		til::Image* load = til::TIL_Load("MyFile.png", TIL_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		/endcode
 	*/
 	Image* TIL_Load(const char* a_FileName, uint32 a_Options = (TIL_FILE_ABSOLUTEPATH | TIL_DEPTH_A8R8G8B8));
 

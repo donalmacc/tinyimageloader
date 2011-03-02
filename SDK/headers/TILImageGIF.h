@@ -22,6 +22,11 @@
 	THE SOFTWARE.
 */
 
+/*!
+	\file TILImageGIF.h
+	\brief A GIF image loader
+*/
+
 #ifndef _TILIMAGEGIF_H_
 #define _TILIMAGEGIF_H_
 

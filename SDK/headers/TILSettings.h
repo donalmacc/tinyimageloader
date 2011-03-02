@@ -175,13 +175,18 @@
 #if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
 	#define TIL_MAX_PATH _MAX_PATH
 
-	#define _CRTDBG_MAP_ALLOC
-	#include <crtdbg.h>
+	#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-	#ifdef _DEBUG
-		#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-		#define new DEBUG_NEW
+		#define _CRTDBG_MAP_ALLOC
+		#include <crtdbg.h>
+
+		#ifdef _DEBUG
+			#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+			#define new DEBUG_NEW
+		#endif
+
 	#endif
+
 #else
 	#define TIL_MAX_PATH 256
 #endif

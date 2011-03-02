@@ -22,6 +22,11 @@
 	THE SOFTWARE.
 */
 
+/*!
+	\file TILImageBMP.h
+	\brief A BMP image loader
+*/
+
 #ifndef _TILIMAGEBMP_H_
 #define _TILIMAGEBMP_H_
 

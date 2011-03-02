@@ -22,6 +22,11 @@
 	THE SOFTWARE.
 */
 
+/*!
+	\file TILFileStreamStd.h
+	\brief An ANSI C implementation of FileStream
+*/
+
 #ifndef _TILFILESTREAMSTD_H_
 #define _TILFILESTREAMSTD_H_
 
@@ -35,6 +40,17 @@
 namespace til
 {
 
+	// this seemingly pointless forward declaration
+	// is necessary to fool doxygen into documenting
+	// the class
+	class DoxygenSaysWhat;
+
+	//! ANSI C implementation of FileStream
+	/*!
+		FileStream implementation that uses FILE pointers. Should work
+		on all platforms with a valid ANSI C implementation, but details
+		may differ.
+	*/
 	class FileStreamStd : public FileStream
 	{
 	

@@ -139,15 +139,15 @@ namespace til
 
 	dword ImageBMP::GetDWord()
 	{
-		fread(m_Data, 1, 4, m_Handle);
+		m_Stream->ReadByte(m_Data, 4);
 		return (m_Data[3] << 24) | (m_Data[2] << 16) | (m_Data[1] << 8) | (m_Data[0]);
 	}
 
 	bool ImageBMP::Parse(uint32 a_ColorDepth)
 	{
-		byte header[3];         fread(header, 1, 2, m_Handle);
+		byte header[3];         m_Stream->ReadByte(header, 2);
 		dword size =            GetDWord();
-		dword unused;           fread(&unused, 4, 1, m_Handle);
+		dword unused;           m_Stream->ReadDWord(&unused);
 		dword pixel_offset =    GetDWord();
 
 		dword header_size =     GetDWord();
@@ -175,8 +175,8 @@ namespace til
 		dword height =          GetDWord();
 		m_Height =              (uint32)height;
 
-		word color_planes;      fread(&color_planes, 2, 1, m_Handle);
-		word bpp;               fread(&bpp, 2, 1, m_Handle);
+		word color_planes;      m_Stream->ReadWord(&color_planes);
+		word bpp;               m_Stream->ReadWord(&bpp);
 		BMP_DEBUG("BPP: %i", bpp);
 		word bytesperpixel = bpp >> 3;
 
@@ -229,7 +229,7 @@ namespace til
 		uint32 readpitch = m_Width * bytesperpixel;
 		uint32 readbytes = readpitch * m_Height;
 		m_ReadData = new byte[readbytes];
-		fread(m_ReadData, 1, readbytes, m_Handle);
+		m_Stream->ReadByte(m_ReadData, readbytes);
 
 		byte* read = m_ReadData;
 

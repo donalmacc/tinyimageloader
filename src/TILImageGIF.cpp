@@ -114,7 +114,7 @@ namespace til
 
 		if (m_Colors) { delete m_Colors; }
 		m_Colors = new byte[m_ColorTableSize * m_BPP];
-		memset(m_Colors, 0, m_ColorTableSize * m_BPP);
+		MemSet(m_Colors, 0, m_ColorTableSize * m_BPP);
 
 		switch (m_ColorDepth)
 		{
@@ -360,7 +360,7 @@ namespace til
 
 		m_TotalBytes = m_Width * m_Height * m_BPP;
 		m_PrevBuffer = new byte[m_TotalBytes];
-		memset(m_PrevBuffer, 0, m_TotalBytes);
+		MemSet(m_PrevBuffer, 0, m_TotalBytes);
 
 		GIF_DEBUG("Width: %i", m_Width);
 		GIF_DEBUG("Height: %i", m_Height);
@@ -396,7 +396,7 @@ namespace til
 			AddBuffer();
 			target = m_Current->buffer;
 
-			memcpy(target, m_PrevBuffer, m_TotalBytes);
+			MemCpy(target, m_PrevBuffer, m_TotalBytes);
 
 			uint32 xy = (m_OffsetY * m_Width) + (m_OffsetX);
 
@@ -653,7 +653,7 @@ namespace til
 
 			// copy the current frame to be used as the background
 			// for the next frame
-			memcpy(m_PrevBuffer, m_Current->buffer, m_TotalBytes);
+			MemCpy(m_PrevBuffer, m_Current->buffer, m_TotalBytes);
 		}
 
 		return true;

@@ -333,6 +333,7 @@ namespace til
 
 		if (result)
 		{
+			FileStream* load = g_FileFunc(a_FileName, a_Options & TIL_FILE_MASK);
 			if (!result->Load(a_FileName, a_Options & TIL_FILE_MASK))
 			{
 				TIL_ERROR_EXPLAIN("Could not find file '%s'.", a_FileName);

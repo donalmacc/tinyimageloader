@@ -25,6 +25,11 @@
 #ifndef _TILIMAGEDDS_H_
 #define _TILIMAGEDDS_H_
 
+/*!
+	\file TILImageDDS.h
+	\brief A DDS image loader
+*/
+
 #include "TILImage.h"
 
 #if (TIL_FORMAT & TIL_FORMAT_DDS)
@@ -32,43 +37,20 @@
 namespace til
 {
 
-#define DDS_TYPE(a, b, c, d)       (((d) << 24) + ((c) << 16) + ((b) << 8) + (a))
-#define DDS_FOURCC(a, b, c, d)     (((d) << 24) + ((c) << 16) + ((b) << 8) + (a))
+	// this seemingly pointless forward declaration
+	// is necessary to fool doxygen into documenting
+	// the class
+	class DoxygenSaysWhat;
 
-	static const uint32 DDS_FOURCC_DDS  = DDS_FOURCC('D', 'D', 'S', ' ');
-	static const uint32 DDS_FOURCC_DXT1 = DDS_FOURCC('D', 'X', 'T', '1');
-	static const uint32 DDS_FOURCC_DXT2 = DDS_FOURCC('D', 'X', 'T', '2');
-	static const uint32 DDS_FOURCC_DXT3 = DDS_FOURCC('D', 'X', 'T', '3');
-	static const uint32 DDS_FOURCC_DXT4 = DDS_FOURCC('D', 'X', 'T', '4');
-	static const uint32 DDS_FOURCC_DXT5 = DDS_FOURCC('D', 'X', 'T', '5');
-	static const uint32 DDS_FOURCC_RXGB = DDS_FOURCC('R', 'X', 'G', 'B');
-	static const uint32 DDS_FOURCC_ATI1 = DDS_FOURCC('A', 'T', 'I', '1');
-	static const uint32 DDS_FOURCC_ATI2 = DDS_FOURCC('A', 'T', 'I', '2');
-
+	//! Implementation of a DDS loader
 	class ImageDDS : public Image
 	{
 
 	public:
 
-		enum EnumFormat
-		{
-			FormatDXT1,
-			FormatDXT3,
-			FormatDXT5
-		};
-
-		enum EnumDepth
-		{
-			DepthRGB,
-			DepthARGB,
-			DepthBGR,
-			DepthBGRA
-		};
-
 		ImageDDS();
 		~ImageDDS();
 
-		// make sure you support these functions
 		uint32 GetFrameCount();
 		byte* GetPixels(uint32 a_Frame = 0);
 
@@ -79,15 +61,22 @@ namespace til
 
 	private:
 		
+		/*!
+			@name Internal
+			These functions are internal and shouldn't be called by developers.
+		*/
+		//@{
+
 		void ReadData();
 		void GetOffsets();
 		void DecompressDXT1();
 		void DecompressDXT5();
 
+		//@}
+
 		uint32 m_Width, m_Height, m_Depth;
 		uint32 m_MipMaps;
 		bool m_CubeMap;
-		//EnumFormat m_Format;
 		uint32 m_Format;
 		uint32 m_InternalDepth, m_InternalBPP;
 		uint32 m_Size, m_Blocks;

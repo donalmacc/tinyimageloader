@@ -22,13 +22,10 @@
 	THE SOFTWARE.
 */
 
-/*
-	TinyImageLoader
-
-	Image Format Template
-
-	Note: this file isn't actually used in TinyImageLoader.
-	You can copy this file to extend TinyImageLoader with new formats.
+// change this for doxygen
+/*!
+	\file TILImageTemplate.h
+	\brief Template for an image loader
 */
 
 // change these defines
@@ -38,19 +35,19 @@
 #include "TILImage.h"
 
 // change this to your format
-// or remove it if it should always be supported
 #if (TIL_FORMAT & TIL_FORMAT_MYFORMAT)
 
 namespace til
 {
 
-	struct TinyImageLoader;
+	// this seemingly pointless forward declaration
+	// is necessary to fool doxygen into documenting
+	// the class
+	class DoxygenSaysWhat;
 
-	// change the class name
+	//! Implementation of a Template loader
 	class ImageTemplate : public Image
 	{
-
-		friend struct TinyImageLoader;
 
 	public:
 
@@ -67,7 +64,31 @@ namespace til
 		// check the cpp for the correct implementation
 		bool Parse(uint32 a_ColorDepth);
 
+		// return the amount of frames
+		// or 1 if only one frame is allowed
+		uint32 GetFrameCount();
+		// return the pixels corresponding to the frame
+		// or ignore the a_Frame parameter if multiple frames aren't allowed
+		byte* GetPixels(uint32 a_Frame = 0);
+
+		// return the width corresponding to the frame
+		// or ignore the a_Frame parameter if multiple frames aren't allowed
+		uint32 GetWidth(uint32 a_Frame = 0);
+		// return the height corresponding to the frame
+		// or ignore the a_Frame parameter if multiple frames aren't allowed
+		uint32 GetHeight(uint32 a_Frame = 0);
+
+	private:
+
+		/*!
+			@name Internal
+			These functions are internal and shouldn't be called by developers.
+		*/
+		//@{
+
 		// go wild, add as many members and functions as you need here
+
+		//@}
 
 	}; // class ImageTemplate
 
