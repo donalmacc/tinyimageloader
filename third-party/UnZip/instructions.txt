@@ -1,0 +1,24 @@
+--== Linking against UnZip ==--
+
+First, you need to download ZLib from their website:
+
+http://zlib.net/
+Direct link: http://zlib.net/zlib-1.2.5.tar.gz
+
+Extract the archive to third-party\ZLib.
+
+Next, you will need unzip101:
+
+http://www.winimage.com/zLibDll/minizip.html
+Direct link: http://www.winimage.com/zLibDll/unzip101h.zip
+
+Extract the archive to third-party\UnZip
+
+Load the premade solution file in Visual Studio and compile for both Debug and
+Release.
+
+Congratulations!
+
+You can now link against UnZip. :)
+
+-knight666
