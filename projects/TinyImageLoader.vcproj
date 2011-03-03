@@ -157,22 +157,6 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Settings"
-			>
-			<File
-				RelativePath="..\SDK\headers\TILColors.h"
-				>
-			</File>
-			<File
-				RelativePath="..\SDK\headers\TILInternal.h"
-				>
-			</File>
-			<File
-				RelativePath="..\SDK\headers\TILSettings.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Formats"
 			>
 			<File
@@ -251,6 +235,22 @@
 				RelativePath="..\SDK\headers\TinyImageLoader.h"
 				>
 			</File>
+			<Filter
+				Name="Settings"
+				>
+				<File
+					RelativePath="..\SDK\headers\TILColors.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDK\headers\TILInternal.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDK\headers\TILSettings.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Files"

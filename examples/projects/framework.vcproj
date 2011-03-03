@@ -59,7 +59,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="OpenGL32.lib glew32_x86.lib glu32.lib "
+				AdditionalDependencies="OpenGL32.lib glew32.lib glu32.lib "
 				OutputFile="$(OutDir)\$(ProjectName)_d.lib"
 				AdditionalLibraryDirectories="$(SolutionDir)third-party\GLEW\lib"
 			/>
@@ -126,7 +126,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="OpenGL32.lib glew32_x86.lib glu32.lib"
+				AdditionalDependencies="OpenGL32.lib glew32.lib glu32.lib"
 				AdditionalLibraryDirectories="$(SolutionDir)third-party\GLEW\lib"
 			/>
 			<Tool
