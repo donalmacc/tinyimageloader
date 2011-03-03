@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>TinyImageLoader: Member List</title>
+<title>TinyImageLoader: Acknowledgements</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -28,9 +28,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li id="searchli">
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -50,31 +50,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
-    </ul>
-  </div>
-  <div id="nav-path" class="navpath">
-    <ul>
-      <li class="navelem"><a class="el" href="namespacetil.html">til</a>      </li>
-      <li class="navelem"><a class="el" href="structtil_1_1_message_data.html">MessageData</a>      </li>
-    </ul>
-  </div>
 </div>
 <div class="header">
   <div class="headertitle">
-<h1>til::MessageData Member List</h1>  </div>
+<h1>Acknowledgements </h1>  </div>
 </div>
 <div class="contents">
-This is the complete list of members for <a class="el" href="structtil_1_1_message_data.html">til::MessageData</a>, including all inherited members.<table>
-  <tr class="memlist"><td><a class="el" href="structtil_1_1_message_data.html#a509ca54f8bbc534d0220d3e7b1637a8d">message</a></td><td><a class="el" href="structtil_1_1_message_data.html">til::MessageData</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="structtil_1_1_message_data.html#a0e06be68ecffce75b5920a24d367bad7">source_file</a></td><td><a class="el" href="structtil_1_1_message_data.html">til::MessageData</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="structtil_1_1_message_data.html#a431af7e6298fbf1d6a0cf4518d67d153">source_line</a></td><td><a class="el" href="structtil_1_1_message_data.html">til::MessageData</a></td><td></td></tr>
-</table></div>
+<div class="textblock"><p>TinyImageLoader wouldn't exist without the people writing specifications, open source implementations and use cases. This page is to thank them.</p>
+<h2><a class="anchor" id="png"></a>
+PNG</h2>
+<p>This PNG loader is entirely based on the works of Sean Barrett a.k.a. nothings. You can download the original stb_image.c from his website at <a href="http://www.nothings.org/stb_image.c">http://www.nothings.org/stb_image.c</a></p>
+<p>stb_image is a legendary compact file loader that implements multiple file formats in a single C file. It does so in an opaque, but easy to use way.</p>
+<p>The original idea for TinyImageLoader came from reimplementing stb_image.c in such a way that it would be readable to me. When I was done I started implementing other formats as well. Without stb_image, no TinyImageLoader.</p>
+<p>What I changed: Support for different color depths Added Animated PNG support</p>
+<p>Everything else is Mr. Barrett's code implemented in a different manner.</p>
+<h2><a class="anchor" id="gif"></a>
+GIF</h2>
+<p>I took this code almost verbatim from a folder I found at Breakpoint 2010. You see, one of the patrons was kind enough to set up an FTP server. What he put up there was a folder called 'coding'. This turned out to be treasure trove of old, old code. The year of writing is 2010, and the code dates from early 1993 to 2004. Old stuff. Ancient stuff. As it turns out, so is the .gif file format.</p>
+<p>In the folder "Demo tools" was a folder inconspicuously named "Neon 08.11.2004". In there, in Old, I found PIX.C. Which had a complete GIF loader! Like I said, the code was taken almost verbatim. Even though it was demoscene code and almost two decades old, it worked very well.</p>
+<p>I hacked animated GIF's in it myself.</p>
+<p>Something to think about: when PIX.C was written, Netscape hadn't even written their extension yet! .GIF's didn't support animation back then!</p>
+<p>My salutations go to you, Mr. Javier Baeza, may your code live forever.</p>
+<h2><a class="anchor" id="dds"></a>
+DDS</h2>
+<p>My implementation of the DDS loader is based on the specifications set out by the OpenGL standards board. You can find it here:</p>
+<p><a href="http://www.opengl.org/registry/specs/EXT/texture_compression_s3tc.txt">http://www.opengl.org/registry/specs/EXT/texture_compression_s3tc.txt</a></p>
+<p>It describes in clear language the different compression techniques employed by DDS. It was very useful for figuring out how to decompress them.</p>
+<p>The basis for the loader is formed by code given to me by a colleague who calls himself Seniltai. For his game, he implemented a DDS loader, but he didn't bother decompiling the images by hand. </p>
+</div></div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -89,7 +92,7 @@ This is the complete list of members for <a class="el" href="structtil_1_1_messa
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 12:24:57 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 12:24:56 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

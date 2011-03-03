@@ -1,0 +1,61 @@
+/*!
+\page acknowledgements Acknowledgements
+
+	TinyImageLoader wouldn't exist without the people writing specifications,
+	open source implementations and use cases. This page is to thank them.
+	
+\section png PNG
+
+    This PNG loader is entirely based on the works of Sean Barrett a.k.a. nothings.
+	You can download the original stb_image.c from his website at http://www.nothings.org/stb_image.c
+
+	stb_image is a legendary compact file loader that implements multiple file
+	formats in a single C file. It does so in an opaque, but easy to use way.
+
+	The original idea for TinyImageLoader came from reimplementing stb_image.c
+	in such a way that it would be readable to me. When I was done I started
+	implementing other formats as well. Without stb_image, no TinyImageLoader.
+
+	What I changed:
+	* Support for different color depths
+	* Added Animated PNG support
+
+	Everything else is Mr. Barrett's code implemented in a different manner.
+	
+\section gif GIF
+
+	I took this code almost verbatim from a folder I found at Breakpoint 2010.
+	You see, one of the patrons was kind enough to set up an FTP server. What
+	he put up there was a folder called 'coding'. This turned out to be treasure
+	trove of old, old code. The year of writing is 2010, and the code dates from
+	early 1993 to 2004. Old stuff. Ancient stuff. As it turns out, so is the
+	.gif file format.
+
+	In the folder "Demo tools" was a folder inconspicuously named
+	"Neon 08.11.2004". In there, in Old\Despair, I found PIX.C. Which had a
+	complete GIF loader! Like I said, the code was taken almost verbatim. Even
+	though it was demoscene code and almost two decades old, it worked very
+	well.
+
+	I hacked animated GIF's in it myself.
+
+	Something to think about: when PIX.C was written, Netscape hadn't even
+	written their extension yet! .GIF's didn't support animation back then!
+
+	My salutations go to you, Mr. Javier Baeza, may your code live forever.
+	
+\section dds DDS
+
+	My implementation of the DDS loader is based on the specifications set out
+	by the OpenGL standards board. You can find it here:
+
+	http://www.opengl.org/registry/specs/EXT/texture_compression_s3tc.txt
+
+	It describes in clear language the different compression techniques employed
+	by DDS. It was very useful for figuring out how to decompress them.
+
+	The basis for the loader is formed by code given to me by a colleague who
+	calls himself Seniltai. For his game, he implemented a DDS loader, but he
+	didn't bother decompiling the images by hand.
+	
+*/

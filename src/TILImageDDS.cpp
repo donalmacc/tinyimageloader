@@ -22,6 +22,24 @@
 	THE SOFTWARE.
 */
 
+/*
+
+	My implementation of the DDS loader is based on the specifications set out
+	by the OpenGL standards board. You can find it here:
+
+	http://www.opengl.org/registry/specs/EXT/texture_compression_s3tc.txt
+
+	It describes in clear language the different compression techniques employed
+	by DDS. It was very useful for figuring out how to decompress them.
+
+	The basis for the loader is formed by code given to me by a colleague who
+	calls himself Seniltai. For his game, he implemented a DDS loader, but he 
+	didn't bother decompiling the images by hand.
+
+	-knight666
+
+*/
+
 #include "TILImageDDS.h"
 #include "TILInternal.h"
 
