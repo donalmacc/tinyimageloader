@@ -338,8 +338,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Windows Mobile 6 Professional SDK (ARMV4I)"
-			OutputDirectory="SDK"
-			IntermediateDirectory="int\ARM\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)SDK"
+			IntermediateDirectory="$(SolutionDir)int\ARM\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2"
 			>
@@ -362,7 +362,8 @@
 				Name="VCCLCompilerTool"
 				ExecutionBucket="7"
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;_WINDOWS;DEBUG;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE"
+				AdditionalIncludeDirectories="$(SolutionDir)SDK\headers"
+				PreprocessorDefinitions="_DEBUG;_WIN32_WCE=$(CEVER);UNDER_CE;$(PLATFORMDEFINES);WINCE;_WINDOWS;DEBUG;_LIB;$(ARCHFAM);$(_ARCHFAM_);_UNICODE;UNICODE;TIL_PLATFORM=TIL_PLATFORM_WINMO"
 				MinimalRebuild="true"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
@@ -807,6 +808,70 @@
 	</References>
 	<Files>
 		<Filter
+			Name="Root"
+			>
+			<File
+				RelativePath="..\src\TILImage.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\SDK\headers\TILImage.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\TILImageTemplate.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\SDK\headers\TILImageTemplate.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\TinyImageLoader.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\SDK\headers\TinyImageLoader.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Settings"
+			>
+			<File
+				RelativePath="..\SDK\headers\TILColors.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDK\headers\TILInternal.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDK\headers\TILSettings.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Files"
+			>
+			<File
+				RelativePath="..\src\TILFileStream.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\SDK\headers\TILFileStream.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\TILFileStreamStd.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\SDK\headers\TILFileStreamStd.h"
+				>
+			</File>
+		</Filter>
+		<Filter
 			Name="Formats"
 			>
 			<File
@@ -815,6 +880,14 @@
 			</File>
 			<File
 				RelativePath="..\SDK\headers\TILImageBMP.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\TILImageDDS.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\SDK\headers\TILImageDDS.h"
 				>
 			</File>
 			<File
@@ -847,34 +920,6 @@
 			</File>
 			<File
 				RelativePath="..\SDK\headers\TILImageTGA.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Root"
-			>
-			<File
-				RelativePath="..\src\TILImage.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\SDK\headers\TILImage.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\TinyImageLoader.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\SDK\headers\TinyImageLoader.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Settings"
-			>
-			<File
-				RelativePath="..\SDK\headers\TILSettings.h"
 				>
 			</File>
 		</Filter>
