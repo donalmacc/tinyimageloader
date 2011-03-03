@@ -29,6 +29,8 @@
 
 #ifdef TIL_PRINT_DEBUG
 	#define DDS_DEBUG(msg, ...)        TIL_PRINT_DEBUG("DDS: "msg, __VA_ARGS__)
+#else
+	#define DDS_DEBUG(msg, ...)
 #endif
 
 #include <math.h>

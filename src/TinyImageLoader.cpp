@@ -76,7 +76,7 @@ namespace til
 	static MessageFunc g_DebugFunc = AddDebugDefault;
 	static char* g_Debug = NULL;
 	static char* g_DebugTemp = NULL;
-	static size_t g_DebugMaxSize = 1024;
+	static size_t g_DebugMaxSize = 2048;
 
 #endif
 
@@ -116,7 +116,7 @@ namespace til
 		if (!g_Error) 
 		{
 			g_Error = new char[g_ErrorMaxSize];
-			memset(g_Error, 0, g_ErrorMaxSize);
+			MemSet((byte*)g_Error, 0, g_ErrorMaxSize);
 
 			InitLineFeed();
 		}
@@ -126,7 +126,7 @@ namespace til
 		if (!g_Debug) 
 		{
 			g_Debug = new char[g_DebugMaxSize];
-			memset(g_Debug, 0, g_DebugMaxSize);
+			MemSet((byte*)g_Debug, 0, g_DebugMaxSize);
 
 			InitLineFeed();
 		}
@@ -192,7 +192,7 @@ namespace til
 		strcat_s(g_ErrorTemp, g_ErrorMaxSize, g_LineFeed);
 
 		bool resize = false;
-		while (strlen(g_ErrorTemp) + strlen(g_Error) > g_ErrorMaxSize) { g_ErrorMaxSize *= 2; resize = true; }
+		while (strlen(g_ErrorTemp) + strlen(g_Error) >= g_ErrorMaxSize) { g_ErrorMaxSize *= 2; resize = true; }
 		if (resize)
 		{
 			char* move = new char[g_ErrorMaxSize];
@@ -260,13 +260,15 @@ namespace til
 		strcat_s(g_DebugTemp, g_DebugMaxSize, g_LineFeed);
 
 		bool resize = false;
-		while (strlen(g_DebugTemp) + strlen(g_Debug) > g_DebugMaxSize) { g_DebugMaxSize *= 2; resize = true; }
+
+		while (strlen(g_DebugTemp) + strlen(g_Debug) >= g_DebugMaxSize) 
+		{ 
+			g_DebugMaxSize *= 2; 
+			resize = true; 
+		}
 		if (resize)
 		{
-			char* move = new char[g_DebugMaxSize];
-			strcpy_s(move, g_DebugMaxSize, g_Debug);
-			delete g_Debug;
-			g_Debug = move;
+			g_Debug = (char*)realloc(g_Debug, g_DebugMaxSize);
 		}
 
 		strcat_s(g_Debug, g_DebugMaxSize, g_DebugTemp);
@@ -276,7 +278,7 @@ namespace til
 	{
 		va_list args;
 		va_start(args, a_Line);
-		if (!g_DebugTemp) { g_DebugTemp = new char[g_DebugMaxSize]; }
+		if (!g_DebugTemp) { g_DebugTemp = new char[g_DebugMaxSize + 1]; }
 		vsprintf_s(g_DebugTemp, g_DebugMaxSize, a_Message, args);
 		va_end(args);
 
@@ -415,6 +417,14 @@ namespace til
 		if (result->Open(a_Path, a_Options)) { return result; }
 		
 		return NULL;
+	}
+
+	void TIL_ClearDebug()
+	{
+		if (g_Debug) { delete g_Debug; }
+		g_DebugMaxSize = 2048;
+		g_Debug = new char[g_DebugMaxSize];
+		MemSet((byte*)g_Debug, 0, g_DebugMaxSize);
 	}
 
 }; // namespace til

@@ -1,14 +1,3 @@
-/////////////////////////////////////////////////////////
-//                                                     //
-// TinyImageLoader                                     //
-//                                                     //
-// Example: OpenGL Texture                             //
-//                                                     //
-// Shows how to use TinyImageLoader to load image data //
-// into an OpenGL texture.                             //
-//                                                     //
-/////////////////////////////////////////////////////////
-
 #include "Framework.h"
 
 #include "TinyImageLoader.h"
@@ -40,6 +29,11 @@ namespace TILFW
 		MessageBoxA(NULL, a_Data->message, "TinyImageLoader - Tests", MB_OK | MB_ICONERROR);
 	}
 
+	void MyDebug(til::MessageData* a_Data)
+	{
+
+	}
+
 #endif
 
 	void Framework::Setup()
@@ -54,22 +48,32 @@ namespace TILFW
 
 		til::TIL_Init();
 
+		//til::TIL_SetDebugFunc(MyDebug);
 		til::TIL_SetErrorFunc(MyError);
 
 		til::Image* load_bmp = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		delete load_bmp;
+		til::TIL_ClearDebug();
 
 		til::Image* load_png = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		delete load_png;
+		til::TIL_ClearDebug();
 
 		til::Image* load_gif = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		delete load_gif;
+		til::TIL_ClearDebug();
 
 		til::Image* load_ico = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		delete load_ico;
+		til::TIL_ClearDebug();
 
 		til::Image* load_tga = til::TIL_Load("media\\TGA\\earth.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		delete load_tga;
+		til::TIL_ClearDebug();
+
+		til::Image* load_dds = til::TIL_Load("media\\DDS\\chasm_edge.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		delete load_dds;
+		til::TIL_ClearDebug();
 
 		til::TIL_ShutDown();
 
@@ -85,6 +89,8 @@ namespace TILFW
 		}
 
 		MessageBoxA(NULL, "Rejoice! No memory leaks detected.", "TinyImageLoader - Tests", MB_OK | MB_ICONINFORMATION);
+
+		exit(0);
 	}
 
 	void Framework::Tick(float a_DT)

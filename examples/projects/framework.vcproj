@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(SolutionDir)third-party\GLEW\headers"
+				AdditionalIncludeDirectories="$(SolutionDir)third-party\GLEW\include; $(SolutionDir)third-party\OpenGL"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -59,9 +59,9 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="OpenGL32.lib glu32.lib glew32.lib"
+				AdditionalDependencies="OpenGL32.lib glew32_x86.lib glu32.lib "
 				OutputFile="$(OutDir)\$(ProjectName)_d.lib"
-				AdditionalLibraryDirectories="$(SolutionDir)third-party\GLEW"
+				AdditionalLibraryDirectories="$(SolutionDir)third-party\GLEW\lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -108,7 +108,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="$(SolutionDir)third-party\GLEW\headers"
+				AdditionalIncludeDirectories="$(SolutionDir)third-party\GLEW\include; $(SolutionDir)third-party\OpenGL"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -126,8 +126,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="OpenGL32.lib glu32.lib glew32.lib"
-				AdditionalLibraryDirectories="$(SolutionDir)third-party\GLEW"
+				AdditionalDependencies="OpenGL32.lib glew32_x86.lib glu32.lib"
+				AdditionalLibraryDirectories="$(SolutionDir)third-party\GLEW\lib"
 			/>
 			<Tool
 				Name="VCALinkTool"

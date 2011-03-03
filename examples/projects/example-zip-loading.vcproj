@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)SDK\headers&quot;;&quot;$(SolutionDir)third-party\GLEW\headers&quot;;&quot;$(SolutionDir)third-party\UnZip\headers&quot;;&quot;$(SolutionDir)third-party\ZLib&quot;"
+				AdditionalIncludeDirectories="$(SolutionDir)SDK\headers; $(SolutionDir)third-party\OpenGL; $(SolutionDir)third-party\GLEW\include; $(SolutionDir)third-party\UnZip; $(SolutionDir)third-party\ZLib"
 				PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -113,7 +113,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="$(SolutionDir)SDK\headers; $(SolutionDir)third-party\GLEW\headers; $(SolutionDir)third-party\UnZip\headers; $(SolutionDir)third-party\ZLib"
+				AdditionalIncludeDirectories="$(SolutionDir)SDK\headers; $(SolutionDir)third-party\OpenGL; $(SolutionDir)third-party\GLEW\include; $(SolutionDir)third-party\UnZip; $(SolutionDir)third-party\ZLib"
 				PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"

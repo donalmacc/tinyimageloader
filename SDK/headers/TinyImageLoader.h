@@ -243,6 +243,12 @@ namespace til
 	*/
 	size_t TIL_GetDebugLength();
 
+	//! Clears the debug string
+	/*!
+		The debug string can get very large. Call this function to clear it.
+	*/
+	void TIL_ClearDebug();
+
 }; // namespace til
 
 #endif
