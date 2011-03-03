@@ -46,36 +46,9 @@ namespace til
 		if (m_FileName) { delete m_FileName; }
 	}
 
-	bool Image::Load(const char* a_FileName, uint32 a_Options)
+	void Image::Load(FileStream* a_Stream)
 	{
-		m_Stream = g_FileFunc(a_FileName, a_Options);
-		return (m_Stream != NULL);
-
-		/*size_t length = strlen(a_FileName) + 1;
-		m_FileName = new char[length];
-		strcpy_s(m_FileName, length, a_FileName);
-
-		char path[TIL_MAX_PATH] = { 0 };
-
-		if (a_Options == TIL_FILE_ABSOLUTEPATH)
-		{
-			strcpy_s(path, length, a_FileName);
-		}
-		else if (a_Options == TIL_FILE_ADDWORKINGDIR)
-		{
-			TIL_AddWorkingDirectory(path, TIL_MAX_PATH, a_FileName);
-
-			TIL_PRINT_DEBUG("Final path: %s", path);
-		}
-		
-		fopen_s(&m_Handle, path, "rb");
-		if (!m_Handle)
-		{
-			TIL_ERROR_EXPLAIN("Could not open '%s'.", path);
-			return false;
-		}
-
-		return true;*/
+		m_Stream = a_Stream;
 	}
 
 	bool Image::Close()
@@ -89,7 +62,7 @@ namespace til
 		return false;
 	}
 
-	void Image::SetBPP(uint32 a_Options)
+	bool Image::SetBPP(uint32 a_Options)
 	{
 		switch (a_Options)
 		{
@@ -115,10 +88,15 @@ namespace til
 				m_BPP = 2;
 				break;
 			}
-
+		default:
+			{
+				return false;
+			}
+			
 		}	
 
 		m_BPPIdent = (BitDepth)(a_Options >> 16);
+		return true;
 	}
 
 }; // namespace til

@@ -133,32 +133,73 @@ namespace til
 
 #define GETCODE(x, y, data) (data & ((2 * (4 * y + x)) + 1))
 
-	typedef void (*ColorFuncDDS_Construct)(byte* a_DstColors, color_16b& a_Color0, color_16b& a_Color1);
-
-	void ColorFuncDDS_Construct_A8B8G8R8(byte* a_DstColors, color_16b& a_Color0, color_16b& a_Color1)
-	{
-		color_32b* colors = (color_32b*)a_DstColors;
-
-		colors[0] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(a_Color0);
-		colors[1] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(a_Color1);
-		colors[2] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0xAA));
-		colors[3] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0x55));
-
-		colors[4] = colors[0];
-		colors[5] = colors[1];
-		colors[6] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0x80));
-		colors[7] = 0;
-	}
-
 	typedef void (*ColorFuncDDS)(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha);
 
 	void ColorFuncDDS_A8B8G8R8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
 	{
 		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
-		color_32b* src = (color_32b*)&a_Src[a_SrcIndex * 4];
+		byte* src = &a_Src[a_SrcIndex * 4];
 
-		*dst = Construct_32b_A8B8G8R8(*src, a_Alpha);
+		*dst = Construct_32b_A8B8G8R8(src[0], src[1], src[2], a_Alpha);
 	}
+
+	void ColorFuncDDS_A8R8G8B8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
+	{
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		byte* src = &a_Src[a_SrcIndex * 4];
+
+		*dst = Construct_32b_A8R8G8B8(src[0], src[1], src[2], a_Alpha);
+	}
+
+	void ColorFuncDDS_B8G8R8A8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
+	{
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		byte* src = &a_Src[a_SrcIndex * 4];
+
+		*dst = Construct_32b_B8G8R8A8(src[0], src[1], src[2], a_Alpha);
+	}
+
+	void ColorFuncDDS_R8G8B8A8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
+	{
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		byte* src = &a_Src[a_SrcIndex * 4];
+
+		*dst = Construct_32b_R8G8B8A8(src[0], src[1], src[2], a_Alpha);
+	}
+
+	void ColorFuncDDS_B8G8R8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
+	{
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		byte* src = &a_Src[a_SrcIndex * 4];
+
+		*dst = Construct_32b_B8G8R8(src[0], src[1], src[2]);
+	}
+
+	void ColorFuncDDS_R8G8B8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
+	{
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		byte* src = &a_Src[a_SrcIndex * 4];
+
+		*dst = Construct_32b_R8G8B8(src[0], src[1], src[2]);
+	}
+
+	void ColorFuncDDS_B5G6R5(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
+	{
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		byte* src = &a_Src[a_SrcIndex * 4];
+
+		*dst = Construct_16b_B5G6R5(src[0], src[1], src[2]);
+	}
+
+	void ColorFuncDDS_R5G6B5(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
+	{
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		byte* src = &a_Src[a_SrcIndex * 4];
+
+		*dst = Construct_16b_R5G6B5(src[0], src[1], src[2]);
+	}
+
+	ColorFuncDDS g_ColorFuncDDS = NULL;
 
 #endif
 
@@ -187,6 +228,56 @@ namespace til
 		{
 			TIL_ERROR_EXPLAIN("%s is not a DDS file or header is invalid.", m_FileName);
 			return false;
+		}
+
+		switch (m_BPPIdent)
+		{
+
+		case BPP_32B_A8B8G8R8:
+			{
+				g_ColorFuncDDS = ColorFuncDDS_A8B8G8R8;
+				break;
+			}
+		case BPP_32B_A8R8G8B8:
+			{
+				g_ColorFuncDDS = ColorFuncDDS_A8R8G8B8;
+				break;
+			}
+		case BPP_32B_B8G8R8A8:
+			{
+				g_ColorFuncDDS = ColorFuncDDS_B8G8R8A8;
+				break;
+			}
+		case BPP_32B_R8G8B8A8:
+			{
+				g_ColorFuncDDS = ColorFuncDDS_R8G8B8A8;
+				break;
+			}
+		case BPP_32B_B8G8R8:
+			{
+				g_ColorFuncDDS = ColorFuncDDS_B8G8R8;
+				break;
+			}
+		case BPP_32B_R8G8B8:
+			{
+				g_ColorFuncDDS = ColorFuncDDS_R8G8B8;
+				break;
+			}
+		case BPP_16B_B5G6R5:
+			{
+				g_ColorFuncDDS = ColorFuncDDS_B5G6R5;
+				break;
+			}
+		case BPP_16B_R5G6B5:
+			{
+				g_ColorFuncDDS = ColorFuncDDS_R5G6B5;
+				break;
+			}
+		default:
+			{
+				TIL_ERROR_EXPLAIN("Unknown color depth: %i", m_BPPIdent);
+				return false;
+			}
 		}
 
 		DDSurfaceDesc ddsd;
@@ -483,8 +574,7 @@ namespace til
 			color_16b color1 = (src->c1_lo + (src->c1_hi << 8));
 			dword bits = (src->bits_0) | (src->bits_1 << 8) | (src->bits_2 << 16) | (src->bits_3 << 24);
 
-			ColorFuncDDS_Construct_A8B8G8R8(m_Colors, color0, color1);
-			color_32b* colors = (color_32b*)m_Colors;
+			ConstructColors(color0, color1);
 
 			uint32 offset = (color0 > color1) ? 0 : 4;
 		
@@ -502,7 +592,7 @@ namespace til
 
 					uint32 index = pos_x + (pos_y * m_Width);
 
-					ColorFuncDDS_A8B8G8R8(m_Pixels, index, m_Colors, enabled, alpha);
+					g_ColorFuncDDS(m_Pixels, index, m_Colors, enabled, alpha);
 
 					pos_x++;
 				}
@@ -541,7 +631,9 @@ namespace til
 			color_16b color1 = (src->c1_lo + (src->c1_hi << 8));
 			dword bits = (src->bits_0) | (src->bits_1 << 8) | (src->bits_2 << 16) | (src->bits_3 << 24);
 
-			ColorFuncDDS_Construct_A8B8G8R8(m_Colors, color0, color1);
+			ConstructColors(color0, color1);
+
+			// construct alpha
 
 			uint64 a_bits_total = 
 				((uint64)src->a_bits_0      ) | ((uint64)src->a_bits_1 << 8 ) | 
@@ -590,10 +682,8 @@ namespace til
 					uint32 curr = (2 * (4 * y + x));
 					uint32 enabled = ((bits & (0x3 << curr)) >> curr);
 
-					//color_32b* dst = &write[pos_x + (pos_y * m_Width)];
-
 					uint32 index = (pos_y * m_Width) + pos_x;
-					ColorFuncDDS_A8B8G8R8(m_Pixels, index, m_Colors, enabled, alpha[bits_alpha + offset]);
+					g_ColorFuncDDS(m_Pixels, index, m_Colors, enabled, alpha[bits_alpha + offset]);
 
 					pos_x++;
 				}
@@ -612,6 +702,21 @@ namespace til
 
 			src++;
 		}
+	}
+
+	void ImageDDS::ConstructColors(color_16b a_Color0, color_16b a_Color1)
+	{
+		color_32b* colors = (color_32b*)m_Colors;
+
+		colors[0] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(a_Color0);
+		colors[1] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(a_Color1);
+		colors[2] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0xAA));
+		colors[3] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0x55));
+
+		colors[4] = colors[0];
+		colors[5] = colors[1];
+		colors[6] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0x80));
+		colors[7] = 0;
 	}
 
 }; // namespace til

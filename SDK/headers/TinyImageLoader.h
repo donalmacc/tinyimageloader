@@ -68,6 +68,32 @@ namespace til
 
 	//! Main interface for loading images.
 	/*!
+		\param a_Stream A FileStream handle that does file reading.
+		\param a_Options A combination of loading options.
+
+		\return An instance of til::Image or NULL on failure.
+
+		A color depth is required, or the function returns NULL.
+
+		And a color depth option:
+		- #TIL_DEPTH_A8R8G8B8
+		- #TIL_DEPTH_A8B8G8R8
+		- #TIL_DEPTH_R8G8B8A8
+		- #TIL_DEPTH_B8G8R8A8
+		- #TIL_DEPTH_R8G8B8
+		- #TIL_DEPTH_B8G8R8
+		- #TIL_DEPTH_R5G6B5
+		- #TIL_DEPTH_B5G6R5
+
+		/code
+		til::Image* load = til::TIL_Load(stream, TIL_DEPTH_A8B8G8R8);
+		/endcode
+	*/
+	Image* TIL_Load(FileStream* a_Stream, uint32 a_Options);
+
+	//! Main interface for loading images.
+	/*!
+		\param a_Stream A FileStream handle that does file reading.
 		\param a_FileName A string containing either a path to an image.
 		\param a_Options A combination of loading options.
 
@@ -81,9 +107,6 @@ namespace til
 		Valid options include a combination of a file option:
 		- #TIL_FILE_ABSOLUTEPATH
 		- #TIL_FILE_ADDWORKINGDIR
-
-		Optionally, you can specify that the path is wide:
-		-#TIL_FILE_WIDEPATH
 
 		And a color depth option:
 		- #TIL_DEPTH_A8R8G8B8

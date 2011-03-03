@@ -293,73 +293,91 @@ namespace til
 		sprintf_s(a_Target, a_MaxLength, "%i.%i.%i", TIL_VERSION_MAJOR, TIL_VERSION_MINOR, TIL_VERSION_BUGFIX);
 	}
 
-	Image* TIL_Load(const char* a_FileName, uint32 a_Options)
+	Image* TIL_Load(FileStream* a_Stream, uint32 a_Options)
 	{
-		Image* result = NULL;
+		// i don't know the path at this point
+		// oh well, good luck, have fun
+		if (!a_Stream)
+		{
+			return NULL;
+		}
 
-		size_t end = strlen(a_FileName) - 4;
+		char* filepath = a_Stream->GetFilePath();
+
+		size_t end = strlen(filepath) - 4;
 		if (end < 4)
 		{
 			TIL_ERROR_EXPLAIN("Filename isn't long enough.");
 			return NULL;
 		}
 
+		Image* result = NULL;
+
 		// lol hack
 		if (0) { }
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
-		else if (!strncmp(a_FileName + end, ".png", 4)) { result = new ImagePNG(); }
+		else if (!strncmp(filepath + end, ".png", 4)) { result = new ImagePNG(); }
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
-		else if (!strncmp(a_FileName + end, ".gif", 4)) { result = new ImageGIF(); }
+		else if (!strncmp(filepath + end, ".gif", 4)) { result = new ImageGIF(); }
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_TGA)
-		else if (!strncmp(a_FileName + end, ".tga", 4)) { result = new ImageTGA(); }
+		else if (!strncmp(filepath + end, ".tga", 4)) { result = new ImageTGA(); }
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_BMP)
-		else if (!strncmp(a_FileName + end, ".bmp", 4)) { result = new ImageBMP(); }
+		else if (!strncmp(filepath + end, ".bmp", 4)) { result = new ImageBMP(); }
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_ICO)
-		else if (!strncmp(a_FileName + end, ".ico", 4)) { result = new ImageICO(); }
+		else if (!strncmp(filepath + end, ".ico", 4)) { result = new ImageICO(); }
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_DDS)
-		else if (!strncmp(a_FileName + end, ".dds", 4)) { result = new ImageDDS(); }
+		else if (!strncmp(filepath + end, ".dds", 4)) { result = new ImageDDS(); }
 #endif
 		else
 		{
-			TIL_PRINT_DEBUG("Filename: '%s' (end: '%s')", a_FileName, a_FileName + end);
+			TIL_PRINT_DEBUG("Filename: '%s' (end: '%s')", filepath, filepath + end);
 			TIL_ERROR_EXPLAIN("Can't parse file: unknown format.");
-			result = NULL;
+			a_Stream->Close();
+			return NULL;
 		}
 
-		if (result)
-		{
-			FileStream* load = g_FileFunc(a_FileName, a_Options & TIL_FILE_MASK);
-			if (!result->Load(a_FileName, a_Options & TIL_FILE_MASK))
-			{
-				TIL_ERROR_EXPLAIN("Could not find file '%s'.", a_FileName);
-				delete result;
-				result = NULL;
-			}
-			else 
-			{
-				result->SetBPP(a_Options & TIL_DEPTH_MASK);
+		result->Load(a_Stream);
 
-				if (!result->Parse(a_Options & TIL_DEPTH_MASK))
-				{
-					TIL_ERROR_EXPLAIN("Could not parse file.");
-					delete result;
-					result = NULL;
-				}
-				else if (!result->Close())
-				{
-					TIL_ERROR_EXPLAIN("Could not close file.");
-					delete result;
-					result = NULL;
-				}
-			}
+		if (!result->SetBPP(a_Options & TIL_DEPTH_MASK))
+		{
+			TIL_ERROR_EXPLAIN("Invalid bit-depth option: %i.", a_Options & TIL_DEPTH_MASK);
+			delete result;
+			a_Stream->Close();
+			return NULL;
+		}
+
+		if (!result->Parse(a_Options & TIL_DEPTH_MASK))
+		{
+			TIL_ERROR_EXPLAIN("Could not parse file.");
+			delete result;
+			a_Stream->Close();
+			return NULL;
+		}
+		else if (!result->Close())
+		{
+			TIL_ERROR_EXPLAIN("Could not close file.");
+			delete result;
+			return NULL;
 		}
 
 		return result;
+	}
+
+	Image* TIL_Load(const char* a_FileName, uint32 a_Options)
+	{
+		FileStream* load = g_FileFunc(a_FileName, a_Options & TIL_FILE_MASK);
+		if (!load) 
+		{
+			TIL_ERROR_EXPLAIN("Could not find file '%s'.", a_FileName);
+			return NULL;
+		}
+
+		return TIL_Load(load, a_Options);
 	}
 
 	size_t TIL_SetWorkingDirectory(const char* a_Path, size_t a_Length )

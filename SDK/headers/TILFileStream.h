@@ -45,7 +45,7 @@ namespace til
 		Reads data from a file in bytes. Platform-specific implementations can be made by
 		inheriting from this class and attaching a new FileStreamFunc to TinyImageLoader.
 
-		/code
+		\code
 		FileStream* OpenStreamMyDevice(const char* a_Path, uint32 a_Options)
 		{
 			FileStream* result = new FileStreamMyDevice();
@@ -53,7 +53,7 @@ namespace til
 
 			return NULL;
 		}
-		/endcode
+		\endcode
 	*/
 	
 	class FileStream
@@ -154,6 +154,8 @@ namespace til
 			\return Success
 		*/
 		virtual bool Close() = 0;
+
+		char* GetFilePath() { return m_FilePath; }
 
 	protected:
 

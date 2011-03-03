@@ -91,23 +91,25 @@ namespace til
 		virtual ~Image();
 
 		//! Sets the bit depth to convert to when parsing.
-		void SetBPP(uint32 a_Options);
+		/*!
+			\param a_Options A bit depth option
+
+			\return True on success, false on failure
+		*/
+		bool SetBPP(uint32 a_Options);
 
 		//! Get the color depth as an enum
 		BitDepth GetBitDepth() { return m_BPPIdent; }
 	
 		// TODO: Replace parameters with FileStream*
 
-		//! Loads a filepath using a series of options.
+		//! Load an image
 		/*!
-			\param a_FileName A path to an image file.
-			\param a_Options A number of options bitwise or'd together.
-
-			\return A boolean indicating success or failure.
+			\param a_Stream A handle to a FileStream
 
 			The main entrypoint for #til::TIL_Load().
 		*/
-		bool Load(const char* a_FileName, uint32 a_Options = TIL_FILE_ABSOLUTEPATH);
+		void Load(FileStream* a_Stream);
 
 		//! Closes the handle to the image file
 		/*!

@@ -69,6 +69,7 @@ namespace til
 
 		void ReadData();
 		void GetOffsets();
+		void ConstructColors(color_16b a_Color0, color_16b a_Color1);
 		void DecompressDXT1();
 		void DecompressDXT5();
 

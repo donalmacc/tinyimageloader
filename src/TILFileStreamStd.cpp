@@ -61,7 +61,7 @@ namespace til
 		fopen_s(&m_Handle, m_FilePath, "rb");
 		if (!m_Handle)
 		{
-			TIL_ERROR_EXPLAIN("Could not open '%s'.", path);
+			//TIL_ERROR_EXPLAIN("Could not open '%s'.", path);
 			return false;
 		}
 

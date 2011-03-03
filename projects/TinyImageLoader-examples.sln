@@ -18,6 +18,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-tests", "..\example
 		{E76A3BB4-1A9C-4849-85B7-A65EEFEC6F0D} = {E76A3BB4-1A9C-4849-85B7-A65EEFEC6F0D}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{0107B7D2-574E-4914-9512-7F130EB1940B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-zip-loading", "..\examples\projects\example-zip-loading.vcproj", "{BE2EC212-8C92-4ABD-B726-B01464793B3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -40,8 +44,18 @@ Global
 		{39FA1089-CC0C-411A-AC8F-3E3B008896E0}.Debug|Win32.Build.0 = Debug|Win32
 		{39FA1089-CC0C-411A-AC8F-3E3B008896E0}.Release|Win32.ActiveCfg = Release|Win32
 		{39FA1089-CC0C-411A-AC8F-3E3B008896E0}.Release|Win32.Build.0 = Release|Win32
+		{BE2EC212-8C92-4ABD-B726-B01464793B3F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BE2EC212-8C92-4ABD-B726-B01464793B3F}.Debug|Win32.Build.0 = Debug|Win32
+		{BE2EC212-8C92-4ABD-B726-B01464793B3F}.Release|Win32.ActiveCfg = Release|Win32
+		{BE2EC212-8C92-4ABD-B726-B01464793B3F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C23C53B6-5FF9-461A-B671-618616188C93} = {0107B7D2-574E-4914-9512-7F130EB1940B}
+		{39FA1089-CC0C-411A-AC8F-3E3B008896E0} = {0107B7D2-574E-4914-9512-7F130EB1940B}
+		{E76A3BB4-1A9C-4849-85B7-A65EEFEC6F0D} = {0107B7D2-574E-4914-9512-7F130EB1940B}
+		{BE2EC212-8C92-4ABD-B726-B01464793B3F} = {0107B7D2-574E-4914-9512-7F130EB1940B}
 	EndGlobalSection
 EndGlobal
