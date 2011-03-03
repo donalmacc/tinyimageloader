@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)SDK"
+			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(SolutionDir)int\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2"
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\lib\GLEW\headers"
+				AdditionalIncludeDirectories="$(SolutionDir)third-party\GLEW\headers"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -81,8 +81,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin"
-			IntermediateDirectory="..\int\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin"
+			IntermediateDirectory="$(SolutionDir)int\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -108,8 +108,8 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\lib\GLEW\headers&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
+				AdditionalIncludeDirectories="$(SolutionDir)third-party\GLEW\headers"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -127,7 +127,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="OpenGL32.lib glu32.lib glew32.lib"
-				AdditionalLibraryDirectories="..\lib\GLEW"
+				AdditionalLibraryDirectories="$(SolutionDir)third-party\GLEW"
 			/>
 			<Tool
 				Name="VCALinkTool"

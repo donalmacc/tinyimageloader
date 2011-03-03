@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\SDK\headers"
+				AdditionalIncludeDirectories="$(SolutionDir)SDK\headers"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;TIL_RUN_TARGET=TIL_TARGET_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -82,8 +82,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)..\SDK"
-			IntermediateDirectory="$(SolutionDir)..\SDK\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)SDK"
+			IntermediateDirectory="$(SolutionDir)int\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="0"
@@ -111,6 +111,7 @@
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="true"
 				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories="$(SolutionDir)SDK\headers"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;TIL_RUN_TARGET=TIL_TARGET_RELEASE"
 				StringPooling="true"
 				RuntimeLibrary="2"

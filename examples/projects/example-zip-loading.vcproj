@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin"
-			IntermediateDirectory="..\int\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin"
+			IntermediateDirectory="$(SolutionDir)int\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
 			>
@@ -40,7 +40,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\SDK\headers; ..\lib\GLEW\headers; ..\lib\UnZip\headers; ..\lib\ZLib"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)SDK\headers&quot;;&quot;$(SolutionDir)third-party\GLEW\headers&quot;;&quot;$(SolutionDir)third-party\UnZip\headers&quot;;&quot;$(SolutionDir)third-party\ZLib&quot;"
+				PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -59,7 +60,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="TinyImageLoader_d.lib Framework_d.lib UnZip101_d.lib zlibd.lib"
-				AdditionalLibraryDirectories="..\bin; ..\..\SDK; ..\lib\UnZip; ..\lib\ZLib"
+				AdditionalLibraryDirectories="$(SolutionDir)SDK; $(SolutionDir)bin;  $(SolutionDir)third-party\UnZip; $(SolutionDir)third-party\ZLib"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -87,8 +88,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin"
+			IntermediateDirectory="$(SolutionDir)int\$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -112,6 +113,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="$(SolutionDir)SDK\headers; $(SolutionDir)third-party\GLEW\headers; $(SolutionDir)third-party\UnZip\headers; $(SolutionDir)third-party\ZLib"
+				PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -128,6 +131,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="TinyImageLoader.lib Framework.lib UnZip101.lib zlib.lib"
+				AdditionalLibraryDirectories="$(SolutionDir)SDK; $(SolutionDir)bin;  $(SolutionDir)third-party\UnZip; $(SolutionDir)third-party\ZLib"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
