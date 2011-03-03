@@ -6,7 +6,6 @@
 
 	\section About
 	-# \ref design
-	-# \ref todo
 	-# \ref bugs
     \section Examples
     -# \ref example1

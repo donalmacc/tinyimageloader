@@ -36,11 +36,8 @@ virtual bool \hyperlink{classtil_1_1_file_stream_a693c2379367badd18d65d7f83512f5
 \begin{DoxyCompactList}\small\item\em Check for end of file. \item\end{DoxyCompactList}\item 
 virtual bool \hyperlink{classtil_1_1_file_stream_a247dffc5fa0875cbafb48c63baa03493}{Close} ()=0
 \begin{DoxyCompactList}\small\item\em Close the stream. \item\end{DoxyCompactList}\item 
-\hypertarget{classtil_1_1_file_stream_a11c2696a386b75cbcb3194a944debc78}{
-char $\ast$ {\bfseries GetFilePath} ()}
-\label{classtil_1_1_file_stream_a11c2696a386b75cbcb3194a944debc78}
-
-\end{DoxyCompactItemize}
+char $\ast$ \hyperlink{classtil_1_1_file_stream_a11c2696a386b75cbcb3194a944debc78}{GetFilePath} ()
+\begin{DoxyCompactList}\small\item\em Get the full path. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -88,7 +85,7 @@ Success
 \end{DoxyReturn}
 
 
-Implemented in \hyperlink{classtil_1_1_file_stream_std_a13ecdaa29a9d998a77059f2a732dbca0}{til::FileStreamStd}, and \hyperlink{class_file_stream_zip_a0d2b3d8a0ee488a8fce746a67cf0f834}{FileStreamZip}.
+Implemented in \hyperlink{classtil_1_1_file_stream_std_a13ecdaa29a9d998a77059f2a732dbca0}{til::FileStreamStd}.
 
 \hypertarget{classtil_1_1_file_stream_a693c2379367badd18d65d7f83512f595}{
 \index{til::FileStream@{til::FileStream}!EndOfFile@{EndOfFile}}
@@ -108,8 +105,27 @@ True if no more bytes can be read, otherwise false
 \end{DoxyReturn}
 
 
-Implemented in \hyperlink{classtil_1_1_file_stream_std_afe96b90d15f23582412eb2a03e9af254}{til::FileStreamStd}, and \hyperlink{class_file_stream_zip_a2f82101d907086a71e043683f3179ef0}{FileStreamZip}.
+Implemented in \hyperlink{classtil_1_1_file_stream_std_afe96b90d15f23582412eb2a03e9af254}{til::FileStreamStd}.
 
+\hypertarget{classtil_1_1_file_stream_a11c2696a386b75cbcb3194a944debc78}{
+\index{til::FileStream@{til::FileStream}!GetFilePath@{GetFilePath}}
+\index{GetFilePath@{GetFilePath}!til::FileStream@{til::FileStream}}
+\subsubsection[{GetFilePath}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ til::FileStream::GetFilePath (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}
+\label{classtil_1_1_file_stream_a11c2696a386b75cbcb3194a944debc78}
+
+
+Get the full path. 
+
+\begin{DoxyNote}{Note}
+This string should always end with an image file extension, otherwise TinyImageLoader can't load it.
+\end{DoxyNote}
+\begin{DoxyReturn}{Returns}
+a string with the full path to the file 
+\end{DoxyReturn}
 \hypertarget{classtil_1_1_file_stream_a907973c36daaa764e0b898540ffc24e8}{
 \index{til::FileStream@{til::FileStream}!Open@{Open}}
 \index{Open@{Open}!til::FileStream@{til::FileStream}}
@@ -145,7 +161,7 @@ If a file cannot be found, return false
 \end{DoxyNote}
 
 
-Implemented in \hyperlink{classtil_1_1_file_stream_std_ab58f46883a8ccf5e3884fef0b6cb42d3}{til::FileStreamStd}, and \hyperlink{class_file_stream_zip_a798a6a850c904ca7239f19dbbe1703b4}{FileStreamZip}.
+Implemented in \hyperlink{classtil_1_1_file_stream_std_ab58f46883a8ccf5e3884fef0b6cb42d3}{til::FileStreamStd}.
 
 \hypertarget{classtil_1_1_file_stream_a26c0a9cc315418ab156ee3a56aad1be2}{
 \index{til::FileStream@{til::FileStream}!Read@{Read}}
@@ -179,7 +195,7 @@ If more data is requested than is left in the file, return false
 \end{DoxyNote}
 
 
-Implemented in \hyperlink{classtil_1_1_file_stream_std_a5a4b5bb51ab27c50f2276c7c904e31b4}{til::FileStreamStd}, and \hyperlink{class_file_stream_zip_a106eb851f981039bf3518f3ee879ebee}{FileStreamZip}.
+Implemented in \hyperlink{classtil_1_1_file_stream_std_a5a4b5bb51ab27c50f2276c7c904e31b4}{til::FileStreamStd}.
 
 \hypertarget{classtil_1_1_file_stream_aeddef50dcb9b7353799800cccf942551}{
 \index{til::FileStream@{til::FileStream}!ReadByte@{ReadByte}}
@@ -210,7 +226,7 @@ If more data is requested than is left in the file, return false
 \end{DoxyNote}
 
 
-Implemented in \hyperlink{classtil_1_1_file_stream_std_a1eea3ea2ef520676df5f5b0c51c2659f}{til::FileStreamStd}, and \hyperlink{class_file_stream_zip_ad861b80be4f82112433d80ba53e515cd}{FileStreamZip}.
+Implemented in \hyperlink{classtil_1_1_file_stream_std_a1eea3ea2ef520676df5f5b0c51c2659f}{til::FileStreamStd}.
 
 \hypertarget{classtil_1_1_file_stream_a0a4a3add4a7fa4fd46e5ae4b38dbd9d3}{
 \index{til::FileStream@{til::FileStream}!ReadDWord@{ReadDWord}}
@@ -241,7 +257,7 @@ If more data is requested than is left in the file, return false
 \end{DoxyNote}
 
 
-Implemented in \hyperlink{classtil_1_1_file_stream_std_a638af52afa0f132221dea6cb5b79faa6}{til::FileStreamStd}, and \hyperlink{class_file_stream_zip_a33a83d95be52b2c189d3ecb36ef0bc8a}{FileStreamZip}.
+Implemented in \hyperlink{classtil_1_1_file_stream_std_a638af52afa0f132221dea6cb5b79faa6}{til::FileStreamStd}.
 
 \hypertarget{classtil_1_1_file_stream_aada6e2d7cd5fe720527b09da42f78222}{
 \index{til::FileStream@{til::FileStream}!ReadWord@{ReadWord}}
@@ -272,7 +288,7 @@ If more data is requested than is left in the file, return false
 \end{DoxyNote}
 
 
-Implemented in \hyperlink{classtil_1_1_file_stream_std_aadd59b38678d22428f311aa417aeca40}{til::FileStreamStd}, and \hyperlink{class_file_stream_zip_a5eb20030791cacf77e8c3dc28e8db494}{FileStreamZip}.
+Implemented in \hyperlink{classtil_1_1_file_stream_std_aadd59b38678d22428f311aa417aeca40}{til::FileStreamStd}.
 
 \hypertarget{classtil_1_1_file_stream_a29dfe625c988d68478ac6418478f7ea1}{
 \index{til::FileStream@{til::FileStream}!Seek@{Seek}}
@@ -305,7 +321,7 @@ If the requested offset is too great, clamp to the nearest edge (either the star
 \end{DoxyNote}
 
 
-Implemented in \hyperlink{classtil_1_1_file_stream_std_a8e3874550cefaec46846237a68c7727d}{til::FileStreamStd}, and \hyperlink{class_file_stream_zip_abbf7165ff3ce594b1013307f7cbdcb43}{FileStreamZip}.
+Implemented in \hyperlink{classtil_1_1_file_stream_std_a8e3874550cefaec46846237a68c7727d}{til::FileStreamStd}.
 
 
 

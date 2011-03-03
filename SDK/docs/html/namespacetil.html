@@ -191,6 +191,8 @@ Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">16-bit BGR</div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">color_16b</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#accd82fcffbc0f256c971beb941ab9166">Construct_16b_B5G6R5</a> (<a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Red, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Green, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Blue)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a 16-bit BGR color.  <a href="#accd82fcffbc0f256c971beb941ab9166"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">color_16b</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#af5e790af48ce0da5bd73f41830705e1a">AlphaBlend_16b_B5G6R5</a> (<a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Red, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Green, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Blue, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Alpha)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Alpha blend a 16-bit BGR color.  <a href="#af5e790af48ce0da5bd73f41830705e1a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">color_16b</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a7db23332b0b6b0922c591645e418d3f1">Blend_16b_B5G6R5</a> (<a class="el" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">color_16b</a> a_Left, <a class="el" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">color_16b</a> a_Right, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Factor)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Blend between two 16-bit BGR colors.  <a href="#a7db23332b0b6b0922c591645e418d3f1"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">color_32b</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#ae0e2e24eaa0772d2ca196be6cf18b2b8">Convert_From_16b_B5G6R5_To_32b_A8R8G8B8</a> (<a class="el" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">color_16b</a> a_Color)</td></tr>
@@ -400,6 +402,58 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
 
 </div>
 </div>
+<a class="anchor" id="af5e790af48ce0da5bd73f41830705e1a"></a><!-- doxytag: member="til::AlphaBlend_16b_B5G6R5" ref="af5e790af48ce0da5bd73f41830705e1a" args="(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">color_16b</a> til::AlphaBlend_16b_B5G6R5 </td>
+          <td>(</td>
+          <td class="paramtype">uint8&#160;</td>
+          <td class="paramname"><em>a_Red</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8&#160;</td>
+          <td class="paramname"><em>a_Green</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8&#160;</td>
+          <td class="paramname"><em>a_Blue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8&#160;</td>
+          <td class="paramname"><em>a_Alpha</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Alpha blend a 16-bit BGR color. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_Red</td><td>A value between 0 - 255 </td></tr>
+    <tr><td class="paramname">a_Green</td><td>A value between 0 - 255 </td></tr>
+    <tr><td class="paramname">a_Blue</td><td>A value between 0 - 255 </td></tr>
+    <tr><td class="paramname">a_Alpha</td><td>A value between 0 - 255</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>16-bit BGR color</dd></dl>
+<p>Blends the RGB values with the alpha value. </p>
+
+</div>
+</div>
 <a class="anchor" id="aa272abfc1060298455205cfe08c95e37"></a><!-- doxytag: member="til::AlphaBlend_16b_R5G6B5" ref="aa272abfc1060298455205cfe08c95e37" args="(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)" -->
 <div class="memitem">
 <div class="memproto">
@@ -438,7 +492,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
 <div class="memdoc">
 
 <p>Alpha blend a 16-bit RGB color. </p>
-<p>Alpha blend a 16-bit BGR color.</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">a_Red</td><td>A value between 0 - 255 </td></tr>
@@ -449,17 +502,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
   </dd>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>16-bit RGB color</dd></dl>
-<p>Blends the RGB values with the alpha value.</p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">a_Red</td><td>A value between 0 - 255 </td></tr>
-    <tr><td class="paramname">a_Green</td><td>A value between 0 - 255 </td></tr>
-    <tr><td class="paramname">a_Blue</td><td>A value between 0 - 255 </td></tr>
-    <tr><td class="paramname">a_Alpha</td><td>A value between 0 - 255</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>16-bit BGR color</dd></dl>
 <p>Blends the RGB values with the alpha value. </p>
 
 </div>
@@ -1037,6 +1079,43 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
 
 </div>
 </div>
+<a class="anchor" id="a59b7c2ae7112fe3cff94e67826fca681"></a><!-- doxytag: member="til::Construct_32b_A8B8G8R8" ref="a59b7c2ae7112fe3cff94e67826fca681" args="(color_32b a_Color, uint8 a_Alpha)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">color_32b</a> til::Construct_32b_A8B8G8R8 </td>
+          <td>(</td>
+          <td class="paramtype">color_32b&#160;</td>
+          <td class="paramname"><em>a_Color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8&#160;</td>
+          <td class="paramname"><em>a_Alpha</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Construct a 32-bit ABGR color. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_Color</td><td>A color value </td></tr>
+    <tr><td class="paramname">a_Alpha</td><td>A value between 0 - 255</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>32-bit color </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a9910d275ad1592463eb89634423d7110"></a><!-- doxytag: member="til::Construct_32b_A8B8G8R8" ref="a9910d275ad1592463eb89634423d7110" args="(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1088,80 +1167,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
 
 </div>
 </div>
-<a class="anchor" id="a59b7c2ae7112fe3cff94e67826fca681"></a><!-- doxytag: member="til::Construct_32b_A8B8G8R8" ref="a59b7c2ae7112fe3cff94e67826fca681" args="(color_32b a_Color, uint8 a_Alpha)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">color_32b</a> til::Construct_32b_A8B8G8R8 </td>
-          <td>(</td>
-          <td class="paramtype">color_32b&#160;</td>
-          <td class="paramname"><em>a_Color</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8&#160;</td>
-          <td class="paramname"><em>a_Alpha</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Construct a 32-bit ABGR color. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">a_Color</td><td>A color value </td></tr>
-    <tr><td class="paramname">a_Alpha</td><td>A value between 0 - 255</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>32-bit color </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a269385b5e84783f03c13fc7a590b6a44"></a><!-- doxytag: member="til::Construct_32b_A8R8G8B8" ref="a269385b5e84783f03c13fc7a590b6a44" args="(color_32b a_Color, uint8 a_Alpha)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">color_32b</a> til::Construct_32b_A8R8G8B8 </td>
-          <td>(</td>
-          <td class="paramtype">color_32b&#160;</td>
-          <td class="paramname"><em>a_Color</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8&#160;</td>
-          <td class="paramname"><em>a_Alpha</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Construct a 32-bit ARGB color. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">a_Color</td><td>An ARGB color </td></tr>
-    <tr><td class="paramname">a_Alpha</td><td>A value between 0 - 255</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>32-bit ARGB color </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="a9dc7ee813858f38308e7d38df21b0953"></a><!-- doxytag: member="til::Construct_32b_A8R8G8B8" ref="a9dc7ee813858f38308e7d38df21b0953" args="(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1205,6 +1210,43 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
     <tr><td class="paramname">a_Red</td><td>A value between 0 - 255 </td></tr>
     <tr><td class="paramname">a_Green</td><td>A value between 0 - 255 </td></tr>
     <tr><td class="paramname">a_Blue</td><td>A value between 0 - 255 </td></tr>
+    <tr><td class="paramname">a_Alpha</td><td>A value between 0 - 255</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>32-bit ARGB color </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a269385b5e84783f03c13fc7a590b6a44"></a><!-- doxytag: member="til::Construct_32b_A8R8G8B8" ref="a269385b5e84783f03c13fc7a590b6a44" args="(color_32b a_Color, uint8 a_Alpha)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">color_32b</a> til::Construct_32b_A8R8G8B8 </td>
+          <td>(</td>
+          <td class="paramtype">color_32b&#160;</td>
+          <td class="paramname"><em>a_Color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8&#160;</td>
+          <td class="paramname"><em>a_Alpha</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Construct a 32-bit ARGB color. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_Color</td><td>An ARGB color </td></tr>
     <tr><td class="paramname">a_Alpha</td><td>A value between 0 - 255</td></tr>
   </table>
   </dd>
@@ -1819,7 +1861,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
 <p>Main interface for loading images. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">a_Stream</td><td>A <a class="el" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">FileStream</a> handle that does file reading. </td></tr>
     <tr><td class="paramname">a_FileName</td><td>A string containing either a path to an image. </td></tr>
     <tr><td class="paramname">a_Options</td><td>A combination of loading options.</td></tr>
   </table>
@@ -1894,7 +1935,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
 <li><a class="el" href="_t_i_l_settings_8h.html#a77a6c97d164dff0f9ad8abf92af7e344" title="16-bit RGB color depth">TIL_DEPTH_R5G6B5</a></li>
 <li><a class="el" href="_t_i_l_settings_8h.html#a1e6113bd728b3fe56f7cf3ead15fb4f0" title="16-bit BGR color depth">TIL_DEPTH_B5G6R5</a></li>
 </ul>
-<p>/code <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a>* load = til::TIL_Load(stream, TIL_DEPTH_A8B8G8R8); /endcode </p>
+<p>/code MyStream* stream = new MyStream(); stream-&gt;Open("MyFile.png", TIL_ADDWORKINGDIR); <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a>* load = til::TIL_Load(stream, TIL_DEPTH_A8B8G8R8); /endcode </p>
 
 </div>
 </div>
@@ -2038,7 +2079,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 09:07:43 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 10:00:41 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

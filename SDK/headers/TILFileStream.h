@@ -155,6 +155,13 @@ namespace til
 		*/
 		virtual bool Close() = 0;
 
+		//! Get the full path
+		/*!
+			\note This string should always end with an image file extension, 
+			otherwise TinyImageLoader can't load it.
+
+			\return a string with the full path to the file
+		*/
 		char* GetFilePath() { return m_FilePath; }
 
 	protected:

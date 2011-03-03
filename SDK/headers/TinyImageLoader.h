@@ -86,6 +86,8 @@ namespace til
 		- #TIL_DEPTH_B5G6R5
 
 		/code
+		MyStream* stream = new MyStream();
+		stream->Open("MyFile.png", TIL_ADDWORKINGDIR);
 		til::Image* load = til::TIL_Load(stream, TIL_DEPTH_A8B8G8R8);
 		/endcode
 	*/
@@ -93,7 +95,6 @@ namespace til
 
 	//! Main interface for loading images.
 	/*!
-		\param a_Stream A FileStream handle that does file reading.
 		\param a_FileName A string containing either a path to an image.
 		\param a_Options A combination of loading options.
 

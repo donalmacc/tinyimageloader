@@ -175,8 +175,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00169"></a>00169         }
 <a name="l00170"></a>00170 
 <a name="l00172"></a>00172 
-<a name="l00182"></a>00182         <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45" title="16-bit color">color_16b</a> <a class="code" href="namespacetil.html#aa272abfc1060298455205cfe08c95e37" title="Alpha blend a 16-bit RGB color.">AlphaBlend_16b_R5G6B5</a>(<a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> a_Red, <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> a_Green, <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> a_Blue, <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> a_Alpha)
-<a name="l00183"></a>00183         {
+<a name="l00182"></a>00182         <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45" title="16-bit color">color_16b</a> <a class="code" href="namespacetil.html#af5e790af48ce0da5bd73f41830705e1a" title="Alpha blend a 16-bit BGR color.">AlphaBlend_16b_B5G6R5</a>(<a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> a_Red, <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> a_Green, <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> a_Blue, <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> a_Alpha)
+<a name="l00183"></a><a class="code" href="namespacetil.html#af5e790af48ce0da5bd73f41830705e1a">00183</a>         {
 <a name="l00184"></a>00184                 <a class="code" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45" title="16-bit color">color_16b</a> b = (((a_Blue  * 0xF800) &gt;&gt; 8) &amp; 0xF800);
 <a name="l00185"></a>00185                 <a class="code" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45" title="16-bit color">color_16b</a> g = (((a_Green * 0x07E0) &gt;&gt; 8) &amp; 0x07E0);
 <a name="l00186"></a>00186                 <a class="code" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45" title="16-bit color">color_16b</a> r = (((a_Red   * 0x001F) &gt;&gt; 8) &amp; 0x001F);
@@ -435,7 +435,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 09:07:42 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 10:00:41 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

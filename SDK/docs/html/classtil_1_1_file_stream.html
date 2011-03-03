@@ -84,8 +84,7 @@ Inheritance diagram for til::FileStream:</div>
  <div class="center">
   <img src="classtil_1_1_file_stream.png" usemap="#til::FileStream_map" alt=""/>
   <map id="til::FileStream_map" name="til::FileStream_map">
-<area href="class_file_stream_zip.html" alt="FileStreamZip" shape="rect" coords="0,56,105,80"/>
-<area href="classtil_1_1_file_stream_std.html" alt="til::FileStreamStd" shape="rect" coords="115,56,220,80"/>
+<area href="classtil_1_1_file_stream_std.html" alt="til::FileStreamStd" shape="rect" coords="0,56,105,80"/>
 </map>
  </div></div>
 
@@ -109,8 +108,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for end of file.  <a href="#a693c2379367badd18d65d7f83512f595"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_file_stream.html#a247dffc5fa0875cbafb48c63baa03493">Close</a> ()=0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Close the stream.  <a href="#a247dffc5fa0875cbafb48c63baa03493"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a11c2696a386b75cbcb3194a944debc78"></a><!-- doxytag: member="til::FileStream::GetFilePath" ref="a11c2696a386b75cbcb3194a944debc78" args="()" -->
-char *&#160;</td><td class="memItemRight" valign="bottom"><b>GetFilePath</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_file_stream.html#a11c2696a386b75cbcb3194a944debc78">GetFilePath</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the full path.  <a href="#a11c2696a386b75cbcb3194a944debc78"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae96d56b6be09292181e4a6924e3fa2f1"></a><!-- doxytag: member="til::FileStream::m_FilePath" ref="ae96d56b6be09292181e4a6924e3fa2f1" args="" -->
@@ -146,7 +145,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Close the handle to the file.</p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>Success </dd></dl>
 
-<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#a13ecdaa29a9d998a77059f2a732dbca0">til::FileStreamStd</a>, and <a class="el" href="class_file_stream_zip.html#a0d2b3d8a0ee488a8fce746a67cf0f834">FileStreamZip</a>.</p>
+<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#a13ecdaa29a9d998a77059f2a732dbca0">til::FileStreamStd</a>.</p>
 
 </div>
 </div>
@@ -167,7 +166,27 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <p>Check for end of file. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>True if no more bytes can be read, otherwise false </dd></dl>
 
-<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#afe96b90d15f23582412eb2a03e9af254">til::FileStreamStd</a>, and <a class="el" href="class_file_stream_zip.html#a2f82101d907086a71e043683f3179ef0">FileStreamZip</a>.</p>
+<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#afe96b90d15f23582412eb2a03e9af254">til::FileStreamStd</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a11c2696a386b75cbcb3194a944debc78"></a><!-- doxytag: member="til::FileStream::GetFilePath" ref="a11c2696a386b75cbcb3194a944debc78" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* til::FileStream::GetFilePath </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get the full path. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>This string should always end with an image file extension, otherwise TinyImageLoader can't load it.</dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>a string with the full path to the file </dd></dl>
 
 </div>
 </div>
@@ -212,7 +231,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </ul>
 <dl class="note"><dt><b>Note:</b></dt><dd>If a file cannot be found, return false </dd></dl>
 
-<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#ab58f46883a8ccf5e3884fef0b6cb42d3">til::FileStreamStd</a>, and <a class="el" href="class_file_stream_zip.html#a798a6a850c904ca7239f19dbbe1703b4">FileStreamZip</a>.</p>
+<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#ab58f46883a8ccf5e3884fef0b6cb42d3">til::FileStreamStd</a>.</p>
 
 </div>
 </div>
@@ -259,7 +278,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <dl class="return"><dt><b>Returns:</b></dt><dd>True on success, false on failure</dd></dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>If more data is requested than is left in the file, return false </dd></dl>
 
-<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#a5a4b5bb51ab27c50f2276c7c904e31b4">til::FileStreamStd</a>, and <a class="el" href="class_file_stream_zip.html#a106eb851f981039bf3518f3ee879ebee">FileStreamZip</a>.</p>
+<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#a5a4b5bb51ab27c50f2276c7c904e31b4">til::FileStreamStd</a>.</p>
 
 </div>
 </div>
@@ -299,7 +318,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <dl class="return"><dt><b>Returns:</b></dt><dd>True on success, false on failure</dd></dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>If more data is requested than is left in the file, return false </dd></dl>
 
-<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#a1eea3ea2ef520676df5f5b0c51c2659f">til::FileStreamStd</a>, and <a class="el" href="class_file_stream_zip.html#ad861b80be4f82112433d80ba53e515cd">FileStreamZip</a>.</p>
+<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#a1eea3ea2ef520676df5f5b0c51c2659f">til::FileStreamStd</a>.</p>
 
 </div>
 </div>
@@ -339,7 +358,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <dl class="return"><dt><b>Returns:</b></dt><dd>True on success, false on failure</dd></dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>If more data is requested than is left in the file, return false </dd></dl>
 
-<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#a638af52afa0f132221dea6cb5b79faa6">til::FileStreamStd</a>, and <a class="el" href="class_file_stream_zip.html#a33a83d95be52b2c189d3ecb36ef0bc8a">FileStreamZip</a>.</p>
+<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#a638af52afa0f132221dea6cb5b79faa6">til::FileStreamStd</a>.</p>
 
 </div>
 </div>
@@ -379,7 +398,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <dl class="return"><dt><b>Returns:</b></dt><dd>True on success, false on failure</dd></dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>If more data is requested than is left in the file, return false </dd></dl>
 
-<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#aadd59b38678d22428f311aa417aeca40">til::FileStreamStd</a>, and <a class="el" href="class_file_stream_zip.html#a5eb20030791cacf77e8c3dc28e8db494">FileStreamZip</a>.</p>
+<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#aadd59b38678d22428f311aa417aeca40">til::FileStreamStd</a>.</p>
 
 </div>
 </div>
@@ -420,7 +439,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 <dl class="return"><dt><b>Returns:</b></dt><dd>True on success, false on failure</dd></dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>If the requested offset is too great, clamp to the nearest edge (either the start or the end of the file) and return false </dd></dl>
 
-<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#a8e3874550cefaec46846237a68c7727d">til::FileStreamStd</a>, and <a class="el" href="class_file_stream_zip.html#abbf7165ff3ce594b1013307f7cbdcb43">FileStreamZip</a>.</p>
+<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#a8e3874550cefaec46846237a68c7727d">til::FileStreamStd</a>.</p>
 
 </div>
 </div>
@@ -443,7 +462,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 09:07:43 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 10:00:41 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>
