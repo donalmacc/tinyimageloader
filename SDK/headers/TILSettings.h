@@ -38,7 +38,7 @@
 
 #define TIL_VERSION_MAJOR                 1 //!< The version major
 #define TIL_VERSION_MINOR                 6 //!< The version minor
-#define TIL_VERSION_BUGFIX                0 //!< The bugfix version
+#define TIL_VERSION_BUGFIX                1 //!< The bugfix version
 
 #define TIL_PLATFORM_WINDOWS              0 //!< Windows platform
 #define TIL_PLATFORM_WINMO                1 //!< Windows Mobile platform
