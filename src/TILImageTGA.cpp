@@ -46,19 +46,6 @@ namespace til
 
 	typedef uint8* (*ColorFuncComp)(uint8*, uint8*, int, int);
 
-	uint8* ColorFunc_R8G8B8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
-	{
-		color_32b* dst = (color_32b*)a_Dst;
-
-		for (int j = 0; j < a_Unique; j++)
-		{
-			color_32b comp = AlphaBlend_32b_R8G8B8(a_Src[2], a_Src[1], a_Src[0], 255);
-			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
-			a_Src += g_Depth;
-		}
-		return (uint8*)dst;
-	}
-
 	uint8* ColorFunc_A8R8G8B8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
@@ -111,6 +98,32 @@ namespace til
 		return (uint8*)dst;
 	}
 
+	uint8* ColorFunc_R8G8B8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+
+		for (int j = 0; j < a_Unique; j++)
+		{
+			color_32b comp = AlphaBlend_32b_R8G8B8(a_Src[2], a_Src[1], a_Src[0], 255);
+			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+			a_Src += g_Depth;
+		}
+		return (uint8*)dst;
+	}
+
+	uint8* ColorFunc_B8G8R8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+
+		for (int j = 0; j < a_Unique; j++)
+		{
+			color_32b comp = AlphaBlend_32b_B8G8R8(a_Src[2], a_Src[1], a_Src[0], 255);
+			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+			a_Src += g_Depth;
+		}
+		return (uint8*)dst;
+	}
+
 	uint8* ColorFunc_R5G6B5_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
 		color_16b* dst = (color_16b*)a_Dst;
@@ -118,6 +131,19 @@ namespace til
 		for (int j = 0; j < a_Unique; j++)
 		{
 			color_16b comp = AlphaBlend_16b_R5G6B5(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+			a_Src += g_Depth;
+		}
+		return (uint8*)dst;
+	}
+
+	uint8* ColorFunc_B5G6R5_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	{
+		color_16b* dst = (color_16b*)a_Dst;
+
+		for (int j = 0; j < a_Unique; j++)
+		{
+			color_16b comp = AlphaBlend_16b_B5G6R5(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
 			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
 			a_Src += g_Depth;
 		}
@@ -303,11 +329,7 @@ namespace til
 
 		switch (m_BPPIdent)
 		{
-
-		case BPP_32B_R8G8B8: 
-			g_ColorFunc = ColorFunc_R8G8B8_Comp; 
-			break;
-
+		
 		case BPP_32B_A8R8G8B8: 
 			g_ColorFunc = ColorFunc_A8R8G8B8_Comp; 
 			break;
@@ -324,8 +346,20 @@ namespace til
 			g_ColorFunc = ColorFunc_B8G8R8A8_Comp; 
 			break;
 
+		case BPP_32B_R8G8B8: 
+			g_ColorFunc = ColorFunc_R8G8B8_Comp; 
+			break;
+
+		case BPP_32B_B8G8R8: 
+			g_ColorFunc = ColorFunc_B8G8R8_Comp; 
+			break;
+
 		case BPP_16B_R5G6B5: 
 			g_ColorFunc = ColorFunc_R5G6B5_Comp; 
+			break;
+
+		case BPP_16B_B5G6R5: 
+			g_ColorFunc = ColorFunc_B5G6R5_Comp; 
 			break;
 
 		default:

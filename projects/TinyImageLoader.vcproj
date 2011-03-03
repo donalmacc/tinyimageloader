@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)..\SDK"
-			IntermediateDirectory="$(SolutionDir)..\SDK\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)SDK"
+			IntermediateDirectory="$(SolutionDir)int\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -83,7 +83,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)..\SDK"
-			IntermediateDirectory="$(SolutionDir)int\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)..\SDK\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="0"

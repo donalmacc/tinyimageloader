@@ -203,6 +203,22 @@ namespace til
 				break;
 			}
 
+		case TIL_DEPTH_B8G8R8:
+			{
+				byte* dst = m_Colors;
+
+				for (uint32 i = 0; i < m_ColorTableSize; i++)
+				{
+					dst[3] = m_Palette[(i * 3) + 2];
+					dst[2] = m_Palette[(i * 3) + 1];
+					dst[1] = m_Palette[(i * 3) + 0];
+
+					dst += m_BPP;
+				}
+
+				break;
+			}
+
 		case TIL_DEPTH_R5G6B5:
 			{
 				color_16b* dst = (color_16b*)m_Colors;
@@ -217,6 +233,29 @@ namespace til
 					dst += m_BPP;*/
 
 					*dst++ = Construct_16b_R5G6B5(
+						m_Palette[(i * 3) + 0],
+						m_Palette[(i * 3) + 1],
+						m_Palette[(i * 3) + 2]
+					);
+				}
+
+				break;
+			}
+
+		case TIL_DEPTH_B5G6R5:
+			{
+				color_16b* dst = (color_16b*)m_Colors;
+
+				for (uint32 i = 0; i < m_ColorTableSize; i++)
+				{
+					/**dst =
+						(((palette[(i * 3) + 0] * 0xF800) >> 8) & 0xF800) |
+						(((palette[(i * 3) + 1] * 0x07E0) >> 8) & 0x07E0) |
+						(((palette[(i * 3) + 2] * 0x001F) >> 8) & 0x001F);
+
+					dst += m_BPP;*/
+
+					*dst++ = Construct_16b_B5G6R5(
 						m_Palette[(i * 3) + 0],
 						m_Palette[(i * 3) + 1],
 						m_Palette[(i * 3) + 2]

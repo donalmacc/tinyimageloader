@@ -203,16 +203,9 @@ namespace til
 
 	typedef void (*ColorFunc)(uint8*, uint8*);
 
-	void ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src)
-	{
-		color_32b* dst = (color_32b*)a_Dst;
-		*dst = AlphaBlend_32b_R8G8B8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
-	}
-
 	void ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
-		//*dst = AlphaBlend_32b_A8R8G8B8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 		*dst += Construct_32b_A8R8G8B8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
@@ -225,22 +218,37 @@ namespace til
 	void ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
-		//*dst = AlphaBlend_32b_R8G8B8A8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 		*dst = Construct_32b_R8G8B8A8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
 	void ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
-		//*dst = AlphaBlend_32b_B8G8R8A8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 		*dst = Construct_32b_B8G8R8A8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
+	}
+
+	void ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		*dst = AlphaBlend_32b_R8G8B8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
+	}
+
+	void ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		*dst = AlphaBlend_32b_B8G8R8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
 	void ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src)
 	{
 		color_16b* dst = (color_16b*)a_Dst;
-		//*dst = AlphaBlend_16b_R5G6B5(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 		*dst = Construct_16b_R5G6B5(a_Src[0], a_Src[1], a_Src[2]);
+	}
+
+	void ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src)
+	{
+		color_16b* dst = (color_16b*)a_Dst;
+		*dst = Construct_16b_B5G6R5(a_Src[0], a_Src[1], a_Src[2]);
 	}
 
 	ColorFunc g_ColorFunc = NULL;
@@ -1142,10 +1150,6 @@ namespace til
 		switch (m_BPPIdent)
 		{
 
-		case BPP_32B_R8G8B8: 
-			g_ColorFunc = ColorFunc_R8G8B8; 
-			break;
-
 		case BPP_32B_A8R8G8B8: 
 			g_ColorFunc = ColorFunc_A8R8G8B8; 
 			break;
@@ -1162,8 +1166,20 @@ namespace til
 			g_ColorFunc = ColorFunc_B8G8R8A8; 
 			break;
 
+		case BPP_32B_R8G8B8: 
+			g_ColorFunc = ColorFunc_R8G8B8; 
+			break;
+
+		case BPP_32B_B8G8R8: 
+			g_ColorFunc = ColorFunc_B8G8R8;
+			break;
+
 		case BPP_16B_R5G6B5: 
 			g_ColorFunc = ColorFunc_R5G6B5; 
+			break;
+
+		case BPP_16B_B5G6R5: 
+			g_ColorFunc = ColorFunc_B5G6R5; 
 			break;
 
 		default:

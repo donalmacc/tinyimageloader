@@ -168,6 +168,30 @@ namespace til
 			(((a_Blue  * 0xF800) >> 8) & 0xF800);
 	}
 
+	//! Alpha blend a 16-bit BGR color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
+
+		\return 16-bit BGR color
+
+		Blends the RGB values with the alpha value.
+	*/
+	inline color_16b AlphaBlend_16b_B5G6R5(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
+	{
+		color_16b b = (((a_Blue  * 0xF800) >> 8) & 0xF800);
+		color_16b g = (((a_Green * 0x07E0) >> 8) & 0x07E0);
+		color_16b r = (((a_Red   * 0x001F) >> 8) & 0x001F);
+		
+		return (
+			(((b * a_Alpha) >> 8) & 0xF800) |
+			(((g * a_Alpha) >> 8) & 0x07E0) |
+			(((r * a_Alpha) >> 8) & 0x001F)
+		);
+	}
+
 	//! Blend between two 16-bit BGR colors
 	/*!
 		\param a_Left Color one
@@ -341,6 +365,28 @@ namespace til
 			((a_Blue  & 0xFF) << 16) |
 			((a_Green & 0xFF) << 8 ) |
 			((a_Red   & 0xFF)      );
+	}
+
+	//! Alpha blend a 32-bit BGR color
+	/*!
+		\param a_Red A value between 0 - 255
+		\param a_Green A value between 0 - 255
+		\param a_Blue A value between 0 - 255
+		\param a_Alpha A value between 0 - 255
+
+		\return 32-bit BGR color
+
+		Alpha blends the color with the specified amount.
+	*/
+	inline color_32b AlphaBlend_32b_B8G8R8(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)
+	{
+		const color_32b br = ((a_Blue << 16) | (a_Red))  & 0x00FF00FF;
+		const color_32b g  = (a_Green << 8)              & 0x0000FF00;
+
+		return (
+			(((br * a_Alpha) >> 8) & 0x00FF00FF) | 
+			(((g  * a_Alpha) >> 8) & 0x0000FF00)
+		);
 	}
 
 	//@}

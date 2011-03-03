@@ -1,0 +1,66 @@
+/*!
+\page bugs Known bugs and issues
+
+	I can do a lot, but not everything. These are the things I haven't gotten to.
+
+\section colors1 Color functions
+
+	Not all color formats are fully supported yet. What I've done is support at
+	least all the construct functions. The rest will be done at a later time.
+	
+\section colors2 Color conversion
+
+	Color conversion is a nightmare. They just keep on stacking. Right now there
+	are 8 different color formats. That means there are 8 * 7 = 56 color
+	conversion functions (!). I've only implemented the ones I needed.
+	
+\section cmaaaaake CMake
+
+	There is no CMake for TinyImageLoader. I know this is annoying for a lot of
+	people. I know I'm a big jerk. But I would like to bring up the following
+	points:
+	
+	- CMake doesn't use Visual Studio macros
+
+	CMake doesn't use Visual Studio macros in its paths. This is extremely
+	annoying when your main development environment is Visual Studio. Paths
+	become long and unreadable.
+	
+	The official stance of CMake is that they don't care if it looks good, as
+	long as it works. This is unacceptable to me.
+	
+	- CMake doesn't give me enough control
+	
+	I want my intermediate files in a directory labeled "int". In that folder,
+	I want two folders: "Debug" and "Release". This is impossible to do in CMake,
+	because it doesn't allow you to set the intermediate directory in Visual Studio.
+	
+	Worse, for a long time it was hardly possible to set the output directory.
+	You had to use what is known as the "backslash hack" to set the output directory.
+	You set the dir to "\..\bin" so the path becomes "<Project>\Debug\..\bin".
+
+	Ugly.
+	
+	- CMake has horrible documentation
+	
+	The entire documentation to CMake is one giant HTML file. I'm not kidding.
+	It's huge. You can try searching through it, but you'll inevitably end up lost
+	and confused.
+	
+	Which brings me to...
+	
+	- CMake has no examples
+	
+	The way to learn CMake is basically to look at other projects that use CMake
+	and try stealing bits and pieces from it. But the structure of commands
+	oftentimes doesn't make sense and the documention is no help either.
+	
+	- CMake has no alternative
+	
+	This is the worst thing. CMake doesn't do what I want and I have no
+	alternatives besides maintaining vcproj's, vcxproj's and makefiles by hand.
+	
+	Until something better comes along, or CMake fixes its flaws, I will be
+	sticking to handmade Visual Studio project files.
+
+*/

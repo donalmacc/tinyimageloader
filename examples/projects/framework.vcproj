@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="framework"
+	Name="Framework"
 	ProjectGUID="{E76A3BB4-1A9C-4849-85B7-A65EEFEC6F0D}"
 	RootNamespace="TinyImageLoaderexamples"
 	TargetFrameworkVersion="196613"
@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin"
+			OutputDirectory="$(SolutionDir)SDK"
 			IntermediateDirectory="$(SolutionDir)int\$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="2"
@@ -61,7 +61,7 @@
 				Name="VCLibrarianTool"
 				AdditionalDependencies="OpenGL32.lib glu32.lib glew32.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.lib"
-				AdditionalLibraryDirectories="..\lib\GLEW"
+				AdditionalLibraryDirectories="$(SolutionDir)third-party\GLEW"
 			/>
 			<Tool
 				Name="VCALinkTool"

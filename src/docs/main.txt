@@ -1,0 +1,13 @@
+/*!
+\mainpage TinyImageLoader
+
+	TinyImageLoader is a library for loading images. It is designed to be cross-
+	platform, device-independent, fast and free (as in freedom).
+
+	\section About
+	-# \ref design
+	-# \ref todo
+	-# \ref bugs
+    \section Examples
+    -# \ref example1
+*/

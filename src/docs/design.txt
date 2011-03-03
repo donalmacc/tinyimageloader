@@ -1,0 +1,38 @@
+/*!
+\page design Design
+	
+	The goal of TinyImageLoader was to create a library that only loads images.
+	It does color conversion, but nothing else. Therefor, the following design
+	choices have been made.
+	
+\section interface Simple interface
+
+	An interface that makes it as easy as possible to load an image.
+	
+	- include TinyImageLoader.h
+	- call til::TIL_Init
+	- call til::TIL_Load
+	- extract data
+	- call til::TIL_ShutDown
+	
+	TinyImageLoader knows it is only a middleman. It exposes all its methods
+	without fluff. There is no multiple inheritance. There is only the Image
+	interface with its clear and descriptive method names.
+	
+	You can keep the Image handles around after loading or you can copy the data
+	to your own data structures. The choice is up to you.
+	
+\section extensibility Extensibility
+
+	Despite the easy interface, TinyImageLoader can also be extended. You can
+	write your own implementation of til::FileStream and attach it to TinyImageLoader.
+	You can set the logging callback to output to a file by using TIL_SetErrorFunc().
+	You can even compile TinyImageLoader to only support a single format by
+	setting a single define in the preprocessor definitions (#TIL_FORMAT).
+	
+\section speed Speed
+
+	Speed is a priority, but no platform-specific hacks are used. If a loader
+	doesn't work as expected on another platform then that is considered a bug.
+	
+*/

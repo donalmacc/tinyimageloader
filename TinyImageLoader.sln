@@ -1,8 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyImageLoader", "TinyImageLoader.vcproj", "{5877A03F-9A70-4E20-B8DA-D877BED3B3A2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyImageLoader", ".\projects\TinyImageLoader.vcproj", "{5877A03F-9A70-4E20-B8DA-D877BED3B3A2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyImageLoader_ARM", "TinyImageLoader_ARM.vcproj", "{9A3961A8-FD80-4FEC-9D5C-FFDBAE21146C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyImageLoader_ARM", ".\projects\TinyImageLoader_ARM.vcproj", "{9A3961A8-FD80-4FEC-9D5C-FFDBAE21146C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
