@@ -174,89 +174,91 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00168"></a>00168 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
 <a name="l00169"></a><a class="code" href="_t_i_l_settings_8h.html#a06001d0fea8ea131d903971f7a8b0f8e">00169</a> <span class="preprocessor"></span><span class="preprocessor">#define TIL_ERROR_EXPLAIN(msg, ...)    til::AddError(&quot;TinyImageLoader - Error: &quot;msg&quot; &quot;, __FILE__, __LINE__, __VA_ARGS__)</span>
 <a name="l00170"></a>00170 <span class="preprocessor"></span>
-<a name="l00175"></a>00175 <span class="preprocessor">#if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)</span>
+<a name="l00175"></a>00175 <span class="preprocessor">#if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS || TIL_PLATFORM == TIL_PLATFORM_WINMO)</span>
 <a name="l00176"></a><a class="code" href="_t_i_l_settings_8h.html#aa7da87a80d18c2e139c10d0a6a982286">00176</a> <span class="preprocessor"></span><span class="preprocessor">        #define TIL_MAX_PATH _MAX_PATH</span>
 <a name="l00177"></a>00177 <span class="preprocessor"></span>
-<a name="l00178"></a>00178 <span class="preprocessor">        #ifndef DOXYGEN_SHOULD_SKIP_THIS</span>
-<a name="l00179"></a>00179 <span class="preprocessor"></span>
-<a name="l00180"></a>00180 <span class="preprocessor">                #define _CRTDBG_MAP_ALLOC</span>
-<a name="l00181"></a>00181 <span class="preprocessor"></span><span class="preprocessor">                #include &lt;crtdbg.h&gt;</span>
-<a name="l00182"></a>00182 
-<a name="l00183"></a>00183 <span class="preprocessor">                #ifdef _DEBUG</span>
-<a name="l00184"></a>00184 <span class="preprocessor"></span><span class="preprocessor">                        #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)</span>
-<a name="l00185"></a>00185 <span class="preprocessor"></span><span class="preprocessor">                        #define new DEBUG_NEW</span>
-<a name="l00186"></a>00186 <span class="preprocessor"></span><span class="preprocessor">                #endif</span>
-<a name="l00187"></a>00187 <span class="preprocessor"></span>
-<a name="l00188"></a>00188 <span class="preprocessor">        #endif</span>
-<a name="l00189"></a>00189 <span class="preprocessor"></span>
-<a name="l00190"></a>00190 <span class="preprocessor">#else</span>
-<a name="l00191"></a>00191 <span class="preprocessor"></span><span class="preprocessor">        #define TIL_MAX_PATH 256</span>
-<a name="l00192"></a>00192 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
-<a name="l00193"></a>00193 <span class="preprocessor"></span>
-<a name="l00194"></a>00194 <span class="keyword">namespace </span>til
-<a name="l00195"></a>00195 {
-<a name="l00196"></a>00196 
-<a name="l00197"></a>00197         <span class="comment">// =========================================</span>
-<a name="l00198"></a>00198         <span class="comment">// Unsigned</span>
+<a name="l00178"></a>00178 <span class="preprocessor">        #if (TIL_PLATFORM == TIL_PLATFORM_WINMO)</span>
+<a name="l00179"></a>00179 <span class="preprocessor"></span><span class="preprocessor">                #define NULL 0</span>
+<a name="l00180"></a>00180 <span class="preprocessor"></span><span class="preprocessor">        #endif</span>
+<a name="l00181"></a>00181 <span class="preprocessor"></span><span class="preprocessor">        #if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)</span>
+<a name="l00182"></a>00182 <span class="preprocessor"></span><span class="preprocessor">                #ifndef DOXYGEN_SHOULD_SKIP_THIS</span>
+<a name="l00183"></a>00183 <span class="preprocessor"></span><span class="preprocessor">                        #define _CRTDBG_MAP_ALLOC</span>
+<a name="l00184"></a>00184 <span class="preprocessor"></span><span class="preprocessor">                        #include &lt;crtdbg.h&gt;</span>
+<a name="l00185"></a>00185 
+<a name="l00186"></a>00186 <span class="preprocessor">                        #ifdef _DEBUG</span>
+<a name="l00187"></a>00187 <span class="preprocessor"></span><span class="preprocessor">                                #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)</span>
+<a name="l00188"></a>00188 <span class="preprocessor"></span><span class="preprocessor">                                #define new DEBUG_NEW</span>
+<a name="l00189"></a>00189 <span class="preprocessor"></span><span class="preprocessor">                        #endif</span>
+<a name="l00190"></a>00190 <span class="preprocessor"></span><span class="preprocessor">                #endif</span>
+<a name="l00191"></a>00191 <span class="preprocessor"></span><span class="preprocessor">        #endif</span>
+<a name="l00192"></a>00192 <span class="preprocessor"></span><span class="preprocessor">#else</span>
+<a name="l00193"></a>00193 <span class="preprocessor"></span><span class="preprocessor">        #define TIL_MAX_PATH 256</span>
+<a name="l00194"></a>00194 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
+<a name="l00195"></a>00195 <span class="preprocessor"></span>
+<a name="l00196"></a>00196 <span class="keyword">namespace </span>til
+<a name="l00197"></a>00197 {
+<a name="l00198"></a>00198 
 <a name="l00199"></a>00199         <span class="comment">// =========================================</span>
-<a name="l00200"></a>00200 
-<a name="l00201"></a><a class="code" href="namespacetil.html#a1c6d7681798e72d71208031af3530042">00201</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> __int64                  <a class="code" href="namespacetil.html#a1c6d7681798e72d71208031af3530042" title="64-bit unsigned integer">uint64</a>; 
-<a name="l00202"></a><a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">00202</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>                     <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a>; 
-<a name="l00203"></a><a class="code" href="namespacetil.html#a763060f68abe34e71c760cbc58131389">00203</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>                    <a class="code" href="namespacetil.html#a763060f68abe34e71c760cbc58131389" title="16-bit unsigned integer">uint16</a>; 
-<a name="l00204"></a><a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">00204</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>                     <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a>;  
-<a name="l00205"></a>00205 
-<a name="l00206"></a>00206         <span class="comment">// =========================================</span>
-<a name="l00207"></a>00207         <span class="comment">// Signed</span>
+<a name="l00200"></a>00200         <span class="comment">// Unsigned</span>
+<a name="l00201"></a>00201         <span class="comment">// =========================================</span>
+<a name="l00202"></a>00202 
+<a name="l00203"></a><a class="code" href="namespacetil.html#a1c6d7681798e72d71208031af3530042">00203</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> __int64                  <a class="code" href="namespacetil.html#a1c6d7681798e72d71208031af3530042" title="64-bit unsigned integer">uint64</a>; 
+<a name="l00204"></a><a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">00204</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>                     <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a>; 
+<a name="l00205"></a><a class="code" href="namespacetil.html#a763060f68abe34e71c760cbc58131389">00205</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>                    <a class="code" href="namespacetil.html#a763060f68abe34e71c760cbc58131389" title="16-bit unsigned integer">uint16</a>; 
+<a name="l00206"></a><a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">00206</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>                     <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a>;  
+<a name="l00207"></a>00207 
 <a name="l00208"></a>00208         <span class="comment">// =========================================</span>
-<a name="l00209"></a>00209 
-<a name="l00210"></a><a class="code" href="namespacetil.html#ac978077ac06e209d0f0d8b964a5d025e">00210</a>         <span class="keyword">typedef</span> __int64                           <a class="code" href="namespacetil.html#ac978077ac06e209d0f0d8b964a5d025e" title="64-bit signed integer">int64</a>;  
-<a name="l00211"></a><a class="code" href="namespacetil.html#ae95c55c740d8104c74d594ededcff0a1">00211</a>         <span class="keyword">typedef</span> <span class="keywordtype">long</span>                              <a class="code" href="namespacetil.html#ae95c55c740d8104c74d594ededcff0a1" title="32-bit signed integer">int32</a>;  
-<a name="l00212"></a><a class="code" href="namespacetil.html#a9bc34af4c80344bf6d8e5d4251f82ca0">00212</a>         <span class="keyword">typedef</span> <span class="keywordtype">short</span>                             <a class="code" href="namespacetil.html#a9bc34af4c80344bf6d8e5d4251f82ca0" title="16-bit signed integer">int16</a>;  
-<a name="l00213"></a><a class="code" href="namespacetil.html#a2c8bdd33a4831b0fcfeb96e4e4d91ae5">00213</a>         <span class="keyword">typedef</span> <span class="keywordtype">char</span>                              <a class="code" href="namespacetil.html#a2c8bdd33a4831b0fcfeb96e4e4d91ae5" title="8-bit signed integer">int8</a>;   
-<a name="l00214"></a>00214 
-<a name="l00215"></a>00215         <span class="comment">// =========================================</span>
-<a name="l00216"></a>00216         <span class="comment">// Datatypes</span>
+<a name="l00209"></a>00209         <span class="comment">// Signed</span>
+<a name="l00210"></a>00210         <span class="comment">// =========================================</span>
+<a name="l00211"></a>00211 
+<a name="l00212"></a><a class="code" href="namespacetil.html#ac978077ac06e209d0f0d8b964a5d025e">00212</a>         <span class="keyword">typedef</span> __int64                           <a class="code" href="namespacetil.html#ac978077ac06e209d0f0d8b964a5d025e" title="64-bit signed integer">int64</a>;  
+<a name="l00213"></a><a class="code" href="namespacetil.html#ae95c55c740d8104c74d594ededcff0a1">00213</a>         <span class="keyword">typedef</span> <span class="keywordtype">long</span>                              <a class="code" href="namespacetil.html#ae95c55c740d8104c74d594ededcff0a1" title="32-bit signed integer">int32</a>;  
+<a name="l00214"></a><a class="code" href="namespacetil.html#a9bc34af4c80344bf6d8e5d4251f82ca0">00214</a>         <span class="keyword">typedef</span> <span class="keywordtype">short</span>                             <a class="code" href="namespacetil.html#a9bc34af4c80344bf6d8e5d4251f82ca0" title="16-bit signed integer">int16</a>;  
+<a name="l00215"></a><a class="code" href="namespacetil.html#a2c8bdd33a4831b0fcfeb96e4e4d91ae5">00215</a>         <span class="keyword">typedef</span> <span class="keywordtype">char</span>                              <a class="code" href="namespacetil.html#a2c8bdd33a4831b0fcfeb96e4e4d91ae5" title="8-bit signed integer">int8</a>;   
+<a name="l00216"></a>00216 
 <a name="l00217"></a>00217         <span class="comment">// =========================================</span>
-<a name="l00218"></a>00218 
-<a name="l00219"></a><a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc">00219</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>                     <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>;  
-<a name="l00220"></a><a class="code" href="namespacetil.html#a7903a6761ac6f7472530b2863401909e">00220</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>                    <a class="code" href="namespacetil.html#a7903a6761ac6f7472530b2863401909e" title="two bytes">word</a>;  
-<a name="l00221"></a><a class="code" href="namespacetil.html#a9babb870ec6cf9716ed0c90ea12811af">00221</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>                     <a class="code" href="namespacetil.html#a9babb870ec6cf9716ed0c90ea12811af" title="four bytes or two words">dword</a>; 
-<a name="l00222"></a>00222 
-<a name="l00223"></a>00223         <span class="comment">// =========================================</span>
-<a name="l00224"></a>00224         <span class="comment">// Colors</span>
+<a name="l00218"></a>00218         <span class="comment">// Datatypes</span>
+<a name="l00219"></a>00219         <span class="comment">// =========================================</span>
+<a name="l00220"></a>00220 
+<a name="l00221"></a><a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc">00221</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>                     <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>;  
+<a name="l00222"></a><a class="code" href="namespacetil.html#a7903a6761ac6f7472530b2863401909e">00222</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span>                    <a class="code" href="namespacetil.html#a7903a6761ac6f7472530b2863401909e" title="two bytes">word</a>;  
+<a name="l00223"></a><a class="code" href="namespacetil.html#a9babb870ec6cf9716ed0c90ea12811af">00223</a>         <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>                     <a class="code" href="namespacetil.html#a9babb870ec6cf9716ed0c90ea12811af" title="four bytes or two words">dword</a>; 
+<a name="l00224"></a>00224 
 <a name="l00225"></a>00225         <span class="comment">// =========================================</span>
-<a name="l00226"></a>00226 
-<a name="l00227"></a><a class="code" href="namespacetil.html#a7f7e0b26e2259ef9f20954c310c78e41">00227</a>         <span class="keyword">typedef</span> <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a>                             <a class="code" href="namespacetil.html#a7f7e0b26e2259ef9f20954c310c78e41" title="8-bit color">color_8b</a>;  
-<a name="l00228"></a><a class="code" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">00228</a>         <span class="keyword">typedef</span> <a class="code" href="namespacetil.html#a763060f68abe34e71c760cbc58131389" title="16-bit unsigned integer">uint16</a>                            <a class="code" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45" title="16-bit color">color_16b</a>; 
-<a name="l00229"></a>00229 <span class="preprocessor">#ifndef DOXYGEN_SHOULD_SKIP_THIS</span>
-<a name="l00230"></a>00230 <span class="preprocessor"></span>        <span class="keyword">typedef</span> <span class="keyword">struct </span>{ <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> d[3]; }            color_24b; 
-<a name="l00231"></a>00231 <span class="preprocessor">#endif</span>
-<a name="l00232"></a><a class="code" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">00232</a> <span class="preprocessor"></span>        <span class="keyword">typedef</span> <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a>                            <a class="code" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb" title="32-bit color">color_32b</a>; 
-<a name="l00233"></a>00233 
-<a name="l00234"></a>00234         <span class="comment">// =========================================</span>
-<a name="l00235"></a>00235         <span class="comment">// Function pointers</span>
+<a name="l00226"></a>00226         <span class="comment">// Colors</span>
+<a name="l00227"></a>00227         <span class="comment">// =========================================</span>
+<a name="l00228"></a>00228 
+<a name="l00229"></a><a class="code" href="namespacetil.html#a7f7e0b26e2259ef9f20954c310c78e41">00229</a>         <span class="keyword">typedef</span> <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a>                             <a class="code" href="namespacetil.html#a7f7e0b26e2259ef9f20954c310c78e41" title="8-bit color">color_8b</a>;  
+<a name="l00230"></a><a class="code" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">00230</a>         <span class="keyword">typedef</span> <a class="code" href="namespacetil.html#a763060f68abe34e71c760cbc58131389" title="16-bit unsigned integer">uint16</a>                            <a class="code" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45" title="16-bit color">color_16b</a>; 
+<a name="l00231"></a>00231 <span class="preprocessor">#ifndef DOXYGEN_SHOULD_SKIP_THIS</span>
+<a name="l00232"></a>00232 <span class="preprocessor"></span>        <span class="keyword">typedef</span> <span class="keyword">struct </span>{ <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> d[3]; }            color_24b; 
+<a name="l00233"></a>00233 <span class="preprocessor">#endif</span>
+<a name="l00234"></a><a class="code" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">00234</a> <span class="preprocessor"></span>        <span class="keyword">typedef</span> <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a>                            <a class="code" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb" title="32-bit color">color_32b</a>; 
+<a name="l00235"></a>00235 
 <a name="l00236"></a>00236         <span class="comment">// =========================================</span>
-<a name="l00237"></a>00237 
-<a name="l00239"></a><a class="code" href="structtil_1_1_message_data.html">00239</a>         <span class="keyword">struct </span><a class="code" href="structtil_1_1_message_data.html" title="Message structure.">MessageData</a>
-<a name="l00240"></a>00240         {
-<a name="l00241"></a><a class="code" href="structtil_1_1_message_data.html#a509ca54f8bbc534d0220d3e7b1637a8d">00241</a>                 <span class="keywordtype">char</span>* <a class="code" href="structtil_1_1_message_data.html#a509ca54f8bbc534d0220d3e7b1637a8d">message</a>;      
-<a name="l00242"></a><a class="code" href="structtil_1_1_message_data.html#a0e06be68ecffce75b5920a24d367bad7">00242</a>                 <span class="keywordtype">char</span>* <a class="code" href="structtil_1_1_message_data.html#a0e06be68ecffce75b5920a24d367bad7">source_file</a>;  
-<a name="l00243"></a><a class="code" href="structtil_1_1_message_data.html#a431af7e6298fbf1d6a0cf4518d67d153">00243</a>                 <span class="keywordtype">int</span> <a class="code" href="structtil_1_1_message_data.html#a431af7e6298fbf1d6a0cf4518d67d153">source_line</a>;    
-<a name="l00244"></a>00244         };
-<a name="l00245"></a>00245 
+<a name="l00237"></a>00237         <span class="comment">// Function pointers</span>
+<a name="l00238"></a>00238         <span class="comment">// =========================================</span>
+<a name="l00239"></a>00239 
+<a name="l00241"></a><a class="code" href="structtil_1_1_message_data.html">00241</a>         <span class="keyword">struct </span><a class="code" href="structtil_1_1_message_data.html" title="Message structure.">MessageData</a>
+<a name="l00242"></a>00242         {
+<a name="l00243"></a><a class="code" href="structtil_1_1_message_data.html#a509ca54f8bbc534d0220d3e7b1637a8d">00243</a>                 <span class="keywordtype">char</span>* <a class="code" href="structtil_1_1_message_data.html#a509ca54f8bbc534d0220d3e7b1637a8d">message</a>;      
+<a name="l00244"></a><a class="code" href="structtil_1_1_message_data.html#a0e06be68ecffce75b5920a24d367bad7">00244</a>                 <span class="keywordtype">char</span>* <a class="code" href="structtil_1_1_message_data.html#a0e06be68ecffce75b5920a24d367bad7">source_file</a>;  
+<a name="l00245"></a><a class="code" href="structtil_1_1_message_data.html#a431af7e6298fbf1d6a0cf4518d67d153">00245</a>                 <span class="keywordtype">int</span> <a class="code" href="structtil_1_1_message_data.html#a431af7e6298fbf1d6a0cf4518d67d153">source_line</a>;    
+<a name="l00246"></a>00246         };
 <a name="l00247"></a>00247 
-<a name="l00252"></a><a class="code" href="namespacetil.html#a4cd3def0937f0e817958cdcc44241549">00252</a>         <span class="keyword">typedef</span> void (*<a class="code" href="namespacetil.html#a4cd3def0937f0e817958cdcc44241549" title="Message function.">MessageFunc</a>)(<a class="code" href="structtil_1_1_message_data.html" title="Message structure.">MessageData</a>* a_Data);
-<a name="l00253"></a>00253 
-<a name="l00255"></a><a class="code" href="namespacetil.html#a99240dca275f311bbe4c7f93ab1d0a9e">00255</a>         <span class="keyword">typedef</span> <span class="keywordtype">void</span>* (*MemAllocFunc)(<span class="keywordtype">size_t</span> a_Size, <span class="keywordtype">size_t</span>* a_Allocated);
-<a name="l00257"></a><a class="code" href="namespacetil.html#af56c2ebf8c7d99cb7740d5edc237a838">00257</a>         <span class="keyword">typedef</span> void (*<a class="code" href="namespacetil.html#af56c2ebf8c7d99cb7740d5edc237a838" title="Memory freeing function.">MemFreeFunc</a>)(<span class="keywordtype">void</span>* a_Free, <span class="keywordtype">size_t</span> a_Size);
-<a name="l00258"></a>00258 
-<a name="l00259"></a>00259         <span class="keyword">class </span><a class="code" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">FileStream</a>;
-<a name="l00261"></a>00261 
-<a name="l00264"></a><a class="code" href="namespacetil.html#ad2bb0fc50e3103fc00335b66adf272c8">00264</a>         <span class="keyword">typedef</span> <a class="code" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">FileStream</a>* (*FileStreamFunc)(<span class="keyword">const</span> <span class="keywordtype">char</span>* a_Path, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Options);
-<a name="l00265"></a>00265         
-<a name="l00266"></a>00266 }; <span class="comment">// namespace til</span>
-<a name="l00267"></a>00267 
-<a name="l00268"></a>00268 <span class="preprocessor">#endif</span>
+<a name="l00249"></a>00249 
+<a name="l00254"></a><a class="code" href="namespacetil.html#a4cd3def0937f0e817958cdcc44241549">00254</a>         <span class="keyword">typedef</span> void (*<a class="code" href="namespacetil.html#a4cd3def0937f0e817958cdcc44241549" title="Message function.">MessageFunc</a>)(<a class="code" href="structtil_1_1_message_data.html" title="Message structure.">MessageData</a>* a_Data);
+<a name="l00255"></a>00255 
+<a name="l00257"></a><a class="code" href="namespacetil.html#a99240dca275f311bbe4c7f93ab1d0a9e">00257</a>         <span class="keyword">typedef</span> <span class="keywordtype">void</span>* (*MemAllocFunc)(<span class="keywordtype">size_t</span> a_Size, <span class="keywordtype">size_t</span>* a_Allocated);
+<a name="l00259"></a><a class="code" href="namespacetil.html#af56c2ebf8c7d99cb7740d5edc237a838">00259</a>         <span class="keyword">typedef</span> void (*<a class="code" href="namespacetil.html#af56c2ebf8c7d99cb7740d5edc237a838" title="Memory freeing function.">MemFreeFunc</a>)(<span class="keywordtype">void</span>* a_Free, <span class="keywordtype">size_t</span> a_Size);
+<a name="l00260"></a>00260 
+<a name="l00261"></a>00261         <span class="keyword">class </span><a class="code" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">FileStream</a>;
+<a name="l00263"></a>00263 
+<a name="l00266"></a><a class="code" href="namespacetil.html#ad2bb0fc50e3103fc00335b66adf272c8">00266</a>         <span class="keyword">typedef</span> <a class="code" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">FileStream</a>* (*FileStreamFunc)(<span class="keyword">const</span> <span class="keywordtype">char</span>* a_Path, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Options);
+<a name="l00267"></a>00267         
+<a name="l00268"></a>00268 }; <span class="comment">// namespace til</span>
+<a name="l00269"></a>00269 
+<a name="l00270"></a>00270 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -273,7 +275,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 12:24:56 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 12:35:09 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>
