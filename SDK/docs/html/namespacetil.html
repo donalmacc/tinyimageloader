@@ -177,6 +177,8 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the debug messages as a string.  <a href="#a718bbc00caa8c13af40909fddc9b0f43"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a3ffda784e3632247d9759e5d3ac5bfbd">TIL_GetDebugLength</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the length of the debug string.  <a href="#a3ffda784e3632247d9759e5d3ac5bfbd"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#ab47ef180dfcddf277bb0332181206100">TIL_ClearDebug</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the debug string.  <a href="#ab47ef180dfcddf277bb0332181206100"></a><br/></td></tr>
 <tr><td colspan="2"><div class="groupHeader">16-bit RGB</div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">color_16b</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a7e42efe1f69a94e67190c1434fd002f4">Construct_16b_R5G6B5</a> (<a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Red, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Green, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Blue)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a 16-bit RGB color.  <a href="#a7e42efe1f69a94e67190c1434fd002f4"></a><br/></td></tr>
@@ -1675,6 +1677,25 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
 
 </div>
 </div>
+<a class="anchor" id="ab47ef180dfcddf277bb0332181206100"></a><!-- doxytag: member="til::TIL_ClearDebug" ref="ab47ef180dfcddf277bb0332181206100" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void til::TIL_ClearDebug </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Clears the debug string. </p>
+<p>The debug string can get very large. Call this function to clear it. </p>
+
+</div>
+</div>
 <a class="anchor" id="a718bbc00caa8c13af40909fddc9b0f43"></a><!-- doxytag: member="til::TIL_GetDebug" ref="a718bbc00caa8c13af40909fddc9b0f43" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -2079,7 +2100,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 10:00:41 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 12:04:19 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

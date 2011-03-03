@@ -6,6 +6,7 @@
 
 	\section About
 	-# \ref design
+	-# \ref thirdparty
 	-# \ref bugs
     \section Examples
     -# \ref example1
