@@ -1,0 +1,59 @@
+/*!
+\page thirdparty Third-party libraries
+
+	TinyImageLoader itself doesn't require any third-party libraries. However, if you
+	want to run the examples, some setup is required.
+
+\section OpenGL
+
+	The headers for OpenGL are already supplied. However, make sure your system
+	contains a copy of OpenGL32.lib. If you have Visual Studio installed this
+	shouldn't be a problem.
+
+\section GLEW
+
+	GLEW is used by the Framework to open an OpenGL window.
+	
+	Download GLEW from their website:
+	
+	http://glew.sourceforge.net/
+	Direct link: http://sourceforge.net/projects/glew/files/glew/1.5.8/glew-1.5.8-win32.zip/download
+	
+	- Extract the archive to third-party\\GLEW
+	
+	TinyImageLoader has been tested against GLEW 1.5.7.
+	
+\section ZLib
+
+	ZLib is used by the ZIP archive example to extract a ZIP archive. It isn't
+	a requirement for the simple viewer example.
+	
+	Download ZLib from their website:
+	
+	http://zlib.net/
+	Direct link: http://zlib.net/zlib-1.2.5.tar.gz
+	
+	- Extract the archive to third-party\\ZLib
+	- Run CMake to generate a Visual Studio project
+	- Compile for both Debug and Release
+	- Go into the Debug folder (third-party\\ZLib\\Debug) and copy zlib1d.dll to TinyImageLoader's bin folder
+	- Go into the Release folder (third-party\\ZLib\\Release) and copy zlib1.dll to TinyImageLoader's bin folder
+	
+	TinyImageLoader has been tested against ZLib 1.2.5.
+	
+\section UnZip
+
+	Unzip is a wrapper for ZLib to make it easier to load ZIP archives. It isn't
+	a requirement for the simple viewer example.
+	
+	Download UnZip from their website:
+	
+	http://www.winimage.com/zLibDll/minizip.html
+	Direct link: http://www.winimage.com/zLibDll/unzip101h.zip
+	
+	- Extract the archive to third-party\\UnZip
+	- Load the provided solution file in Visual Studio (third-party\\UnZip\\UnZip101.sln)
+	- Compile for both Debug and Release
+	
+	TinyImageLoader has been tested against UnZip 1.0.1.
+*/
