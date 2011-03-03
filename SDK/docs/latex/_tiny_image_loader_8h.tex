@@ -1,0 +1,60 @@
+\hypertarget{_tiny_image_loader_8h}{
+\section{SDK/headers/TinyImageLoader.h File Reference}
+\label{_tiny_image_loader_8h}\index{SDK/headers/TinyImageLoader.h@{SDK/headers/TinyImageLoader.h}}
+}
+
+
+The main include for using TinyImageLoader in your project.  
+
+
+{\ttfamily \#include \char`\"{}TILSettings.h\char`\"{}}\par
+{\ttfamily \#include \char`\"{}TILFileStream.h\char`\"{}}\par
+{\ttfamily \#include \char`\"{}TILImage.h\char`\"{}}\par
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \hyperlink{namespacetil}{til}
+
+
+\begin{DoxyCompactList}\small\item\em TinyImageLoader namespace. \item\end{DoxyCompactList}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespacetil_a84a20b430c5ae27956968ef6d7a6425b}{til::TIL\_\-Init} (uint32 a\_\-Settings=TIL\_\-SETTINGS)
+\begin{DoxyCompactList}\small\item\em Initializes TinyImageLoader. \item\end{DoxyCompactList}\item 
+void \hyperlink{namespacetil_a777e336727a478c4c4bdfd8c0e3603d7}{til::TIL\_\-ShutDown} ()
+\begin{DoxyCompactList}\small\item\em Shuts down TinyImageLoader. \item\end{DoxyCompactList}\item 
+Image $\ast$ \hyperlink{namespacetil_a8d2e2ab942bb94b188587509ccb754de}{til::TIL\_\-Load} (FileStream $\ast$a\_\-Stream, uint32 a\_\-Options)
+\begin{DoxyCompactList}\small\item\em Main interface for loading images. \item\end{DoxyCompactList}\item 
+Image $\ast$ \hyperlink{namespacetil_abd175aec954bbd694f5d76913e49781f}{til::TIL\_\-Load} (const char $\ast$a\_\-FileName, uint32 a\_\-Options=(TIL\_\-FILE\_\-ABSOLUTEPATH$|$TIL\_\-DEPTH\_\-A8R8G8B8))
+\begin{DoxyCompactList}\small\item\em Main interface for loading images. \item\end{DoxyCompactList}\item 
+size\_\-t \hyperlink{namespacetil_a23d6a0255921e477f4f04e27c28c3945}{til::TIL\_\-SetWorkingDirectory} (const char $\ast$a\_\-Path, size\_\-t a\_\-Length)
+\begin{DoxyCompactList}\small\item\em Set the internal working directory. \item\end{DoxyCompactList}\item 
+void \hyperlink{namespacetil_a52083ef60545c86742eeb28c3504a60c}{til::TIL\_\-SetFileStreamFunc} (FileStreamFunc a\_\-Func)
+\begin{DoxyCompactList}\small\item\em Set the callback for creating FileStream's. \item\end{DoxyCompactList}\item 
+void \hyperlink{namespacetil_ad1f5533b868c2f7f1f9a343642b3ff42}{til::TIL\_\-GetVersion} (char $\ast$a\_\-Target, size\_\-t a\_\-MaxLength)
+\begin{DoxyCompactList}\small\item\em Get the version as a string. \item\end{DoxyCompactList}\item 
+void \hyperlink{namespacetil_acf5fe389d33053c01da96da10ef88b0e}{til::TIL\_\-SetErrorFunc} (MessageFunc a\_\-Func)
+\begin{DoxyCompactList}\small\item\em Set the callback for the internal error logging function. \item\end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{namespacetil_a194b32071f97f5607de361743f895c54}{til::TIL\_\-GetError} ()
+\begin{DoxyCompactList}\small\item\em Get the errors as a string. \item\end{DoxyCompactList}\item 
+size\_\-t \hyperlink{namespacetil_acee705152b244eb9f8efc5ed8aea744e}{til::TIL\_\-GetErrorLength} ()
+\begin{DoxyCompactList}\small\item\em Get the length of the error string. \item\end{DoxyCompactList}\item 
+void \hyperlink{namespacetil_a4e9b5c8b33ec4ec38e7ef895a8eac58e}{til::TIL\_\-SetDebugFunc} (MessageFunc a\_\-Func)
+\begin{DoxyCompactList}\small\item\em Set the callback for the internal debug logging function. \item\end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{namespacetil_a718bbc00caa8c13af40909fddc9b0f43}{til::TIL\_\-GetDebug} ()
+\begin{DoxyCompactList}\small\item\em Get the debug messages as a string. \item\end{DoxyCompactList}\item 
+size\_\-t \hyperlink{namespacetil_a3ffda784e3632247d9759e5d3ac5bfbd}{til::TIL\_\-GetDebugLength} ()
+\begin{DoxyCompactList}\small\item\em Get the length of the debug string. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}{\bf Internal}\par
+{\em These functions are internal and shouldn't be called by developers. }\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespacetil_a0a78aac0d1be8f1403da0a7eff6334ca}{til::TIL\_\-AddWorkingDirectory} (char $\ast$a\_\-Dst, size\_\-t a\_\-MaxLength, const char $\ast$a\_\-Path)
+\begin{DoxyCompactList}\small\item\em Adds working directory to a path. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\subsection{Detailed Description}
+The main include for using TinyImageLoader in your project. Details. 

@@ -1,0 +1,49 @@
+I can do a lot, but not everything. These are the things I haven't gotten to.\hypertarget{bugs_colors1}{}\section{Color functions}\label{bugs_colors1}
+Not all color formats are fully supported yet. What I've done is support at least all the construct functions. The rest will be done at a later time.\hypertarget{bugs_colors2}{}\section{Color conversion}\label{bugs_colors2}
+Color conversion is a nightmare. They just keep on stacking. Right now there are 8 different color formats. That means there are 8 $\ast$ 7 = 56 color conversion functions (!). I've only implemented the ones I needed.\hypertarget{bugs_cmaaaaake}{}\section{CMake}\label{bugs_cmaaaaake}
+There is no CMake for TinyImageLoader. I know this is annoying for a lot of people. I know I'm a big jerk. But I would like to bring up the following points:
+
+
+\begin{DoxyItemize}
+\item CMake doesn't use Visual Studio macros
+\end{DoxyItemize}
+
+CMake doesn't use Visual Studio macros in its paths. This is extremely annoying when your main development environment is Visual Studio. Paths become long and unreadable.
+
+The official stance of CMake is that they don't care if it looks good, as long as it works. This is unacceptable to me.
+
+
+\begin{DoxyItemize}
+\item CMake doesn't give me enough control
+\end{DoxyItemize}
+
+I want my intermediate files in a directory labeled \char`\"{}int\char`\"{}. In that folder, I want two folders: \char`\"{}Debug\char`\"{} and \char`\"{}Release\char`\"{}. This is impossible to do in CMake, because it doesn't allow you to set the intermediate directory in Visual Studio.
+
+Worse, for a long time it was hardly possible to set the output directory. You had to use what is known as the \char`\"{}backslash hack\char`\"{} to set the output directory. You set the dir to \char`\"{}$\backslash$..$\backslash$bin\char`\"{} so the path becomes \char`\"{}$<$Project$>$$\backslash$Debug$\backslash$..$\backslash$bin\char`\"{}.
+
+Ugly.
+
+
+\begin{DoxyItemize}
+\item CMake has horrible documentation
+\end{DoxyItemize}
+
+The entire documentation to CMake is one giant HTML file. I'm not kidding. It's huge. You can try searching through it, but you'll inevitably end up lost and confused.
+
+Which brings me to...
+
+
+\begin{DoxyItemize}
+\item CMake has no examples
+\end{DoxyItemize}
+
+The way to learn CMake is basically to look at other projects that use CMake and try stealing bits and pieces from it. But the structure of commands oftentimes doesn't make sense and the documention is no help either.
+
+
+\begin{DoxyItemize}
+\item CMake has no alternative
+\end{DoxyItemize}
+
+This is the worst thing. CMake doesn't do what I want and I have no alternatives besides maintaining vcproj's, vcxproj's and makefiles by hand.
+
+Until something better comes along, or CMake fixes its flaws, I will be sticking to handmade Visual Studio project files. 

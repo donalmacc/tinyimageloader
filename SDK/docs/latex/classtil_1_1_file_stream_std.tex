@@ -1,0 +1,289 @@
+\hypertarget{classtil_1_1_file_stream_std}{
+\section{til::FileStreamStd Class Reference}
+\label{classtil_1_1_file_stream_std}\index{til::FileStreamStd@{til::FileStreamStd}}
+}
+
+
+ANSI C implementation of \hyperlink{classtil_1_1_file_stream}{FileStream}.  
+
+
+
+
+{\ttfamily \#include $<$TILFileStreamStd.h$>$}
+
+Inheritance diagram for til::FileStreamStd:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classtil_1_1_file_stream_std}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classtil_1_1_file_stream_std_ab58f46883a8ccf5e3884fef0b6cb42d3}{Open} (const char $\ast$a\_\-File, \hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Options)
+\begin{DoxyCompactList}\small\item\em Open a handle to a file. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classtil_1_1_file_stream_std_a5a4b5bb51ab27c50f2276c7c904e31b4}{Read} (void $\ast$a\_\-Dst, \hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-ElementSize, \hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Count=1)
+\begin{DoxyCompactList}\small\item\em Read data. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classtil_1_1_file_stream_std_a1eea3ea2ef520676df5f5b0c51c2659f}{ReadByte} (\hyperlink{namespacetil_a5f3ec10aca1a788b495a0bd3787bc2dc}{byte} $\ast$a\_\-Dst, \hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Count=1)
+\begin{DoxyCompactList}\small\item\em Read a number of bytes. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classtil_1_1_file_stream_std_aadd59b38678d22428f311aa417aeca40}{ReadWord} (\hyperlink{namespacetil_a7903a6761ac6f7472530b2863401909e}{word} $\ast$a\_\-Dst, \hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Count=1)
+\begin{DoxyCompactList}\small\item\em Read a number of words. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classtil_1_1_file_stream_std_a638af52afa0f132221dea6cb5b79faa6}{ReadDWord} (\hyperlink{namespacetil_a9babb870ec6cf9716ed0c90ea12811af}{dword} $\ast$a\_\-Dst, \hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Count=1)
+\begin{DoxyCompactList}\small\item\em Read a number of dwords. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classtil_1_1_file_stream_std_a8e3874550cefaec46846237a68c7727d}{Seek} (\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Bytes, \hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Options)
+\begin{DoxyCompactList}\small\item\em Seek to a position in the file. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classtil_1_1_file_stream_std_afe96b90d15f23582412eb2a03e9af254}{EndOfFile} ()
+\begin{DoxyCompactList}\small\item\em Check for end of file. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classtil_1_1_file_stream_std_a13ecdaa29a9d998a77059f2a732dbca0}{Close} ()
+\begin{DoxyCompactList}\small\item\em Close the stream. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+ANSI C implementation of \hyperlink{classtil_1_1_file_stream}{FileStream}. \hyperlink{classtil_1_1_file_stream}{FileStream} implementation that uses FILE pointers. Should work on all platforms with a valid ANSI C implementation, but details may differ. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classtil_1_1_file_stream_std_a13ecdaa29a9d998a77059f2a732dbca0}{
+\index{til::FileStreamStd@{til::FileStreamStd}!Close@{Close}}
+\index{Close@{Close}!til::FileStreamStd@{til::FileStreamStd}}
+\subsubsection[{Close}]{\setlength{\rightskip}{0pt plus 5cm}bool til::FileStreamStd::Close (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_file_stream_std_a13ecdaa29a9d998a77059f2a732dbca0}
+
+
+Close the stream. 
+
+Close the handle to the file.
+
+\begin{DoxyReturn}{Returns}
+Success 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classtil_1_1_file_stream_a247dffc5fa0875cbafb48c63baa03493}{til::FileStream}.
+
+\hypertarget{classtil_1_1_file_stream_std_afe96b90d15f23582412eb2a03e9af254}{
+\index{til::FileStreamStd@{til::FileStreamStd}!EndOfFile@{EndOfFile}}
+\index{EndOfFile@{EndOfFile}!til::FileStreamStd@{til::FileStreamStd}}
+\subsubsection[{EndOfFile}]{\setlength{\rightskip}{0pt plus 5cm}bool til::FileStreamStd::EndOfFile (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_file_stream_std_afe96b90d15f23582412eb2a03e9af254}
+
+
+Check for end of file. 
+
+\begin{DoxyReturn}{Returns}
+True if no more bytes can be read, otherwise false 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classtil_1_1_file_stream_a693c2379367badd18d65d7f83512f595}{til::FileStream}.
+
+\hypertarget{classtil_1_1_file_stream_std_ab58f46883a8ccf5e3884fef0b6cb42d3}{
+\index{til::FileStreamStd@{til::FileStreamStd}!Open@{Open}}
+\index{Open@{Open}!til::FileStreamStd@{til::FileStreamStd}}
+\subsubsection[{Open}]{\setlength{\rightskip}{0pt plus 5cm}bool til::FileStreamStd::Open (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{a\_\-File, }
+\item[{{\bf uint32}}]{a\_\-Options}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_file_stream_std_ab58f46883a8ccf5e3884fef0b6cb42d3}
+
+
+Open a handle to a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-File} & The path to the file to be loaded \\
+\hline
+{\em a\_\-Options} & The options to consider\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True on success, false on failure
+\end{DoxyReturn}
+Valid options are a file option:
+\begin{DoxyItemize}
+\item \hyperlink{_t_i_l_settings_8h_a35df91f5e83de2ea6177f37406e487d9}{TIL\_\-FILE\_\-ABSOLUTEPATH}
+\item \hyperlink{_t_i_l_settings_8h_a46033ff709c68056a163fefecfae188a}{TIL\_\-FILE\_\-ADDWORKINGDIR}
+\end{DoxyItemize}
+
+\begin{DoxyNote}{Note}
+If a file cannot be found, return false 
+\end{DoxyNote}
+
+
+Implements \hyperlink{classtil_1_1_file_stream_a907973c36daaa764e0b898540ffc24e8}{til::FileStream}.
+
+\hypertarget{classtil_1_1_file_stream_std_a5a4b5bb51ab27c50f2276c7c904e31b4}{
+\index{til::FileStreamStd@{til::FileStreamStd}!Read@{Read}}
+\index{Read@{Read}!til::FileStreamStd@{til::FileStreamStd}}
+\subsubsection[{Read}]{\setlength{\rightskip}{0pt plus 5cm}bool til::FileStreamStd::Read (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{a\_\-Dst, }
+\item[{{\bf uint32}}]{a\_\-ElementSize, }
+\item[{{\bf uint32}}]{a\_\-Count = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_file_stream_std_a5a4b5bb51ab27c50f2276c7c904e31b4}
+
+
+Read data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Dst} & The destination buffer to write to \\
+\hline
+{\em a\_\-ElementSize} & The size of each element \\
+\hline
+{\em a\_\-Count} & The number of elements to read\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True on success, false on failure
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+If more data is requested than is left in the file, return false 
+\end{DoxyNote}
+
+
+Implements \hyperlink{classtil_1_1_file_stream_a26c0a9cc315418ab156ee3a56aad1be2}{til::FileStream}.
+
+\hypertarget{classtil_1_1_file_stream_std_a1eea3ea2ef520676df5f5b0c51c2659f}{
+\index{til::FileStreamStd@{til::FileStreamStd}!ReadByte@{ReadByte}}
+\index{ReadByte@{ReadByte}!til::FileStreamStd@{til::FileStreamStd}}
+\subsubsection[{ReadByte}]{\setlength{\rightskip}{0pt plus 5cm}bool til::FileStreamStd::ReadByte (
+\begin{DoxyParamCaption}
+\item[{{\bf byte} $\ast$}]{a\_\-Dst, }
+\item[{{\bf uint32}}]{a\_\-Count = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_file_stream_std_a1eea3ea2ef520676df5f5b0c51c2659f}
+
+
+Read a number of bytes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Dst} & The destination buffer to write to \\
+\hline
+{\em a\_\-Count} & The number of bytes to read\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True on success, false on failure
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+If more data is requested than is left in the file, return false 
+\end{DoxyNote}
+
+
+Implements \hyperlink{classtil_1_1_file_stream_aeddef50dcb9b7353799800cccf942551}{til::FileStream}.
+
+\hypertarget{classtil_1_1_file_stream_std_a638af52afa0f132221dea6cb5b79faa6}{
+\index{til::FileStreamStd@{til::FileStreamStd}!ReadDWord@{ReadDWord}}
+\index{ReadDWord@{ReadDWord}!til::FileStreamStd@{til::FileStreamStd}}
+\subsubsection[{ReadDWord}]{\setlength{\rightskip}{0pt plus 5cm}bool til::FileStreamStd::ReadDWord (
+\begin{DoxyParamCaption}
+\item[{{\bf dword} $\ast$}]{a\_\-Dst, }
+\item[{{\bf uint32}}]{a\_\-Count = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_file_stream_std_a638af52afa0f132221dea6cb5b79faa6}
+
+
+Read a number of dwords. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Dst} & The destination buffer to write to \\
+\hline
+{\em a\_\-Count} & The number of dwords to read\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True on success, false on failure
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+If more data is requested than is left in the file, return false 
+\end{DoxyNote}
+
+
+Implements \hyperlink{classtil_1_1_file_stream_a0a4a3add4a7fa4fd46e5ae4b38dbd9d3}{til::FileStream}.
+
+\hypertarget{classtil_1_1_file_stream_std_aadd59b38678d22428f311aa417aeca40}{
+\index{til::FileStreamStd@{til::FileStreamStd}!ReadWord@{ReadWord}}
+\index{ReadWord@{ReadWord}!til::FileStreamStd@{til::FileStreamStd}}
+\subsubsection[{ReadWord}]{\setlength{\rightskip}{0pt plus 5cm}bool til::FileStreamStd::ReadWord (
+\begin{DoxyParamCaption}
+\item[{{\bf word} $\ast$}]{a\_\-Dst, }
+\item[{{\bf uint32}}]{a\_\-Count = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_file_stream_std_aadd59b38678d22428f311aa417aeca40}
+
+
+Read a number of words. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Dst} & The destination buffer to write to \\
+\hline
+{\em a\_\-Count} & The number of words to read\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True on success, false on failure
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+If more data is requested than is left in the file, return false 
+\end{DoxyNote}
+
+
+Implements \hyperlink{classtil_1_1_file_stream_aada6e2d7cd5fe720527b09da42f78222}{til::FileStream}.
+
+\hypertarget{classtil_1_1_file_stream_std_a8e3874550cefaec46846237a68c7727d}{
+\index{til::FileStreamStd@{til::FileStreamStd}!Seek@{Seek}}
+\index{Seek@{Seek}!til::FileStreamStd@{til::FileStreamStd}}
+\subsubsection[{Seek}]{\setlength{\rightskip}{0pt plus 5cm}bool til::FileStreamStd::Seek (
+\begin{DoxyParamCaption}
+\item[{{\bf uint32}}]{a\_\-Offset, }
+\item[{{\bf uint32}}]{a\_\-Options}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_file_stream_std_a8e3874550cefaec46846237a68c7727d}
+
+
+Seek to a position in the file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Offset} & The number of bytes to skip \\
+\hline
+{\em a\_\-Options} & The location in the file\\
+\hline
+\end{DoxyParams}
+Valid options are: -\/\hyperlink{_t_i_l_settings_8h_a973d977edd49701c43cece50966e26a2}{TIL\_\-FILE\_\-SEEK\_\-START} -\/\hyperlink{_t_i_l_settings_8h_a5055479b805b9dfdd4383561c8ce0006}{TIL\_\-FILE\_\-SEEK\_\-CURR} -\/\hyperlink{_t_i_l_settings_8h_a56022a317f988fecf7ed712b02382378}{TIL\_\-FILE\_\-SEEK\_\-END}
+
+\begin{DoxyReturn}{Returns}
+True on success, false on failure
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+If the requested offset is too great, clamp to the nearest edge (either the start or the end of the file) and return false 
+\end{DoxyNote}
+
+
+Implements \hyperlink{classtil_1_1_file_stream_a29dfe625c988d68478ac6418478f7ea1}{til::FileStream}.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+SDK/headers/\hyperlink{_t_i_l_file_stream_std_8h}{TILFileStreamStd.h}\item 
+src/TILFileStreamStd.cpp\end{DoxyCompactItemize}

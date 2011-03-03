@@ -1,0 +1,45 @@
+\hypertarget{_t_i_l_internal_8h}{
+\section{SDK/headers/TILInternal.h File Reference}
+\label{_t_i_l_internal_8h}\index{SDK/headers/TILInternal.h@{SDK/headers/TILInternal.h}}
+}
+
+
+Internal functions.  
+
+
+{\ttfamily \#include \char`\"{}TILSettings.h\char`\"{}}\par
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \hyperlink{namespacetil}{til}
+
+
+\begin{DoxyCompactList}\small\item\em TinyImageLoader namespace. \item\end{DoxyCompactList}
+
+\end{DoxyCompactItemize}
+\subsection*{Internal}
+\label{_amgrpafbf0897a5a83fdd873dfb032ec695d3}
+ These functions are internal and shouldn't be called by developers. \begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespacetil_aa6707f7c58f2d8c74a738b2b82c03839}{til::AddError} (char $\ast$a\_\-Message, char $\ast$a\_\-File, int a\_\-Line,...)
+\begin{DoxyCompactList}\small\item\em Adds an error to the logging stack. \item\end{DoxyCompactList}\item 
+void \hyperlink{namespacetil_a05cbf3cec4ec5403459576050149a4ee}{til::AddDebug} (char $\ast$a\_\-Message, char $\ast$a\_\-File, int a\_\-Line,...)
+\begin{DoxyCompactList}\small\item\em Adds a debug message to the logging stack. \item\end{DoxyCompactList}\item 
+void \hyperlink{namespacetil_a0a78aac0d1be8f1403da0a7eff6334ca}{til::TIL\_\-AddWorkingDirectory} (char $\ast$a\_\-Dst, size\_\-t a\_\-MaxLength, const char $\ast$a\_\-Path)
+\begin{DoxyCompactList}\small\item\em Adds working directory to a path. \item\end{DoxyCompactList}\item 
+FileStream $\ast$ \hyperlink{namespacetil_afb60962bb4c5724077d6424a7ab60737}{til::OpenStreamDefault} (const char $\ast$a\_\-Path, uint32 a\_\-Options)
+\begin{DoxyCompactList}\small\item\em Default \hyperlink{classtil_1_1_file_stream}{FileStream} function. \item\end{DoxyCompactList}\item 
+\hypertarget{namespacetil_a2d92aa4d6b94833cc5c2d2e098cbaafd}{
+void {\bfseries til::MemCpy} (uint8 $\ast$a\_\-Dst, uint8 $\ast$a\_\-Src, uint32 a\_\-Size)}
+\label{namespacetil_a2d92aa4d6b94833cc5c2d2e098cbaafd}
+
+\item 
+\hypertarget{namespacetil_a6b048ea80480b6a208efde7401c27fb4}{
+void {\bfseries til::MemSet} (byte $\ast$a\_\-Dst, byte a\_\-Value, uint32 a\_\-Size)}
+\label{namespacetil_a6b048ea80480b6a208efde7401c27fb4}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Internal functions. 

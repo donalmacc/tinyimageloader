@@ -1,0 +1,195 @@
+This example will show you how to load an image using TinyImageLoader and use it as a texture.\hypertarget{example1_intro}{}\section{Introduction}\label{example1_intro}
+When you drag an image onto the exe created by this example, TinyImageLoader will try to load it. If the file cannot be loaded (for whatever the reason), you can check the til.log located at in /examples/bin/til.log. If you find an image that doesn't load, please send it and the log to me! I will get back to you as soon as possible with (hopefully) a fix and (always) an apology.\hypertarget{example1_input}{}\section{Key binding}\label{example1_input}
+Use the following keys in this example:
+\begin{DoxyItemize}
+\item Q: Go to the next frame (if it exists)
+\item W: Go to the previous frame (if it exists)
+\item O: Zoom out on the image
+\item P: Zoom in on the image
+\end{DoxyItemize}\hypertarget{example1_setup}{}\section{Setup}\label{example1_setup}
+There are a couple of things you need to do before you can start using TinyImageLoader. First, you need to compile the TinyImageLoader static library using Visual Studio. Then you can copy the SDK folder to a project. Here's how I set up my projects:
+\begin{DoxyItemize}
+\item $\backslash$ (project root)
+\begin{DoxyItemize}
+\item bin (output directory)
+\begin{DoxyItemize}
+\item Project.exe (Release build)
+\item Project\_\-d.exe (Debug build)
+\end{DoxyItemize}
+\item int (intermediate directory)
+\begin{DoxyItemize}
+\item Debug
+\item Release
+\end{DoxyItemize}
+\item lib (third-\/party libraries)
+\begin{DoxyItemize}
+\item TinyImageLoader
+\begin{DoxyItemize}
+\item TinyImageLoader.lib
+\item TinyImageLoader\_\-d.lib
+\item headers
+\end{DoxyItemize}
+\end{DoxyItemize}
+\item src (project source files)
+\item Project.vcproj
+\item Solution.sln
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+You are free to set these things as you like, of course, but this is how I prefer it. :)\hypertarget{example1_startup}{}\section{Setting up TinyImageLoader}\label{example1_startup}
+The first thing we need to do is initialize TinyImageLoader. 
+\begin{DoxyCode}
+        til::TIL_Init();
+\end{DoxyCode}
+\hypertarget{example1_logging}{}\section{Logging}\label{example1_logging}
+By default, TinyImageLoader posts its errors and warning to an internal expanding string. This may not be desirable, as it takes memory you don't have any control over. Therefor, TinyImageLoader comes with a series of callbacks you can use to control the logging behavior.
+
+In this example we will output all debug and error messages to a log.
+
+We open our log by using a TinyImageLoader function to attach the working directory. 
+\begin{DoxyCode}
+        g_LogPath = new char[TIL_MAX_PATH];
+        til::TIL_AddWorkingDirectory(g_LogPath, TIL_MAX_PATH, "til.log");
+        fopen_s(&g_Log, g_LogPath, "w+");
+        fclose(g_Log);
+\end{DoxyCode}
+
+
+We open it only to clear it. If it doesn't exist it gets created.
+
+We have a custom logging function, that outputs the message to the log we just created.
+
+
+\begin{DoxyCode}
+        void LoggingFunc(til::MessageData* a_Data)
+        {
+                fopen_s(&g_Log, g_LogPath, "a");
+                char msg[1024];
+                //sprintf_s(msg, "%s (at line %i in file %s)", a_Data->message, a
+      _Data->source_line, a_Data->source_file);
+                sprintf_s(msg, 1024, "%s\n", a_Data->message);
+                fputs(msg, g_Log);
+                fclose(g_Log);
+        }
+\end{DoxyCode}
+
+
+Of course, we will need to attach this function to TinyImageLoader using the callback register functions.
+
+
+\begin{DoxyCode}
+        til::TIL_SetDebugFunc(LoggingFunc);
+        til::TIL_SetErrorFunc(LoggingFunc);
+\end{DoxyCode}
+\hypertarget{example1_setupopengl}{}\section{Setting up OpenGL}\label{example1_setupopengl}
+For this example we only want to display an image on the screen. We don't want any of the fancypants functionality OpenGL provides.
+
+
+\begin{DoxyCode}
+        glMatrixMode(GL_PROJECTION);
+                glLoadIdentity();
+                glOrtho(0, s_WindowWidth, s_WindowHeight, 0, -1, 1);
+        glMatrixMode(GL_MODELVIEW);
+                glLoadIdentity();
+        glClearColor(0.f, 0.f, 0.f, 0.f);
+        // Make sure the quads show up
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+\end{DoxyCode}
+
+
+We disable the depth test and backface culling because I'm a busy man who can't be bothered to check the winding of his vertices.\hypertarget{example1_loading}{}\section{Loading a file}\label{example1_loading}
+Now we are ready to load a file. We are going to load an image as an OpenGL texture with an alpha component, so we are using the OpenGL color format GL\_\-RGBA while we are using the TinyImageLoader format \hyperlink{_t_i_l_settings_8h_aa41c714a49a57e84fe823a09e898c074}{TIL\_\-DEPTH\_\-A8B8G8R8}. This is because TinyImageLoader uses big-\/endianness for its color components, while OpenGL prefers little-\/endianness. The data remains the same, it's just the order that is different.
+
+
+\begin{DoxyCode}
+        if (a_Commands == 1)
+        {
+                g_Load = til::TIL_Load("media\\PNG\\avatar.png", 
+      TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+        }
+        else
+        {
+                g_Load = til::TIL_Load(a_CommandLine[1], TIL_FILE_ABSOLUTEPATH | 
+      TIL_DEPTH_A8B8G8R8);
+        }
+\end{DoxyCode}
+
+
+If the file could not be loaded, TIL\_\-Load returns NULL and posts an error message to the log.\hypertarget{example1_uploading}{}\section{Uploading image data to OpenGL}\label{example1_uploading}
+We now have our image data loaded and converted to the right pixel depth by TinyImageLoader. We are ready to upload the data to OpenGL.
+
+What you have to keep in mind is that not all formats are created equally. Most formats only allow you to define a single image, while others also allow a series of frames (GIF, PNG) and some allow multiple levels of detail (ICO, DDS).
+
+So the first thing we will need to do is determine how many frames our image contains.
+
+
+\begin{DoxyCode}
+        g_TextureTotal = g_Load->GetFrameCount();
+        g_Texture = new GLuint[g_TextureTotal];
+\end{DoxyCode}
+
+
+If an image is only allowed (according to the spec) to contain 1 frame, GetFrameCount() will always return 1.
+
+Now we can loop over our image data.
+
+
+\begin{DoxyCode}
+        for (unsigned int i = 0; i < g_TextureTotal; i++)
+        {
+                glEnable(GL_TEXTURE_2D);
+                glGenTextures(1, &g_Texture[i]);
+
+                glBindTexture(GL_TEXTURE_2D, g_Texture[i]);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+      ;
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+      ;
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+                glTexImage2D(
+                        GL_TEXTURE_2D, 0, GL_RGBA,
+                        g_Load->GetWidth(i), g_Load->GetHeight(i),
+                        0,
+                        GL_RGBA, GL_UNSIGNED_BYTE, g_Load->GetPixels(i)
+                );
+                glBindTexture(GL_TEXTURE_2D, 0);
+        }
+\end{DoxyCode}
+
+
+Success! We now have an OpenGL texture. :)\hypertarget{example1_render}{}\section{Rendering}\label{example1_render}
+We now have everything we need to render an image quad on the screen.
+
+
+\begin{DoxyCode}
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glBindTexture(GL_TEXTURE_2D, g_Texture[g_TextureCurrent]);
+
+        // Make sure we don't screw up our meticulously designed matrices
+
+        glPushMatrix();
+
+                // Push it to the correct position
+                glTranslatef(g_PosX, g_PosY, 0.0f);
+                // Set the image size
+                glScalef(g_ScaleX, g_ScaleY, 1.0f);
+
+                // Draw a quad
+                glBegin(GL_QUADS);
+                        glTexCoord2f(0.f, 1.f); glVertex2f(0.0f, 1.0f);
+                        glTexCoord2f(1.f, 1.f); glVertex2f(1.0f, 1.0f);
+                        glTexCoord2f(1.f, 0.f); glVertex2f(1.0f, 0.0f);
+                        glTexCoord2f(0.f, 0.f); glVertex2f(0.0f, 0.0f);
+                glEnd();
+
+        glPopMatrix();
+
+        glDisable(GL_BLEND);
+\end{DoxyCode}
+\hypertarget{example1_code}{}\section{Code}\label{example1_code}
+Check out the source for this example in \hyperlink{example-opengl-texture_8cpp}{example-\/opengl-\/texture.cpp}. 

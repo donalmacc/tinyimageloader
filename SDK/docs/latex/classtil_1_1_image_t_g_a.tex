@@ -1,0 +1,185 @@
+\hypertarget{classtil_1_1_image_t_g_a}{
+\section{til::ImageTGA Class Reference}
+\label{classtil_1_1_image_t_g_a}\index{til::ImageTGA@{til::ImageTGA}}
+}
+
+
+\hyperlink{classtil_1_1_image}{til::Image} implementation of a TGA loader.  
+
+
+
+
+{\ttfamily \#include $<$TILImageTGA.h$>$}
+
+Inheritance diagram for til::ImageTGA:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classtil_1_1_image_t_g_a}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classtil_1_1_image_t_g_a_a283c391e9d3709b974ebca14d5eb2ebd}{Parse} (\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-ColorDepth)
+\begin{DoxyCompactList}\small\item\em Parses the actual image data. \item\end{DoxyCompactList}\item 
+\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} \hyperlink{classtil_1_1_image_t_g_a_a46d1df102d6125290c6bba65a3ed9814}{GetFrameCount} ()
+\begin{DoxyCompactList}\small\item\em Returns the amount of frames this image contains. \item\end{DoxyCompactList}\item 
+\hyperlink{namespacetil_a5f3ec10aca1a788b495a0bd3787bc2dc}{byte} $\ast$ \hyperlink{classtil_1_1_image_t_g_a_a5202d714441c2df497368905bd4c5b83}{GetPixels} (\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Frame=0)
+\begin{DoxyCompactList}\small\item\em Get the pixel data from this image. \item\end{DoxyCompactList}\item 
+\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} \hyperlink{classtil_1_1_image_t_g_a_a760434c274b1ea02e9c23ba1c618da84}{GetWidth} (\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Frame=0)
+\begin{DoxyCompactList}\small\item\em Get the width of a frame. \item\end{DoxyCompactList}\item 
+\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} \hyperlink{classtil_1_1_image_t_g_a_a4284b8576ce42b239beec36bd6902eac}{GetHeight} (\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Frame=0)
+\begin{DoxyCompactList}\small\item\em Get the height of a frame. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}{\bf Internal}\par
+{\em These functions are internal and shouldn't be called by developers. }\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classtil_1_1_image_t_g_a_a1c911720ba5cc530a0fcf18568de6d0e}{
+bool \hyperlink{classtil_1_1_image_t_g_a_a1c911720ba5cc530a0fcf18568de6d0e}{CompileUncompressed} ()}
+\label{classtil_1_1_image_t_g_a_a1c911720ba5cc530a0fcf18568de6d0e}
+
+\begin{DoxyCompactList}\small\item\em Compile uncompressed image data to pixel information. \item\end{DoxyCompactList}\item 
+\hypertarget{classtil_1_1_image_t_g_a_ae553d660c08f8f544fb472c5f5b13d64}{
+bool \hyperlink{classtil_1_1_image_t_g_a_ae553d660c08f8f544fb472c5f5b13d64}{CompileRunLengthEncoded} ()}
+\label{classtil_1_1_image_t_g_a_ae553d660c08f8f544fb472c5f5b13d64}
+
+\begin{DoxyCompactList}\small\item\em Compile compressed image data to pixel information. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+
+
+\subsection{Detailed Description}
+\hyperlink{classtil_1_1_image}{til::Image} implementation of a TGA loader. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classtil_1_1_image_t_g_a_a46d1df102d6125290c6bba65a3ed9814}{
+\index{til::ImageTGA@{til::ImageTGA}!GetFrameCount@{GetFrameCount}}
+\index{GetFrameCount@{GetFrameCount}!til::ImageTGA@{til::ImageTGA}}
+\subsubsection[{GetFrameCount}]{\setlength{\rightskip}{0pt plus 5cm}{\bf uint32} til::ImageTGA::GetFrameCount (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_image_t_g_a_a46d1df102d6125290c6bba65a3ed9814}
+
+
+Returns the amount of frames this image contains. 
+
+Used when dealing with formats that support animation or multiple images.
+
+\begin{DoxyNote}{Note}
+There is never going to be support for other video formats. This is because TinyImageLoader is an $\ast$image$\ast$ loader, not a video loader. The exception to the rule are GIF89 and APNG, because it concerns an extension to a normally single-\/framed format. 
+\end{DoxyNote}
+
+
+Reimplemented from \hyperlink{classtil_1_1_image_a78c10e07b535c99840b0afd5aa165df4}{til::Image}.
+
+\hypertarget{classtil_1_1_image_t_g_a_a4284b8576ce42b239beec36bd6902eac}{
+\index{til::ImageTGA@{til::ImageTGA}!GetHeight@{GetHeight}}
+\index{GetHeight@{GetHeight}!til::ImageTGA@{til::ImageTGA}}
+\subsubsection[{GetHeight}]{\setlength{\rightskip}{0pt plus 5cm}{\bf uint32} til::ImageTGA::GetHeight (
+\begin{DoxyParamCaption}
+\item[{{\bf uint32}}]{a\_\-Frame = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_image_t_g_a_a4284b8576ce42b239beec36bd6902eac}
+
+
+Get the height of a frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Frame} & The frame of an animation or image to return.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The height as a uint32.
+\end{DoxyReturn}
+Some formats support multiple frames or images with different dimensions. You can call this function with a frame number to get the correct dimensions. 
+
+Implements \hyperlink{classtil_1_1_image_ad623add911ba5230f56a4cc58af75ec1}{til::Image}.
+
+\hypertarget{classtil_1_1_image_t_g_a_a5202d714441c2df497368905bd4c5b83}{
+\index{til::ImageTGA@{til::ImageTGA}!GetPixels@{GetPixels}}
+\index{GetPixels@{GetPixels}!til::ImageTGA@{til::ImageTGA}}
+\subsubsection[{GetPixels}]{\setlength{\rightskip}{0pt plus 5cm}{\bf byte}$\ast$ til::ImageTGA::GetPixels (
+\begin{DoxyParamCaption}
+\item[{{\bf uint32}}]{a\_\-Frame = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_image_t_g_a_a5202d714441c2df497368905bd4c5b83}
+
+
+Get the pixel data from this image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Frame} & The frame of an animation to return.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pixel array as a byte array.
+\end{DoxyReturn}
+The data is encoded according to the color depth specified. For instance, when loading images as 32-\/bit ARGB, the stream of bytes must be converted to unsigned long before being used.
+
+
+\begin{DoxyCode}
+                        til::Image* load = TIL_Load("media\\texture.png", 
+      TIL_DEPTH_A8B8G8R8 | TIL_FILE_ADDWORKINGDIR);
+                        unsigned long* pixels = (unsigned long*)load->GetPixels()
+      ;
+\end{DoxyCode}
+ 
+
+Implements \hyperlink{classtil_1_1_image_a8dd46f6477025e23dc921e1a4a3f6a62}{til::Image}.
+
+\hypertarget{classtil_1_1_image_t_g_a_a760434c274b1ea02e9c23ba1c618da84}{
+\index{til::ImageTGA@{til::ImageTGA}!GetWidth@{GetWidth}}
+\index{GetWidth@{GetWidth}!til::ImageTGA@{til::ImageTGA}}
+\subsubsection[{GetWidth}]{\setlength{\rightskip}{0pt plus 5cm}{\bf uint32} til::ImageTGA::GetWidth (
+\begin{DoxyParamCaption}
+\item[{{\bf uint32}}]{a\_\-Frame = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_image_t_g_a_a760434c274b1ea02e9c23ba1c618da84}
+
+
+Get the width of a frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Frame} & The frame of an animation or image to return.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The width as a uint32.
+\end{DoxyReturn}
+Some formats support multiple frames or images with different dimensions. You can call this function with a frame number to get the correct dimensions. 
+
+Implements \hyperlink{classtil_1_1_image_a769be7e5a2cc490e8ae70b7c29a56eca}{til::Image}.
+
+\hypertarget{classtil_1_1_image_t_g_a_a283c391e9d3709b974ebca14d5eb2ebd}{
+\index{til::ImageTGA@{til::ImageTGA}!Parse@{Parse}}
+\index{Parse@{Parse}!til::ImageTGA@{til::ImageTGA}}
+\subsubsection[{Parse}]{\setlength{\rightskip}{0pt plus 5cm}bool til::ImageTGA::Parse (
+\begin{DoxyParamCaption}
+\item[{{\bf uint32}}]{a\_\-ColorDepth}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classtil_1_1_image_t_g_a_a283c391e9d3709b974ebca14d5eb2ebd}
+
+
+Parses the actual image data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-ColorDepth} & The color depth received from \hyperlink{classtil_1_1_image_ae1202f84c0addb81eba161f746a9d4cc}{SetBPP};\\
+\hline
+\end{DoxyParams}
+This method is pure virtual and should be overwritten by an image loading implementation. 
+
+Implements \hyperlink{classtil_1_1_image_a2436c982f6b403ab07591f06107fe432}{til::Image}.
+
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+SDK/headers/\hyperlink{_t_i_l_image_t_g_a_8h}{TILImageTGA.h}\end{DoxyCompactItemize}

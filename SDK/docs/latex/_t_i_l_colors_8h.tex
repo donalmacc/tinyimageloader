@@ -1,0 +1,114 @@
+\hypertarget{_t_i_l_colors_8h}{
+\section{SDK/headers/TILColors.h File Reference}
+\label{_t_i_l_colors_8h}\index{SDK/headers/TILColors.h@{SDK/headers/TILColors.h}}
+}
+
+
+Functions for constructing colors, converting colors and blending colors.  
+
+
+{\ttfamily \#include \char`\"{}TILSettings.h\char`\"{}}\par
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \hyperlink{namespacetil}{til}
+
+
+\begin{DoxyCompactList}\small\item\em TinyImageLoader namespace. \item\end{DoxyCompactList}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{Indent}{\bf 16-\/bit RGB}\par
+\begin{DoxyCompactItemize}
+\item 
+color\_\-16b \hyperlink{namespacetil_a7e42efe1f69a94e67190c1434fd002f4}{til::Construct\_\-16b\_\-R5G6B5} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue)
+\begin{DoxyCompactList}\small\item\em Construct a 16-\/bit RGB color. \item\end{DoxyCompactList}\item 
+color\_\-16b \hyperlink{namespacetil_aa272abfc1060298455205cfe08c95e37}{til::AlphaBlend\_\-16b\_\-R5G6B5} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Alpha blend a 16-\/bit RGB color. \item\end{DoxyCompactList}\item 
+color\_\-16b \hyperlink{namespacetil_a1644b5f4cb28c7d3bc752873b66d3f58}{til::Blend\_\-16b\_\-R5G6B5} (color\_\-16b a\_\-Left, color\_\-16b a\_\-Right, uint8 a\_\-Factor)
+\begin{DoxyCompactList}\small\item\em Blend between two 16-\/bit RGB colors. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_a2c7206c211d1a546b6ceb3e1170efd54}{til::Convert\_\-From\_\-16b\_\-R5G6B5\_\-To\_\-32b\_\-A8R8G8B8} (color\_\-16b a\_\-Color)
+\begin{DoxyCompactList}\small\item\em Convert a 16-\/bit RGB color to a 32-\/bit ARGB color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_a136075678006abfa91e534eeb9049f9c}{til::Convert\_\-From\_\-16b\_\-R5G6B5\_\-To\_\-32b\_\-A8B8G8R8} (color\_\-16b a\_\-Color)
+\begin{DoxyCompactList}\small\item\em Convert a 16-\/bit RGB color to a 32-\/bit ABGR color. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf 16-\/bit BGR}\par
+\begin{DoxyCompactItemize}
+\item 
+color\_\-16b \hyperlink{namespacetil_accd82fcffbc0f256c971beb941ab9166}{til::Construct\_\-16b\_\-B5G6R5} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue)
+\begin{DoxyCompactList}\small\item\em Construct a 16-\/bit BGR color. \item\end{DoxyCompactList}\item 
+color\_\-16b \hyperlink{namespacetil_a7db23332b0b6b0922c591645e418d3f1}{til::Blend\_\-16b\_\-B5G6R5} (color\_\-16b a\_\-Left, color\_\-16b a\_\-Right, uint8 a\_\-Factor)
+\begin{DoxyCompactList}\small\item\em Blend between two 16-\/bit BGR colors. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_ae0e2e24eaa0772d2ca196be6cf18b2b8}{til::Convert\_\-From\_\-16b\_\-B5G6R5\_\-To\_\-32b\_\-A8R8G8B8} (color\_\-16b a\_\-Color)
+\begin{DoxyCompactList}\small\item\em Convert a 16-\/bit BGR color to a 32-\/bit ARGB color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_aefd9e893058049b916052a7325c827ba}{til::Convert\_\-From\_\-16b\_\-B5G6R5\_\-To\_\-32b\_\-A8B8G8R8} (color\_\-16b a\_\-Color)
+\begin{DoxyCompactList}\small\item\em Convert a 16-\/bit BGR color to a 32-\/bit ABGR color. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf 32-\/bit RGB}\par
+\begin{DoxyCompactItemize}
+\item 
+color\_\-32b \hyperlink{namespacetil_ab7e7028c4a3c92cdca1a7b6dbf1c12bc}{til::Construct\_\-32b\_\-R8G8B8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha=0)
+\begin{DoxyCompactList}\small\item\em Construct a 32-\/bit RGB color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_afdfe84791f3958a513026bd931448eab}{til::AlphaBlend\_\-32b\_\-R8G8B8} (color\_\-32b a\_\-Color, uint8 a\_\-Amount)
+\begin{DoxyCompactList}\small\item\em Alpha blend a 32-\/bit RGB color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_aae7448d66a50340093fd0d7a17bc417d}{til::AlphaBlend\_\-32b\_\-R8G8B8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Alpha blend a 32-\/bit RGB color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_ae4cb7b237e7e18881233e2230ce58cd5}{til::Blend\_\-32b\_\-R8G8B8} (color\_\-32b a\_\-Left, color\_\-32b a\_\-Right, uint8 a\_\-Factor)
+\begin{DoxyCompactList}\small\item\em Blend between two 32-\/bit RGB colors. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf 32-\/bit BGR}\par
+\begin{DoxyCompactItemize}
+\item 
+color\_\-32b \hyperlink{namespacetil_ab3bc972471ad2a5739b7a3468c6fc5b7}{til::Construct\_\-32b\_\-B8G8R8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha=0)
+\begin{DoxyCompactList}\small\item\em Construct a 32-\/bit BGR color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_ad141ab11e843c3ad322d25bf38822cda}{til::AlphaBlend\_\-32b\_\-B8G8R8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Alpha blend a 32-\/bit BGR color. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf 32-\/bit ARGB}\par
+\begin{DoxyCompactItemize}
+\item 
+color\_\-32b \hyperlink{namespacetil_a9dc7ee813858f38308e7d38df21b0953}{til::Construct\_\-32b\_\-A8R8G8B8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Construct a 32-\/bit ARGB color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_a269385b5e84783f03c13fc7a590b6a44}{til::Construct\_\-32b\_\-A8R8G8B8} (color\_\-32b a\_\-Color, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Construct a 32-\/bit ARGB color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_a1b2bc733875b4132b63390b24c3ccae1}{til::AlphaBlend\_\-32b\_\-A8R8G8B8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Alpha blend a 32-\/bit ARGB color. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf 32-\/bit ABGR}\par
+\begin{DoxyCompactItemize}
+\item 
+color\_\-32b \hyperlink{namespacetil_a9910d275ad1592463eb89634423d7110}{til::Construct\_\-32b\_\-A8B8G8R8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Construct a 32-\/bit ABGR color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_a59b7c2ae7112fe3cff94e67826fca681}{til::Construct\_\-32b\_\-A8B8G8R8} (color\_\-32b a\_\-Color, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Construct a 32-\/bit ABGR color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_a1ff33e54fd1c245f093a779b13e9ec43}{til::AlphaBlend\_\-32b\_\-A8B8G8R8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Alpha blend a 32-\/bit ABGR color. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf 32-\/bit RGBA}\par
+\begin{DoxyCompactItemize}
+\item 
+color\_\-32b \hyperlink{namespacetil_ae14596c98e011e44e22c8cca0ddccc7e}{til::Construct\_\-32b\_\-R8G8B8A8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Construct a 32-\/bit RGBA color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_af5177e6fa03dee2ef309469f0b72c7a8}{til::AlphaBlend\_\-32b\_\-R8G8B8A8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Alpha blend a 32-\/bit RGBA color. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf 32-\/bit BGRA}\par
+\begin{DoxyCompactItemize}
+\item 
+color\_\-32b \hyperlink{namespacetil_afb2e7b72d4fd06e3faf946558fab2c5e}{til::Construct\_\-32b\_\-B8G8R8A8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Construct a 32-\/bit BGRA color. \item\end{DoxyCompactList}\item 
+color\_\-32b \hyperlink{namespacetil_a8e053d490a2c4f46f6a355896bbf7d89}{til::AlphaBlend\_\-32b\_\-B8G8R8A8} (uint8 a\_\-Red, uint8 a\_\-Green, uint8 a\_\-Blue, uint8 a\_\-Alpha)
+\begin{DoxyCompactList}\small\item\em Alpha blend a 32-\/bit BGRA color. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{namespacetil_affbd5605556e0eeb2d303fbb2d9b6092}{
+D {\bfseries til::\_\-\_\-pad0\_\-\_\-}}
+\label{namespacetil_affbd5605556e0eeb2d303fbb2d9b6092}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Functions for constructing colors, converting colors and blending colors. 

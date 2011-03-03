@@ -1,0 +1,345 @@
+\hypertarget{classtil_1_1_image}{
+\section{til::Image Class Reference}
+\label{classtil_1_1_image}\index{til::Image@{til::Image}}
+}
+
+
+The virtual interface for loading images and extracting image data.  
+
+
+
+
+{\ttfamily \#include $<$TILImage.h$>$}
+
+Inheritance diagram for til::Image:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.964912cm]{classtil_1_1_image}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8}{BitDepth} \{ \par
+\hyperlink{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8af30c364fa646b255faed30d3a88564b6}{BPP\_\-32B\_\-A8R8G8B8} =  1, 
+\hyperlink{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a0bf2ec10c9eed201fbfb41b5cf89b961}{BPP\_\-32B\_\-A8B8G8R8} =  2, 
+\hyperlink{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a3ac84308671afc5f9063539355b916c9}{BPP\_\-32B\_\-R8G8B8A8} =  3, 
+\hyperlink{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a0b77d25be4ba6617960ca436bd903fa8}{BPP\_\-32B\_\-B8G8R8A8} =  4, 
+\par
+\hyperlink{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a532664ea0fc09594fb9bddc0bed83120}{BPP\_\-32B\_\-R8G8B8} =  5, 
+\hyperlink{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a328e608bddb9f328bf0bd1eae3e54b34}{BPP\_\-32B\_\-B8G8R8} =  6, 
+\hyperlink{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8aaa9732c2665f568a7fcea882b7b50a7d}{BPP\_\-16B\_\-R5G6B5} =  7, 
+\hyperlink{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a8fff22180693d8663db79d0fbc290cac}{BPP\_\-16B\_\-B5G6R5} =  8
+ \}
+\begin{DoxyCompactList}\small\item\em The amount of bits per pixel and its arrangement. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classtil_1_1_image_ae1202f84c0addb81eba161f746a9d4cc}{SetBPP} (\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Options)
+\begin{DoxyCompactList}\small\item\em Sets the bit depth to convert to when parsing. \item\end{DoxyCompactList}\item 
+\hypertarget{classtil_1_1_image_a33311ad048e924086afffabe7a21029d}{
+\hyperlink{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8}{BitDepth} \hyperlink{classtil_1_1_image_a33311ad048e924086afffabe7a21029d}{GetBitDepth} ()}
+\label{classtil_1_1_image_a33311ad048e924086afffabe7a21029d}
+
+\begin{DoxyCompactList}\small\item\em Get the color depth as an enum. \item\end{DoxyCompactList}\item 
+void \hyperlink{classtil_1_1_image_aa8747fd600bc321cc0f2bea514a7d98b}{Load} (\hyperlink{classtil_1_1_file_stream}{FileStream} $\ast$a\_\-Stream)
+\begin{DoxyCompactList}\small\item\em Load an image. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classtil_1_1_image_af6de495e7e1bea909e38b4eb1d1114e0}{Close} ()
+\begin{DoxyCompactList}\small\item\em Closes the handle to the image file. \item\end{DoxyCompactList}\item 
+virtual bool \hyperlink{classtil_1_1_image_a2436c982f6b403ab07591f06107fe432}{Parse} (\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-ColorDepth)=0
+\begin{DoxyCompactList}\small\item\em Parses the actual image data. \item\end{DoxyCompactList}\item 
+virtual \hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} \hyperlink{classtil_1_1_image_a78c10e07b535c99840b0afd5aa165df4}{GetFrameCount} ()
+\begin{DoxyCompactList}\small\item\em Returns the amount of frames this image contains. \item\end{DoxyCompactList}\item 
+virtual float \hyperlink{classtil_1_1_image_aabddc7f03e3d1962f5abb21c200f2050}{GetDelay} ()
+\begin{DoxyCompactList}\small\item\em Returns the delay between frames. \item\end{DoxyCompactList}\item 
+virtual \hyperlink{namespacetil_a5f3ec10aca1a788b495a0bd3787bc2dc}{byte} $\ast$ \hyperlink{classtil_1_1_image_a8dd46f6477025e23dc921e1a4a3f6a62}{GetPixels} (\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Frame=0)=0
+\begin{DoxyCompactList}\small\item\em Get the pixel data from this image. \item\end{DoxyCompactList}\item 
+virtual \hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} \hyperlink{classtil_1_1_image_a769be7e5a2cc490e8ae70b7c29a56eca}{GetWidth} (\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Frame=0)=0
+\begin{DoxyCompactList}\small\item\em Get the width of a frame. \item\end{DoxyCompactList}\item 
+virtual \hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} \hyperlink{classtil_1_1_image_ad623add911ba5230f56a4cc58af75ec1}{GetHeight} (\hyperlink{namespacetil_a20db61688ed403d11f057a508d87e54c}{uint32} a\_\-Frame=0)=0
+\begin{DoxyCompactList}\small\item\em Get the height of a frame. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classtil_1_1_image_a99fcde28d6287cbf55b1a6307788f5c6}{
+\hyperlink{classtil_1_1_file_stream}{FileStream} $\ast$ \hyperlink{classtil_1_1_image_a99fcde28d6287cbf55b1a6307788f5c6}{m\_\-Stream}}
+\label{classtil_1_1_image_a99fcde28d6287cbf55b1a6307788f5c6}
+
+\begin{DoxyCompactList}\small\item\em The file interface. \item\end{DoxyCompactList}\item 
+\hypertarget{classtil_1_1_image_ac995efac9fe1641e276452bdb90fbddd}{
+char $\ast$ \hyperlink{classtil_1_1_image_ac995efac9fe1641e276452bdb90fbddd}{m\_\-FileName}}
+\label{classtil_1_1_image_ac995efac9fe1641e276452bdb90fbddd}
+
+\begin{DoxyCompactList}\small\item\em The filename. \item\end{DoxyCompactList}\item 
+\hypertarget{classtil_1_1_image_a200eeebc45a71c0935aee4e5afded433}{
+\hyperlink{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8}{BitDepth} \hyperlink{classtil_1_1_image_a200eeebc45a71c0935aee4e5afded433}{m\_\-BPPIdent}}
+\label{classtil_1_1_image_a200eeebc45a71c0935aee4e5afded433}
+
+\begin{DoxyCompactList}\small\item\em The bit depth to convert to. \item\end{DoxyCompactList}\item 
+\hypertarget{classtil_1_1_image_af3aa350823454079c3bf84f30bcfd0c5}{
+\hyperlink{namespacetil_a7a75b0e7e2cd3f19ea51c8c02fd242f8}{uint8} \hyperlink{classtil_1_1_image_af3aa350823454079c3bf84f30bcfd0c5}{m\_\-BPP}}
+\label{classtil_1_1_image_af3aa350823454079c3bf84f30bcfd0c5}
+
+\begin{DoxyCompactList}\small\item\em The amount of bytes per pixel. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The virtual interface for loading images and extracting image data. All image operations go through this interface. Every image loader is an implementation of this class.
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8}{
+\index{til::Image@{til::Image}!BitDepth@{BitDepth}}
+\index{BitDepth@{BitDepth}!til::Image@{til::Image}}
+\subsubsection[{BitDepth}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf til::Image::BitDepth}}}
+\label{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8}
+
+
+The amount of bits per pixel and its arrangement. 
+
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{BPP\_\-32B\_\-A8R8G8B8@{BPP\_\-32B\_\-A8R8G8B8}!til::Image@{til::Image}}\index{til::Image@{til::Image}!BPP\_\-32B\_\-A8R8G8B8@{BPP\_\-32B\_\-A8R8G8B8}}\item[{\em 
+\hypertarget{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8af30c364fa646b255faed30d3a88564b6}{
+BPP\_\-32B\_\-A8R8G8B8}
+\label{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8af30c364fa646b255faed30d3a88564b6}
+}]32-\/bit ARGB color \index{BPP\_\-32B\_\-A8B8G8R8@{BPP\_\-32B\_\-A8B8G8R8}!til::Image@{til::Image}}\index{til::Image@{til::Image}!BPP\_\-32B\_\-A8B8G8R8@{BPP\_\-32B\_\-A8B8G8R8}}\item[{\em 
+\hypertarget{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a0bf2ec10c9eed201fbfb41b5cf89b961}{
+BPP\_\-32B\_\-A8B8G8R8}
+\label{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a0bf2ec10c9eed201fbfb41b5cf89b961}
+}]32-\/bit ABGR color \index{BPP\_\-32B\_\-R8G8B8A8@{BPP\_\-32B\_\-R8G8B8A8}!til::Image@{til::Image}}\index{til::Image@{til::Image}!BPP\_\-32B\_\-R8G8B8A8@{BPP\_\-32B\_\-R8G8B8A8}}\item[{\em 
+\hypertarget{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a3ac84308671afc5f9063539355b916c9}{
+BPP\_\-32B\_\-R8G8B8A8}
+\label{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a3ac84308671afc5f9063539355b916c9}
+}]32-\/bit RGBA color \index{BPP\_\-32B\_\-B8G8R8A8@{BPP\_\-32B\_\-B8G8R8A8}!til::Image@{til::Image}}\index{til::Image@{til::Image}!BPP\_\-32B\_\-B8G8R8A8@{BPP\_\-32B\_\-B8G8R8A8}}\item[{\em 
+\hypertarget{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a0b77d25be4ba6617960ca436bd903fa8}{
+BPP\_\-32B\_\-B8G8R8A8}
+\label{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a0b77d25be4ba6617960ca436bd903fa8}
+}]32-\/bit BGRA color \index{BPP\_\-32B\_\-R8G8B8@{BPP\_\-32B\_\-R8G8B8}!til::Image@{til::Image}}\index{til::Image@{til::Image}!BPP\_\-32B\_\-R8G8B8@{BPP\_\-32B\_\-R8G8B8}}\item[{\em 
+\hypertarget{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a532664ea0fc09594fb9bddc0bed83120}{
+BPP\_\-32B\_\-R8G8B8}
+\label{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a532664ea0fc09594fb9bddc0bed83120}
+}]32-\/bit RGB color \index{BPP\_\-32B\_\-B8G8R8@{BPP\_\-32B\_\-B8G8R8}!til::Image@{til::Image}}\index{til::Image@{til::Image}!BPP\_\-32B\_\-B8G8R8@{BPP\_\-32B\_\-B8G8R8}}\item[{\em 
+\hypertarget{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a328e608bddb9f328bf0bd1eae3e54b34}{
+BPP\_\-32B\_\-B8G8R8}
+\label{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a328e608bddb9f328bf0bd1eae3e54b34}
+}]32-\/bit BGR color \index{BPP\_\-16B\_\-R5G6B5@{BPP\_\-16B\_\-R5G6B5}!til::Image@{til::Image}}\index{til::Image@{til::Image}!BPP\_\-16B\_\-R5G6B5@{BPP\_\-16B\_\-R5G6B5}}\item[{\em 
+\hypertarget{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8aaa9732c2665f568a7fcea882b7b50a7d}{
+BPP\_\-16B\_\-R5G6B5}
+\label{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8aaa9732c2665f568a7fcea882b7b50a7d}
+}]16-\/bit RGB color \index{BPP\_\-16B\_\-B5G6R5@{BPP\_\-16B\_\-B5G6R5}!til::Image@{til::Image}}\index{til::Image@{til::Image}!BPP\_\-16B\_\-B5G6R5@{BPP\_\-16B\_\-B5G6R5}}\item[{\em 
+\hypertarget{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a8fff22180693d8663db79d0fbc290cac}{
+BPP\_\-16B\_\-B5G6R5}
+\label{classtil_1_1_image_a621d337ba744563ed6bde962e08dfbc8a8fff22180693d8663db79d0fbc290cac}
+}]16-\/bit BGR color \end{description}
+\end{Desc}
+
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classtil_1_1_image_af6de495e7e1bea909e38b4eb1d1114e0}{
+\index{til::Image@{til::Image}!Close@{Close}}
+\index{Close@{Close}!til::Image@{til::Image}}
+\subsubsection[{Close}]{\setlength{\rightskip}{0pt plus 5cm}bool til::Image::Close (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classtil_1_1_image_af6de495e7e1bea909e38b4eb1d1114e0}
+
+
+Closes the handle to the image file. 
+
+Used internally by TinyImageLoader. \hypertarget{classtil_1_1_image_aabddc7f03e3d1962f5abb21c200f2050}{
+\index{til::Image@{til::Image}!GetDelay@{GetDelay}}
+\index{GetDelay@{GetDelay}!til::Image@{til::Image}}
+\subsubsection[{GetDelay}]{\setlength{\rightskip}{0pt plus 5cm}virtual float til::Image::GetDelay (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, virtual\mbox{]}}}}
+\label{classtil_1_1_image_aabddc7f03e3d1962f5abb21c200f2050}
+
+
+Returns the delay between frames. 
+
+\begin{DoxyReturn}{Returns}
+The delay in seconds between frames
+\end{DoxyReturn}
+Used when dealing with formats that support animation. 
+
+Reimplemented in \hyperlink{classtil_1_1_image_g_i_f_a01af14634200dbb109d124746764d05d}{til::ImageGIF}.
+
+\hypertarget{classtil_1_1_image_a78c10e07b535c99840b0afd5aa165df4}{
+\index{til::Image@{til::Image}!GetFrameCount@{GetFrameCount}}
+\index{GetFrameCount@{GetFrameCount}!til::Image@{til::Image}}
+\subsubsection[{GetFrameCount}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf uint32} til::Image::GetFrameCount (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, virtual\mbox{]}}}}
+\label{classtil_1_1_image_a78c10e07b535c99840b0afd5aa165df4}
+
+
+Returns the amount of frames this image contains. 
+
+Used when dealing with formats that support animation or multiple images.
+
+\begin{DoxyNote}{Note}
+There is never going to be support for other video formats. This is because TinyImageLoader is an $\ast$image$\ast$ loader, not a video loader. The exception to the rule are GIF89 and APNG, because it concerns an extension to a normally single-\/framed format. 
+\end{DoxyNote}
+
+
+Reimplemented in \hyperlink{classtil_1_1_image_b_m_p_a8a3a00823903dfd0e3b83b5b499d88f7}{til::ImageBMP}, \hyperlink{classtil_1_1_image_d_d_s_a616b077809ea2a4ebde9fa53651c198a}{til::ImageDDS}, \hyperlink{classtil_1_1_image_g_i_f_a9e0c056b0263196d305c9102f254240e}{til::ImageGIF}, \hyperlink{classtil_1_1_image_i_c_o_a58280b473d5ebc9864ade082f2f0f96d}{til::ImageICO}, \hyperlink{classtil_1_1_image_p_n_g_ade57a800697abe8f024a305e236b3471}{til::ImagePNG}, and \hyperlink{classtil_1_1_image_t_g_a_a46d1df102d6125290c6bba65a3ed9814}{til::ImageTGA}.
+
+\hypertarget{classtil_1_1_image_ad623add911ba5230f56a4cc58af75ec1}{
+\index{til::Image@{til::Image}!GetHeight@{GetHeight}}
+\index{GetHeight@{GetHeight}!til::Image@{til::Image}}
+\subsubsection[{GetHeight}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf uint32} til::Image::GetHeight (
+\begin{DoxyParamCaption}
+\item[{{\bf uint32}}]{a\_\-Frame = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classtil_1_1_image_ad623add911ba5230f56a4cc58af75ec1}
+
+
+Get the height of a frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Frame} & The frame of an animation or image to return.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The height as a uint32.
+\end{DoxyReturn}
+Some formats support multiple frames or images with different dimensions. You can call this function with a frame number to get the correct dimensions. 
+
+Implemented in \hyperlink{classtil_1_1_image_b_m_p_a9f6236bf4b43264f9b729a83a850a62b}{til::ImageBMP}, \hyperlink{classtil_1_1_image_d_d_s_a9ae6dc6b71a3a056eecd8b756d9089e8}{til::ImageDDS}, \hyperlink{classtil_1_1_image_g_i_f_ac241e6cacaf14d1e73aae50f105450ae}{til::ImageGIF}, \hyperlink{classtil_1_1_image_i_c_o_a9ae2f5e5d594f8b0a17690d72496605e}{til::ImageICO}, \hyperlink{classtil_1_1_image_p_n_g_a64dff92207203a4673290a0ed3634538}{til::ImagePNG}, and \hyperlink{classtil_1_1_image_t_g_a_a4284b8576ce42b239beec36bd6902eac}{til::ImageTGA}.
+
+\hypertarget{classtil_1_1_image_a8dd46f6477025e23dc921e1a4a3f6a62}{
+\index{til::Image@{til::Image}!GetPixels@{GetPixels}}
+\index{GetPixels@{GetPixels}!til::Image@{til::Image}}
+\subsubsection[{GetPixels}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf byte}$\ast$ til::Image::GetPixels (
+\begin{DoxyParamCaption}
+\item[{{\bf uint32}}]{a\_\-Frame = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classtil_1_1_image_a8dd46f6477025e23dc921e1a4a3f6a62}
+
+
+Get the pixel data from this image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Frame} & The frame of an animation to return.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pixel array as a byte array.
+\end{DoxyReturn}
+The data is encoded according to the color depth specified. For instance, when loading images as 32-\/bit ARGB, the stream of bytes must be converted to unsigned long before being used.
+
+
+\begin{DoxyCode}
+                        til::Image* load = TIL_Load("media\\texture.png", 
+      TIL_DEPTH_A8B8G8R8 | TIL_FILE_ADDWORKINGDIR);
+                        unsigned long* pixels = (unsigned long*)load->GetPixels()
+      ;
+\end{DoxyCode}
+ 
+
+Implemented in \hyperlink{classtil_1_1_image_b_m_p_a2a667c1f36e310f0040bfabc36fad6ba}{til::ImageBMP}, \hyperlink{classtil_1_1_image_d_d_s_ac14aad199b3430d527610f38498faa9e}{til::ImageDDS}, \hyperlink{classtil_1_1_image_g_i_f_ad9ee66121f0d4fe3a58af75177bb9245}{til::ImageGIF}, \hyperlink{classtil_1_1_image_i_c_o_a3501ed7aec07ea553855aff7cb58d7e8}{til::ImageICO}, \hyperlink{classtil_1_1_image_p_n_g_a2dc5b02cc0e64d2cf44202122c3e7e86}{til::ImagePNG}, and \hyperlink{classtil_1_1_image_t_g_a_a5202d714441c2df497368905bd4c5b83}{til::ImageTGA}.
+
+\hypertarget{classtil_1_1_image_a769be7e5a2cc490e8ae70b7c29a56eca}{
+\index{til::Image@{til::Image}!GetWidth@{GetWidth}}
+\index{GetWidth@{GetWidth}!til::Image@{til::Image}}
+\subsubsection[{GetWidth}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf uint32} til::Image::GetWidth (
+\begin{DoxyParamCaption}
+\item[{{\bf uint32}}]{a\_\-Frame = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classtil_1_1_image_a769be7e5a2cc490e8ae70b7c29a56eca}
+
+
+Get the width of a frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Frame} & The frame of an animation or image to return.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The width as a uint32.
+\end{DoxyReturn}
+Some formats support multiple frames or images with different dimensions. You can call this function with a frame number to get the correct dimensions. 
+
+Implemented in \hyperlink{classtil_1_1_image_b_m_p_a107a758c2401e017af7645a257b27581}{til::ImageBMP}, \hyperlink{classtil_1_1_image_d_d_s_adde03a6b7297091d566c20ae2e24d35d}{til::ImageDDS}, \hyperlink{classtil_1_1_image_g_i_f_a368dce7e854e1eddad76242aac167161}{til::ImageGIF}, \hyperlink{classtil_1_1_image_i_c_o_a0006ed86536bf2b91b8243bc3e95c282}{til::ImageICO}, \hyperlink{classtil_1_1_image_p_n_g_a25dffae4745e88dab32c8dc7cdf3c591}{til::ImagePNG}, and \hyperlink{classtil_1_1_image_t_g_a_a760434c274b1ea02e9c23ba1c618da84}{til::ImageTGA}.
+
+\hypertarget{classtil_1_1_image_aa8747fd600bc321cc0f2bea514a7d98b}{
+\index{til::Image@{til::Image}!Load@{Load}}
+\index{Load@{Load}!til::Image@{til::Image}}
+\subsubsection[{Load}]{\setlength{\rightskip}{0pt plus 5cm}void til::Image::Load (
+\begin{DoxyParamCaption}
+\item[{{\bf FileStream} $\ast$}]{a\_\-Stream}
+\end{DoxyParamCaption}
+)}}
+\label{classtil_1_1_image_aa8747fd600bc321cc0f2bea514a7d98b}
+
+
+Load an image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Stream} & A handle to a \hyperlink{classtil_1_1_file_stream}{FileStream}\\
+\hline
+\end{DoxyParams}
+The main entrypoint for \hyperlink{namespacetil_a8d2e2ab942bb94b188587509ccb754de}{til::TIL\_\-Load()}. \hypertarget{classtil_1_1_image_a2436c982f6b403ab07591f06107fe432}{
+\index{til::Image@{til::Image}!Parse@{Parse}}
+\index{Parse@{Parse}!til::Image@{til::Image}}
+\subsubsection[{Parse}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool til::Image::Parse (
+\begin{DoxyParamCaption}
+\item[{{\bf uint32}}]{a\_\-ColorDepth}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}
+\label{classtil_1_1_image_a2436c982f6b403ab07591f06107fe432}
+
+
+Parses the actual image data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-ColorDepth} & The color depth received from \hyperlink{classtil_1_1_image_ae1202f84c0addb81eba161f746a9d4cc}{SetBPP};\\
+\hline
+\end{DoxyParams}
+This method is pure virtual and should be overwritten by an image loading implementation. 
+
+Implemented in \hyperlink{classtil_1_1_image_b_m_p_a268aad59d643b44370d934c756735ad0}{til::ImageBMP}, \hyperlink{classtil_1_1_image_d_d_s_a65def4c46d0da0c6600310c3dcb86cef}{til::ImageDDS}, \hyperlink{classtil_1_1_image_g_i_f_a227eb60dcc93f3a9390ef3b5152d8dd4}{til::ImageGIF}, \hyperlink{classtil_1_1_image_i_c_o_a22b53abab2e8b944ae0b50d6246b5f96}{til::ImageICO}, \hyperlink{classtil_1_1_image_p_n_g_aa3b8117c35f399d958870e3ecba9e1b7}{til::ImagePNG}, and \hyperlink{classtil_1_1_image_t_g_a_a283c391e9d3709b974ebca14d5eb2ebd}{til::ImageTGA}.
+
+\hypertarget{classtil_1_1_image_ae1202f84c0addb81eba161f746a9d4cc}{
+\index{til::Image@{til::Image}!SetBPP@{SetBPP}}
+\index{SetBPP@{SetBPP}!til::Image@{til::Image}}
+\subsubsection[{SetBPP}]{\setlength{\rightskip}{0pt plus 5cm}bool til::Image::SetBPP (
+\begin{DoxyParamCaption}
+\item[{{\bf uint32}}]{a\_\-Options}
+\end{DoxyParamCaption}
+)}}
+\label{classtil_1_1_image_ae1202f84c0addb81eba161f746a9d4cc}
+
+
+Sets the bit depth to convert to when parsing. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\_\-Options} & A bit depth option\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True on success, false on failure 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+SDK/headers/\hyperlink{_t_i_l_image_8h}{TILImage.h}\item 
+src/TILImage.cpp\end{DoxyCompactItemize}
