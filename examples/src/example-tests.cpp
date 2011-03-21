@@ -44,6 +44,8 @@ namespace TILFW
 
 	void Framework::Init(const char** a_CommandLine, int a_Commands)
 	{
+		_CrtMemCheckpoint(&TILFW::g_MemStart);
+
 		// Initialize TinyImageLoader
 
 		til::TIL_Init();
@@ -71,7 +73,7 @@ namespace TILFW
 		delete load_tga;
 		til::TIL_ClearDebug();
 
-		til::Image* load_dds = til::TIL_Load("media\\DDS\\chasm_edge.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		til::Image* load_dds = til::TIL_Load("media\\DDS\\assaultrifle01.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		delete load_dds;
 		til::TIL_ClearDebug();
 
@@ -108,8 +110,6 @@ namespace TILFW
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	TILFW::Framework* app = new TILFW::Framework;
-
-	_CrtMemCheckpoint(&TILFW::g_MemStart);
 
 	app->Exec(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
 	delete app;

@@ -53,6 +53,8 @@
 #include "TILImageGIF.h"
 #include "TILInternal.h"
 
+#include <string.h>
+
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
 
 #ifdef TIL_TARGET_DEBUG
@@ -435,7 +437,8 @@ namespace til
 			AddBuffer();
 			target = m_Current->buffer;
 
-			MemCpy(target, m_PrevBuffer, m_TotalBytes);
+			//MemCpy(target, m_PrevBuffer, m_TotalBytes);
+			memcpy(target, m_PrevBuffer, m_TotalBytes);
 
 			uint32 xy = (m_OffsetY * m_Width) + (m_OffsetX);
 
@@ -692,7 +695,8 @@ namespace til
 
 			// copy the current frame to be used as the background
 			// for the next frame
-			MemCpy(m_PrevBuffer, m_Current->buffer, m_TotalBytes);
+			//MemCpy(m_PrevBuffer, m_Current->buffer, m_TotalBytes);
+			memcpy(m_PrevBuffer, m_Current->buffer, m_TotalBytes);
 		}
 
 		return true;

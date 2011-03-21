@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>TinyImageLoader: SDK/headers/TILImageTGA.h File Reference</title>
+<title>TinyImageLoader: Changelog</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -28,10 +28,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
-      <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li id="searchli">
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -50,42 +50,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
-    </ul>
-  </div>
 </div>
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<h1>SDK/headers/TILImageTGA.h File Reference</h1>  </div>
+<h1>Changelog </h1>  </div>
 </div>
 <div class="contents">
-
-<p>A TGA image loader.  
-<a href="#_details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="_t_i_l_image_8h_source.html">TILImage.h</a>&quot;</code><br/>
-</div>
-<p><a href="_t_i_l_image_t_g_a_8h_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr><td colspan="2"><h2><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_image_t_g_a.html">til::ImageTGA</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a> implementation of a TGA loader.  <a href="classtil_1_1_image_t_g_a.html#_details">More...</a><br/></td></tr>
-<tr><td colspan="2"><h2><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html">til</a></td></tr>
-
-<p><tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><p>TinyImageLoader namespace. </p>
-<br/></td></tr>
-</p>
-</table>
-<hr/><a name="_details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>A TGA image loader. </p>
+<div class="textblock"><h2><a class="anchor" id="version162"></a>
+Changes in 1.6.2</h2>
+<ul>
+<li>Fixed a serious heap corruption bug caused by til::TIL_AddDebug</li>
+<li>Fixed memory leak in <a class="el" href="classtil_1_1_file_stream_std.html" title="ANSI C implementation of FileStream.">til::FileStreamStd</a> - path string was not deleted</li>
+<li>Fixed memory leak in <a class="el" href="namespacetil.html#a8d2e2ab942bb94b188587509ccb754de" title="Main interface for loading images.">til::TIL_Load</a> - FileStream handle was not deleted</li>
+<li>Fixed bug in <a class="el" href="namespacetil.html#a8d2e2ab942bb94b188587509ccb754de" title="Main interface for loading images.">til::TIL_Load</a> - FileStream was being closed twice</li>
+<li>Fixed memory leaks in <a class="el" href="classtil_1_1_image_i_c_o.html" title="til::Image implementation of an ICO loader.">til::ImageICO</a></li>
+</ul>
+<h2><a class="anchor" id="version161"></a>
+Changes in 1.6.1</h2>
+<ul>
+<li>Added missing page to documentation</li>
+</ul>
+<h2><a class="anchor" id="version160"></a>
+Changes in 1.6.0</h2>
+<ul>
+<li>Added documentation using Doxygen</li>
+<li>Started DDS support</li>
+<li>Fixed memory leaks </li>
+</ul>
 </div></div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"

@@ -1,0 +1,21 @@
+/*!
+\page changelog Changelog
+
+\section version162 Changes in 1.6.2
+
+	- Fixed a serious heap corruption bug caused by til::TIL_AddDebug
+	- Fixed memory leak in til::FileStreamStd - path string was not deleted
+	- Fixed memory leak in til::TIL_Load - FileStream handle was not deleted
+	- Fixed bug in til::TIL_Load - FileStream was being closed twice
+	- Fixed memory leaks in til::ImageICO
+	
+\section version161 Changes in 1.6.1
+
+	- Added missing page to documentation
+
+\section version160 Changes in 1.6.0
+
+	- Added documentation using Doxygen
+	- Started DDS support
+	- Fixed memory leaks
+*/

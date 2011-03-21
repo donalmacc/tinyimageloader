@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.1</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.2</span></div>
   </td>
  </tr>
  </tbody>
@@ -90,72 +90,82 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00032"></a>00032 <span class="preprocessor"></span>
 <a name="l00033"></a>00033 <span class="preprocessor">#include &quot;<a class="code" href="_t_i_l_image_8h.html" title="Virtual interface for loading images.">TILImage.h</a>&quot;</span>
 <a name="l00034"></a>00034 
-<a name="l00035"></a>00035 <span class="preprocessor">#if (TIL_FORMAT &amp; TIL_FORMAT_ICO)</span>
-<a name="l00036"></a>00036 <span class="preprocessor"></span>
-<a name="l00037"></a>00037 <span class="keyword">namespace </span>til
-<a name="l00038"></a>00038 {
-<a name="l00039"></a>00039 
-<a name="l00040"></a>00040 <span class="preprocessor">#ifndef DOXYGEN_SHOULD_SKIP_THIS</span>
-<a name="l00041"></a>00041 <span class="preprocessor"></span>        
-<a name="l00042"></a>00042         <span class="keyword">struct </span>BufferICO
-<a name="l00043"></a>00043         {
-<a name="l00044"></a>00044                 <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* buffer;
-<a name="l00045"></a>00045                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> width, height, pitch;
-<a name="l00046"></a>00046                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> pitchy;
-<a name="l00047"></a>00047                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> datasize, offset;
-<a name="l00048"></a>00048                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> bytespp, bitspp;
-<a name="l00049"></a>00049                 <a class="code" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb" title="32-bit color">color_32b</a>* colors;
-<a name="l00050"></a>00050                 <a class="code" href="namespacetil.html#a763060f68abe34e71c760cbc58131389" title="16-bit unsigned integer">uint16</a> palette;
-<a name="l00051"></a>00051                 <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* andmask;
-<a name="l00052"></a>00052                 BufferICO* next;
-<a name="l00053"></a>00053         };
-<a name="l00054"></a>00054         
-<a name="l00055"></a>00055 <span class="preprocessor">#endif</span>
-<a name="l00056"></a>00056 <span class="preprocessor"></span>
-<a name="l00057"></a>00057         <span class="comment">// this seemingly pointless forward declaration</span>
-<a name="l00058"></a>00058         <span class="comment">// is necessary to fool doxygen into documenting</span>
-<a name="l00059"></a>00059         <span class="comment">// the class</span>
-<a name="l00060"></a>00060         <span class="keyword">class </span>DoxygenSaysWhat;
-<a name="l00061"></a>00061 
-<a name="l00065"></a><a class="code" href="classtil_1_1_image_i_c_o.html">00065</a>         <span class="keyword">class </span><a class="code" href="classtil_1_1_image_i_c_o.html" title="til::Image implementation of an ICO loader.">ImageICO</a> : <span class="keyword">public</span> <a class="code" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">Image</a>
-<a name="l00066"></a>00066         {
+<a name="l00035"></a>00035 <span class="comment">//#define OLDMETHOD</span>
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037 <span class="preprocessor">#ifdef OLDMETHOD</span>
+<a name="l00038"></a>00038 <span class="preprocessor"></span><span class="preprocessor">        #include &lt;stdio.h&gt;</span>
+<a name="l00039"></a>00039 <span class="preprocessor">#endif</span>
+<a name="l00040"></a>00040 <span class="preprocessor"></span>
+<a name="l00041"></a>00041 <span class="preprocessor">#if (TIL_FORMAT &amp; TIL_FORMAT_ICO)</span>
+<a name="l00042"></a>00042 <span class="preprocessor"></span>
+<a name="l00043"></a>00043 <span class="keyword">namespace </span>til
+<a name="l00044"></a>00044 {
+<a name="l00045"></a>00045 
+<a name="l00046"></a>00046 <span class="preprocessor">#ifndef DOXYGEN_SHOULD_SKIP_THIS</span>
+<a name="l00047"></a>00047 <span class="preprocessor"></span>        
+<a name="l00048"></a>00048         <span class="keyword">struct </span>BufferICO
+<a name="l00049"></a>00049         {
+<a name="l00050"></a>00050                 <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* buffer;
+<a name="l00051"></a>00051                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> width, height, pitch;
+<a name="l00052"></a>00052                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> pitchy;
+<a name="l00053"></a>00053                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> datasize, offset;
+<a name="l00054"></a>00054                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> bytespp, bitspp;
+<a name="l00055"></a>00055                 <a class="code" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb" title="32-bit color">color_32b</a>* colors;
+<a name="l00056"></a>00056                 <a class="code" href="namespacetil.html#a763060f68abe34e71c760cbc58131389" title="16-bit unsigned integer">uint16</a> palette;
+<a name="l00057"></a>00057                 <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* andmask;
+<a name="l00058"></a>00058                 BufferICO* next;
+<a name="l00059"></a>00059         };
+<a name="l00060"></a>00060         
+<a name="l00061"></a>00061 <span class="preprocessor">#endif</span>
+<a name="l00062"></a>00062 <span class="preprocessor"></span>
+<a name="l00063"></a>00063         <span class="comment">// this seemingly pointless forward declaration</span>
+<a name="l00064"></a>00064         <span class="comment">// is necessary to fool doxygen into documenting</span>
+<a name="l00065"></a>00065         <span class="comment">// the class</span>
+<a name="l00066"></a>00066         <span class="keyword">class </span>DoxygenSaysWhat;
 <a name="l00067"></a>00067 
-<a name="l00068"></a>00068         <span class="keyword">public</span>:
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070                 <a class="code" href="classtil_1_1_image_i_c_o.html" title="til::Image implementation of an ICO loader.">ImageICO</a>();
-<a name="l00071"></a>00071                 ~<a class="code" href="classtil_1_1_image_i_c_o.html" title="til::Image implementation of an ICO loader.">ImageICO</a>();
-<a name="l00072"></a>00072 
-<a name="l00073"></a>00073                 <span class="keywordtype">bool</span> <a class="code" href="classtil_1_1_image_i_c_o.html#a22b53abab2e8b944ae0b50d6246b5f96" title="Parses the actual image data.">Parse</a>(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_ColorDepth);
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> <a class="code" href="classtil_1_1_image_i_c_o.html#a58280b473d5ebc9864ade082f2f0f96d" title="Returns the amount of frames this image contains.">GetFrameCount</a>();
-<a name="l00076"></a>00076                 <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* <a class="code" href="classtil_1_1_image_i_c_o.html#a3501ed7aec07ea553855aff7cb58d7e8" title="Get the pixel data from this image.">GetPixels</a>(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Frame = 0);
-<a name="l00077"></a>00077 
-<a name="l00078"></a>00078                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> <a class="code" href="classtil_1_1_image_i_c_o.html#a0006ed86536bf2b91b8243bc3e95c282" title="Get the width of a frame.">GetWidth</a>(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Frame = 0);
-<a name="l00079"></a>00079                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> <a class="code" href="classtil_1_1_image_i_c_o.html#a9ae2f5e5d594f8b0a17690d72496605e" title="Get the height of a frame.">GetHeight</a>(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Frame = 0);
+<a name="l00071"></a><a class="code" href="classtil_1_1_image_i_c_o.html">00071</a>         <span class="keyword">class </span><a class="code" href="classtil_1_1_image_i_c_o.html" title="til::Image implementation of an ICO loader.">ImageICO</a> : <span class="keyword">public</span> <a class="code" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">Image</a>
+<a name="l00072"></a>00072         {
+<a name="l00073"></a>00073 
+<a name="l00074"></a>00074         <span class="keyword">public</span>:
+<a name="l00075"></a>00075 
+<a name="l00076"></a>00076                 <a class="code" href="classtil_1_1_image_i_c_o.html" title="til::Image implementation of an ICO loader.">ImageICO</a>();
+<a name="l00077"></a>00077                 ~<a class="code" href="classtil_1_1_image_i_c_o.html" title="til::Image implementation of an ICO loader.">ImageICO</a>();
+<a name="l00078"></a>00078 
+<a name="l00079"></a>00079                 <span class="keywordtype">bool</span> <a class="code" href="classtil_1_1_image_i_c_o.html#a22b53abab2e8b944ae0b50d6246b5f96" title="Parses the actual image data.">Parse</a>(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_ColorDepth);
 <a name="l00080"></a>00080 
-<a name="l00086"></a>00086                 
-<a name="l00087"></a>00087                 <span class="keywordtype">void</span> AddBuffer(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Width, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Height);
-<a name="l00088"></a>00088                 <span class="keywordtype">void</span> ReleaseMemory(BufferICO* a_Buffer);
-<a name="l00089"></a>00089                 <span class="keywordtype">void</span> ExpandPalette(BufferICO* a_Buffer);
-<a name="l00090"></a>00090                 
-<a name="l00092"></a>00092 
-<a name="l00093"></a>00093         <span class="keyword">private</span>:
-<a name="l00094"></a>00094 
-<a name="l00095"></a>00095                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> m_Images;
-<a name="l00096"></a>00096 
-<a name="l00097"></a>00097                 <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* m_Pixels;
-<a name="l00098"></a>00098                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> m_Width, m_Height, m_Pitch;
-<a name="l00099"></a>00099 
-<a name="l00100"></a>00100                 BufferICO* m_First;
-<a name="l00101"></a>00101                 BufferICO* m_Current;
+<a name="l00081"></a>00081                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> <a class="code" href="classtil_1_1_image_i_c_o.html#a58280b473d5ebc9864ade082f2f0f96d" title="Returns the amount of frames this image contains.">GetFrameCount</a>();
+<a name="l00082"></a>00082                 <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* <a class="code" href="classtil_1_1_image_i_c_o.html#a3501ed7aec07ea553855aff7cb58d7e8" title="Get the pixel data from this image.">GetPixels</a>(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Frame = 0);
+<a name="l00083"></a>00083 
+<a name="l00084"></a>00084                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> <a class="code" href="classtil_1_1_image_i_c_o.html#a0006ed86536bf2b91b8243bc3e95c282" title="Get the width of a frame.">GetWidth</a>(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Frame = 0);
+<a name="l00085"></a>00085                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> <a class="code" href="classtil_1_1_image_i_c_o.html#a9ae2f5e5d594f8b0a17690d72496605e" title="Get the height of a frame.">GetHeight</a>(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Frame = 0);
+<a name="l00086"></a>00086 
+<a name="l00092"></a>00092                 
+<a name="l00093"></a>00093                 <span class="keywordtype">void</span> AddBuffer(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Width, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Height);
+<a name="l00094"></a>00094                 <span class="keywordtype">void</span> ReleaseMemory(BufferICO* a_Buffer);
+<a name="l00095"></a>00095                 <span class="keywordtype">void</span> ExpandPalette(BufferICO* a_Buffer);
+<a name="l00096"></a>00096                 
+<a name="l00098"></a>00098 
+<a name="l00099"></a>00099         <span class="keyword">private</span>:
+<a name="l00100"></a>00100 
+<a name="l00101"></a>00101                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> m_Images;
 <a name="l00102"></a>00102 
-<a name="l00103"></a>00103         }; <span class="comment">// class ImageICO</span>
-<a name="l00104"></a>00104 
-<a name="l00105"></a>00105 }; <span class="comment">// namespace til</span>
-<a name="l00106"></a>00106 
-<a name="l00107"></a>00107 <span class="preprocessor">#endif</span>
-<a name="l00108"></a>00108 <span class="preprocessor"></span>
-<a name="l00109"></a>00109 <span class="preprocessor">#endif</span>
+<a name="l00103"></a>00103                 <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* m_Pixels;
+<a name="l00104"></a>00104                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> m_Width, m_Height, m_Pitch;
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106 <span class="preprocessor">#ifdef OLDMETHOD</span>
+<a name="l00107"></a>00107 <span class="preprocessor"></span>                FILE* m_Handle;
+<a name="l00108"></a>00108 <span class="preprocessor">#endif</span>
+<a name="l00109"></a>00109 <span class="preprocessor"></span>
+<a name="l00110"></a>00110                 BufferICO* m_First;
+<a name="l00111"></a>00111                 BufferICO* m_Current;
+<a name="l00112"></a>00112 
+<a name="l00113"></a>00113         }; <span class="comment">// class ImageICO</span>
+<a name="l00114"></a>00114 
+<a name="l00115"></a>00115 }; <span class="comment">// namespace til</span>
+<a name="l00116"></a>00116 
+<a name="l00117"></a>00117 <span class="preprocessor">#endif</span>
+<a name="l00118"></a>00118 <span class="preprocessor"></span>
+<a name="l00119"></a>00119 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -172,7 +182,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu Mar 3 2011 16:06:11 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Mar 21 2011 13:25:10 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

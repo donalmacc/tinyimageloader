@@ -83,10 +83,11 @@ namespace TILFW
 			//g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\DDS\\pic_arms_nord.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\DDS\\blood_stain_large.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			g_Load = til::TIL_Load("media\\DDS\\chasm_edge.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			g_Load = til::TIL_Load("media\\DDS\\assaultrifle01.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\TGA\\ali_flesh500.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_B8G8R8);
 		}
 		else
 		{
@@ -118,7 +119,7 @@ namespace TILFW
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			glTexImage2D(
-				GL_TEXTURE_2D, 0, GL_RGBA, 
+				GL_TEXTURE_2D, 0, GL_RGB, 
 				g_Load->GetWidth(i), g_Load->GetHeight(i),
 				0, 
 				GL_RGBA, GL_UNSIGNED_BYTE, g_Load->GetPixels(i)

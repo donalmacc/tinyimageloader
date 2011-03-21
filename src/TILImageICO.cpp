@@ -36,8 +36,6 @@
 	#define ICO_DEBUG(msg, ...)
 #endif
 
-//#define OLDMETHOD
-
 //#define GETBIT(data, place) ((data >> (place)) & 1)
 #define GETBIT(data, place) ((data >> (8 - place)) & 1)
 
@@ -155,6 +153,7 @@ namespace til
 			m_Current->next->height  = a_Height;
 			m_Current->next->pitch   = a_Width;
 			m_Current->next->buffer  = new byte[a_Width * a_Height * m_BPP];
+			m_Current->next->colors  = NULL;
 			m_Current = m_Current->next;
 		}
 		else
@@ -166,6 +165,7 @@ namespace til
 			m_Current->height  = a_Height;
 			m_Current->pitch   = a_Width;
 			m_Current->buffer  = new byte[a_Width * a_Height * m_BPP];
+			m_Current->colors  = NULL;
 		}
 	}
 
@@ -178,14 +178,23 @@ namespace til
 		for (int i = 0; i < a_Buffer->palette; i++)
 		{
 			byte read[4];
-			//fread(read, 1, 4, m_Handle);
+#ifdef OLDMETHOD
+			fread(read, 1, 4, m_Handle);
+#else
 			m_Stream->ReadByte(read, 4);
+#endif
 			*dst++ = Construct_32b_A8R8G8B8(read[0], read[1], read[2], (a_Buffer->palette == 16) ? 255 : read[3]);
 		}
 	}
 
 	bool ImageICO::Parse(uint32 a_ColorDepth)
 	{
+
+#ifdef OLDMETHOD
+
+		m_Handle = fopen(m_Stream->GetFilePath(), "rb");
+
+#endif
 		// empty anyway
 #ifdef OLDMETHOD
 		fseek(m_Handle, 2, SEEK_CUR);
@@ -292,23 +301,27 @@ namespace til
 #ifdef OLDMETHOD
 			fseek(m_Handle, cur->offset, SEEK_SET);
 #else
-			m_Stream->Seek(cur->offset, TIL_FILE_SEEK_CURR);
+			//m_Stream->Seek(cur->offset, TIL_FILE_SEEK_CURR);
+			m_Stream->Seek(cur->offset, TIL_FILE_SEEK_START);
 #endif
 
 			//BITMAPINFOHEADER bleh;
 			//fread(&bleh, sizeof(bleh), 1, m_Handle);
-			
-			/*uint32 size;     fread(&size, 4, 1, m_Handle);
+
+#ifdef OLDMETHOD
+			dword size;     fread(&size, 4, 1, m_Handle);
 			int32 width;     fread(&width, 4, 1, m_Handle);
 			int32 height;    fread(&height, 4, 1, m_Handle);
-			uint16 planes;   fread(&planes, 2, 1, m_Handle);
-			uint16 bitcount; fread(&bitcount, 2, 1, m_Handle);*/
-
+			word planes;   fread(&planes, 2, 1, m_Handle);
+			word bitcount; fread(&bitcount, 2, 1, m_Handle);
+#else
 			dword size;      m_Stream->ReadDWord(&size);
 			int32 width;     m_Stream->Read(&width, sizeof(int32));
 			int32 height;    m_Stream->Read(&height, sizeof(int32));
 			word planes;     m_Stream->ReadWord(&planes);
 			word bitcount;   m_Stream->ReadWord(&bitcount);
+#endif
+
 #ifdef OLDMETHOD
 			fseek(m_Handle, 24, SEEK_CUR);
 #else
@@ -408,6 +421,7 @@ namespace til
 				}
 
 				delete src;
+				delete cur->andmask;
 
 				/*for(i=0,y=(icon.bHeight)-1;y>-1;y--)
 					for(x=0;x<icon.bWidth;x+=8,i++){
@@ -512,6 +526,7 @@ namespace til
 		}
 		delete a_Buffer->next;
 		delete a_Buffer->buffer;
+		if (a_Buffer->colors) { delete a_Buffer->colors; }
 	}
 
 }; // namespace til

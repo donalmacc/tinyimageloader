@@ -38,12 +38,13 @@ namespace til
 	Image::Image()
 	{
 		m_FileName = NULL;
+		m_Stream = NULL;
 	}
 
 	Image::~Image()
 	{ 
-		Close();
 		if (m_FileName) { delete m_FileName; }
+		if (m_Stream) { delete m_Stream; }
 	}
 
 	void Image::Load(FileStream* a_Stream)
@@ -78,7 +79,7 @@ namespace til
 		case TIL_DEPTH_R8G8B8:
 		case TIL_DEPTH_B8G8R8:
 			{
-				m_BPP = 3;
+				m_BPP = 4;
 				break;
 			}
 			

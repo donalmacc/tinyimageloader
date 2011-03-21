@@ -32,6 +32,12 @@
 
 #include "TILImage.h"
 
+//#define OLDMETHOD
+
+#ifdef OLDMETHOD
+	#include <stdio.h>
+#endif
+
 #if (TIL_FORMAT & TIL_FORMAT_ICO)
 
 namespace til
@@ -96,6 +102,10 @@ namespace til
 
 		byte* m_Pixels;
 		uint32 m_Width, m_Height, m_Pitch;
+
+#ifdef OLDMETHOD
+		FILE* m_Handle;
+#endif
 
 		BufferICO* m_First;
 		BufferICO* m_Current;

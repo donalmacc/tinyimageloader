@@ -9,6 +9,7 @@
 	-# \ref thirdparty
 	-# \ref bugs
 	-# \ref acknowledgements
+	-# \ref changelog
     \section Examples
     -# \ref example1
 */

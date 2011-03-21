@@ -61,7 +61,8 @@ namespace til
 		fopen_s(&m_Handle, m_FilePath, "rb");
 		if (!m_Handle)
 		{
-			//TIL_ERROR_EXPLAIN("Could not open '%s'.", path);
+			TIL_ERROR_EXPLAIN("Could not open '%s'.", path);
+			delete m_FilePath;
 			return false;
 		}
 
@@ -120,6 +121,7 @@ namespace til
 		if (m_Handle)
 		{
 			fclose(m_Handle);
+			delete m_FilePath;
 			return true;
 		}
 
