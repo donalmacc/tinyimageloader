@@ -4,6 +4,7 @@
 \section version162 Changes in 1.6.2
 
 	- Fixed a serious heap corruption bug caused by til::TIL_AddDebug
+	- Fixed a serious heap corruption bug caused by til::TIL_AddError
 	- Fixed memory leak in til::FileStreamStd - path string was not deleted
 	- Fixed memory leak in til::TIL_Load - FileStream handle was not deleted
 	- Fixed bug in til::TIL_Load - FileStream was being closed twice

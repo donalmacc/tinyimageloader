@@ -94,7 +94,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00038"></a>00038 
 <a name="l00039"></a><a class="code" href="_t_i_l_settings_8h.html#a3e0a241ced7e879ba5a7235a4bdd420a">00039</a> <span class="preprocessor">#define TIL_VERSION_MAJOR                 1 //!&lt; The version major</span>
 <a name="l00040"></a><a class="code" href="_t_i_l_settings_8h.html#a6155c05df75914733a30899fce0eae06">00040</a> <span class="preprocessor"></span><span class="preprocessor">#define TIL_VERSION_MINOR                 6 //!&lt; The version minor</span>
-<a name="l00041"></a><a class="code" href="_t_i_l_settings_8h.html#a0e3931f211f7c8e4b2c609b98f32754d">00041</a> <span class="preprocessor"></span><span class="preprocessor">#define TIL_VERSION_BUGFIX                1 //!&lt; The bugfix version</span>
+<a name="l00041"></a><a class="code" href="_t_i_l_settings_8h.html#a0e3931f211f7c8e4b2c609b98f32754d">00041</a> <span class="preprocessor"></span><span class="preprocessor">#define TIL_VERSION_BUGFIX                2 //!&lt; The bugfix version</span>
 <a name="l00042"></a>00042 <span class="preprocessor"></span>
 <a name="l00043"></a><a class="code" href="_t_i_l_settings_8h.html#aed097206d36fddc10e5edbdf8f8cef3d">00043</a> <span class="preprocessor">#define TIL_PLATFORM_WINDOWS              0 //!&lt; Windows platform</span>
 <a name="l00044"></a><a class="code" href="_t_i_l_settings_8h.html#a2ad76dac73c44dfa76d7362c60519d15">00044</a> <span class="preprocessor"></span><span class="preprocessor">#define TIL_PLATFORM_WINMO                1 //!&lt; Windows Mobile platform</span>
@@ -167,10 +167,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00152"></a><a class="code" href="_t_i_l_settings_8h.html#ae0783dd47fcd9fe85766834d4fa8006d">00152</a> <span class="preprocessor"></span><span class="preprocessor">        #define TIL_FORMAT                    (TIL_FORMAT_PNG | TIL_FORMAT_GIF | TIL_FORMAT_TGA | TIL_FORMAT_BMP | TIL_FORMAT_ICO | TIL_FORMAT_DDS)</span>
 <a name="l00153"></a>00153 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
 <a name="l00154"></a>00154 <span class="preprocessor"></span>
-<a name="l00164"></a>00164 <span class="preprocessor">#if (TIL_RUN_TARGET == TIL_TARGET_RELEASE)</span>
-<a name="l00165"></a><a class="code" href="_t_i_l_settings_8h.html#a96eeb3b08b2f50bdf39e7da406c03707">00165</a> <span class="preprocessor"></span><span class="preprocessor">        #define TIL_PRINT_DEBUG(msg, ...)</span>
+<a name="l00164"></a>00164 <span class="preprocessor">#if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)</span>
+<a name="l00165"></a>00165 <span class="preprocessor"></span><span class="preprocessor">        #define TIL_PRINT_DEBUG(msg, ...)  til::AddDebug(&quot;TinyImageLoader - Debug: &quot;msg&quot; &quot;, __FILE__, __LINE__, __VA_ARGS__)</span>
 <a name="l00166"></a>00166 <span class="preprocessor"></span><span class="preprocessor">#else</span>
-<a name="l00167"></a>00167 <span class="preprocessor"></span><span class="preprocessor">        #define TIL_PRINT_DEBUG(msg, ...)  til::AddDebug(&quot;TinyImageLoader - Debug: &quot;msg&quot; &quot;, __FILE__, __LINE__, __VA_ARGS__)</span>
+<a name="l00167"></a><a class="code" href="_t_i_l_settings_8h.html#a96eeb3b08b2f50bdf39e7da406c03707">00167</a> <span class="preprocessor"></span><span class="preprocessor">        #define TIL_PRINT_DEBUG(msg, ...)</span>
 <a name="l00168"></a>00168 <span class="preprocessor"></span><span class="preprocessor">#endif</span>
 <a name="l00169"></a><a class="code" href="_t_i_l_settings_8h.html#a06001d0fea8ea131d903971f7a8b0f8e">00169</a> <span class="preprocessor"></span><span class="preprocessor">#define TIL_ERROR_EXPLAIN(msg, ...)    til::AddError(&quot;TinyImageLoader - Error: &quot;msg&quot; &quot;, __FILE__, __LINE__, __VA_ARGS__)</span>
 <a name="l00170"></a>00170 <span class="preprocessor"></span>
@@ -185,7 +185,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00183"></a>00183 <span class="preprocessor"></span><span class="preprocessor">                        #define _CRTDBG_MAP_ALLOC</span>
 <a name="l00184"></a>00184 <span class="preprocessor"></span><span class="preprocessor">                        #include &lt;crtdbg.h&gt;</span>
 <a name="l00185"></a>00185 
-<a name="l00186"></a>00186 <span class="preprocessor">                        #ifdef _DEBUG</span>
+<a name="l00186"></a>00186 <span class="preprocessor">                        #if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)</span>
 <a name="l00187"></a>00187 <span class="preprocessor"></span><span class="preprocessor">                                #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)</span>
 <a name="l00188"></a>00188 <span class="preprocessor"></span><span class="preprocessor">                                #define new DEBUG_NEW</span>
 <a name="l00189"></a>00189 <span class="preprocessor"></span><span class="preprocessor">                        #endif</span>
@@ -275,7 +275,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Mar 21 2011 13:25:10 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Mar 21 2011 20:01:08 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

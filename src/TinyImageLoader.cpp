@@ -260,7 +260,7 @@ namespace til
 
 		bool resize = false;
 
-		while (strlen(g_DebugTemp) + strlen(g_Debug) >= g_DebugMaxSize) 
+		/*while (strlen(g_DebugTemp) + strlen(g_Debug) >= g_DebugMaxSize) 
 		{ 
 			g_DebugMaxSize *= 2; 
 			resize = true; 
@@ -268,7 +268,7 @@ namespace til
 		if (resize)
 		{
 			g_Debug = (char*)realloc(g_Debug, g_DebugMaxSize);
-		}
+		}*/
 
 		if (strlen(g_DebugTemp) + strlen(g_Debug) >= g_DebugMaxSize) 
 		{ 

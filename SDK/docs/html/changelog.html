@@ -60,6 +60,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Changes in 1.6.2</h2>
 <ul>
 <li>Fixed a serious heap corruption bug caused by til::TIL_AddDebug</li>
+<li>Fixed a serious heap corruption bug caused by til::TIL_AddError</li>
 <li>Fixed memory leak in <a class="el" href="classtil_1_1_file_stream_std.html" title="ANSI C implementation of FileStream.">til::FileStreamStd</a> - path string was not deleted</li>
 <li>Fixed memory leak in <a class="el" href="namespacetil.html#a8d2e2ab942bb94b188587509ccb754de" title="Main interface for loading images.">til::TIL_Load</a> - FileStream handle was not deleted</li>
 <li>Fixed bug in <a class="el" href="namespacetil.html#a8d2e2ab942bb94b188587509ccb754de" title="Main interface for loading images.">til::TIL_Load</a> - FileStream was being closed twice</li>
@@ -92,7 +93,7 @@ Changes in 1.6.0</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Mar 21 2011 13:25:10 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Mon Mar 21 2011 20:01:09 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>
