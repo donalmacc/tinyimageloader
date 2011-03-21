@@ -71,12 +71,14 @@ namespace til
 	static char* g_Error = NULL;
 	static char* g_ErrorTemp = NULL;
 	static size_t g_ErrorMaxSize = 1024;
+	static size_t g_ErrorTempMaxSize = 1024;
 
 	void AddDebugDefault(MessageData* a_Data);
 	static MessageFunc g_DebugFunc = AddDebugDefault;
 	static char* g_Debug = NULL;
 	static char* g_DebugTemp = NULL;
 	static size_t g_DebugMaxSize = 2048;
+	static size_t g_DebugTempMaxSize = 1024;
 
 #endif
 
@@ -121,7 +123,7 @@ namespace til
 			InitLineFeed();
 		}
 
-#if (TIL_RUN_TARGET == TIL_TARGET_DEBUG)
+#if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
 
 		if (!g_Debug) 
 		{
@@ -152,15 +154,6 @@ namespace til
 
 #endif
 
-		byte swaptest[] = { 1, 0 };
-		if (*(word*)swaptest == 1)
-		{
-			TIL_PRINT_DEBUG("Little endian.");
-		}
-		else
-		{
-			TIL_PRINT_DEBUG("Big endian.");
-		}
 	}
 
 	void TIL_ShutDown()
@@ -183,13 +176,13 @@ namespace til
 	{
 		sprintf_s(
 			g_ErrorTemp,
-			g_ErrorMaxSize,
+			g_ErrorTempMaxSize,
 			"%s (in file %s at line %i)", 
 			a_Data->message, 
 			a_Data->source_file, 
 			a_Data->source_line
 		);
-		strcat_s(g_ErrorTemp, g_ErrorMaxSize, g_LineFeed);
+		strcat_s(g_ErrorTemp, g_ErrorTempMaxSize, g_LineFeed);
 
 		bool resize = false;
 		while (strlen(g_ErrorTemp) + strlen(g_Error) >= g_ErrorMaxSize) { g_ErrorMaxSize *= 2; resize = true; }
@@ -201,6 +194,12 @@ namespace til
 		}
 
 		strcat_s(g_Error, g_ErrorMaxSize, g_ErrorTemp);
+
+		/*if (resize)
+		{
+			delete g_ErrorTemp;
+			g_ErrorTemp = NULL;
+		}*/
 	}
 
 #endif
@@ -225,8 +224,8 @@ namespace til
 	{
 		va_list args;
 		va_start(args, a_Line);
-		if (!g_ErrorTemp) { g_ErrorTemp = new char[g_ErrorMaxSize]; }
-		vsprintf_s(g_ErrorTemp, g_ErrorMaxSize, a_Message, args);
+		if (!g_ErrorTemp) { g_ErrorTemp = new char[g_ErrorTempMaxSize]; }
+		vsprintf_s(g_ErrorTemp, g_ErrorTempMaxSize, a_Message, args);
 		va_end(args);
 
 		g_Msg.message = g_ErrorTemp;
@@ -256,12 +255,12 @@ namespace til
 
 	void AddDebugDefault(MessageData* a_Data)
 	{
-		sprintf_s(g_DebugTemp, g_DebugMaxSize, "%s", a_Data->message);
-		strcat_s(g_DebugTemp, g_DebugMaxSize, g_LineFeed);
+		sprintf_s(g_DebugTemp, g_DebugTempMaxSize, "%s", a_Data->message);
+		strcat_s(g_DebugTemp, g_DebugTempMaxSize, g_LineFeed);
 
 		bool resize = false;
 
-		/*while (strlen(g_DebugTemp) + strlen(g_Debug) >= g_DebugMaxSize) 
+		while (strlen(g_DebugTemp) + strlen(g_Debug) >= g_DebugMaxSize) 
 		{ 
 			g_DebugMaxSize *= 2; 
 			resize = true; 
@@ -269,7 +268,7 @@ namespace til
 		if (resize)
 		{
 			g_Debug = (char*)realloc(g_Debug, g_DebugMaxSize);
-		}*/
+		}
 
 		if (strlen(g_DebugTemp) + strlen(g_Debug) >= g_DebugMaxSize) 
 		{ 
@@ -283,8 +282,8 @@ namespace til
 	{
 		va_list args;
 		va_start(args, a_Line);
-		if (!g_DebugTemp) { g_DebugTemp = new char[g_DebugMaxSize + 1]; }
-		vsprintf_s(g_DebugTemp, g_DebugMaxSize, a_Message, args);
+		if (!g_DebugTemp) { g_DebugTemp = new char[g_DebugTempMaxSize + 1]; }
+		vsprintf_s(g_DebugTemp, g_DebugTempMaxSize, a_Message, args);
 		va_end(args);
 
 		g_Msg.message = g_DebugTemp;
@@ -396,8 +395,6 @@ namespace til
 
 		g_WorkingDirLength = strlen(a_Path);
 		strcpy_s(g_WorkingDir, g_WorkingDirLength + 1, a_Path);
-
-		TIL_PRINT_DEBUG("Setting working directory to '%s'", g_WorkingDir);
 
 		return g_WorkingDirLength;
 	}

@@ -161,10 +161,10 @@
 	\brief Prints an error message
 	Error messages are always posted, even in release mode.
 */
-#if (TIL_RUN_TARGET == TIL_TARGET_RELEASE)
-	#define TIL_PRINT_DEBUG(msg, ...)
-#else
+#if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
 	#define TIL_PRINT_DEBUG(msg, ...)  til::AddDebug("TinyImageLoader - Debug: "msg" ", __FILE__, __LINE__, __VA_ARGS__)
+#else
+	#define TIL_PRINT_DEBUG(msg, ...)
 #endif
 #define TIL_ERROR_EXPLAIN(msg, ...)    til::AddError("TinyImageLoader - Error: "msg" ", __FILE__, __LINE__, __VA_ARGS__)
 
@@ -183,7 +183,7 @@
 			#define _CRTDBG_MAP_ALLOC
 			#include <crtdbg.h>
 
-			#ifdef _DEBUG
+			#if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
 				#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 				#define new DEBUG_NEW
 			#endif
