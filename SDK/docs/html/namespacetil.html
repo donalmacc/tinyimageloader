@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.2</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.3</span></div>
   </td>
  </tr>
  </tbody>
@@ -159,6 +159,8 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Main interface for loading images.  <a href="#a8d2e2ab942bb94b188587509ccb754de"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classtil_1_1_image.html">Image</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#abd175aec954bbd694f5d76913e49781f">TIL_Load</a> (const char *a_FileName, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Options=(TIL_FILE_ABSOLUTEPATH|TIL_DEPTH_A8R8G8B8))</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Main interface for loading images.  <a href="#abd175aec954bbd694f5d76913e49781f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a8fd384196869e66fbb9377e720986d6e">TIL_Release</a> (<a class="el" href="classtil_1_1_image.html">Image</a> *a_Image)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Releases the handle to a <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a>.  <a href="#a8fd384196869e66fbb9377e720986d6e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a23d6a0255921e477f4f04e27c28c3945">TIL_SetWorkingDirectory</a> (const char *a_Path, size_t a_Length)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the internal working directory.  <a href="#a23d6a0255921e477f4f04e27c28c3945"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a52083ef60545c86742eeb28c3504a60c">TIL_SetFileStreamFunc</a> (<a class="el" href="namespacetil.html#ad2bb0fc50e3103fc00335b66adf272c8">FileStreamFunc</a> a_Func)</td></tr>
@@ -1960,6 +1962,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
 
 </div>
 </div>
+<a class="anchor" id="a8fd384196869e66fbb9377e720986d6e"></a><!-- doxytag: member="til::TIL_Release" ref="a8fd384196869e66fbb9377e720986d6e" args="(Image *a_Image)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool til::TIL_Release </td>
+          <td>(</td>
+          <td class="paramtype">Image *&#160;</td>
+          <td class="paramname"><em>a_Image</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Releases the handle to a <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a>. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_Image</td><td>The handle to the <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>True on success, false on failure</dd></dl>
+<p>This is the recommended way to close a handle to a <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a>. </p>
+
+</div>
+</div>
 <a class="anchor" id="a4e9b5c8b33ec4ec38e7ef895a8eac58e"></a><!-- doxytag: member="til::TIL_SetDebugFunc" ref="a4e9b5c8b33ec4ec38e7ef895a8eac58e" args="(MessageFunc a_Func)" -->
 <div class="memitem">
 <div class="memproto">
@@ -2100,7 +2129,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MemSet</b> (<a class=
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Mar 21 2011 20:01:09 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Mar 22 2011 19:13:31 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

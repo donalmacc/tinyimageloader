@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.2</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.3</span></div>
   </td>
  </tr>
  </tbody>
@@ -119,7 +119,6 @@ Logging</h2>
         {
                 fopen_s(&amp;g_Log, g_LogPath, <span class="stringliteral">&quot;a&quot;</span>);
                 <span class="keywordtype">char</span> msg[1024];
-                <span class="comment">//sprintf_s(msg, &quot;%s (at line %i in file %s)&quot;, a_Data-&gt;message, a_Data-&gt;source_line, a_Data-&gt;source_file);</span>
                 sprintf_s(msg, 1024, <span class="stringliteral">&quot;%s\n&quot;</span>, a_Data-&gt;<a class="code" href="structtil_1_1_message_data.html#a509ca54f8bbc534d0220d3e7b1637a8d">message</a>);
                 fputs(msg, g_Log);
                 fclose(g_Log);
@@ -209,9 +208,15 @@ Rendering</h2>
         glPopMatrix();
 
         glDisable(GL_BLEND);
+</pre></div><h2><a class="anchor" id="cleanup"></a>
+Cleaning up</h2>
+<p>Finally, when we're done, we need to clean up the handles to TinyImageLoader. Keep in mind that you can keep <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a> pointers around for as long as you need them. Calling <a class="el" href="namespacetil.html#a777e336727a478c4c4bdfd8c0e3603d7" title="Shuts down TinyImageLoader.">til::TIL_ShutDown</a> doesn't affect the validity of the handles, but it cleans up the library.</p>
+<div class="fragment"><pre class="fragment">        <a class="code" href="namespacetil.html#a8fd384196869e66fbb9377e720986d6e" title="Releases the handle to a til::Image.">til::TIL_Release</a>(g_Load);
+
+        <a class="code" href="namespacetil.html#a777e336727a478c4c4bdfd8c0e3603d7" title="Shuts down TinyImageLoader.">til::TIL_ShutDown</a>();
 </pre></div><h2><a class="anchor" id="code"></a>
 Code</h2>
-<p>Check out the source for this example in <a class="el" href="example-opengl-texture_8cpp.html">example-opengl-texture.cpp</a>. </p>
+<p>Check out the source for this example in example-opengl-texture.cpp. </p>
 </div></div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -227,7 +232,7 @@ Code</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Mar 21 2011 20:01:09 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Mar 22 2011 19:13:31 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

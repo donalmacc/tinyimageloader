@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.2</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.3</span></div>
   </td>
  </tr>
  </tbody>
@@ -56,7 +56,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h1>Changelog </h1>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><h2><a class="anchor" id="version162"></a>
+<div class="textblock"><h2><a class="anchor" id="version163"></a>
+Changes in 1.6.3</h2>
+<ul>
+<li>Added <a class="el" href="namespacetil.html#a8fd384196869e66fbb9377e720986d6e" title="Releases the handle to a til::Image.">til::TIL_Release</a> function, which releases a handle</li>
+<li>Added <a class="el" href="_t_i_l_settings_8h.html#abd9cbffc6a4f8aa90a468d174e2f20ed" title="Development target.">TIL_TARGET_DEVEL</a> target for developers</li>
+<li>Removed unnecessary includes (e.g. windows.h, stdlib.h, etc.)</li>
+<li>Fixed a bug where til::TIL_CloseDown could cause a crash by deleting an unitialized variable</li>
+</ul>
+<h2><a class="anchor" id="version162"></a>
 Changes in 1.6.2</h2>
 <ul>
 <li>Fixed a serious heap corruption bug caused by til::TIL_AddDebug</li>
@@ -93,7 +101,7 @@ Changes in 1.6.0</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Mar 21 2011 20:01:09 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Mar 22 2011 19:13:31 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

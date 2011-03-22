@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.2</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.3</span></div>
   </td>
  </tr>
  </tbody>
@@ -108,41 +108,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00126"></a>00126         Image* <a class="code" href="namespacetil.html#a8d2e2ab942bb94b188587509ccb754de" title="Main interface for loading images.">TIL_Load</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* a_FileName, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Options = (<a class="code" href="_t_i_l_settings_8h.html#a35df91f5e83de2ea6177f37406e487d9" title="The image path is absolute.">TIL_FILE_ABSOLUTEPATH</a> | <a class="code" href="_t_i_l_settings_8h.html#a58c600319f21b801f568a6a3d9bb8498" title="32-bit ARGB color depth">TIL_DEPTH_A8R8G8B8</a>));
 <a name="l00127"></a>00127 
 <a name="l00129"></a>00129 
-<a name="l00144"></a>00144         <span class="keywordtype">size_t</span> <a class="code" href="namespacetil.html#a23d6a0255921e477f4f04e27c28c3945" title="Set the internal working directory.">TIL_SetWorkingDirectory</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* a_Path, <span class="keywordtype">size_t</span> a_Length);
-<a name="l00145"></a>00145 
-<a name="l00147"></a>00147 
-<a name="l00155"></a>00155         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#a0a78aac0d1be8f1403da0a7eff6334ca" title="Adds working directory to a path.">TIL_AddWorkingDirectory</a>(<span class="keywordtype">char</span>* a_Dst, <span class="keywordtype">size_t</span> a_MaxLength, <span class="keyword">const</span> <span class="keywordtype">char</span>* a_Path);
-<a name="l00156"></a>00156 
-<a name="l00158"></a>00158 
-<a name="l00165"></a>00165         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#a52083ef60545c86742eeb28c3504a60c" title="Set the callback for creating FileStream&amp;#39;s.">TIL_SetFileStreamFunc</a>(<a class="code" href="namespacetil.html#ad2bb0fc50e3103fc00335b66adf272c8" title="FileStream creation function.">FileStreamFunc</a> a_Func);
+<a name="l00136"></a>00136         <span class="keywordtype">bool</span> <a class="code" href="namespacetil.html#a8fd384196869e66fbb9377e720986d6e" title="Releases the handle to a til::Image.">TIL_Release</a>(Image* a_Image);
+<a name="l00137"></a>00137 
+<a name="l00139"></a>00139 
+<a name="l00154"></a>00154         <span class="keywordtype">size_t</span> <a class="code" href="namespacetil.html#a23d6a0255921e477f4f04e27c28c3945" title="Set the internal working directory.">TIL_SetWorkingDirectory</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* a_Path, <span class="keywordtype">size_t</span> a_Length);
+<a name="l00155"></a>00155 
+<a name="l00157"></a>00157 
+<a name="l00165"></a>00165         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#a0a78aac0d1be8f1403da0a7eff6334ca" title="Adds working directory to a path.">TIL_AddWorkingDirectory</a>(<span class="keywordtype">char</span>* a_Dst, <span class="keywordtype">size_t</span> a_MaxLength, <span class="keyword">const</span> <span class="keywordtype">char</span>* a_Path);
 <a name="l00166"></a>00166 
 <a name="l00168"></a>00168 
-<a name="l00179"></a>00179         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#ad1f5533b868c2f7f1f9a343642b3ff42" title="Get the version as a string.">TIL_GetVersion</a>(<span class="keywordtype">char</span>* a_Target, <span class="keywordtype">size_t</span> a_MaxLength);
-<a name="l00180"></a>00180 
-<a name="l00182"></a>00182 
-<a name="l00186"></a>00186         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#acf5fe389d33053c01da96da10ef88b0e" title="Set the callback for the internal error logging function.">TIL_SetErrorFunc</a>(<a class="code" href="namespacetil.html#a4cd3def0937f0e817958cdcc44241549" title="Message function.">MessageFunc</a> a_Func);
-<a name="l00187"></a>00187 
-<a name="l00189"></a>00189 
-<a name="l00203"></a>00203         <span class="keywordtype">char</span>* <a class="code" href="namespacetil.html#a194b32071f97f5607de361743f895c54" title="Get the errors as a string.">TIL_GetError</a>();
-<a name="l00204"></a>00204 
-<a name="l00206"></a>00206 
-<a name="l00213"></a>00213         <span class="keywordtype">size_t</span> <a class="code" href="namespacetil.html#acee705152b244eb9f8efc5ed8aea744e" title="Get the length of the error string.">TIL_GetErrorLength</a>();
+<a name="l00175"></a>00175         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#a52083ef60545c86742eeb28c3504a60c" title="Set the callback for creating FileStream&amp;#39;s.">TIL_SetFileStreamFunc</a>(<a class="code" href="namespacetil.html#ad2bb0fc50e3103fc00335b66adf272c8" title="FileStream creation function.">FileStreamFunc</a> a_Func);
+<a name="l00176"></a>00176 
+<a name="l00178"></a>00178 
+<a name="l00189"></a>00189         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#ad1f5533b868c2f7f1f9a343642b3ff42" title="Get the version as a string.">TIL_GetVersion</a>(<span class="keywordtype">char</span>* a_Target, <span class="keywordtype">size_t</span> a_MaxLength);
+<a name="l00190"></a>00190 
+<a name="l00192"></a>00192 
+<a name="l00196"></a>00196         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#acf5fe389d33053c01da96da10ef88b0e" title="Set the callback for the internal error logging function.">TIL_SetErrorFunc</a>(<a class="code" href="namespacetil.html#a4cd3def0937f0e817958cdcc44241549" title="Message function.">MessageFunc</a> a_Func);
+<a name="l00197"></a>00197 
+<a name="l00199"></a>00199 
+<a name="l00213"></a>00213         <span class="keywordtype">char</span>* <a class="code" href="namespacetil.html#a194b32071f97f5607de361743f895c54" title="Get the errors as a string.">TIL_GetError</a>();
 <a name="l00214"></a>00214 
 <a name="l00216"></a>00216 
-<a name="l00220"></a>00220         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#a4e9b5c8b33ec4ec38e7ef895a8eac58e" title="Set the callback for the internal debug logging function.">TIL_SetDebugFunc</a>(<a class="code" href="namespacetil.html#a4cd3def0937f0e817958cdcc44241549" title="Message function.">MessageFunc</a> a_Func);
-<a name="l00221"></a>00221 
-<a name="l00223"></a>00223 
-<a name="l00236"></a>00236         <span class="keywordtype">char</span>* <a class="code" href="namespacetil.html#a718bbc00caa8c13af40909fddc9b0f43" title="Get the debug messages as a string.">TIL_GetDebug</a>();
-<a name="l00237"></a>00237 
-<a name="l00239"></a>00239 
-<a name="l00244"></a>00244         <span class="keywordtype">size_t</span> <a class="code" href="namespacetil.html#a3ffda784e3632247d9759e5d3ac5bfbd" title="Get the length of the debug string.">TIL_GetDebugLength</a>();
-<a name="l00245"></a>00245 
+<a name="l00223"></a>00223         <span class="keywordtype">size_t</span> <a class="code" href="namespacetil.html#acee705152b244eb9f8efc5ed8aea744e" title="Get the length of the error string.">TIL_GetErrorLength</a>();
+<a name="l00224"></a>00224 
+<a name="l00226"></a>00226 
+<a name="l00230"></a>00230         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#a4e9b5c8b33ec4ec38e7ef895a8eac58e" title="Set the callback for the internal debug logging function.">TIL_SetDebugFunc</a>(<a class="code" href="namespacetil.html#a4cd3def0937f0e817958cdcc44241549" title="Message function.">MessageFunc</a> a_Func);
+<a name="l00231"></a>00231 
+<a name="l00233"></a>00233 
+<a name="l00246"></a>00246         <span class="keywordtype">char</span>* <a class="code" href="namespacetil.html#a718bbc00caa8c13af40909fddc9b0f43" title="Get the debug messages as a string.">TIL_GetDebug</a>();
 <a name="l00247"></a>00247 
-<a name="l00250"></a>00250         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#ab47ef180dfcddf277bb0332181206100" title="Clears the debug string.">TIL_ClearDebug</a>();
-<a name="l00251"></a>00251 
-<a name="l00252"></a>00252 }; <span class="comment">// namespace til</span>
-<a name="l00253"></a>00253 
-<a name="l00254"></a>00254 <span class="preprocessor">#endif</span>
+<a name="l00249"></a>00249 
+<a name="l00254"></a>00254         <span class="keywordtype">size_t</span> <a class="code" href="namespacetil.html#a3ffda784e3632247d9759e5d3ac5bfbd" title="Get the length of the debug string.">TIL_GetDebugLength</a>();
+<a name="l00255"></a>00255 
+<a name="l00257"></a>00257 
+<a name="l00260"></a>00260         <span class="keywordtype">void</span> <a class="code" href="namespacetil.html#ab47ef180dfcddf277bb0332181206100" title="Clears the debug string.">TIL_ClearDebug</a>();
+<a name="l00261"></a>00261 
+<a name="l00262"></a>00262 }; <span class="comment">// namespace til</span>
+<a name="l00263"></a>00263 
+<a name="l00264"></a>00264 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -159,7 +162,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Mar 21 2011 20:01:08 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Mar 22 2011 19:13:31 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

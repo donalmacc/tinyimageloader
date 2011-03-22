@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.2</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.3</span></div>
   </td>
  </tr>
  </tbody>
@@ -70,7 +70,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>Settings and global defines.  
 <a href="#_details">More...</a></p>
-
+<div class="textblock"><code>#include &lt;stdarg.h&gt;</code><br/>
+<code>#include &lt;windows.h&gt;</code><br/>
+</div>
 <p><a href="_t_i_l_settings_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="nested-classes"></a>
@@ -93,7 +95,7 @@ Defines</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_i_l_settings_8h.html#a6155c05df75914733a30899fce0eae06">TIL_VERSION_MINOR</a>&#160;&#160;&#160;6</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The version minor. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e3931f211f7c8e4b2c609b98f32754d"></a><!-- doxytag: member="TILSettings.h::TIL_VERSION_BUGFIX" ref="a0e3931f211f7c8e4b2c609b98f32754d" args="" -->
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_i_l_settings_8h.html#a0e3931f211f7c8e4b2c609b98f32754d">TIL_VERSION_BUGFIX</a>&#160;&#160;&#160;2</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_i_l_settings_8h.html#a0e3931f211f7c8e4b2c609b98f32754d">TIL_VERSION_BUGFIX</a>&#160;&#160;&#160;3</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The bugfix version. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aed097206d36fddc10e5edbdf8f8cef3d"></a><!-- doxytag: member="TILSettings.h::TIL_PLATFORM_WINDOWS" ref="aed097206d36fddc10e5edbdf8f8cef3d" args="" -->
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_i_l_settings_8h.html#aed097206d36fddc10e5edbdf8f8cef3d">TIL_PLATFORM_WINDOWS</a>&#160;&#160;&#160;0</td></tr>
@@ -118,7 +120,9 @@ Defines</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6cb21d0cac7c9a19cc3f0e96315b9a52"></a><!-- doxytag: member="TILSettings.h::TIL_TARGET_RELEASE" ref="a6cb21d0cac7c9a19cc3f0e96315b9a52" args="" -->
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_i_l_settings_8h.html#a6cb21d0cac7c9a19cc3f0e96315b9a52">TIL_TARGET_RELEASE</a>&#160;&#160;&#160;2</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Release target. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_i_l_settings_8h.html#abd9cbffc6a4f8aa90a468d174e2f20ed">TIL_TARGET_DEVEL</a>&#160;&#160;&#160;3</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd9cbffc6a4f8aa90a468d174e2f20ed"></a><!-- doxytag: member="TILSettings.h::TIL_TARGET_DEVEL" ref="abd9cbffc6a4f8aa90a468d174e2f20ed" args="" -->
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_i_l_settings_8h.html#abd9cbffc6a4f8aa90a468d174e2f20ed">TIL_TARGET_DEVEL</a>&#160;&#160;&#160;3</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Development target. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_i_l_settings_8h.html#a7193864bf4065538558ce816f7244620">TIL_RUN_TARGET</a>&#160;&#160;&#160;TIL_TARGET_RELEASE</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The target to build for.  <a href="#a7193864bf4065538558ce816f7244620"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7611e045eb3ada8e7a92b194bed9cf79"></a><!-- doxytag: member="TILSettings.h::TIL_FILE_MASK" ref="a7611e045eb3ada8e7a92b194bed9cf79" args="" -->
@@ -207,10 +211,10 @@ Defines</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine which formats should be included in compilation.  <a href="#ae0783dd47fcd9fe85766834d4fa8006d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96eeb3b08b2f50bdf39e7da406c03707"></a><!-- doxytag: member="TILSettings.h::TIL_PRINT_DEBUG" ref="a96eeb3b08b2f50bdf39e7da406c03707" args="(msg,...)" -->
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_i_l_settings_8h.html#a96eeb3b08b2f50bdf39e7da406c03707">TIL_PRINT_DEBUG</a>(msg,...)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a debug message If in release mode, no debug info is printed. <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a debug message Debug info is only generated when compiled using <a class="el" href="_t_i_l_settings_8h.html#abd9cbffc6a4f8aa90a468d174e2f20ed" title="Development target.">TIL_TARGET_DEVEL</a>. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06001d0fea8ea131d903971f7a8b0f8e"></a><!-- doxytag: member="TILSettings.h::TIL_ERROR_EXPLAIN" ref="a06001d0fea8ea131d903971f7a8b0f8e" args="(msg,...)" -->
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_i_l_settings_8h.html#a06001d0fea8ea131d903971f7a8b0f8e">TIL_ERROR_EXPLAIN</a>(msg,...)&#160;&#160;&#160;til::AddError(&quot;TinyImageLoader - Error: &quot;msg&quot; &quot;, __FILE__, __LINE__, __VA_ARGS__)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints an error message Error messages are always posted, even in release mode. <br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints an error message Error messages are always posted, even when compiled using TIL_TARGET_RELEASE. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_t_i_l_settings_8h.html#aa7da87a80d18c2e139c10d0a6a982286">TIL_MAX_PATH</a>&#160;&#160;&#160;_MAX_PATH</td></tr>
 <tr><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -377,20 +381,6 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a class="anchor" id="abd9cbffc6a4f8aa90a468d174e2f20ed"></a><!-- doxytag: member="TILSettings.h::TIL_TARGET_DEVEL" ref="abd9cbffc6a4f8aa90a468d174e2f20ed" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TIL_TARGET_DEVEL&#160;&#160;&#160;3</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Development target </p>
-
-</div>
-</div>
 </div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -406,7 +396,7 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Mar 21 2011 20:01:09 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Mar 22 2011 19:13:31 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>
