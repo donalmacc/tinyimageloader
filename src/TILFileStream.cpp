@@ -37,4 +37,9 @@ namespace til
 
 	}
 
+	const char* FileStream::GetFilePath()
+	{
+		return (const char*)m_FilePath;
+	}
+
 }

@@ -81,7 +81,6 @@
 	{
 		fopen_s(&g_Log, g_LogPath, "a");
 		char msg[1024];
-		//sprintf_s(msg, "%s (at line %i in file %s)", a_Data->message, a_Data->source_line, a_Data->source_file);
 		sprintf_s(msg, 1024, "%s\n", a_Data->message);
 		fputs(msg, g_Log);
 		fclose(g_Log);
@@ -215,6 +214,18 @@
 	glPopMatrix();
 
 	glDisable(GL_BLEND);
+	\endcode
+	
+	\section cleanup Cleaning up
+	
+	Finally, when we're done, we need to clean up the handles to TinyImageLoader.
+	Keep in mind that you can keep til::Image pointers around for as long as you need them.
+	Calling til::TIL_ShutDown doesn't affect the validity of the handles, but it cleans up the library.
+	
+	\code
+	til::TIL_Release(g_Load);
+
+	til::TIL_ShutDown();
 	\endcode
 	
 	\section code Code

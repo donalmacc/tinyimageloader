@@ -203,7 +203,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="TinyImageLoader_d.lib Framework_d.lib psapi.lib"
+				AdditionalDependencies="TinyImageLoader_dv.lib Framework_d.lib psapi.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				AdditionalLibraryDirectories="$(SolutionDir)bin; $(SolutionDir)SDK"
 				GenerateDebugInformation="true"

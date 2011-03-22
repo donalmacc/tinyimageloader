@@ -267,6 +267,8 @@ namespace TILFW
 			if (s_Exit || g_Exit) { break; }
 		}
 
+		Framework::CloseDown();
+
 		DestroyWindow(g_Window);
 
 		return 0;

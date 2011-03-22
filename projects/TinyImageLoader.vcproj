@@ -184,7 +184,7 @@
 				RuntimeLibrary="3"
 				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)\vc90.pdb"
+				ProgramDataBaseFileName="$(OutDir)\TinyImageLoader.pdb"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>

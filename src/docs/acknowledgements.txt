@@ -32,7 +32,7 @@
 	.gif file format.
 
 	In the folder "Demo tools" was a folder inconspicuously named
-	"Neon 08.11.2004". In there, in Old\Despair, I found PIX.C. Which had a
+	"Neon 08.11.2004". In there, in Old\\Despair, I found PIX.C. Which had a
 	complete GIF loader! Like I said, the code was taken almost verbatim. Even
 	though it was demoscene code and almost two decades old, it worked very
 	well.

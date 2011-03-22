@@ -48,6 +48,8 @@ namespace TILFW
 		void Tick(float a_DT);
 		//! Rendering
 		void Render();
+		//! Closing down
+		void CloseDown();
 
 		unsigned int s_WindowWidth; //!< Width of the window
 		unsigned int s_WindowHeight; //!< Height of the window

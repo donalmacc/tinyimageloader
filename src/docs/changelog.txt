@@ -1,6 +1,13 @@
 /*!
 \page changelog Changelog
 
+\section version163 Changes in 1.6.3
+
+	- Added til::TIL_Release function, which releases a handle
+	- Added #TIL_TARGET_DEVEL target for developers
+	- Removed unnecessary includes (e.g. windows.h, stdlib.h, etc.)
+	- Fixed a bug where til::TIL_CloseDown could cause a crash by deleting an unitialized variable
+
 \section version162 Changes in 1.6.2
 
 	- Fixed a serious heap corruption bug caused by til::TIL_AddDebug

@@ -51,10 +51,6 @@
 
 #include "TILFileStreamStd.h"
 
-#include <stdarg.h>
-#include <windows.h>
-//#include <MMSystem.h>
-
 namespace til
 {
 
@@ -71,14 +67,14 @@ namespace til
 	static char* g_Error = NULL;
 	static char* g_ErrorTemp = NULL;
 	static size_t g_ErrorMaxSize = 1024;
-	static size_t g_ErrorTempMaxSize = 1024;
+#define TIL_ERROR_MAX_SIZE 1024
 
 	void AddDebugDefault(MessageData* a_Data);
 	static MessageFunc g_DebugFunc = AddDebugDefault;
 	static char* g_Debug = NULL;
 	static char* g_DebugTemp = NULL;
 	static size_t g_DebugMaxSize = 2048;
-	static size_t g_DebugTempMaxSize = 1024;
+#define TIL_DEBUG_MAX_SIZE 1024
 
 #endif
 
@@ -110,7 +106,6 @@ namespace til
 
 #endif
 
-	/*! Initializes TinyImageLoader. */
 	void TIL_Init(uint32 a_Settings)
 	{
 		g_Options = a_Settings;
@@ -163,11 +158,28 @@ namespace til
 			delete g_WorkingDir;
 			g_WorkingDir = NULL;
 		}
-		delete g_Error;       g_Error = NULL;
-		delete g_ErrorTemp;   g_ErrorTemp = NULL;
-		delete g_Debug;       g_Debug = NULL;
-		delete g_DebugTemp;   g_DebugTemp = NULL;
-		delete g_LineFeed;    g_LineFeed = NULL;
+		if (g_Error)
+		{
+			delete g_Error;
+			g_Error = NULL;
+			delete g_ErrorTemp;
+			g_ErrorTemp = NULL;
+		}
+
+#if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
+
+		if (g_Debug) 
+		{
+			delete g_Debug;
+			g_Debug = NULL;
+			delete g_DebugTemp;
+			g_DebugTemp = NULL;
+		}
+
+#endif
+
+		delete g_LineFeed;
+		g_LineFeed = NULL;
 	}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -176,13 +188,13 @@ namespace til
 	{
 		sprintf_s(
 			g_ErrorTemp,
-			g_ErrorTempMaxSize,
+			TIL_ERROR_MAX_SIZE,
 			"%s (in file %s at line %i)", 
 			a_Data->message, 
 			a_Data->source_file, 
 			a_Data->source_line
 		);
-		strcat_s(g_ErrorTemp, g_ErrorTempMaxSize, g_LineFeed);
+		strcat_s(g_ErrorTemp, TIL_ERROR_MAX_SIZE, g_LineFeed);
 
 		bool resize = false;
 		while (strlen(g_ErrorTemp) + strlen(g_Error) >= g_ErrorMaxSize) { g_ErrorMaxSize *= 2; resize = true; }
@@ -194,12 +206,6 @@ namespace til
 		}
 
 		strcat_s(g_Error, g_ErrorMaxSize, g_ErrorTemp);
-
-		/*if (resize)
-		{
-			delete g_ErrorTemp;
-			g_ErrorTemp = NULL;
-		}*/
 	}
 
 #endif
@@ -224,8 +230,8 @@ namespace til
 	{
 		va_list args;
 		va_start(args, a_Line);
-		if (!g_ErrorTemp) { g_ErrorTemp = new char[g_ErrorTempMaxSize]; }
-		vsprintf_s(g_ErrorTemp, g_ErrorTempMaxSize, a_Message, args);
+		if (!g_ErrorTemp) { g_ErrorTemp = new char[TIL_ERROR_MAX_SIZE]; }
+		vsprintf_s(g_ErrorTemp, TIL_ERROR_MAX_SIZE, a_Message, args);
 		va_end(args);
 
 		g_Msg.message = g_ErrorTemp;
@@ -255,8 +261,8 @@ namespace til
 
 	void AddDebugDefault(MessageData* a_Data)
 	{
-		sprintf_s(g_DebugTemp, g_DebugTempMaxSize, "%s", a_Data->message);
-		strcat_s(g_DebugTemp, g_DebugTempMaxSize, g_LineFeed);
+		sprintf_s(g_DebugTemp, TIL_DEBUG_MAX_SIZE, "%s", a_Data->message);
+		strcat_s(g_DebugTemp, TIL_DEBUG_MAX_SIZE, g_LineFeed);
 
 		bool resize = false;
 
@@ -282,8 +288,8 @@ namespace til
 	{
 		va_list args;
 		va_start(args, a_Line);
-		if (!g_DebugTemp) { g_DebugTemp = new char[g_DebugTempMaxSize + 1]; }
-		vsprintf_s(g_DebugTemp, g_DebugTempMaxSize, a_Message, args);
+		if (!g_DebugTemp) { g_DebugTemp = new char[TIL_DEBUG_MAX_SIZE + 1]; }
+		vsprintf_s(g_DebugTemp, TIL_DEBUG_MAX_SIZE, a_Message, args);
 		va_end(args);
 
 		g_Msg.message = g_DebugTemp;
@@ -308,7 +314,7 @@ namespace til
 			return NULL;
 		}
 
-		char* filepath = a_Stream->GetFilePath();
+		const char* filepath = a_Stream->GetFilePath();
 
 		size_t end = strlen(filepath) - 4;
 		if (end < 4)
@@ -344,6 +350,7 @@ namespace til
 			TIL_PRINT_DEBUG("Filename: '%s' (end: '%s')", filepath, filepath + end);
 			TIL_ERROR_EXPLAIN("Can't parse file: unknown format.");
 			a_Stream->Close();
+			delete a_Stream;
 			return NULL;
 		}
 
@@ -354,6 +361,7 @@ namespace til
 			TIL_ERROR_EXPLAIN("Invalid bit-depth option: %i.", a_Options & TIL_DEPTH_MASK);
 			delete result;
 			a_Stream->Close();
+			delete a_Stream;
 			return NULL;
 		}
 
@@ -362,14 +370,17 @@ namespace til
 			TIL_ERROR_EXPLAIN("Could not parse file.");
 			delete result;
 			a_Stream->Close();
+			delete a_Stream;
 			return NULL;
 		}
-		else if (!result->Close())
+		/*else if (!result->Close())
 		{
 			TIL_ERROR_EXPLAIN("Could not close file.");
 			delete result;
 			return NULL;
-		}
+		}*/
+
+		a_Stream->Close();
 
 		return result;
 	}
@@ -384,6 +395,13 @@ namespace til
 		}
 
 		return TIL_Load(load, a_Options);
+	}
+
+	bool TIL_Release(Image* a_Image)
+	{
+		if (!a_Image) { return false; }
+		delete a_Image;
+		return true;
 	}
 
 	size_t TIL_SetWorkingDirectory(const char* a_Path, size_t a_Length )

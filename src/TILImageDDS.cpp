@@ -51,7 +51,7 @@
 	#define DDS_DEBUG(msg, ...)
 #endif
 
-#include <math.h>
+//#include <math.h>
 
 namespace til
 {

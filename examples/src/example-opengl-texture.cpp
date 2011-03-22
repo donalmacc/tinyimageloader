@@ -79,15 +79,7 @@ namespace TILFW
 
 		if (a_Commands == 1)
 		{
-			//g_Load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\DDS\\pic_arms_nord.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\DDS\\blood_stain_large.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			g_Load = til::TIL_Load("media\\DDS\\assaultrifle01_n.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\DDS\\chain.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\TGA\\ali_flesh500.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_B8G8R8);
+			g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		}
 		else
 		{
@@ -126,8 +118,6 @@ namespace TILFW
 			);
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
-
-		til::TIL_ShutDown();
 	}
 
 	void Framework::Tick(float a_DT)
@@ -199,6 +189,13 @@ namespace TILFW
 		glPopMatrix();
 
 		glDisable(GL_BLEND);
+	}
+
+	void Framework::CloseDown()
+	{
+		til::TIL_Release(g_Load);
+
+		til::TIL_ShutDown();
 	}
 
 }; // namespace TILFW

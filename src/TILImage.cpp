@@ -30,7 +30,7 @@
 #include "TILImage.h"
 #include "TILInternal.h"
 
-#include <stdlib.h>
+//#include <stdlib.h>
 
 namespace til
 {

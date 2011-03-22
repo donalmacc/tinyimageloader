@@ -25,8 +25,8 @@
 #include "TILImageICO.h"
 #include "TILInternal.h"
 
-#include <windows.h>
-#include <wingdi.h>
+//#include <windows.h>
+//#include <wingdi.h>
 
 #if (TIL_FORMAT & TIL_FORMAT_ICO)
 

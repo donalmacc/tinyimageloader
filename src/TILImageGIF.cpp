@@ -53,7 +53,7 @@
 #include "TILImageGIF.h"
 #include "TILInternal.h"
 
-#include <string.h>
+//#include <string.h>
 
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
 

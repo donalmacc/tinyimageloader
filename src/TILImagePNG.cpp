@@ -50,10 +50,6 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
 
-#include <math.h>
-#include <string.h>
-#include <malloc.h>
-
 #ifdef TIL_TARGET_DEBUG
 	#define PNG_DEBUG(msg, ...)        TIL_PRINT_DEBUG("PNG: "msg, __VA_ARGS__)
 #else
