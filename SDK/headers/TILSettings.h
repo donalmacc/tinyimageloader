@@ -38,7 +38,7 @@
 
 #define TIL_VERSION_MAJOR                 1 //!< The version major
 #define TIL_VERSION_MINOR                 6 //!< The version minor
-#define TIL_VERSION_BUGFIX                2 //!< The bugfix version
+#define TIL_VERSION_BUGFIX                3 //!< The bugfix version
 
 #define TIL_PLATFORM_WINDOWS              0 //!< Windows platform
 #define TIL_PLATFORM_WINMO                1 //!< Windows Mobile platform
@@ -46,7 +46,7 @@
 #define TIL_PLATFORM_ANDROID              4 //!< Android platform
 #define TIL_PLATFORM_PSP                  5 //!< PSP platform
 
-//! The platform TinyImageLoader should be built for.
+//! The platform TinyImageLoader should be built for
 /*!
 	If no platform was defined in the preprocessor, it's assumed to be on Windows.
 */
@@ -57,6 +57,7 @@
 #define TIL_TARGET_DEBUG                  1 //!< Debug target
 #define TIL_TARGET_RELEASE                2 //!< Release target
 #define TIL_TARGET_DEVEL                  3 //!< Development target
+
 //! The target to build for
 /*!
 	If no target was set in the preprocessor, the library will compile for release mode.
@@ -155,11 +156,11 @@
 /*!
 	\def TIL_PRINT_DEBUG
 	\brief Print a debug message
-	If in release mode, no debug info is printed.
+	Debug info is only generated when compiled using #TIL_TARGET_DEVEL.
 
 	\def TIL_ERROR_EXPLAIN
 	\brief Prints an error message
-	Error messages are always posted, even in release mode.
+	Error messages are always posted, even when compiled using TIL_TARGET_RELEASE.
 */
 #if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
 	#define TIL_PRINT_DEBUG(msg, ...)  til::AddDebug("TinyImageLoader - Debug: "msg" ", __FILE__, __LINE__, __VA_ARGS__)
@@ -173,24 +174,23 @@
 	The maximum path length for the platform
 */
 #if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS || TIL_PLATFORM == TIL_PLATFORM_WINMO)
+
+	#include <stdarg.h>
+	#include <windows.h>
+
 	#define TIL_MAX_PATH _MAX_PATH
 
 	#if (TIL_PLATFORM == TIL_PLATFORM_WINMO)
-		#define NULL 0
-	#endif
-	#if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
-		#ifndef DOXYGEN_SHOULD_SKIP_THIS
-			#define _CRTDBG_MAP_ALLOC
-			#include <crtdbg.h>
 
-			#if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
-				#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-				#define new DEBUG_NEW
-			#endif
-		#endif
+		#define NULL 0
+
+	#elif (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
+
 	#endif
 #else
+
 	#define TIL_MAX_PATH 256
+
 #endif
 
 namespace til

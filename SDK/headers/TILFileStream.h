@@ -162,7 +162,7 @@ namespace til
 
 			\return a string with the full path to the file
 		*/
-		char* GetFilePath() { return m_FilePath; }
+		const char* GetFilePath();
 
 	protected:
 

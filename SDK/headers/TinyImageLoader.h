@@ -125,6 +125,16 @@ namespace til
 	*/
 	Image* TIL_Load(const char* a_FileName, uint32 a_Options = (TIL_FILE_ABSOLUTEPATH | TIL_DEPTH_A8R8G8B8));
 
+	//! Releases the handle to a til::Image
+	/*!
+		\param a_Image The handle to the til::Image
+
+		\return True on success, false on failure
+
+		This is the recommended way to close a handle to a til::Image.
+	*/
+	bool TIL_Release(Image* a_Image);
+
 	//! Set the internal working directory
 	/*!
 		\param a_Path The path to set the working directory to.

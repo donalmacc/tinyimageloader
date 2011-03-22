@@ -109,4 +109,15 @@ namespace til
 	//@}
 }
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+	#if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS && TIL_RUN_TARGET == TIL_TARGET_DEVEL)
+		#undef _CRTDBG_MAP_ALLOC
+		#define _CRTDBG_MAP_ALLOC
+		#include <crtdbg.h>
+
+		#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+		#define new DEBUG_NEW
+	#endif
+#endif
+
 #endif
