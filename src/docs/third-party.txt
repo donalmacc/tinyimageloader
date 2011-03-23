@@ -16,8 +16,10 @@
 	
 	Download GLEW from their website:
 	
-	http://glew.sourceforge.net/
-	Direct link: http://sourceforge.net/projects/glew/files/glew/1.5.8/glew-1.5.8-win32.zip/download
+	- http://glew.sourceforge.net/
+	- Direct link: http://sourceforge.net/projects/glew/files/glew/1.5.8/glew-1.5.8-win32.zip/download
+	
+	Installation:
 	
 	- Extract the archive to third-party\\GLEW
 	
@@ -30,8 +32,10 @@
 	
 	Download ZLib from their website:
 	
-	http://zlib.net/
-	Direct link: http://zlib.net/zlib-1.2.5.tar.gz
+	- http://zlib.net/
+	- Direct link: http://zlib.net/zlib-1.2.5.tar.gz
+	
+	Installation:
 	
 	- Extract the archive to third-party\\ZLib
 	- Run CMake to generate a Visual Studio project
@@ -48,8 +52,10 @@
 	
 	Download UnZip from their website:
 	
-	http://www.winimage.com/zLibDll/minizip.html
-	Direct link: http://www.winimage.com/zLibDll/unzip101h.zip
+	- http://www.winimage.com/zLibDll/minizip.html
+ 	- Direct link: http://www.winimage.com/zLibDll/unzip101h.zip
+	
+	Installation:
 	
 	- Extract the archive to third-party\\UnZip
 	- Load the provided solution file in Visual Studio (third-party\\UnZip\\UnZip101.sln)
