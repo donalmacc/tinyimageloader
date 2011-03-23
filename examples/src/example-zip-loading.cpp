@@ -361,6 +361,11 @@
 			glDisable(GL_BLEND);
 		}
 
+		void Framework::CloseDown()
+		{
+
+		}
+
 	}; // namespace TILFW
 
 

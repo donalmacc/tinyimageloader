@@ -57,15 +57,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="contents">
 <div class="textblock"><h2><a class="anchor" id="version163"></a>
-Changes in 1.6.3</h2>
+Changes in 1.6.3 (2011-03-23)</h2>
 <ul>
 <li>Added <a class="el" href="namespacetil.html#a8fd384196869e66fbb9377e720986d6e" title="Releases the handle to a til::Image.">til::TIL_Release</a> function, which releases a handle</li>
 <li>Added <a class="el" href="_t_i_l_settings_8h.html#abd9cbffc6a4f8aa90a468d174e2f20ed" title="Development target.">TIL_TARGET_DEVEL</a> target for developers</li>
 <li>Removed unnecessary includes (e.g. windows.h, stdlib.h, etc.)</li>
-<li>Fixed a bug where til::TIL_CloseDown could cause a crash by deleting an unitialized variable</li>
+<li>Fixed a bug where <a class="el" href="namespacetil.html#a777e336727a478c4c4bdfd8c0e3603d7" title="Shuts down TinyImageLoader.">til::TIL_ShutDown</a> could cause a crash by deleting an unitialized variable</li>
 </ul>
 <h2><a class="anchor" id="version162"></a>
-Changes in 1.6.2</h2>
+Changes in 1.6.2 (2011-03-21)</h2>
 <ul>
 <li>Fixed a serious heap corruption bug caused by til::TIL_AddDebug</li>
 <li>Fixed a serious heap corruption bug caused by til::TIL_AddError</li>
@@ -75,16 +75,20 @@ Changes in 1.6.2</h2>
 <li>Fixed memory leaks in <a class="el" href="classtil_1_1_image_i_c_o.html" title="til::Image implementation of an ICO loader.">til::ImageICO</a></li>
 </ul>
 <h2><a class="anchor" id="version161"></a>
-Changes in 1.6.1</h2>
+Changes in 1.6.1 (2011-03-03)</h2>
 <ul>
 <li>Added missing page to documentation</li>
+<li>Fixed Framework project pointing to wrong GLEW library (glew32_x86.lib instead of the standard glew32.lib)</li>
 </ul>
 <h2><a class="anchor" id="version160"></a>
-Changes in 1.6.0</h2>
+Changes in 1.6.0 (2011-03-03)</h2>
 <ul>
+<li>Fixed memory leaks</li>
 <li>Added documentation using Doxygen</li>
-<li>Started DDS support</li>
-<li>Fixed memory leaks </li>
+<li>Added DDS loader (DXT1 and DXT5 support)</li>
+<li>Added FileStream abstraction</li>
+<li>Added detailed tutorial</li>
+<li>Fixed tons of bugs </li>
 </ul>
 </div></div>
 <!--- window showing the filter options -->
@@ -101,7 +105,7 @@ Changes in 1.6.0</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Mar 22 2011 19:13:31 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Wed Mar 23 2011 10:02:57 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

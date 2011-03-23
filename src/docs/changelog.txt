@@ -1,14 +1,14 @@
 /*!
 \page changelog Changelog
 
-\section version163 Changes in 1.6.3
+\section version163 Changes in 1.6.3 (2011-03-23)
 
 	- Added til::TIL_Release function, which releases a handle
 	- Added #TIL_TARGET_DEVEL target for developers
 	- Removed unnecessary includes (e.g. windows.h, stdlib.h, etc.)
-	- Fixed a bug where til::TIL_CloseDown could cause a crash by deleting an unitialized variable
+	- Fixed a bug where til::TIL_ShutDown could cause a crash by deleting an unitialized variable
 
-\section version162 Changes in 1.6.2
+\section version162 Changes in 1.6.2 (2011-03-21)
 
 	- Fixed a serious heap corruption bug caused by til::TIL_AddDebug
 	- Fixed a serious heap corruption bug caused by til::TIL_AddError
@@ -17,13 +17,18 @@
 	- Fixed bug in til::TIL_Load - FileStream was being closed twice
 	- Fixed memory leaks in til::ImageICO
 	
-\section version161 Changes in 1.6.1
+\section version161 Changes in 1.6.1 (2011-03-03)
 
 	- Added missing page to documentation
+	- Fixed Framework project pointing to wrong GLEW library (glew32_x86.lib instead of the standard glew32.lib)
 
-\section version160 Changes in 1.6.0
+\section version160 Changes in 1.6.0 (2011-03-03)
 
-	- Added documentation using Doxygen
-	- Started DDS support
-	- Fixed memory leaks
+    - Fixed memory leaks
+    - Added documentation using Doxygen
+    - Added DDS loader (DXT1 and DXT5 support)
+    - Added FileStream abstraction
+    - Added detailed tutorial
+    - Fixed tons of bugs
+    
 */
