@@ -50,8 +50,8 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
 
-#ifdef TIL_TARGET_DEBUG
-	#define PNG_DEBUG(msg, ...)        TIL_PRINT_DEBUG("PNG: "msg, __VA_ARGS__)
+#if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
+	#define PNG_DEBUG(msg, ...)        TIL_PRINT_DEBUG("PNG: "msg, ##__VA_ARGS__)
 #else
 	#define PNG_DEBUG(msg, ...)
 #endif
@@ -247,7 +247,7 @@ namespace til
 		*dst = Construct_16b_B5G6R5(a_Src[0], a_Src[1], a_Src[2]);
 	}
 
-	ColorFunc g_ColorFunc = NULL;
+	ColorFunc g_ColorFuncPNG = NULL;
 
 #endif
 
@@ -341,6 +341,9 @@ namespace til
 			// DEFLATE spec for generating codes
 			memset(sizes, 0, sizeof(sizes));
 			memset(fast, 255, sizeof(fast));
+
+			//if (a_Amount > )
+
 			for (uint32 i = 0; i < a_Amount; ++i) { ++sizes[a_SizeList[i]]; }
 			sizes[0] = 0;
 			//for (int i = 1; i < 16; ++i) { assert(sizes[i] <= (1 << i)); }
@@ -549,7 +552,7 @@ namespace til
 
 		bigger_data = new char[limit];
 		memcpy(bigger_data, zout_start, limit / 2);
-		delete [] zout_start;
+		delete zout_start;
 
 		zout_start = bigger_data;
 		zout       = bigger_data + cur;
@@ -579,17 +582,17 @@ namespace til
 		int flg   = GetByte();
 		if ((cmf * 256 + flg) % 31 != 0) 
 		{
-			TIL_ERROR_EXPLAIN("Bad ZLib header.");
+			TIL_ERROR_EXPLAIN("Bad ZLib header.", 0);
 			return NULL;
 		}
 		if (flg & 32) 
 		{
-			TIL_ERROR_EXPLAIN("Preset dictionary not allowed.");
+			TIL_ERROR_EXPLAIN("Preset dictionary not allowed.", 0);
 			return NULL;
 		}
 		if (cm != 8)
 		{
-			TIL_ERROR_EXPLAIN("Bad compression.");
+			TIL_ERROR_EXPLAIN("Bad compression.", 0);
 			return NULL;
 		}
 
@@ -613,7 +616,7 @@ namespace til
 			// indexed color
 			else if (type == 3) 
 			{
-				TIL_ERROR_EXPLAIN("TODO: Type == 3.");
+				TIL_ERROR_EXPLAIN("TODO: Type == 3.", 0);
 				return NULL;
 			} 
 			else 
@@ -645,7 +648,7 @@ namespace til
 					result = new Huffman();
 					if (!result->Build(codelength_sizes, 19))
 					{
-						TIL_ERROR_EXPLAIN("Failed to build Huffman thing.");
+						TIL_ERROR_EXPLAIN("Failed to build Huffman thing.", 0);
 						return NULL;
 					}
 
@@ -657,7 +660,7 @@ namespace til
 						//assert(c >= 0 && c < 19);
 						if (c < 0 || c >= 19)
 						{
-							TIL_ERROR_EXPLAIN("Couldn't Huffman decode data.");
+							TIL_ERROR_EXPLAIN("Couldn't Huffman decode data.", 0);
 							return NULL;
 						}
 						if (c < 16)
@@ -680,7 +683,7 @@ namespace til
 						{
 							if (c != 18)
 							{
-								TIL_ERROR_EXPLAIN("C is too big.");
+								TIL_ERROR_EXPLAIN("C is too big.", 0);
 								return NULL;
 							}
 							c = GetCode(7) + 11;
@@ -691,12 +694,15 @@ namespace til
 
 					if (n != hlit + hdist) 
 					{
-						TIL_ERROR_EXPLAIN("Bad codelength.");
+						TIL_ERROR_EXPLAIN("Bad codelength.", 0);
 						return NULL;
 					}
 
 					z_length = new Huffman();
-					z_length->Build(lencodes, hlit);
+					if (!z_length->Build(lencodes, hlit))
+					{
+						TIL_ERROR_EXPLAIN("Could not build z_length.", 0);
+					}
 					z_distance = new Huffman();
 					z_distance->Build(lencodes + hlit, hdist);
 				}
@@ -719,7 +725,7 @@ namespace til
 							PNG_DEBUG("Expanding buffer.");
 							if (!Expand(1))
 							{
-								TIL_ERROR_EXPLAIN("Could not expand stuff.");
+								TIL_ERROR_EXPLAIN("Could not expand stuff.", 0);
 								return 0;
 							}
 						}
@@ -761,7 +767,7 @@ namespace til
 						{
 							if (!Expand(len)) 
 							{
-								TIL_ERROR_EXPLAIN("Could not expand stuff.");
+								TIL_ERROR_EXPLAIN("Could not expand stuff.", 0);
 								return NULL;
 							}
 						}
@@ -809,12 +815,12 @@ namespace til
 		nlen = header[3] * 256 + header[2];
 		if (nlen != (len ^ 0xffff))
 		{
-			TIL_ERROR_EXPLAIN("Corrupt PNG: ZLib corrupt");
+			TIL_ERROR_EXPLAIN("Corrupt PNG: ZLib corrupt", 0);
 			return false;
 		}
 		if (zbuffer + len > zbuffer_end)
 		{
-			TIL_ERROR_EXPLAIN("Corrupt PNG: read past buffer");
+			TIL_ERROR_EXPLAIN("Corrupt PNG: read past buffer", 0);
 			return false;
 		}
 		if (zout + len > zout_end)
@@ -879,7 +885,7 @@ namespace til
 				src[k] = g_FilterFirst[filter](src, a_Src, prior, k, a_Depth);
 			}
 
-			g_ColorFunc(dst, src);
+			g_ColorFuncPNG(dst, src);
 			dst += 4;
 
 			a_Src += a_Depth;
@@ -893,7 +899,7 @@ namespace til
 				{
 					src[k] = g_Filter[filter](src, a_Src, prior, k, 4);
 				}
-				g_ColorFunc(dst, src);
+				g_ColorFuncPNG(dst, src);
 				dst += 4;
 
 				a_Src  += a_Depth;
@@ -1053,7 +1059,7 @@ namespace til
 			{
 				delete m_Pixels[i];
 			}
-			delete [] m_Pixels; 
+			delete m_Pixels; 
 		}
 		if (m_Huffman) { delete m_Huffman; }
 	}
@@ -1116,7 +1122,7 @@ namespace til
 		out = NULL;
 		if (req_comp < 0 || req_comp > 4)
 		{
-			TIL_ERROR_EXPLAIN("Bad req_comp.");
+			TIL_ERROR_EXPLAIN("Bad req_comp.", 0);
 			return false;
 		}
 
@@ -1138,7 +1144,7 @@ namespace til
 			int32 c = GetByte();
 			if (c != png_sig[i])
 			{
-				TIL_ERROR_EXPLAIN("Bad PNG signature.");
+				TIL_ERROR_EXPLAIN("Bad PNG signature.", 0);
 				return false;
 			}
 		}
@@ -1147,35 +1153,35 @@ namespace til
 		{
 
 		case BPP_32B_A8R8G8B8: 
-			g_ColorFunc = ColorFunc_A8R8G8B8; 
+			g_ColorFuncPNG = ColorFunc_A8R8G8B8; 
 			break;
 
 		case BPP_32B_A8B8G8R8:
-			g_ColorFunc = ColorFunc_A8B8G8R8;
+			g_ColorFuncPNG = ColorFunc_A8B8G8R8;
 			break;
 
 		case BPP_32B_R8G8B8A8: 
-			g_ColorFunc = ColorFunc_R8G8B8A8; 
+			g_ColorFuncPNG = ColorFunc_R8G8B8A8; 
 			break;
 
 		case BPP_32B_B8G8R8A8: 
-			g_ColorFunc = ColorFunc_B8G8R8A8; 
+			g_ColorFuncPNG = ColorFunc_B8G8R8A8; 
 			break;
 
 		case BPP_32B_R8G8B8: 
-			g_ColorFunc = ColorFunc_R8G8B8; 
+			g_ColorFuncPNG = ColorFunc_R8G8B8; 
 			break;
 
 		case BPP_32B_B8G8R8: 
-			g_ColorFunc = ColorFunc_B8G8R8;
+			g_ColorFuncPNG = ColorFunc_B8G8R8;
 			break;
 
 		case BPP_16B_R5G6B5: 
-			g_ColorFunc = ColorFunc_R5G6B5; 
+			g_ColorFuncPNG = ColorFunc_R5G6B5; 
 			break;
 
 		case BPP_16B_B5G6R5: 
-			g_ColorFunc = ColorFunc_B5G6R5; 
+			g_ColorFuncPNG = ColorFunc_B5G6R5; 
 			break;
 
 		default:
@@ -1197,7 +1203,7 @@ namespace til
 
 			if (first && m_Chunk->type != PNG_TYPE('I','H','D','R'))
 			{
-				TIL_ERROR_EXPLAIN("Could not find IHDR tag.");
+				TIL_ERROR_EXPLAIN("Could not find IHDR tag.", 0);
 				return NULL;
 			}
 
@@ -1206,19 +1212,19 @@ namespace til
 
 			case PNG_TYPE('I','H','D','R'): 
 				{
-					PNG_DEBUG("Found tag 'IHDR'");
+					PNG_DEBUG("Found tag 'IHDR'", 0);
 
 					int8 depth, color, interlace, compression, filter;
 
 					if (!first)
 					{
-						TIL_ERROR_EXPLAIN("Multiple IHDR tags.");
+						TIL_ERROR_EXPLAIN("Multiple IHDR tags.", 0);
 						return NULL;
 					}
 
 					if (m_Chunk->length != 13) 
 					{
-						TIL_ERROR_EXPLAIN("Bad IHDR length.");
+						TIL_ERROR_EXPLAIN("Bad IHDR length.", 0);
 						return NULL;
 					}
 
@@ -1230,7 +1236,7 @@ namespace til
 					}
 					else if (m_Width == 0) 
 					{
-						TIL_ERROR_EXPLAIN("Zero-length width.");
+						TIL_ERROR_EXPLAIN("Zero-length width.", 0);
 						return NULL;
 					}
 
@@ -1242,7 +1248,7 @@ namespace til
 					}
 					else if (m_Height == 0)
 					{
-						TIL_ERROR_EXPLAIN("Zero-length height.");
+						TIL_ERROR_EXPLAIN("Zero-length height.", 0);
 						return NULL;
 					}
 
@@ -1279,25 +1285,25 @@ namespace til
 					{
 
 					case PNG_COLOR_TYPE_GRAY:
-						PNG_DEBUG("Color type: grayscale");
+						PNG_DEBUG("Color type: grayscale", 0);
 
 					case PNG_COLOR_TYPE_PALETTE:
-						PNG_DEBUG("Color type: paletted");
+						PNG_DEBUG("Color type: paletted", 0);
 						channels = 1;
 						break;
 
 					case PNG_COLOR_TYPE_RGB:
-						PNG_DEBUG("Color type: RGB");
+						PNG_DEBUG("Color type: RGB", 0);
 						channels = 3;
 						break;
 
 					case PNG_COLOR_TYPE_GRAY_ALPHA:
-						PNG_DEBUG("Color type: grayscale with alpha");
+						PNG_DEBUG("Color type: grayscale with alpha", 0);
 						channels = 2;
 						break;
 
 					case PNG_COLOR_TYPE_RGB_ALPHA:
-						PNG_DEBUG("Color type: RGB with alpha");
+						PNG_DEBUG("Color type: RGB with alpha", 0);
 						channels = 4;
 						break;
 
@@ -1322,7 +1328,7 @@ namespace til
 					interlace = GetByte(); 
 					if (interlace) 
 					{
-						TIL_ERROR_EXPLAIN("Interlaced mode not supported.");
+						TIL_ERROR_EXPLAIN("Interlaced mode not supported.", 0);
 						return NULL;
 					}
 
@@ -1331,7 +1337,7 @@ namespace til
 						img_n = (color & 2 ? 3 : 1) + (color & 4 ? 1 : 0);
 						if ((1 << 30) / (m_Width * img_n) < m_Height) 
 						{
-							TIL_ERROR_EXPLAIN("Image too large to decode.");
+							TIL_ERROR_EXPLAIN("Image too large to decode.", 0);
 							return NULL;
 						}
 					}
@@ -1342,7 +1348,7 @@ namespace til
 						img_n = 1;
 						if ((1 << 30) / m_Width / 4 < m_Height) 
 						{
-							TIL_ERROR_EXPLAIN("Too much data.");
+							TIL_ERROR_EXPLAIN("Too much data.", 0);
 							return NULL;
 						}
 						// if SCAN_header, have to scan to see if we have a tRNS
@@ -1355,7 +1361,7 @@ namespace til
 				{
 					// https://wiki.mozilla.org/APNG_Specification#.60acTL.60:_The_Animation_Control_Chunk
 
-					PNG_DEBUG("Found chunk 'acTL' indicating APNG animation.");			
+					PNG_DEBUG("Found chunk 'acTL' indicating APNG animation.", 0);			
 
 					m_Frames = (uint32)GetDWord();
 
@@ -1378,7 +1384,7 @@ namespace til
 
 			case PNG_TYPE('P','L','T','E'):  
 				{
-					PNG_DEBUG("Found tag 'PLTE'");
+					PNG_DEBUG("Found tag 'PLTE'", 0);
 
 					if (m_Chunk->length > 256 * 3) 
 					{
@@ -1389,7 +1395,7 @@ namespace til
 					pal_len = m_Chunk->length / 3;
 					if (pal_len * 3 != m_Chunk->length) 
 					{
-						TIL_ERROR_EXPLAIN("Invalid PLTE.");
+						TIL_ERROR_EXPLAIN("Invalid PLTE.", 0);
 						return NULL;
 					}
 
@@ -1406,18 +1412,18 @@ namespace til
 
 			case PNG_TYPE('t','R','N','S'): 
 				{
-					PNG_DEBUG("Found tag 'tRNS'");
+					PNG_DEBUG("Found tag 'tRNS'", 0);
 
 					if (idata) 
 					{
-						TIL_ERROR_EXPLAIN("tRNS after IDAT.");
+						TIL_ERROR_EXPLAIN("tRNS after IDAT.", 0);
 						return NULL;
 					}
 					if (pal_img_n) 
 					{
 						if (pal_len == 0) 
 						{
-							TIL_ERROR_EXPLAIN("tRNS before PLTE.");
+							TIL_ERROR_EXPLAIN("tRNS before PLTE.", 0);
 							return NULL;
 						}
 						if (m_Chunk->length > pal_len) 
@@ -1436,7 +1442,7 @@ namespace til
 					{
 						if (!(img_n & 1)) 
 						{
-							TIL_ERROR_EXPLAIN("tRNS should contain alpha channel.");
+							TIL_ERROR_EXPLAIN("tRNS should contain alpha channel.", 0);
 							return NULL;
 						}
 
@@ -1457,7 +1463,7 @@ namespace til
 
 			case PNG_TYPE('I','D','A','T'): 
 				{
-					PNG_DEBUG("Found tag 'IDAT'");
+					PNG_DEBUG("Found tag 'IDAT'", 0);
 
 					//if (m_Ani && m_Ani->index > 0) 
 					if (m_Ani)
@@ -1467,7 +1473,7 @@ namespace til
 
 					if (pal_img_n && !pal_len) 
 					{
-						TIL_ERROR_EXPLAIN("IDAT tag before PLTE tag.");
+						TIL_ERROR_EXPLAIN("IDAT tag before PLTE tag.", 0);
 						return NULL;
 					}
 
@@ -1484,7 +1490,7 @@ namespace til
 						uint8* p = (uint8*)realloc(idata, idata_limit); 
 						if (p == NULL)
 						{
-							TIL_ERROR_EXPLAIN("Out of memory.");
+							TIL_ERROR_EXPLAIN("Out of memory.", 0);
 							return NULL;
 						}
 						idata = p;
@@ -1492,7 +1498,7 @@ namespace til
 
 					if (!m_Stream->ReadByte(idata + ioff, m_Chunk->length))
 					{	
-						TIL_ERROR_EXPLAIN("Not enough data.");
+						TIL_ERROR_EXPLAIN("Not enough data.", 0);
 						return NULL;
 					}
 
@@ -1505,18 +1511,18 @@ namespace til
 				{
 					// https://wiki.mozilla.org/APNG_Specification#.60fcTL.60:_The_Frame_Control_Chunk
 
-					PNG_DEBUG("Found chunk 'fcTL'");
+					PNG_DEBUG("Found chunk 'fcTL'", 0);
 
 					if (!m_Ani)
 					{
-						TIL_ERROR_EXPLAIN("'fcTL' chunk before 'acTL' chunk.");
+						TIL_ERROR_EXPLAIN("'fcTL' chunk before 'acTL' chunk.", 0);
 						return NULL;
 					}
 
 					uint32 sequence_nr = (uint32)GetDWord();
 					if (m_Ani->control++ == 0 && sequence_nr != 0)
 					{
-						TIL_ERROR_EXPLAIN("First 'fcTL' chunk did not have sequence number 0.");
+						TIL_ERROR_EXPLAIN("First 'fcTL' chunk did not have sequence number 0.", 0);
 						return NULL;
 					}
 					if (m_Ani->index++ != sequence_nr)
@@ -1591,13 +1597,13 @@ namespace til
 					switch (m_Ani->dispose)
 					{
 					case APNG_DISPOSE_OP_NONE:
-						PNG_DEBUG("Dispose: APNG_DISPOSE_OP_NONE");
+						PNG_DEBUG("Dispose: APNG_DISPOSE_OP_NONE", 0);
 						break;
 					case APNG_DISPOSE_OP_BACKGROUND:
-						PNG_DEBUG("Dispose: APNG_DISPOSE_OP_BACKGROUND");
+						PNG_DEBUG("Dispose: APNG_DISPOSE_OP_BACKGROUND", 0);
 						break;
 					case APNG_DISPOSE_OP_PREVIOUS:
-						PNG_DEBUG("Dispose: APNG_DISPOSE_OP_PREVIOUS");
+						PNG_DEBUG("Dispose: APNG_DISPOSE_OP_PREVIOUS", 0);
 						break;
 					default:
 						TIL_ERROR_EXPLAIN("Unknown dispose operation: %i", m_Ani->dispose);
@@ -1609,10 +1615,10 @@ namespace til
 					switch (m_Ani->blend)
 					{
 					case APNG_BLEND_OP_SOURCE:
-						PNG_DEBUG("Blend: APNG_BLEND_OP_SOURCE");
+						PNG_DEBUG("Blend: APNG_BLEND_OP_SOURCE", 0);
 						break;
 					case APNG_BLEND_OP_OVER:
-						PNG_DEBUG("Blend: APNG_BLEND_OP_OVER");
+						PNG_DEBUG("Blend: APNG_BLEND_OP_OVER", 0);
 						break;
 					default:
 						TIL_ERROR_EXPLAIN("Unknown blend operation: %i", m_Ani->blend);
@@ -1624,11 +1630,11 @@ namespace til
 
 			case PNG_TYPE('f', 'd', 'A', 'T'):
 				{
-					PNG_DEBUG("Found chunk 'fdAT'.");
+					PNG_DEBUG("Found chunk 'fdAT'.", 0);
 
 					if (!m_Ani)
 					{
-						TIL_ERROR_EXPLAIN("'fcTL' chunk before 'acTL' chunk.");
+						TIL_ERROR_EXPLAIN("'fcTL' chunk before 'acTL' chunk.", 0);
 						return NULL;
 					}
 
@@ -1659,7 +1665,7 @@ namespace til
 						uint8* p = (uint8*)realloc(m_Ani->data, m_Ani->data_limit); 
 						if (p == NULL)
 						{
-							TIL_ERROR_EXPLAIN("Out of memory.");
+							TIL_ERROR_EXPLAIN("Out of memory.", 0);
 							return NULL;
 						}
 						m_Ani->data = p;
@@ -1667,7 +1673,7 @@ namespace til
 
 					if (!m_Stream->ReadByte(m_Ani->data + m_Ani->data_offset, len))
 					{	
-						TIL_ERROR_EXPLAIN("Not enough data.");
+						TIL_ERROR_EXPLAIN("Not enough data.", 0);
 						return NULL;
 					}
 
@@ -1678,7 +1684,7 @@ namespace til
 
 			case PNG_TYPE('I','E','N','D'): 
 				{	
-					PNG_DEBUG("Found tag 'IEND'");
+					PNG_DEBUG("Found tag 'IEND'", 0);
 
 					/*if (m_Ani && m_Ani->chunk_idat) 
 					{
@@ -1728,11 +1734,11 @@ namespace til
 	{
 		if (idata == NULL) 
 		{
-			TIL_ERROR_EXPLAIN("No IDAT tag.");
+			TIL_ERROR_EXPLAIN("No IDAT tag.", 0);
 			return false;
 		}
 
-		PNG_DEBUG("Composing IDAT image.");
+		PNG_DEBUG("Composing IDAT image.", 0);
 
 		m_ZBuffer.ZLibDecode(idata, ioff);
 		m_RawLength = (uint32)(m_ZBuffer.zout - m_ZBuffer.zout_start);
@@ -1746,7 +1752,7 @@ namespace til
 
 		if (img_out_n != img_n && img_out_n != img_n + 1)
 		{
-			TIL_ERROR_EXPLAIN("Wrong bitdepth.");
+			TIL_ERROR_EXPLAIN("Wrong bitdepth.", 0);
 			return false;
 		}
 
@@ -1796,7 +1802,7 @@ namespace til
 			{
 				src[k] = g_FilterFirst[filter](src, target, prior, k, img_n);
 			}
-			g_ColorFunc(dst, src);
+			g_ColorFuncPNG(dst, src);
 			dst += 4;
 
 			target += img_n;
@@ -1810,7 +1816,7 @@ namespace til
 				{
 					src[k] = g_Filter[filter](src, target, prior, k, img_out_n);
 				}
-				g_ColorFunc(dst, src);
+				g_ColorFuncPNG(dst, src);
 				dst += 4;
 
 				target += img_n;
@@ -1824,7 +1830,7 @@ namespace til
 
 		if (has_trans)
 		{
-			TIL_ERROR_EXPLAIN("TODO: Compute transparancy.");
+			TIL_ERROR_EXPLAIN("TODO: Compute transparancy.", 0);
 
 			/*if (!compute_transparency(z, tc, s->img_out_n)) 
 			{
@@ -1844,7 +1850,7 @@ namespace til
 				img_out_n = req_comp;
 			}
 
-			TIL_ERROR_EXPLAIN("TODO: Expand palette.");
+			TIL_ERROR_EXPLAIN("TODO: Expand palette.", 0);
 
 			return false;
 

@@ -20,14 +20,13 @@ namespace TILFW
 	float g_Scale = 1.f;
 	bool g_Change = true;
 
-	FILE* g_Log;
-	char* g_LogPath;
+	static FILE* g_Log;
+	static char* g_LogPath;
 
 	void LoggingFunc(til::MessageData* a_Data)
 	{
 		fopen_s(&g_Log, g_LogPath, "a");
 		char msg[1024];
-		//sprintf_s(msg, "%s (at line %i in file %s)", a_Data->message, a_Data->source_line, a_Data->source_file);
 		sprintf_s(msg, 1024, "%s\n", a_Data->message);
 		fputs(msg, g_Log);
 		fclose(g_Log);

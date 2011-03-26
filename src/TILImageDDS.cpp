@@ -45,8 +45,8 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_DDS)
 
-#ifdef TIL_PRINT_DEBUG
-	#define DDS_DEBUG(msg, ...)        TIL_PRINT_DEBUG("DDS: "msg, __VA_ARGS__)
+#if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
+	#define DDS_DEBUG(msg, ...)        TIL_PRINT_DEBUG("DDS: "msg, ##__VA_ARGS__)
 #else
 	#define DDS_DEBUG(msg, ...)
 #endif

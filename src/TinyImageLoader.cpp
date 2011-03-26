@@ -91,15 +91,15 @@ namespace til
 
 			if (g_Options & TIL_FILE_CRLF)
 			{
-				strcpy_s(g_LineFeed, 4, "\r\n");
+				strcpy(g_LineFeed, "\r\n");
 			}
 			else if (g_Options & TIL_FILE_LF)
 			{
-				strcpy_s(g_LineFeed, 4, "\n");
+				strcpy(g_LineFeed, "\n");
 			}
 			else if (g_Options & TIL_FILE_CR)
 			{
-				strcpy_s(g_LineFeed, 4, "\r");
+				strcpy(g_LineFeed, "\r");
 			}
 		}
 	}
@@ -109,6 +109,8 @@ namespace til
 	void TIL_Init(uint32 a_Settings)
 	{
 		g_Options = a_Settings;
+
+		g_WorkingDir = new char[TIL_MAX_PATH];
 
 		if (!g_Error) 
 		{
@@ -138,7 +140,7 @@ namespace til
 		GetModuleFileNameA(NULL, dir, TIL_MAX_PATH);
 		char* lastslash = strrchr(dir, '\\');
 
-		strncpy_s(path, TIL_MAX_PATH, dir, lastslash - dir + 1);
+		strncpy(path, dir, lastslash - dir + 1);
 		path[lastslash - dir + 1] = 0;
 
 		TIL_SetWorkingDirectory(path, strlen(path));
@@ -186,26 +188,25 @@ namespace til
 
 	void AddErrorDefault(MessageData* a_Data)
 	{
-		sprintf_s(
+		sprintf(
 			g_ErrorTemp,
-			TIL_ERROR_MAX_SIZE,
 			"%s (in file %s at line %i)", 
 			a_Data->message, 
 			a_Data->source_file, 
 			a_Data->source_line
 		);
-		strcat_s(g_ErrorTemp, TIL_ERROR_MAX_SIZE, g_LineFeed);
+		strcat(g_ErrorTemp, g_LineFeed);
 
 		bool resize = false;
 		while (strlen(g_ErrorTemp) + strlen(g_Error) >= g_ErrorMaxSize) { g_ErrorMaxSize *= 2; resize = true; }
 		if (resize)
 		{
 			char* move = new char[g_ErrorMaxSize];
-			strcpy_s(move, g_ErrorMaxSize, g_Error);
+			strcpy(move, g_Error);
 			g_Error = move;
 		}
 
-		strcat_s(g_Error, g_ErrorMaxSize, g_ErrorTemp);
+		strcat(g_Error, g_ErrorTemp);
 	}
 
 #endif
@@ -231,7 +232,7 @@ namespace til
 		va_list args;
 		va_start(args, a_Line);
 		if (!g_ErrorTemp) { g_ErrorTemp = new char[TIL_ERROR_MAX_SIZE]; }
-		vsprintf_s(g_ErrorTemp, TIL_ERROR_MAX_SIZE, a_Message, args);
+		vsprintf(g_ErrorTemp, a_Message, args);
 		va_end(args);
 
 		g_Msg.message = g_ErrorTemp;
@@ -261,8 +262,8 @@ namespace til
 
 	void AddDebugDefault(MessageData* a_Data)
 	{
-		sprintf_s(g_DebugTemp, TIL_DEBUG_MAX_SIZE, "%s", a_Data->message);
-		strcat_s(g_DebugTemp, TIL_DEBUG_MAX_SIZE, g_LineFeed);
+		sprintf(g_DebugTemp, "%s", a_Data->message);
+		strcat(g_DebugTemp, g_LineFeed);
 
 		bool resize = false;
 
@@ -281,7 +282,7 @@ namespace til
 			TIL_ClearDebug();
 		}
 
-		strcat_s(g_Debug, g_DebugMaxSize, g_DebugTemp);
+		strcat(g_Debug, g_DebugTemp);
 	}
 
 	void AddDebug(char* a_Message, char* a_File, int a_Line, ...)
@@ -289,7 +290,7 @@ namespace til
 		va_list args;
 		va_start(args, a_Line);
 		if (!g_DebugTemp) { g_DebugTemp = new char[TIL_DEBUG_MAX_SIZE + 1]; }
-		vsprintf_s(g_DebugTemp, TIL_DEBUG_MAX_SIZE, a_Message, args);
+		vsprintf(g_DebugTemp, a_Message, args);
 		va_end(args);
 
 		g_Msg.message = g_DebugTemp;
@@ -302,7 +303,7 @@ namespace til
 
 	void TIL_GetVersion(char* a_Target, size_t a_MaxLength)
 	{
-		sprintf_s(a_Target, a_MaxLength, "%i.%i.%i", TIL_VERSION_MAJOR, TIL_VERSION_MINOR, TIL_VERSION_BUGFIX);
+		sprintf(a_Target, "%i.%i.%i", TIL_VERSION_MAJOR, TIL_VERSION_MINOR, TIL_VERSION_BUGFIX);
 	}
 
 	Image* TIL_Load(FileStream* a_Stream, uint32 a_Options)
@@ -323,27 +324,53 @@ namespace til
 			return NULL;
 		}
 
+		TIL_PRINT_DEBUG("Filepath: %s", filepath);
+
 		Image* result = NULL;
 
 		// lol hack
 		if (0) { }
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
-		else if (!strncmp(filepath + end, ".png", 4)) { result = new ImagePNG(); }
+		else if (!strncmp(filepath + end, ".png", 4)) 
+		{ 
+			result = new ImagePNG(); 
+			TIL_PRINT_DEBUG("Found: PNG", 0);
+		}
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
-		else if (!strncmp(filepath + end, ".gif", 4)) { result = new ImageGIF(); }
+		else if (!strncmp(filepath + end, ".gif", 4)) 
+		{ 
+			result = new ImageGIF(); 
+			TIL_PRINT_DEBUG("Found: GIF", 0);
+		}
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_TGA)
-		else if (!strncmp(filepath + end, ".tga", 4)) { result = new ImageTGA(); }
+		else if (!strncmp(filepath + end, ".tga", 4)) 
+		{ 
+			result = new ImageTGA(); 
+			TIL_PRINT_DEBUG("Found: TGA", 0);
+		}
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_BMP)
-		else if (!strncmp(filepath + end, ".bmp", 4)) { result = new ImageBMP(); }
+		else if (!strncmp(filepath + end, ".bmp", 4)) 
+		{ 
+			result = new ImageBMP();
+			TIL_PRINT_DEBUG("Found: BMP", 0);
+		}
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_ICO)
-		else if (!strncmp(filepath + end, ".ico", 4)) { result = new ImageICO(); }
+		else if (!strncmp(filepath + end, ".ico", 4)) 
+		{ 
+			result = new ImageICO(); 
+			TIL_PRINT_DEBUG("Found: ICO", 0);
+		}
 #endif
 #if (TIL_FORMAT & TIL_FORMAT_DDS)
-		else if (!strncmp(filepath + end, ".dds", 4)) { result = new ImageDDS(); }
+		else if (!strncmp(filepath + end, ".dds", 4)) 
+		{ 
+			result = new ImageDDS(); 
+			TIL_PRINT_DEBUG("Found: DDS", 0);
+		}
 #endif
 		else
 		{
@@ -373,12 +400,6 @@ namespace til
 			delete a_Stream;
 			return NULL;
 		}
-		/*else if (!result->Close())
-		{
-			TIL_ERROR_EXPLAIN("Could not close file.");
-			delete result;
-			return NULL;
-		}*/
 
 		a_Stream->Close();
 
@@ -406,24 +427,22 @@ namespace til
 
 	size_t TIL_SetWorkingDirectory(const char* a_Path, size_t a_Length )
 	{
-		if (!g_WorkingDir)
-		{
-			g_WorkingDir = new char[a_Length + 1];
-		}
-
 		g_WorkingDirLength = strlen(a_Path);
-		strcpy_s(g_WorkingDir, g_WorkingDirLength + 1, a_Path);
+		if (g_WorkingDirLength > TIL_MAX_PATH - 1) { g_WorkingDirLength = TIL_MAX_PATH - 1; }
+		strncpy(g_WorkingDir, a_Path, g_WorkingDirLength);
+		g_WorkingDir[g_WorkingDirLength] = 0;
 
 		return g_WorkingDirLength;
 	}
 
 	void TIL_AddWorkingDirectory( char* a_Dst, size_t a_MaxLength, const char* a_Path )
 	{
-		if (g_WorkingDir) 
-		{ 
-			strncpy_s(a_Dst, a_MaxLength, g_WorkingDir, g_WorkingDirLength); 
-		}
-		strcat_s(a_Dst, a_MaxLength, a_Path);
+		if (a_MaxLength < g_WorkingDirLength + strlen(a_Path)) { return; }
+
+		strcpy(a_Dst, g_WorkingDir); 
+		strcat(a_Dst, a_Path);
+
+		int i = 0;
 	}
 
 	void TIL_SetFileStreamFunc(FileStreamFunc a_Func)

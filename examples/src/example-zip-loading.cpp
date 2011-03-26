@@ -35,8 +35,8 @@
 	{
 		fopen_s(&g_Log, g_LogPath, "a");
 		char msg[1024];
-		//sprintf_s(msg, "%s (at line %i in file %s)", a_Data->message, a_Data->source_line, a_Data->source_file);
-		sprintf_s(msg, 1024, "%s\n", a_Data->message);
+		//TIL_SPRINTF(msg, "%s (at line %i in file %s)", a_Data->message, a_Data->source_line, a_Data->source_file);
+		TIL_SPRINTF(msg, 1024, "%s\n", a_Data->message);
 		fputs(msg, g_Log);
 		fclose(g_Log);
 	}

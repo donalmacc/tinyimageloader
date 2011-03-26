@@ -54,6 +54,17 @@
 	#define TIL_PLATFORM                  TIL_PLATFORM_WINDOWS
 #endif
 
+#define TIL_COMPILER_MSVC                 0 //!< Microsoft Visual Studio compiler
+#define TIL_COMPILER_GPP                  1 //!< GNU C++ compiler
+
+//! The compiler to build with
+/*!
+	If no compiler was defined in the preprocessor, TinyImageLoader assumes MSVC is being used.
+*/
+#ifndef TIL_COMPILER
+	#define TIL_COMPILER                  TIL_COMPILER_MSVC
+#endif
+
 #define TIL_TARGET_DEBUG                  1 //!< Debug target
 #define TIL_TARGET_RELEASE                2 //!< Release target
 #define TIL_TARGET_DEVEL                  3 //!< Development target
@@ -163,34 +174,35 @@
 	Error messages are always posted, even when compiled using TIL_TARGET_RELEASE.
 */
 #if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
-	#define TIL_PRINT_DEBUG(msg, ...)  til::AddDebug("TinyImageLoader - Debug: "msg" ", __FILE__, __LINE__, __VA_ARGS__)
+	#define TIL_PRINT_DEBUG(msg, ...)  til::AddDebug("TinyImageLoader - Debug: "msg" ", __FILE__, __LINE__, ##__VA_ARGS__)
 #else
 	#define TIL_PRINT_DEBUG(msg, ...)
 #endif
-#define TIL_ERROR_EXPLAIN(msg, ...)    til::AddError("TinyImageLoader - Error: "msg" ", __FILE__, __LINE__, __VA_ARGS__)
+#define TIL_ERROR_EXPLAIN(msg, ...)    til::AddError("TinyImageLoader - Error: "msg" ", __FILE__, __LINE__, ##__VA_ARGS__)
 
 /*!
 	\def TIL_MAX_PATH
 	The maximum path length for the platform
 */
 #if (TIL_PLATFORM == TIL_PLATFORM_WINDOWS || TIL_PLATFORM == TIL_PLATFORM_WINMO)
-
 	#include <stdarg.h>
 	#include <windows.h>
 
 	#define TIL_MAX_PATH _MAX_PATH
 
 	#if (TIL_PLATFORM == TIL_PLATFORM_WINMO)
-
 		#define NULL 0
-
 	#elif (TIL_PLATFORM == TIL_PLATFORM_WINDOWS)
 
 	#endif
 #else
-
 	#define TIL_MAX_PATH 256
 
+	#if (TIL_PLATFORM == TIL_PLATFORM_ANDROID)
+		#include <cstddef>
+		#include <stdarg.h>
+		#include <string.h>
+	#endif
 #endif
 
 namespace til
@@ -200,27 +212,59 @@ namespace til
 	// Unsigned
 	// =========================================
 
+#if (TIL_COMPILER == TIL_COMPILER_MSVC)
+
 	typedef unsigned __int64                  uint64; //!< 64-bit unsigned integer
 	typedef unsigned long                     uint32; //!< 32-bit unsigned integer
 	typedef unsigned short                    uint16; //!< 16-bit unsigned integer
 	typedef unsigned char                     uint8;  //!< 8-bit unsigned integer
 
+#elif (TIL_COMPILER == TIL_COMPILER_GPP)
+
+	typedef unsigned long long                uint64; //!< 64-bit unsigned integer
+	typedef unsigned long                     uint32; //!< 32-bit unsigned integer
+	typedef unsigned short                    uint16; //!< 16-bit unsigned integer
+	typedef unsigned char                     uint8;  //!< 8-bit unsigned integer
+
+#endif
+
 	// =========================================
 	// Signed
 	// =========================================
+
+#if (TIL_COMPILER == TIL_COMPILER_MSVC)
 
 	typedef __int64                           int64;  //!< 64-bit signed integer
 	typedef long                              int32;  //!< 32-bit signed integer
 	typedef short                             int16;  //!< 16-bit signed integer
 	typedef char                              int8;   //!< 8-bit signed integer
 
+#elif (TIL_COMPILER == TIL_COMPILER_GPP)
+
+	typedef long long                         int64;  //!< 64-bit signed integer
+	typedef long                              int32;  //!< 32-bit signed integer
+	typedef short                             int16;  //!< 16-bit signed integer
+	typedef char                              int8;   //!< 8-bit signed integer
+
+#endif
+
 	// =========================================
 	// Datatypes
 	// =========================================
 
+#if (TIL_COMPILER == TIL_COMPILER_MSVC)
+
 	typedef unsigned char                     byte;  //!< smallest chunk of data
 	typedef unsigned short                    word;  //!< two bytes
 	typedef unsigned long                     dword; //!< four bytes or two words
+
+#elif (TIL_COMPILER == TIL_COMPILER_GPP)
+
+	typedef unsigned char                     byte;  //!< smallest chunk of data
+	typedef unsigned short                    word;  //!< two bytes
+	typedef unsigned long                     dword; //!< four bytes or two words
+
+#endif
 
 	// =========================================
 	// Colors

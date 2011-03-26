@@ -27,8 +27,8 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_TGA)
 
-#ifdef TIL_TARGET_DEBUG
-	#define TGA_DEBUG(msg, ...)        TIL_PRINT_DEBUG("TGA: "msg, __VA_ARGS__)
+#if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
+	#define TGA_DEBUG(msg, ...)        TIL_PRINT_DEBUG("TGA: "msg, ##__VA_ARGS__)
 #else
 	#define TGA_DEBUG(msg, ...)
 #endif
@@ -150,7 +150,7 @@ namespace til
 		return (uint8*)dst;
 	}
 
-	ColorFuncComp g_ColorFunc = NULL;
+	ColorFuncComp g_ColorFuncTGA = NULL;
 
 #endif
 
@@ -178,7 +178,7 @@ namespace til
 			m_Stream->Read(src, m_Width, m_Depth);
 
 			uint8* src_copy = src;
-			dst = g_ColorFunc(dst, src_copy, 1, m_Width);
+			dst = g_ColorFuncTGA(dst, src_copy, 1, m_Width);
 
 			m_Target -= m_Pitch;
 		}
@@ -224,7 +224,7 @@ namespace til
 					unique = count;
 				}
 
-				dst = g_ColorFunc(dst, src_color, repeat, unique);
+				dst = g_ColorFuncTGA(dst, src_color, repeat, unique);
 
 				x += count;
 			}
@@ -331,35 +331,35 @@ namespace til
 		{
 		
 		case BPP_32B_A8R8G8B8: 
-			g_ColorFunc = ColorFunc_A8R8G8B8_Comp; 
+			g_ColorFuncTGA = ColorFunc_A8R8G8B8_Comp; 
 			break;
 
 		case BPP_32B_A8B8G8R8:
-			g_ColorFunc = ColorFunc_A8B8G8R8_Comp;
+			g_ColorFuncTGA = ColorFunc_A8B8G8R8_Comp;
 			break;
 
 		case BPP_32B_R8G8B8A8: 
-			g_ColorFunc = ColorFunc_R8G8B8A8_Comp; 
+			g_ColorFuncTGA = ColorFunc_R8G8B8A8_Comp; 
 			break;
 
 		case BPP_32B_B8G8R8A8: 
-			g_ColorFunc = ColorFunc_B8G8R8A8_Comp; 
+			g_ColorFuncTGA = ColorFunc_B8G8R8A8_Comp; 
 			break;
 
 		case BPP_32B_R8G8B8: 
-			g_ColorFunc = ColorFunc_R8G8B8_Comp; 
+			g_ColorFuncTGA = ColorFunc_R8G8B8_Comp; 
 			break;
 
 		case BPP_32B_B8G8R8: 
-			g_ColorFunc = ColorFunc_B8G8R8_Comp; 
+			g_ColorFuncTGA = ColorFunc_B8G8R8_Comp; 
 			break;
 
 		case BPP_16B_R5G6B5: 
-			g_ColorFunc = ColorFunc_R5G6B5_Comp; 
+			g_ColorFuncTGA = ColorFunc_R5G6B5_Comp; 
 			break;
 
 		case BPP_16B_B5G6R5: 
-			g_ColorFunc = ColorFunc_B5G6R5_Comp; 
+			g_ColorFuncTGA = ColorFunc_B5G6R5_Comp; 
 			break;
 
 		default:

@@ -58,7 +58,7 @@
 #if (TIL_FORMAT & TIL_FORMAT_GIF)
 
 #ifdef TIL_TARGET_DEBUG
-	#define GIF_DEBUG(msg, ...)        TIL_PRINT_DEBUG("GIF: "msg, __VA_ARGS__)
+	#define GIF_DEBUG(msg, ...)        TIL_PRINT_DEBUG("GIF: "msg, ##__VA_ARGS__)
 #else
 	#define GIF_DEBUG(msg, ...)
 #endif
@@ -283,7 +283,7 @@ namespace til
 
 		if (*(uint32*)m_Buffer != GIF_TYPE('G', 'I', 'F', '8'))
 		{
-			TIL_ERROR_EXPLAIN("No GIF header found.");
+			TIL_ERROR_EXPLAIN("No GIF header found.", 0);
 			return false;
 		}
 
@@ -383,7 +383,7 @@ namespace til
 
 		if (m_Buffer[0] != 0x2c) 
 		{
-			TIL_ERROR_EXPLAIN("No image descriptor found.");
+			TIL_ERROR_EXPLAIN("No image descriptor found.", 0);
 			return false;
 		}
 
@@ -437,8 +437,8 @@ namespace til
 			AddBuffer();
 			target = m_Current->buffer;
 
-			//MemCpy(target, m_PrevBuffer, m_TotalBytes);
-			memcpy(target, m_PrevBuffer, m_TotalBytes);
+			MemCpy(target, m_PrevBuffer, m_TotalBytes);
+			//memcpy(target, m_PrevBuffer, m_TotalBytes);
 
 			uint32 xy = (m_OffsetY * m_Width) + (m_OffsetX);
 

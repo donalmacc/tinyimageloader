@@ -45,7 +45,7 @@ namespace til
 
 		if (a_Options == TIL_FILE_ABSOLUTEPATH)
 		{
-			strcpy_s(path, TIL_MAX_PATH, a_File);
+			strcpy(path, a_File);
 		}
 		else if (a_Options == TIL_FILE_ADDWORKINGDIR)
 		{
@@ -56,9 +56,9 @@ namespace til
 
 		length = strlen(path);
 		m_FilePath = new char[length + 1];
-		strcpy_s(m_FilePath, length + 1, path);
+		strcpy(m_FilePath, path);
 
-		fopen_s(&m_Handle, m_FilePath, "rb");
+		m_Handle = fopen(m_FilePath, "rb");
 		if (!m_Handle)
 		{
 			TIL_ERROR_EXPLAIN("Could not open '%s'.", path);

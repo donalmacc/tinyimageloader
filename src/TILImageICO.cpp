@@ -30,13 +30,13 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_ICO)
 
-#ifdef TIL_TARGET_DEBUG
-	#define ICO_DEBUG(msg, ...)        TIL_PRINT_DEBUG("ICO: "msg, __VA_ARGS__)
+#if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
+	#define ICO_DEBUG(msg, ...)        TIL_PRINT_DEBUG("ICO: "msg, ##__VA_ARGS__)
 #else
 	#define ICO_DEBUG(msg, ...)
 #endif
 
-//#define GETBIT(data, place) ((data >> (place)) & 1)
+//#define GETBIT(data, place) 0
 #define GETBIT(data, place) ((data >> (8 - place)) & 1)
 
 namespace til
@@ -51,7 +51,7 @@ namespace til
 		color_32b* dst = (color_32b*)a_Dst;
 
 		uint8* src = a_Src;
-		uint8* and = a_AndMask;
+		uint8* andmask = a_AndMask;
 
 		if (a_Buffer->palette == 16)
 		{
@@ -59,7 +59,7 @@ namespace til
 			{
 				for (int32 j = 1; j < 8; j += 2)
 				{
-					if (GETBIT(*and, j    ) == 0) 
+					if (GETBIT(*andmask, j    ) == 0) 
 					{ 
 						*dst = a_Buffer->colors[(*src & 0xF0) >> 4];
 					}
@@ -69,7 +69,7 @@ namespace til
 					}
 					dst++;
 
-					if (GETBIT(*and, j - 1) == 0) 
+					if (GETBIT(*andmask, j - 1) == 0) 
 					{ 
 						*dst = a_Buffer->colors[(*src & 0x0F)     ]; 
 					}
@@ -86,7 +86,7 @@ namespace til
 
 					src++;
 				}
-				and++;
+				andmask++;
 			}
 
 			return (uint8*)dst;
@@ -296,7 +296,7 @@ namespace til
 				} BITMAPINFOHEADER, FAR *LPBITMAPINFOHEADER, *PBITMAPINFOHEADER;
 			*/
 
-			unsigned long size2 = sizeof(BITMAPINFOHEADER);
+			//unsigned long size2 = sizeof(BITMAPINFOHEADER);
 
 #ifdef OLDMETHOD
 			fseek(m_Handle, cur->offset, SEEK_SET);
@@ -390,7 +390,7 @@ namespace til
 #endif
 
 				byte* read = src;
-				byte* and = cur->andmask;
+				byte* andmask = cur->andmask;
 
 				int offset = (cur->width / 8);
 
@@ -398,25 +398,25 @@ namespace til
 				{
 					for (uint32 y = 0; y < cur->pitchy; y++)
 					{
-						g_ColorFuncRow(target, read, and, cur);
+						g_ColorFuncRow(target, read, andmask, cur);
 						target -= pitch;
 						read += cur->pitch;
-						and += cur->width / 8;
+						andmask += cur->width / 8;
 
-						g_ColorFuncRow(target, read, and, cur);
+						g_ColorFuncRow(target, read, andmask, cur);
 						target -= pitch;
 						read += cur->pitch;
-						and += cur->width / 8;
+						andmask += cur->width / 8;
 					}
 				}
 				else
 				{
 					for (uint32 y = 0; y < cur->pitchy; y++)
 					{
-						g_ColorFuncRow(target, read, and, cur);
+						g_ColorFuncRow(target, read, andmask, cur);
 						target -= pitch;
 						read += cur->pitch;
-						and += cur->width / 8;
+						andmask += cur->width / 8;
 					}
 				}
 
