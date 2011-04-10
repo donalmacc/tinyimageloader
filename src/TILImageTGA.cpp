@@ -235,7 +235,7 @@ namespace til
 		return true;
 	}
 
-	bool ImageTGA::Parse(uint32 a_ColorDepth)
+	bool ImageTGA::Parse(uint32 a_Options)
 	{
 		byte id;              m_Stream->ReadByte(&id);
 		byte colormap;        m_Stream->ReadByte(&colormap);
@@ -323,8 +323,10 @@ namespace til
 		m_Width = (uint32)width;
 		m_Height = (uint32)height;
 
-		m_Pixels = new byte[width * height * m_BPP];
-		m_Pitch = m_Width * m_BPP;
+		Internal::SetPitch(a_Options, m_Width, m_Height, m_PitchX, m_PitchY);
+
+		m_Pixels = new byte[m_PitchX * m_PitchY * m_BPP];
+		m_Pitch = m_PitchX * m_BPP;
 		m_Target = m_Pixels + ((m_Height - 1) * m_Pitch);
 
 		switch (m_BPPIdent)
@@ -396,6 +398,16 @@ namespace til
 	uint32 ImageTGA::GetHeight(uint32 a_Frame)
 	{
 		return m_Height;
+	}
+
+	uint32 ImageTGA::GetPitchHorizontal(uint32 a_Frame /*= 0*/)
+	{
+		return m_PitchX;
+	}
+
+	uint32 ImageTGA::GetPitchVertical(uint32 a_Frame /*= 0*/)
+	{
+		return m_PitchY;
 	}
 
 }; // namespace til

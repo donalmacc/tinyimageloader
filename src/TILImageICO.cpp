@@ -529,6 +529,16 @@ namespace til
 		if (a_Buffer->colors) { delete a_Buffer->colors; }
 	}
 
+	uint32 ImageICO::GetPitchHorizontal(uint32 a_Frame /*= 0*/)
+	{
+		return m_Pitch;
+	}
+
+	uint32 ImageICO::GetPitchVertical(uint32 a_Frame /*= 0*/)
+	{
+		return m_Height;
+	}
+
 }; // namespace til
 
 #endif

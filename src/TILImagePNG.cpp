@@ -1114,7 +1114,7 @@ namespace til
 		return false;
 	}
 
-	bool ImagePNG::Parse(uint32 a_ColorDepth /*= TIL_DEPTH_A8R8G8B8*/)
+	bool ImagePNG::Parse(uint32 a_Options /*= TIL_DEPTH_A8R8G8B8*/)
 	{
 		req_comp = 1;
 		expanded = NULL;
@@ -1254,6 +1254,8 @@ namespace til
 
 					PNG_DEBUG("Width: %i", m_Width);
 					PNG_DEBUG("Height: %i", m_Height);
+
+					Internal::SetPitch(a_Options, m_Width, m_Height, m_PitchX, m_PitchY);
 
 					depth = GetByte(); 
 					if (depth != 8)
@@ -1885,6 +1887,17 @@ namespace til
 	{
 		return m_Width;
 	}
+
+	uint32 ImagePNG::GetPitchHorizontal(uint32 a_Frame /*= 0*/)
+	{
+		return m_Pitch;
+	}
+
+	uint32 ImagePNG::GetPitchVertical(uint32 a_Frame /*= 0*/)
+	{
+		return m_Height;
+	}
+
 
 }; // namespace til
 

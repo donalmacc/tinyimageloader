@@ -105,12 +105,13 @@ namespace til
 		ImagePNG();
 		~ImagePNG();
 
-		
-
-		bool Parse(uint32 a_ColorDepth);
+		bool Parse(uint32 a_Options);
 
 		uint32 GetWidth(uint32 a_Frame = 0);
 		uint32 GetHeight(uint32 a_Frame = 0);
+
+		uint32 GetPitchHorizontal(uint32 a_Frame = 0);
+		uint32 GetPitchVertical(uint32 a_Frame = 0);
 
 		uint32 GetFrameCount();
 		byte* GetPixels(uint32 a_Frame = 0);
@@ -139,6 +140,7 @@ namespace til
 
 		byte** m_Pixels;
 		uint32 m_Width, m_Height, m_Pitch;
+		uint32 m_PitchX, m_PitchY;
 
 		uint8 *idata, *expanded, *out;
 		uint32 ioff, m_RawLength;

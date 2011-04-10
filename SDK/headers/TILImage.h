@@ -100,8 +100,6 @@ namespace til
 
 		//! Get the color depth as an enum
 		BitDepth GetBitDepth() { return m_BPPIdent; }
-	
-		// TODO: Replace parameters with FileStream*
 
 		//! Load an image
 		/*!
@@ -119,12 +117,12 @@ namespace til
 
 		//! Parses the actual image data.
 		/*!
-			\param a_ColorDepth The color depth received from #SetBPP;
+			\param a_Options The options used for parsing
 			
 			This method is pure virtual and should be overwritten by an
 			image loading implementation.
 		*/
-		virtual bool Parse(uint32 a_ColorDepth) = 0;
+		virtual bool Parse(uint32 a_Options) = 0;
 
 		//! Returns the amount of frames this image contains.
 		/*!
@@ -132,8 +130,8 @@ namespace til
 
 			\note There is never going to be support for other video formats.
 			This is because TinyImageLoader is an *image* loader, not a video loader.
-			The exception to the rule are GIF89 and APNG, because it concerns an extension
-			to a normally single-framed format.
+			The exception to the rule are GIF89 and APNG, because both concern an extension
+			to a standard of an otherwise single-framed format.
 		*/
 		virtual uint32 GetFrameCount() { return 1; }
 
@@ -152,7 +150,7 @@ namespace til
 			\return Pixel array as a byte array.
 
 			The data is encoded according to the color depth specified.
-			For instance, when loading images as 32-bit ARGB, the stream
+			For instance, when loading images as 32-bit RGBA, the stream
 			of bytes must be converted to unsigned long before being
 			used.
 
@@ -165,9 +163,9 @@ namespace til
 
 		//! Get the width of a frame
 		/*!
-			\param a_Frame The frame of an animation or image to return.
+			\param a_Frame The frame of an animation or subimage to return
 
-			\return The width as a uint32.
+			\return Width in pixels
 
 			Some formats support multiple frames or images with different dimensions.
 			You can call this function with a frame number to get the correct dimensions.
@@ -176,14 +174,46 @@ namespace til
 
 		//! Get the height of a frame
 		/*!
-			\param a_Frame The frame of an animation or image to return.
+			\param a_Frame The frame of an animation or subimage to return
 
-			\return The height as a uint32.
+			\return Height in pixels
 
 			Some formats support multiple frames or images with different dimensions.
 			You can call this function with a frame number to get the correct dimensions.
 		*/
 		virtual uint32 GetHeight(uint32 a_Frame = 0) = 0;
+
+		//! Get the horizontal pitch of a frame
+		/*!
+			\param a_Frame The frame of an animation or subimage to return
+
+			\return Width of pitch in pixels
+
+			The pitch is a number that indicates the width of each scanline with padding.
+			When you are loading images on a platform that doesn't support widths and heights that
+			aren't a non-power of two for instance, you can tell TinyImageLoader to use a
+			power of two anyway.
+
+			Some formats support multiple frames or images with different dimensions.
+			You can call this function with a frame number to get the correct dimensions.
+		*/
+		virtual uint32 GetPitchHorizontal(uint32 a_Frame = 0) = 0;
+
+		//! Get the vertical pitch of a frame
+		/*!
+			\param a_Frame The frame of an animation or subimage to return
+
+			\return Width of pitch in pixels
+
+			The vertical pitch is a number that indicates the height of the image with padding.
+			When you are loading images on a platform that doesn't support widths and heights that
+			aren't a non-power of two for instance, you can tell TinyImageLoader to use a
+			power of two anyway.
+
+			Some formats support multiple frames or images with different dimensions.
+			You can call this function with a frame number to get the correct dimensions.
+		*/
+		virtual uint32 GetPitchVertical(uint32 a_Frame = 0) = 0;
 
 	protected:
 

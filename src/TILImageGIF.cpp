@@ -93,7 +93,7 @@ namespace til
 		{
 			m_Current->next = new BufferLinked;
 			m_Current->next->next    = NULL;
-			m_Current->next->buffer  = new byte[m_Width * m_Height * m_BPP];
+			m_Current->next->buffer  = new byte[m_LocalPitchX * m_LocalPitchY * m_BPP];
 			m_Current = m_Current->next;
 		}
 		else
@@ -101,7 +101,7 @@ namespace til
 			m_First = new BufferLinked;
 			m_Current = m_First;
 			m_Current->next    = NULL;
-			m_Current->buffer  = new byte[m_Width * m_Height * m_BPP];
+			m_Current->buffer  = new byte[m_LocalPitchX * m_LocalPitchY * m_BPP];
 		}
 	}
 
@@ -116,12 +116,12 @@ namespace til
 
 		if (m_Colors) { delete m_Colors; }
 		m_Colors = new byte[m_ColorTableSize * m_BPP];
-		MemSet(m_Colors, 0, m_ColorTableSize * m_BPP);
+		Internal::MemSet(m_Colors, 0, m_ColorTableSize * m_BPP);
 
-		switch (m_ColorDepth)
+		switch (m_BPPIdent)
 		{
 
-		case TIL_DEPTH_A8R8G8B8:
+		case BPP_32B_A8R8G8B8:
 			{
 				color_32b* dst = (color_32b*)m_Colors;
 
@@ -138,7 +138,7 @@ namespace til
 				break;
 			}
 
-		case TIL_DEPTH_A8B8G8R8:
+		case BPP_32B_A8B8G8R8:
 			{
 				color_32b* dst = (color_32b*)m_Colors;
 
@@ -155,7 +155,7 @@ namespace til
 				break;
 			}
 
-		case TIL_DEPTH_R8G8B8A8:
+		case BPP_32B_R8G8B8A8:
 			{
 				color_32b* dst = (color_32b*)m_Colors;
 
@@ -172,7 +172,7 @@ namespace til
 				break;
 			}
 
-		case TIL_DEPTH_B8G8R8A8:
+		case BPP_32B_B8G8R8A8:
 			{
 				color_32b* dst = (color_32b*)m_Colors;
 
@@ -189,7 +189,7 @@ namespace til
 				break;
 			}
 
-		case TIL_DEPTH_R8G8B8:
+		case BPP_32B_R8G8B8:
 			{
 				byte* dst = m_Colors;
 
@@ -205,7 +205,7 @@ namespace til
 				break;
 			}
 
-		case TIL_DEPTH_B8G8R8:
+		case BPP_32B_B8G8R8:
 			{
 				byte* dst = m_Colors;
 
@@ -221,7 +221,7 @@ namespace til
 				break;
 			}
 
-		case TIL_DEPTH_R5G6B5:
+		case BPP_16B_R5G6B5:
 			{
 				color_16b* dst = (color_16b*)m_Colors;
 
@@ -244,7 +244,7 @@ namespace til
 				break;
 			}
 
-		case TIL_DEPTH_B5G6R5:
+		case BPP_16B_B5G6R5:
 			{
 				color_16b* dst = (color_16b*)m_Colors;
 
@@ -277,7 +277,7 @@ namespace til
 		m_CurrentColors = m_Colors;
 	}
 
-	bool ImageGIF::Parse(uint32 a_ColorDepth/*= TIL_DEPTH_A8R8G8B8*/)
+	bool ImageGIF::Parse(uint32 a_Options/*= TIL_DEPTH_A8R8G8B8*/)
 	{
 		m_Stream->ReadByte(m_Buffer, 6);
 
@@ -286,8 +286,6 @@ namespace til
 			TIL_ERROR_EXPLAIN("No GIF header found.", 0);
 			return false;
 		}
-
-		m_ColorDepth = a_ColorDepth;
 
 		m_Stream->Read(m_Buffer, 7, 1);
 
@@ -397,11 +395,12 @@ namespace til
 
 		m_LocalWidth = m_Width;
 		m_LocalHeight = m_Height;
-		m_LocalPitch = m_Width * m_BPP;
+		Internal::SetPitch(a_Options, m_LocalWidth, m_LocalHeight, m_LocalPitchX, m_LocalPitchY);
+		m_LocalPitch = m_LocalPitchX * m_BPP;
 
-		m_TotalBytes = m_Width * m_Height * m_BPP;
+		m_TotalBytes = m_LocalPitchX * m_LocalPitchY * m_BPP;
 		m_PrevBuffer = new byte[m_TotalBytes];
-		MemSet(m_PrevBuffer, 0, m_TotalBytes);
+		Internal::MemSet(m_PrevBuffer, 0, m_TotalBytes);
 
 		GIF_DEBUG("Width: %i", m_Width);
 		GIF_DEBUG("Height: %i", m_Height);
@@ -437,7 +436,7 @@ namespace til
 			AddBuffer();
 			target = m_Current->buffer;
 
-			MemCpy(target, m_PrevBuffer, m_TotalBytes);
+			Internal::MemCpy(target, m_PrevBuffer, m_TotalBytes);
 			//memcpy(target, m_PrevBuffer, m_TotalBytes);
 
 			uint32 xy = (m_OffsetY * m_Width) + (m_OffsetX);
@@ -745,6 +744,16 @@ namespace til
 
 			delete a_Buffer->buffer;
 		}
+	}
+
+	uint32 ImageGIF::GetPitchHorizontal(uint32 a_Frame /*= 0*/)
+	{
+		return m_Pitch;
+	}
+
+	uint32 ImageGIF::GetPitchVertical(uint32 a_Frame /*= 0*/)
+	{
+		return m_Height;
 	}
 
 }; // namespace til

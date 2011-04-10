@@ -135,6 +135,16 @@ namespace til
 	*/
 	bool TIL_Release(Image* a_Image);
 
+	//! Sets the alpha key
+	/*!
+		\param a_State Turn alpha keying on or off
+		\param a_Red The red component
+		\param a_Green The green component
+		\param a_Blue The blue component
+		\param a_Alpha The alpha component
+	*/
+	void TIL_SetAlphaKey(bool a_State, uint8 a_Red = 0, uint8 a_Green = 0, uint8 a_Blue = 0, uint8 a_Alpha = 0);
+
 	//! Set the internal working directory
 	/*!
 		\param a_Path The path to set the working directory to.

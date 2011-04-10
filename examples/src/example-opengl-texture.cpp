@@ -14,7 +14,7 @@ namespace TILFW
 	static GLuint* g_Texture;
 	static unsigned int g_TextureTotal;
 	static unsigned int g_TextureCurrent = 0;
-	til::Image* g_Load;
+	static til::Image* g_Load;
 	float g_PosX, g_PosY;
 	float g_ScaleX, g_ScaleY;
 	float g_Scale = 1.f;
@@ -78,7 +78,12 @@ namespace TILFW
 
 		if (a_Commands == 1)
 		{
-			g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\BMP\\main.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | TIL_PITCH_SQUARE_POWER_OF_TWO);
+			til::uint32 pitch = TIL_PITCH_SQUARE_POWER_OF_TWO;
+			//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | pitch);
+			g_Load = til::TIL_Load("media\\BMP\\main.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | pitch);
+			//g_Load = til::TIL_Load("media\\TGA\\glass_container_full.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | pitch);
 		}
 		else
 		{
@@ -111,7 +116,7 @@ namespace TILFW
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			glTexImage2D(
 				GL_TEXTURE_2D, 0, GL_RGB, 
-				g_Load->GetWidth(i), g_Load->GetHeight(i),
+				g_Load->GetPitchHorizontal(i), g_Load->GetPitchVertical(i),
 				0, 
 				GL_RGBA, GL_UNSIGNED_BYTE, g_Load->GetPixels(i)
 			);
@@ -150,8 +155,8 @@ namespace TILFW
 		{
 			g_TextureCurrent = g_TextureCurrent % g_TextureTotal;
 
-			g_ScaleX = (float)g_Load->GetWidth(g_TextureCurrent) * g_Scale;
-			g_ScaleY = (float)g_Load->GetHeight(g_TextureCurrent) * g_Scale;
+			g_ScaleX = (float)g_Load->GetPitchHorizontal(g_TextureCurrent) * g_Scale;
+			g_ScaleY = (float)g_Load->GetPitchVertical(g_TextureCurrent) * g_Scale;
 			g_PosX = ((float)s_WindowWidth / 2.f) - (g_ScaleX / 2.f);
 			g_PosY = ((float)s_WindowHeight / 2.f) - (g_ScaleY / 2.f);
 		}

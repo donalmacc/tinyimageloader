@@ -127,8 +127,17 @@
 	#define TIL_SETTINGS                  (TIL_FILE_CRLF)
 #endif
 
+//! Internal define used to extract format options from the options
+#define TIL_FORMAT_MASK                   0x0000FFFF
+#define TIL_FORMAT_PNG                    0x00000001 //!< PNG format
+#define TIL_FORMAT_GIF                    0x00000002 //!< GIF format
+#define TIL_FORMAT_BMP                    0x00000004 //!< BMP format
+#define TIL_FORMAT_TGA                    0x00000008 //!< TGA format
+#define TIL_FORMAT_ICO                    0x00000010 //!< ICO format
+#define TIL_FORMAT_DDS                    0x00000020 //!< DDS format
+
 //! Internal define used to extract color depth options from the options
-#define TIL_DEPTH_MASK                    0xFFFF0000
+#define TIL_DEPTH_MASK                    0x00FF0000
 #define TIL_DEPTH_A8R8G8B8                0x00010000 //!< 32-bit ARGB color depth
 #define TIL_DEPTH_A8B8G8R8                0x00020000 //!< 32-bit ABGR color depth
 #define TIL_DEPTH_R8G8B8A8                0x00030000 //!< 32-bit RGBA color depth
@@ -138,14 +147,12 @@
 #define TIL_DEPTH_R5G6B5                  0x00070000 //!< 16-bit RGB color depth
 #define TIL_DEPTH_B5G6R5                  0x00080000 //!< 16-bit BGR color depth
 
-//! Internal define used to extract format options from the options
-#define TIL_FORMAT_MASK                   0x0000FFFF
-#define TIL_FORMAT_PNG                    0x00000001 //!< PNG format
-#define TIL_FORMAT_GIF                    0x00000002 //!< GIF format
-#define TIL_FORMAT_BMP                    0x00000004 //!< BMP format
-#define TIL_FORMAT_TGA                    0x00000008 //!< TGA format
-#define TIL_FORMAT_ICO                    0x00000010 //!< ICO format
-#define TIL_FORMAT_DDS                    0x00000020 //!< DDS format
+//! Internal define used to extract pitch options from the options
+#define TIL_PITCH_MASK                    0xFF000000
+#define TIL_PITCH_DEFAULT                 0x01000000 //!< Pitch is the width times the bytes per pixel
+#define TIL_PITCH_POWER_OF_TWO            0x02000000 //!< Pitch is the width times the bytes per pixel, rounded up to the nearest power of two
+#define TIL_PITCH_SQUARE                  0x03000000 //!< The image should always be square
+#define TIL_PITCH_SQUARE_POWER_OF_TWO     0x04000000 //!< The image should always be square, rounded up to the nearest power of two
 
 //! Determine which formats should be included in compilation.
 /*!
@@ -174,11 +181,11 @@
 	Error messages are always posted, even when compiled using TIL_TARGET_RELEASE.
 */
 #if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
-	#define TIL_PRINT_DEBUG(msg, ...)  til::AddDebug("TinyImageLoader - Debug: "msg" ", __FILE__, __LINE__, ##__VA_ARGS__)
+	#define TIL_PRINT_DEBUG(msg, ...)  til::Internal::AddDebug("TinyImageLoader - Debug: "msg" ", __FILE__, __LINE__, ##__VA_ARGS__)
 #else
 	#define TIL_PRINT_DEBUG(msg, ...)
 #endif
-#define TIL_ERROR_EXPLAIN(msg, ...)    til::AddError("TinyImageLoader - Error: "msg" ", __FILE__, __LINE__, ##__VA_ARGS__)
+#define TIL_ERROR_EXPLAIN(msg, ...)    til::Internal::AddError("TinyImageLoader - Error: "msg" ", __FILE__, __LINE__, ##__VA_ARGS__)
 
 /*!
 	\def TIL_MAX_PATH

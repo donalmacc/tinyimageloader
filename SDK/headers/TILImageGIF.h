@@ -58,7 +58,7 @@ namespace til
 		ImageGIF();
 		~ImageGIF();
 
-		bool Parse(uint32 a_ColorDepth);
+		bool Parse(uint32 a_Options);
 
 		uint32 GetFrameCount();
 		float GetDelay();
@@ -66,6 +66,9 @@ namespace til
 
 		uint32 GetWidth(uint32 a_Frame = 0);
 		uint32 GetHeight(uint32 a_Frame = 0);
+
+		uint32 GetPitchHorizontal(uint32 a_Frame = 0);
+		uint32 GetPitchVertical(uint32 a_Frame = 0);
 
 		/*!
 			@name Internal
@@ -109,6 +112,7 @@ namespace til
 
 		uint32 m_OffsetX, m_OffsetY;
 		uint32 m_LocalWidth, m_LocalHeight, m_LocalPitch;
+		uint32 m_LocalPitchX, m_LocalPitchY;
 		uint32 m_TotalBytes;
 		
 	}; // class ImageGIF

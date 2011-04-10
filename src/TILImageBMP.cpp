@@ -155,7 +155,7 @@ namespace til
 		return (m_Data[3] << 24) | (m_Data[2] << 16) | (m_Data[1] << 8) | (m_Data[0]);
 	}
 
-	bool ImageBMP::Parse(uint32 a_ColorDepth)
+	bool ImageBMP::Parse(uint32 a_Options)
 	{
 		byte header[3];         m_Stream->ReadByte(header, 2);
 		dword size =            GetDWord();
@@ -231,12 +231,16 @@ namespace til
 
 		//fseek(m_Handle, 16, SEEK_CUR);
 
-		m_Pixels = new byte[m_Width * m_Height * m_BPP];
+		Internal::SetPitch(a_Options, m_Width, m_Height, m_PitchX, m_PitchY);
+		//m_PitchX = m_Width;
+		//m_PitchY = m_Height;
 
+		m_Pixels = new byte[m_PitchX * m_PitchY * m_BPP];
 		uint32 total = (m_Width * m_Height) >> 1;
-		m_Pitch = m_Width * m_BPP;
 
-		m_Target = m_Pixels + ((m_Height - 1) * m_Pitch);
+		uint32 pitch = m_PitchX * m_BPP;
+
+		m_Target = m_Pixels + ((m_Height - 1) * pitch);
 		
 		uint32 readpitch = m_Width * bytesperpixel;
 		uint32 readbytes = readpitch * m_Height;
@@ -306,7 +310,7 @@ namespace til
 				}
 
 				read += readpitch;
-				m_Target -= m_Pitch;
+				m_Target -= pitch;
 			}
 		}
 		else
@@ -335,6 +339,16 @@ namespace til
 	uint32 ImageBMP::GetHeight(uint32 a_Frame)
 	{
 		return m_Height;
+	}
+
+	uint32 ImageBMP::GetPitchHorizontal(uint32 a_Frame /*= 0*/)
+	{
+		return m_PitchX;
+	}
+
+	uint32 ImageBMP::GetPitchVertical(uint32 a_Frame /*= 0*/)
+	{
+		return m_PitchY;
 	}
 
 }; // namespace til
