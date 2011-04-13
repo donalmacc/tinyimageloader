@@ -177,7 +177,8 @@ namespace til
 		return (uint8)(a_Target[a_Index] + paeth(0, a_Prior[a_Index], 0));
 		//return (uint8)(a_Target[a_Index] + paeth_middle(a_Prior[a_Index]));
 	}
-	FilterFunc g_Filter[7] = {
+	
+	static FilterFunc g_Filter[7] = {
 		FilterFuncNone,
 		FilterFuncSub,
 		FilterFuncUp,
@@ -187,7 +188,7 @@ namespace til
 		FilterFuncPaethFirst
 	};
 
-	FilterFunc g_FilterFirst[7] = {
+	static FilterFunc g_FilterFirst[7] = {
 		FilterFuncNone,            // None
 		FilterFuncNone,            // Sub
 		FilterFuncUp,              // Up
@@ -197,57 +198,55 @@ namespace til
 		FilterFuncNone             // PaethFirst
 	};
 
-	typedef void (*ColorFunc)(uint8*, uint8*);
-
-	void ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src)
+	void ImagePNG::ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst += Construct_32b_A8R8G8B8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
-	void ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src)
+	void ImagePNG::ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst = Construct_32b_A8B8G8R8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
-	void ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src)
+	void ImagePNG::ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst = Construct_32b_R8G8B8A8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
-	void ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src)
+	void ImagePNG::ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst = Construct_32b_B8G8R8A8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
-	void ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src)
+	void ImagePNG::ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst = AlphaBlend_32b_R8G8B8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
-	void ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src)
+	void ImagePNG::ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst = AlphaBlend_32b_B8G8R8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
-	void ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src)
+	void ImagePNG::ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src)
 	{
 		color_16b* dst = (color_16b*)a_Dst;
 		*dst = Construct_16b_R5G6B5(a_Src[0], a_Src[1], a_Src[2]);
 	}
 
-	void ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src)
+	void ImagePNG::ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src)
 	{
 		color_16b* dst = (color_16b*)a_Dst;
 		*dst = Construct_16b_B5G6R5(a_Src[0], a_Src[1], a_Src[2]);
 	}
 
-	ColorFunc g_ColorFuncPNG = NULL;
+	//static ColorFunc g_ColorFuncPNG = NULL;
 
 #endif
 
@@ -842,11 +841,11 @@ namespace til
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-	bool Decompile(
+	bool ImagePNG::Decompile(
 		byte* a_Dst, byte* a_Src, 
 		uint32 a_Width, uint32 a_Height, uint32 a_Pitch, 
 		int a_Depth, 
-		int a_OffsetX = 0, int a_OffsetY = 0
+		int a_OffsetX, int a_OffsetY
 	)
 	{
 		byte* out = new byte[a_Width * a_Height * 4];
@@ -885,7 +884,7 @@ namespace til
 				src[k] = g_FilterFirst[filter](src, a_Src, prior, k, a_Depth);
 			}
 
-			g_ColorFuncPNG(dst, src);
+			(this->*m_ColorFunc)(dst, src);
 			dst += 4;
 
 			a_Src += a_Depth;
@@ -899,7 +898,7 @@ namespace til
 				{
 					src[k] = g_Filter[filter](src, a_Src, prior, k, 4);
 				}
-				g_ColorFuncPNG(dst, src);
+				(this->*m_ColorFunc)(dst, src);
 				dst += 4;
 
 				a_Src  += a_Depth;
@@ -920,8 +919,9 @@ namespace til
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 	
-	struct AnimationData
+	struct ImagePNG::AnimationData
 	{
+
 		AnimationData()
 		{
 			chunk_idat = false;
@@ -981,7 +981,7 @@ namespace til
 				PNG_DEBUG("Size: (%i, %i) Offset: (%i, %i)", w, h, ox, oy);
 
 				byte* dst = a_Data[curr];
-				Decompile(dst, final, w, h, pitch, image_bpp, ox, oy);
+				instance->Decompile(dst, final, w, h, pitch, image_bpp, ox, oy);
 
 				if (dispose != APNG_DISPOSE_OP_PREVIOUS)
 				{
@@ -1005,6 +1005,8 @@ namespace til
 		}
 
 		byte* frame_prev;
+
+		ImagePNG* instance;
 
 		bool chunk_idat;
 		uint8* data;
@@ -1153,35 +1155,35 @@ namespace til
 		{
 
 		case BPP_32B_A8R8G8B8: 
-			g_ColorFuncPNG = ColorFunc_A8R8G8B8; 
+			m_ColorFunc = &ImagePNG::ColorFunc_A8R8G8B8; 
 			break;
 
 		case BPP_32B_A8B8G8R8:
-			g_ColorFuncPNG = ColorFunc_A8B8G8R8;
+			m_ColorFunc = &ImagePNG::ColorFunc_A8B8G8R8;
 			break;
 
 		case BPP_32B_R8G8B8A8: 
-			g_ColorFuncPNG = ColorFunc_R8G8B8A8; 
+			m_ColorFunc = &ImagePNG::ColorFunc_R8G8B8A8; 
 			break;
 
 		case BPP_32B_B8G8R8A8: 
-			g_ColorFuncPNG = ColorFunc_B8G8R8A8; 
+			m_ColorFunc = &ImagePNG::ColorFunc_B8G8R8A8; 
 			break;
 
 		case BPP_32B_R8G8B8: 
-			g_ColorFuncPNG = ColorFunc_R8G8B8; 
+			m_ColorFunc = &ImagePNG::ColorFunc_R8G8B8; 
 			break;
 
 		case BPP_32B_B8G8R8: 
-			g_ColorFuncPNG = ColorFunc_B8G8R8;
+			m_ColorFunc = &ImagePNG::ColorFunc_B8G8R8;
 			break;
 
 		case BPP_16B_R5G6B5: 
-			g_ColorFuncPNG = ColorFunc_R5G6B5; 
+			m_ColorFunc = &ImagePNG::ColorFunc_R5G6B5; 
 			break;
 
 		case BPP_16B_B5G6R5: 
-			g_ColorFuncPNG = ColorFunc_B5G6R5; 
+			m_ColorFunc = &ImagePNG::ColorFunc_B5G6R5; 
 			break;
 
 		default:
@@ -1380,6 +1382,7 @@ namespace til
 					memset(m_Ani->frame_prev, 0, m_Ani->bytes_total);
 					m_Ani->image_bpp = (uint8)img_n;
 					m_Ani->num_plays = (uint32)GetDWord();
+					m_Ani->instance = this;
 
 					break;
 				}
@@ -1764,71 +1767,9 @@ namespace til
 			return false;
 		}
 
-		//m_Pixels = new byte[m_Width * m_Height * m_BPP];
-		/*if (!m_Pixels)
-		{
-			m_Pixels = new byte*[m_Frames];
-			m_Pixels[0] = new byte[m_Width * m_Height * m_BPP];
-			memset(m_Pixels[0], 0, m_Width * m_Height * m_BPP);
-		}*/
-
 		byte* write = m_Pixels[0]; // first is default image
 
 		Decompile(write, target, m_Width, m_Height, m_Pitch, img_n);
-
-		/*out = new uint8[m_Width * m_Height * img_out_n];
-		uint8* cur = out;
-		for (uint32 j = 0; j < m_Height; ++j) 
-		{
-			byte* dst = write;
-			uint8* src = cur;
-			uint8* prior = cur - m_Pitch;
-
-			int filter = *target++;
-			if (filter > 4) 
-			{
-				TIL_ERROR_EXPLAIN("Invalid filter.");
-				return NULL;								
-			}
-
-			// if first row, use special filter that doesn't sample previous row
-			if (j == 0) 
-			{
-				filter = first_row_filter[filter];
-			}
-
-			// handle first pixel explicitly
-
-			src[3] = 255;
-			for (int k = 0; k < img_n; ++k)
-			{
-				src[k] = g_FilterFirst[filter](src, target, prior, k, img_n);
-			}
-			g_ColorFuncPNG(dst, src);
-			dst += 4;
-
-			target += img_n;
-			src += img_out_n;
-			prior += img_out_n;
-
-			for (int i = m_Width - 1; i >= 1; --i)
-			{
-				src[3] = 255;
-				for (int k = 0; k < img_n; ++k)
-				{
-					src[k] = g_Filter[filter](src, target, prior, k, img_out_n);
-				}
-				g_ColorFuncPNG(dst, src);
-				dst += 4;
-
-				target += img_n;
-				src    += img_out_n;
-				prior  += img_out_n;
-			}
-					
-			cur += m_Pitch;
-			write += m_Width * 4;
-		}*/
 
 		if (has_trans)
 		{
@@ -1836,7 +1777,7 @@ namespace til
 
 			/*if (!compute_transparency(z, tc, s->img_out_n)) 
 			{
-			return 0;
+				return 0;
 			}*/
 
 			return false;
@@ -1890,7 +1831,7 @@ namespace til
 
 	uint32 ImagePNG::GetPitchHorizontal(uint32 a_Frame /*= 0*/)
 	{
-		return m_Pitch;
+		return m_Width;
 	}
 
 	uint32 ImagePNG::GetPitchVertical(uint32 a_Frame /*= 0*/)

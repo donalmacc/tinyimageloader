@@ -44,9 +44,7 @@ namespace til
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-	typedef uint8* (*ColorFuncComp)(uint8*, uint8*, int, int);
-
-	uint8* ColorFunc_A8R8G8B8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
@@ -59,7 +57,7 @@ namespace til
 		return (uint8*)dst;
 	}
 
-	uint8* ColorFunc_A8B8G8R8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
@@ -72,7 +70,7 @@ namespace til
 		return (uint8*)dst;
 	}
 
-	uint8* ColorFunc_R8G8B8A8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
@@ -85,7 +83,7 @@ namespace til
 		return (uint8*)dst;
 	}
 
-	uint8* ColorFunc_B8G8R8A8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
@@ -98,7 +96,7 @@ namespace til
 		return (uint8*)dst;
 	}
 
-	uint8* ColorFunc_R8G8B8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
@@ -111,7 +109,7 @@ namespace til
 		return (uint8*)dst;
 	}
 
-	uint8* ColorFunc_B8G8R8_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
@@ -124,7 +122,7 @@ namespace til
 		return (uint8*)dst;
 	}
 
-	uint8* ColorFunc_R5G6B5_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
 		color_16b* dst = (color_16b*)a_Dst;
 
@@ -137,7 +135,7 @@ namespace til
 		return (uint8*)dst;
 	}
 
-	uint8* ColorFunc_B5G6R5_Comp(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
 	{
 		color_16b* dst = (color_16b*)a_Dst;
 
@@ -149,8 +147,6 @@ namespace til
 		}
 		return (uint8*)dst;
 	}
-
-	ColorFuncComp g_ColorFuncTGA = NULL;
 
 #endif
 
@@ -178,7 +174,7 @@ namespace til
 			m_Stream->Read(src, m_Width, m_Depth);
 
 			uint8* src_copy = src;
-			dst = g_ColorFuncTGA(dst, src_copy, 1, m_Width);
+			dst = (this->*m_ColorFunc)(dst, src_copy, 1, m_Width);
 
 			m_Target -= m_Pitch;
 		}
@@ -224,7 +220,7 @@ namespace til
 					unique = count;
 				}
 
-				dst = g_ColorFuncTGA(dst, src_color, repeat, unique);
+				dst = (this->*m_ColorFunc)(dst, src_color, repeat, unique);
 
 				x += count;
 			}
@@ -323,7 +319,9 @@ namespace til
 		m_Width = (uint32)width;
 		m_Height = (uint32)height;
 
-		Internal::SetPitch(a_Options, m_Width, m_Height, m_PitchX, m_PitchY);
+		//Internal::SetPitch(a_Options, m_Width, m_Height, m_PitchX, m_PitchY);
+		m_PitchX = m_Width;
+		m_PitchY = m_Height;
 
 		m_Pixels = new byte[m_PitchX * m_PitchY * m_BPP];
 		m_Pitch = m_PitchX * m_BPP;
@@ -333,35 +331,35 @@ namespace til
 		{
 		
 		case BPP_32B_A8R8G8B8: 
-			g_ColorFuncTGA = ColorFunc_A8R8G8B8_Comp; 
+			m_ColorFunc = &ImageTGA::ColorFunc_A8R8G8B8; 
 			break;
 
 		case BPP_32B_A8B8G8R8:
-			g_ColorFuncTGA = ColorFunc_A8B8G8R8_Comp;
+			m_ColorFunc = &ImageTGA::ColorFunc_A8B8G8R8;
 			break;
 
 		case BPP_32B_R8G8B8A8: 
-			g_ColorFuncTGA = ColorFunc_R8G8B8A8_Comp; 
+			m_ColorFunc = &ImageTGA::ColorFunc_R8G8B8A8; 
 			break;
 
 		case BPP_32B_B8G8R8A8: 
-			g_ColorFuncTGA = ColorFunc_B8G8R8A8_Comp; 
+			m_ColorFunc = &ImageTGA::ColorFunc_B8G8R8A8; 
 			break;
 
 		case BPP_32B_R8G8B8: 
-			g_ColorFuncTGA = ColorFunc_R8G8B8_Comp; 
+			m_ColorFunc = &ImageTGA::ColorFunc_R8G8B8; 
 			break;
 
 		case BPP_32B_B8G8R8: 
-			g_ColorFuncTGA = ColorFunc_B8G8R8_Comp; 
+			m_ColorFunc = &ImageTGA::ColorFunc_B8G8R8; 
 			break;
 
 		case BPP_16B_R5G6B5: 
-			g_ColorFuncTGA = ColorFunc_R5G6B5_Comp; 
+			m_ColorFunc = &ImageTGA::ColorFunc_R5G6B5; 
 			break;
 
 		case BPP_16B_B5G6R5: 
-			g_ColorFuncTGA = ColorFunc_B5G6R5_Comp; 
+			m_ColorFunc = &ImageTGA::ColorFunc_B5G6R5; 
 			break;
 
 		default:

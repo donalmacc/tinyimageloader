@@ -102,6 +102,19 @@ namespace til
 		*/
 		//@{
 
+		typedef void (ImageBMP::*ColorFunc)(uint8*, uint8*);
+
+		void ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src);
+
+		ColorFunc m_ColorFunc;
+
 		dword GetDWord();
 
 		//@}

@@ -92,8 +92,6 @@ namespace til
 	
 #endif
 
-	struct AnimationData;
-
 	/*!
 		\brief til::Image implementation of a PNG loader.
 	*/
@@ -116,11 +114,35 @@ namespace til
 		uint32 GetFrameCount();
 		byte* GetPixels(uint32 a_Frame = 0);
 
+	private:
+
 		/*!
 			@name Internal
 			These functions are internal and shouldn't be called by developers.
 		*/
 		//@{
+
+		typedef void (ImagePNG::*ColorFunc)(uint8*, uint8*);
+
+		void ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src);
+		void ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src);
+
+		ColorFunc m_ColorFunc;
+
+		struct AnimationData;
+
+		bool Decompile(
+			byte* a_Dst, byte* a_Src, 
+			uint32 a_Width, uint32 a_Height, uint32 a_Pitch, 
+			int a_Depth, 
+			int a_OffsetX = 0, int a_OffsetY = 0
+		);
 		
 		byte GetByte();
 		word GetWord();
@@ -135,8 +157,6 @@ namespace til
 		bool Compose();
 		
 		//@}
-
-	private:
 
 		byte** m_Pixels;
 		uint32 m_Width, m_Height, m_Pitch;

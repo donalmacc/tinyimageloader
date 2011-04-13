@@ -37,8 +37,8 @@
 // =========================================
 
 #define TIL_VERSION_MAJOR                 1 //!< The version major
-#define TIL_VERSION_MINOR                 6 //!< The version minor
-#define TIL_VERSION_BUGFIX                3 //!< The bugfix version
+#define TIL_VERSION_MINOR                 7 //!< The version minor
+#define TIL_VERSION_BUGFIX                0 //!< The bugfix version
 
 #define TIL_PLATFORM_WINDOWS              0 //!< Windows platform
 #define TIL_PLATFORM_WINMO                1 //!< Windows Mobile platform
@@ -288,6 +288,31 @@ namespace til
 	// Function pointers
 	// =========================================
 
+	//! Pitch function
+	/*!
+		\param a_ColorWidth The size in bytes of the color format
+		\param a_ImageWidth The width of the image in pixels
+		\param a_ImageHeight The height of the image in pixels
+		\param a_PitchHorizontal The horizontal pitch in pixels
+		\param a_PitchVertical The vertical pitch in pixels
+
+		\return A pointer to a pixel buffer
+	*/
+	typedef uint8* (*PitchFunc)(uint8 a_ColorWidth, uint32 a_ImageWidth, uint32 a_ImageHeight, uint32& a_PitchWidth, uint32& a_PitchHeight);
+
+	//! Pixel shader function
+	/*!
+		\param a_Dst Destination buffer
+		\param a_Src Source pixel
+		\param a_PixelIndex Index of the pixel on the image
+		\param a_Count How many pixels are supplied at once
+		\param a_Repeat How many times to repeat the pixels
+
+		Pixel shaders control the output of a pixel. For example, you can rotate an image when loading
+		by attaching a pixel function that offsets the pixel destination.
+	*/
+	typedef void (*PixelFunc)(uint8 a_ColorWidth, uint8* a_Dst, uint8* a_Src, uint32 a_PixelIndex, uint32 a_Count, uint32 a_Repeat);
+
 	//! Message structure
 	struct MessageData
 	{
@@ -303,11 +328,6 @@ namespace til
 		Message functions are used for logging. You can create your own and attach them to TinyImageLoader.
 	*/
 	typedef void (*MessageFunc)(MessageData* a_Data);
-
-	//! Memory allocation function
-	typedef void* (*MemAllocFunc)(size_t a_Size, size_t* a_Allocated);
-	//! Memory freeing function
-	typedef void (*MemFreeFunc)(void* a_Free, size_t a_Size);
 
 	class FileStream;
 	//! FileStream creation function

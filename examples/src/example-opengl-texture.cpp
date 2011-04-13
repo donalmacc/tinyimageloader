@@ -78,11 +78,11 @@ namespace TILFW
 
 		if (a_Commands == 1)
 		{
-			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\BMP\\main.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | TIL_PITCH_SQUARE_POWER_OF_TWO);
-			til::uint32 pitch = TIL_PITCH_SQUARE_POWER_OF_TWO;
+			//til::uint32 pitch = TIL_PITCH_SQUARE_POWER_OF_TWO;
 			//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | pitch);
-			g_Load = til::TIL_Load("media\\BMP\\main.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | pitch);
+			//g_Load = til::TIL_Load("media\\BMP\\main.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | pitch);
 			//g_Load = til::TIL_Load("media\\TGA\\glass_container_full.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | pitch);
 		}
 		else

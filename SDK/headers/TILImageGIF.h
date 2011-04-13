@@ -70,6 +70,8 @@ namespace til
 		uint32 GetPitchHorizontal(uint32 a_Frame = 0);
 		uint32 GetPitchVertical(uint32 a_Frame = 0);
 
+	private:
+
 		/*!
 			@name Internal
 			These functions are internal and shouldn't be called by developers.
@@ -79,10 +81,13 @@ namespace til
 		void AddBuffer();
 		void CompileColors(bool a_LocalTable = true);
 		void ReleaseMemory(BufferLinked* a_Buffer);
+
+		void ColorFunc(byte* a_Dst, int32 a_Code);
 		
 		//@}
 
-	private:
+		color_16b* m_Dst16b;
+		color_32b* m_Dst32b;
 
 		BufferLinked* m_First;
 		BufferLinked* m_Current;

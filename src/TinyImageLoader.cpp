@@ -270,6 +270,11 @@ namespace til
 		strcat(g_Debug, g_DebugTemp);
 	}
 
+	void PixelDefault(uint8 a_ColorWidth, uint8* a_Dst, uint8* a_Src, uint32 a_Index, uint32 a_Count)
+	{
+		for (uint32 i = 0; i < a_Count * a_ColorWidth; i++) { a_Dst[i] = a_Src[i]; }
+	}
+
 #endif
 
 	void TIL_GetVersion(char* a_Target, size_t a_MaxLength)

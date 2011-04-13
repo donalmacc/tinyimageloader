@@ -554,14 +554,16 @@ namespace til
 					//if (code != 127)
 					if (!m_Transparency || code != m_TransparentIndex)
 					{
-						if (m_BPP == 2)
+						ColorFunc(dst, code);
+
+						/*if (m_BPP == 2)
 						{
 							*(color_16b*)dst = *(color_16b*)&m_CurrentColors[code * m_BPP];
 						}
 						else if (m_BPP == 4)
 						{
 							*(color_32b*)dst = *(color_32b*)&m_CurrentColors[code * m_BPP];
-						}
+						}*/
 					}
 
 					first = code;
@@ -754,6 +756,18 @@ namespace til
 	uint32 ImageGIF::GetPitchVertical(uint32 a_Frame /*= 0*/)
 	{
 		return m_Height;
+	}
+
+	void ImageGIF::ColorFunc(byte* a_Dst, int32 a_Code)
+	{
+		if (m_BPP == 2)
+		{
+			*(color_16b*)a_Dst = *(color_16b*)&m_CurrentColors[a_Code * m_BPP];
+		}
+		else if (m_BPP == 4)
+		{
+			*(color_32b*)a_Dst = *(color_32b*)&m_CurrentColors[a_Code * m_BPP];
+		}
 	}
 
 }; // namespace til

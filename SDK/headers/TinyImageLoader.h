@@ -135,16 +135,6 @@ namespace til
 	*/
 	bool TIL_Release(Image* a_Image);
 
-	//! Sets the alpha key
-	/*!
-		\param a_State Turn alpha keying on or off
-		\param a_Red The red component
-		\param a_Green The green component
-		\param a_Blue The blue component
-		\param a_Alpha The alpha component
-	*/
-	void TIL_SetAlphaKey(bool a_State, uint8 a_Red = 0, uint8 a_Green = 0, uint8 a_Blue = 0, uint8 a_Alpha = 0);
-
 	//! Set the internal working directory
 	/*!
 		\param a_Path The path to set the working directory to.
@@ -174,6 +164,27 @@ namespace til
 	*/
 	void TIL_AddWorkingDirectory(char* a_Dst, size_t a_MaxLength, const char* a_Path);
 
+	//! Set the callback for the pitch function
+	/*!
+		\param a_Func The pitch function
+
+		Used for when you want to control the pitch of the image. For instance, when loading textures,
+		you might want to overload the pitch function so your data is aligned to a multiple of two.
+	*/
+	void TIL_SetPitchFunc(PitchFunc a_Func);
+
+	//! Set the pixel shader function
+	/*!
+		\param a_Func The shader function
+
+		Pixel shaders work on incoming pixels. You can manipulate the way they are output and their 
+		location on the destination.
+
+		\note TinyImageLoader cannot protect you from bugs here. If you are not careful with this
+		function you WILL overwrite memory you're not supposed to.
+	*/
+	void TIL_SetPixelFunc(PixelFunc a_Func);
+
 	//! Set the callback for creating FileStream's.
 	/*!
 		\param a_Func The creation function
@@ -193,7 +204,7 @@ namespace til
 
 		\code
 		char version[32];
-		TIL_GetVersion(version, 32); // version now contains "1.5.0"
+		TIL_GetVersion(version, 32); // version now contains "1.7.0"
 		\endcode
 	*/
 	void TIL_GetVersion(char* a_Target, size_t a_MaxLength);

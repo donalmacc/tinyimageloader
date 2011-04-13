@@ -70,6 +70,19 @@ namespace til
 		*/
 		//@{
 
+		typedef void (ImageDDS::*ColorFunc)(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha);
+
+		void ColorFunc_A8B8G8R8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha);
+		void ColorFunc_A8R8G8B8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha);
+		void ColorFunc_B8G8R8A8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha);
+		void ColorFunc_R8G8B8A8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha);
+		void ColorFunc_B8G8R8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha);
+		void ColorFunc_R8G8B8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha);
+		void ColorFunc_B5G6R5(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha);
+		void ColorFunc_R5G6B5(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha);
+
+		ImageDDS::ColorFunc m_ColorFunc;
+
 		void ReadData();
 		void GetOffsets();
 		void ConstructColors(color_16b a_Color0, color_16b a_Color1);

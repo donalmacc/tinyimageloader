@@ -42,57 +42,53 @@ namespace til
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-	typedef void (*ColorFuncBMP)(uint8*, uint8*);
-
-	void ColorFuncBMP_A8R8G8B8(uint8* a_Dst, uint8* a_Src)
+	void ImageBMP::ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst = Construct_32b_A8R8G8B8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
-	void ColorFuncBMP_A8B8G8R8(uint8* a_Dst, uint8* a_Src)
+	void ImageBMP::ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst = Construct_32b_A8B8G8R8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
-	void ColorFuncBMP_R8G8B8A8(uint8* a_Dst, uint8* a_Src)
+	void ImageBMP::ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst = Construct_32b_R8G8B8A8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
-	void ColorFuncBMP_B8G8R8A8(uint8* a_Dst, uint8* a_Src)
+	void ImageBMP::ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst = Construct_32b_B8G8R8A8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
-	void ColorFuncBMP_R8G8B8(uint8* a_Dst, uint8* a_Src)
+	void ImageBMP::ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst = Construct_32b_R8G8B8(a_Src[0], a_Src[1], a_Src[2]);
 	}
 
-	void ColorFuncBMP_B8G8R8(uint8* a_Dst, uint8* a_Src)
+	void ImageBMP::ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 		*dst = Construct_32b_B8G8R8(a_Src[0], a_Src[1], a_Src[2]);
 	}
 
-	void ColorFuncBMP_R5G6B5(uint8* a_Dst, uint8* a_Src)
+	void ImageBMP::ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src)
 	{
 		color_16b* dst = (color_16b*)a_Dst;
 		*dst = Construct_16b_R5G6B5(a_Src[0], a_Src[1], a_Src[2]);
 	}
 
-	void ColorFuncBMP_B5G6R5(uint8* a_Dst, uint8* a_Src)
+	void ImageBMP::ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src)
 	{
 		color_16b* dst = (color_16b*)a_Dst;
 		*dst = Construct_16b_B5G6R5(a_Src[0], a_Src[1], a_Src[2]);
 	}
-
-	ColorFuncBMP g_ColorFuncBMP = NULL;
 
 #endif
 
@@ -231,9 +227,9 @@ namespace til
 
 		//fseek(m_Handle, 16, SEEK_CUR);
 
-		Internal::SetPitch(a_Options, m_Width, m_Height, m_PitchX, m_PitchY);
-		//m_PitchX = m_Width;
-		//m_PitchY = m_Height;
+		//Internal::SetPitch(a_Options, m_Width, m_Height, m_PitchX, m_PitchY);
+		m_PitchX = m_Width;
+		m_PitchY = m_Height;
 
 		m_Pixels = new byte[m_PitchX * m_PitchY * m_BPP];
 		uint32 total = (m_Width * m_Height) >> 1;
@@ -255,35 +251,35 @@ namespace til
 		{
 
 		case BPP_32B_A8R8G8B8: 
-			g_ColorFuncBMP = ColorFuncBMP_A8R8G8B8; 
+			m_ColorFunc = &ImageBMP::ColorFunc_A8R8G8B8; 
 			break;
 
 		case BPP_32B_A8B8G8R8:
-			g_ColorFuncBMP = ColorFuncBMP_A8B8G8R8;
+			m_ColorFunc = &ImageBMP::ColorFunc_A8B8G8R8;
 			break;
 
 		case BPP_32B_R8G8B8A8: 
-			g_ColorFuncBMP = ColorFuncBMP_R8G8B8A8; 
+			m_ColorFunc = &ImageBMP::ColorFunc_R8G8B8A8; 
 			break;
 
 		case BPP_32B_B8G8R8A8: 
-			g_ColorFuncBMP = ColorFuncBMP_B8G8R8A8; 
+			m_ColorFunc = &ImageBMP::ColorFunc_B8G8R8A8; 
 			break;
 
 		case BPP_32B_R8G8B8: 
-			g_ColorFuncBMP = ColorFuncBMP_R8G8B8; 
+			m_ColorFunc = &ImageBMP::ColorFunc_R8G8B8; 
 			break;
 
 		case BPP_32B_B8G8R8: 
-			g_ColorFuncBMP = ColorFuncBMP_B8G8R8; 
+			m_ColorFunc = &ImageBMP::ColorFunc_B8G8R8; 
 			break;
 
 		case BPP_16B_R5G6B5: 
-			g_ColorFuncBMP = ColorFuncBMP_R5G6B5; 
+			m_ColorFunc = &ImageBMP::ColorFunc_R5G6B5; 
 			break;
 
 		case BPP_16B_B5G6R5: 
-			g_ColorFuncBMP = ColorFuncBMP_B5G6R5;
+			m_ColorFunc = &ImageBMP::ColorFunc_B5G6R5;
 			break;
 
 		default:
@@ -303,7 +299,7 @@ namespace til
 				for (uint32 x = 0; x < m_Width; x++)
 				{
 					GetComponents(color, src, bytesperpixel);
-					g_ColorFuncBMP(dst, color);
+					(this->*m_ColorFunc)(dst, color);
 
 					src += bytesperpixel;
 					dst += m_BPP;
@@ -350,6 +346,7 @@ namespace til
 	{
 		return m_PitchY;
 	}
+
 
 }; // namespace til
 
