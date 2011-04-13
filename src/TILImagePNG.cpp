@@ -1257,7 +1257,7 @@ namespace til
 					PNG_DEBUG("Width: %i", m_Width);
 					PNG_DEBUG("Height: %i", m_Height);
 
-					Internal::SetPitch(a_Options, m_Width, m_Height, m_PitchX, m_PitchY);
+					//Internal::SetPitch(a_Options, m_Width, m_Height, m_PitchX, m_PitchY);
 
 					depth = GetByte(); 
 					if (depth != 8)
@@ -1828,17 +1828,6 @@ namespace til
 	{
 		return m_Width;
 	}
-
-	uint32 ImagePNG::GetPitchHorizontal(uint32 a_Frame /*= 0*/)
-	{
-		return m_Width;
-	}
-
-	uint32 ImagePNG::GetPitchVertical(uint32 a_Frame /*= 0*/)
-	{
-		return m_Height;
-	}
-
 
 }; // namespace til
 

@@ -57,9 +57,6 @@ namespace til
 		uint32 GetWidth(uint32 a_Frame = 0);
 		uint32 GetHeight(uint32 a_Frame = 0);
 
-		uint32 GetPitchHorizontal(uint32 a_Frame = 0);
-		uint32 GetPitchVertical(uint32 a_Frame = 0);
-
 		bool Parse(uint32 a_ColorDepth);
 
 	private:

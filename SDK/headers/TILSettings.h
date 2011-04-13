@@ -147,13 +147,6 @@
 #define TIL_DEPTH_R5G6B5                  0x00070000 //!< 16-bit RGB color depth
 #define TIL_DEPTH_B5G6R5                  0x00080000 //!< 16-bit BGR color depth
 
-//! Internal define used to extract pitch options from the options
-#define TIL_PITCH_MASK                    0xFF000000
-#define TIL_PITCH_DEFAULT                 0x01000000 //!< Pitch is the width times the bytes per pixel
-#define TIL_PITCH_POWER_OF_TWO            0x02000000 //!< Pitch is the width times the bytes per pixel, rounded up to the nearest power of two
-#define TIL_PITCH_SQUARE                  0x03000000 //!< The image should always be square
-#define TIL_PITCH_SQUARE_POWER_OF_TWO     0x04000000 //!< The image should always be square, rounded up to the nearest power of two
-
 //! Determine which formats should be included in compilation.
 /*!
 	Define this macro in the preprocessor definitions to overwrite the default.
@@ -287,31 +280,6 @@ namespace til
 	// =========================================
 	// Function pointers
 	// =========================================
-
-	//! Pitch function
-	/*!
-		\param a_ColorWidth The size in bytes of the color format
-		\param a_ImageWidth The width of the image in pixels
-		\param a_ImageHeight The height of the image in pixels
-		\param a_PitchHorizontal The horizontal pitch in pixels
-		\param a_PitchVertical The vertical pitch in pixels
-
-		\return A pointer to a pixel buffer
-	*/
-	typedef uint8* (*PitchFunc)(uint8 a_ColorWidth, uint32 a_ImageWidth, uint32 a_ImageHeight, uint32& a_PitchWidth, uint32& a_PitchHeight);
-
-	//! Pixel shader function
-	/*!
-		\param a_Dst Destination buffer
-		\param a_Src Source pixel
-		\param a_PixelIndex Index of the pixel on the image
-		\param a_Count How many pixels are supplied at once
-		\param a_Repeat How many times to repeat the pixels
-
-		Pixel shaders control the output of a pixel. For example, you can rotate an image when loading
-		by attaching a pixel function that offsets the pixel destination.
-	*/
-	typedef void (*PixelFunc)(uint8 a_ColorWidth, uint8* a_Dst, uint8* a_Src, uint32 a_PixelIndex, uint32 a_Count, uint32 a_Repeat);
 
 	//! Message structure
 	struct MessageData

@@ -116,7 +116,7 @@ namespace TILFW
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			glTexImage2D(
 				GL_TEXTURE_2D, 0, GL_RGB, 
-				g_Load->GetPitchHorizontal(i), g_Load->GetPitchVertical(i),
+				g_Load->GetWidth(i), g_Load->GetHeight(i),
 				0, 
 				GL_RGBA, GL_UNSIGNED_BYTE, g_Load->GetPixels(i)
 			);
@@ -155,8 +155,8 @@ namespace TILFW
 		{
 			g_TextureCurrent = g_TextureCurrent % g_TextureTotal;
 
-			g_ScaleX = (float)g_Load->GetPitchHorizontal(g_TextureCurrent) * g_Scale;
-			g_ScaleY = (float)g_Load->GetPitchVertical(g_TextureCurrent) * g_Scale;
+			g_ScaleX = (float)g_Load->GetWidth(g_TextureCurrent) * g_Scale;
+			g_ScaleY = (float)g_Load->GetHeight(g_TextureCurrent) * g_Scale;
 			g_PosX = ((float)s_WindowWidth / 2.f) - (g_ScaleX / 2.f);
 			g_PosY = ((float)s_WindowHeight / 2.f) - (g_ScaleY / 2.f);
 		}

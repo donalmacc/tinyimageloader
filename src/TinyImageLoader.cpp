@@ -368,7 +368,7 @@ namespace til
 			return NULL;
 		}
 
-		if (!result->Parse(a_Options & (TIL_DEPTH_MASK | TIL_PITCH_MASK)))
+		if (!result->Parse(a_Options & (TIL_DEPTH_MASK)))
 		{
 			TIL_ERROR_EXPLAIN("Could not parse file.");
 			delete result;
@@ -471,64 +471,6 @@ namespace til
 			g_Msg.source_file = a_File;
 			g_Msg.source_line = a_Line;
 			g_ErrorFunc(&g_Msg);
-		}
-
-		void SetPitch(uint32 a_Options, uint32 a_Width, uint32 a_Height, uint32& a_PitchX, uint32& a_PitchY)
-		{
-			uint32 options = a_Options & TIL_PITCH_MASK;
-			if (options == 0) { options = TIL_PITCH_DEFAULT; }
-
-			switch (options)
-			{
-
-			case TIL_PITCH_DEFAULT:
-				{
-					a_PitchX = a_Width;
-					a_PitchY = a_Height;
-
-					break;
-				}
-
-			case TIL_PITCH_POWER_OF_TWO:
-				{
-					uint32 closest = 0;
-					while (a_Width >>= 1) { closest++; }
-
-					a_PitchX = 1 << (closest + 1);
-					a_PitchY = a_Height;
-
-					break;
-				}
-
-			case TIL_PITCH_SQUARE:
-				{
-					a_PitchX = (a_Width > a_Height) ? a_Width : a_Height;
-					a_PitchY = a_PitchX;
-
-					break;
-				}
-
-			case TIL_PITCH_SQUARE_POWER_OF_TWO:
-				{
-					uint32 high = (a_Width > a_Height) ? a_Width : a_Height;
-
-					uint32 closest = 0;
-					while (high >>= 1) { closest++; }
-
-					a_PitchX = 1 << (closest + 1);
-					a_PitchY = a_PitchX;
-
-					break;
-				}
-
-			default:
-				{
-					TIL_ERROR_EXPLAIN("Unknown pitch option: %i", a_Options);
-				}
-
-				TIL_PRINT_DEBUG("Dimensions: (%i x %i) Pitch: (%i x %i)", a_Width, a_Height, a_PitchX, a_PitchY);
-
-			}
 		}
 
 	}

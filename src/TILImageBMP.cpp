@@ -337,17 +337,6 @@ namespace til
 		return m_Height;
 	}
 
-	uint32 ImageBMP::GetPitchHorizontal(uint32 a_Frame /*= 0*/)
-	{
-		return m_PitchX;
-	}
-
-	uint32 ImageBMP::GetPitchVertical(uint32 a_Frame /*= 0*/)
-	{
-		return m_PitchY;
-	}
-
-
 }; // namespace til
 
 #endif

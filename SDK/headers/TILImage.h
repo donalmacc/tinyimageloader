@@ -183,38 +183,6 @@ namespace til
 		*/
 		virtual uint32 GetHeight(uint32 a_Frame = 0) = 0;
 
-		//! Get the horizontal pitch of a frame
-		/*!
-			\param a_Frame The frame of an animation or subimage to return
-
-			\return Width of pitch in pixels
-
-			The pitch is a number that indicates the width of each scanline with padding.
-			When you are loading images on a platform that doesn't support widths and heights that
-			aren't a non-power of two for instance, you can tell TinyImageLoader to use a
-			power of two anyway.
-
-			Some formats support multiple frames or images with different dimensions.
-			You can call this function with a frame number to get the correct dimensions.
-		*/
-		virtual uint32 GetPitchHorizontal(uint32 a_Frame = 0) = 0;
-
-		//! Get the vertical pitch of a frame
-		/*!
-			\param a_Frame The frame of an animation or subimage to return
-
-			\return Width of pitch in pixels
-
-			The vertical pitch is a number that indicates the height of the image with padding.
-			When you are loading images on a platform that doesn't support widths and heights that
-			aren't a non-power of two for instance, you can tell TinyImageLoader to use a
-			power of two anyway.
-
-			Some formats support multiple frames or images with different dimensions.
-			You can call this function with a frame number to get the correct dimensions.
-		*/
-		virtual uint32 GetPitchVertical(uint32 a_Frame = 0) = 0;
-
 	protected:
 
 		FileStream* m_Stream; //!< The file interface

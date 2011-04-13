@@ -395,10 +395,10 @@ namespace til
 
 		m_LocalWidth = m_Width;
 		m_LocalHeight = m_Height;
-		Internal::SetPitch(a_Options, m_LocalWidth, m_LocalHeight, m_LocalPitchX, m_LocalPitchY);
-		m_LocalPitch = m_LocalPitchX * m_BPP;
+		//Internal::SetPitch(a_Options, m_LocalWidth, m_LocalHeight, m_LocalPitchX, m_LocalPitchY);
+		m_LocalPitch = m_Width * m_BPP;
 
-		m_TotalBytes = m_LocalPitchX * m_LocalPitchY * m_BPP;
+		m_TotalBytes = m_Width * m_Height * m_BPP;
 		m_PrevBuffer = new byte[m_TotalBytes];
 		Internal::MemSet(m_PrevBuffer, 0, m_TotalBytes);
 
@@ -746,16 +746,6 @@ namespace til
 
 			delete a_Buffer->buffer;
 		}
-	}
-
-	uint32 ImageGIF::GetPitchHorizontal(uint32 a_Frame /*= 0*/)
-	{
-		return m_Pitch;
-	}
-
-	uint32 ImageGIF::GetPitchVertical(uint32 a_Frame /*= 0*/)
-	{
-		return m_Height;
 	}
 
 	void ImageGIF::ColorFunc(byte* a_Dst, int32 a_Code)

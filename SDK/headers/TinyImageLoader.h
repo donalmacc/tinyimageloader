@@ -164,27 +164,6 @@ namespace til
 	*/
 	void TIL_AddWorkingDirectory(char* a_Dst, size_t a_MaxLength, const char* a_Path);
 
-	//! Set the callback for the pitch function
-	/*!
-		\param a_Func The pitch function
-
-		Used for when you want to control the pitch of the image. For instance, when loading textures,
-		you might want to overload the pitch function so your data is aligned to a multiple of two.
-	*/
-	void TIL_SetPitchFunc(PitchFunc a_Func);
-
-	//! Set the pixel shader function
-	/*!
-		\param a_Func The shader function
-
-		Pixel shaders work on incoming pixels. You can manipulate the way they are output and their 
-		location on the destination.
-
-		\note TinyImageLoader cannot protect you from bugs here. If you are not careful with this
-		function you WILL overwrite memory you're not supposed to.
-	*/
-	void TIL_SetPixelFunc(PixelFunc a_Func);
-
 	//! Set the callback for creating FileStream's.
 	/*!
 		\param a_Func The creation function

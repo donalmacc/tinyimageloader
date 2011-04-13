@@ -738,16 +738,6 @@ namespace til
 		colors[7] = 0;
 	}
 
-	uint32 ImageDDS::GetPitchHorizontal(uint32 a_Frame /*= 0*/)
-	{
-		return m_Width;
-	}
-
-	uint32 ImageDDS::GetPitchVertical(uint32 a_Frame /*= 0*/)
-	{
-		return m_Height;
-	}
-
 }; // namespace til
 
 #endif
