@@ -1,12 +1,19 @@
 /*!
 \page changelog Changelog
 
+\section version164 Changes in 1.6.4
+
+	- Removed safe version of string functions in favor of standards compliance
+	- Fixed bugs when compiling with G++
+	- Moved implementation specific image functions from static functions to class functions
+	- Added Internal namespace
+
 \section version163 Changes in 1.6.3 (2011-03-23)
 
 	- Added til::TIL_Release function, which releases a handle
 	- Added #TIL_TARGET_DEVEL target for developers
 	- Removed unnecessary includes (e.g. windows.h, stdlib.h, etc.)
-	- Fixed a bug where til::TIL_ShutDown could cause a crash by deleting an unitialized variable
+	- Fixed a bug where til::TIL_ShutDown could cause a crash by deleting an uninitialized variable
 
 \section version162 Changes in 1.6.2 (2011-03-21)
 
