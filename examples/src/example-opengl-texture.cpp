@@ -1,15 +1,9 @@
-/*!
-	\file example-opengl-texture.cpp
-*/
-
 #include "Framework.h"
 
 #include "TinyImageLoader.h"
 
 namespace TILFW
 {
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 	static GLuint* g_Texture;
 	static unsigned int g_TextureTotal;
@@ -32,7 +26,18 @@ namespace TILFW
 		fclose(g_Log);
 	}
 
-#endif
+	til::byte* PixelFunc(til::uint32 a_Width, til::uint32 a_Height, til::uint8 a_BPP, til::uint32& a_PitchX, til::uint32& a_PitchY)
+	{
+		til::uint32 high = (a_Width > a_Height) ? a_Width : a_Height;
+
+		til::uint32 closest = 0;
+		while (high >>= 1) { closest++; }
+
+		a_PitchX = 1 << (closest + 1);
+		a_PitchY = a_PitchX;
+
+		return new til::byte[a_PitchX * a_PitchY * a_BPP];
+	}
 
 	//! Setting up some stuff
 	void Framework::Setup()
@@ -59,6 +64,8 @@ namespace TILFW
 		til::TIL_SetDebugFunc(LoggingFunc);
 		til::TIL_SetErrorFunc(LoggingFunc);
 
+		til::TIL_SetPixelDataFunc(PixelFunc);
+
 		// Set up projection
 		// Now we can draw quads using screen coordinates
 
@@ -67,7 +74,7 @@ namespace TILFW
 			glOrtho(0, s_WindowWidth, s_WindowHeight, 0, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
-		glClearColor(0.f, 0.f, 0.f, 0.f);
+		glClearColor(0.f, 1.f, 0.f, 0.f);
 		// Make sure the quads show up
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_CULL_FACE);
@@ -78,12 +85,16 @@ namespace TILFW
 
 		if (a_Commands == 1)
 		{
-			g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\BMP\\main.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | TIL_PITCH_SQUARE_POWER_OF_TWO);
-			//til::uint32 pitch = TIL_PITCH_SQUARE_POWER_OF_TWO;
-			//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | pitch);
-			//g_Load = til::TIL_Load("media\\BMP\\main.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | pitch);
-			//g_Load = til::TIL_Load("media\\TGA\\glass_container_full.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8 | pitch);
+			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+				
+			//g_Load = til::TIL_Load("media\\PNG\\APNG\\dNhrL.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\PNG\\APNG\\Animated_PNG_example_bouncing_beach_ball.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\TGA\\glass_container_full.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\TGA\\earth.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\DDS\\blood_stain_large.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			g_Load = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		}
 		else
 		{
@@ -104,9 +115,10 @@ namespace TILFW
 		g_TextureTotal = g_Load->GetFrameCount();
 		g_Texture = new GLuint[g_TextureTotal];
 
+		glEnable(GL_TEXTURE_2D);
+
 		for (unsigned int i = 0; i < g_TextureTotal; i++)
 		{
-			glEnable(GL_TEXTURE_2D);
 			glGenTextures(1, &g_Texture[i]);
 
 			glBindTexture(GL_TEXTURE_2D, g_Texture[i]);
@@ -115,9 +127,9 @@ namespace TILFW
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			glTexImage2D(
-				GL_TEXTURE_2D, 0, GL_RGB, 
+				GL_TEXTURE_2D, 0, GL_RGBA,
 				g_Load->GetWidth(i), g_Load->GetHeight(i),
-				0, 
+				0,
 				GL_RGBA, GL_UNSIGNED_BYTE, g_Load->GetPixels(i)
 			);
 			glBindTexture(GL_TEXTURE_2D, 0);
@@ -168,10 +180,10 @@ namespace TILFW
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glEnable(GL_BLEND); 
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 		glBindTexture(GL_TEXTURE_2D, g_Texture[g_TextureCurrent]);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// Make sure we don't screw up our meticulously designed matrices
 
@@ -184,10 +196,10 @@ namespace TILFW
 
 			// Draw a quad
 			glBegin(GL_QUADS);
-				glTexCoord2f(0.f, 1.f); glVertex2f(0.0f, 1.0f);
-				glTexCoord2f(1.f, 1.f); glVertex2f(1.0f, 1.0f);
 				glTexCoord2f(1.f, 0.f); glVertex2f(1.0f, 0.0f);
 				glTexCoord2f(0.f, 0.f); glVertex2f(0.0f, 0.0f);
+				glTexCoord2f(0.f, 1.f); glVertex2f(0.0f, 1.0f);
+				glTexCoord2f(1.f, 1.f); glVertex2f(1.0f, 1.0f);
 			glEnd();
 
 		glPopMatrix();
@@ -204,12 +216,8 @@ namespace TILFW
 
 }; // namespace TILFW
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-	int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-	{
-		TILFW::Framework* app = new TILFW::Framework;
-		return app->Exec(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
-	}
-
-#endif
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	TILFW::Framework* app = new TILFW::Framework;
+	return app->Exec(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+}

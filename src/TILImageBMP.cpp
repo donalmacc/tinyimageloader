@@ -123,6 +123,7 @@ namespace til
 
 		case 2:
 			{
+				TIL_ERROR_EXPLAIN("Unimplemented bitdepth: 2");
 				break;
 			}
 
@@ -176,6 +177,9 @@ namespace til
 		case HDR_WINDOWSV5:
 			BMP_DEBUG("Header: Windows V5");
 			break;
+		default:
+			TIL_ERROR_EXPLAIN("Unknown header: %i", header_size);
+			return false;
 		}
 
 		dword width =           GetDWord();
@@ -188,10 +192,9 @@ namespace til
 		BMP_DEBUG("BPP: %i", bpp);
 		word bytesperpixel = bpp >> 3;
 
-		dword compresion =      GetDWord();
-		switch (compresion)
+		dword compression =      GetDWord();
+		switch (compression)
 		{
-
 		case COMP_RGB:
 			BMP_DEBUG("No compression.");
 			break;
@@ -210,7 +213,9 @@ namespace til
 		case COMP_PNG:
 			BMP_DEBUG("Bitmap contains a PNG image.");
 			break;
-
+		default:
+			TIL_ERROR_EXPLAIN("Unknown compression method: %i", compression);
+			return false;
 		}
 
 		dword raw_size =        GetDWord();
@@ -225,11 +230,7 @@ namespace til
 		BMP_DEBUG("Colors used: %i", colors_used);
 		BMP_DEBUG("Colors important: %i", colors_important);
 
-		//fseek(m_Handle, 16, SEEK_CUR);
-
-		//Internal::SetPitch(a_Options, m_Width, m_Height, m_PitchX, m_PitchY);
-		m_PitchX = m_Width;
-		m_PitchY = m_Height;
+		m_Pixels = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
 
 		m_Pixels = new byte[m_PitchX * m_PitchY * m_BPP];
 		uint32 total = (m_Width * m_Height) >> 1;
@@ -289,7 +290,7 @@ namespace til
 
 		// uncompressed
 
-		if (compresion == COMP_RGB)
+		if (compression == COMP_RGB)
 		{
 			for (uint32 y = 0; y < m_Height; y++)
 			{
@@ -311,7 +312,7 @@ namespace til
 		}
 		else
 		{
-			TIL_ERROR_EXPLAIN("Unhandled compression method: %i", compresion);
+			TIL_ERROR_EXPLAIN("Unhandled compression method: %i", compression);
 			return false;
 		}
 

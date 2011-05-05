@@ -43,23 +43,6 @@
 namespace til
 {
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-	
-	struct BufferICO
-	{
-		byte* buffer;
-		uint32 width, height, pitch;
-		uint32 pitchy;
-		uint32 datasize, offset;
-		uint32 bytespp, bitspp;
-		color_32b* colors;
-		uint16 palette;
-		byte* andmask;
-		BufferICO* next;
-	};
-	
-#endif
-
 	// this seemingly pointless forward declaration
 	// is necessary to fool doxygen into documenting
 	// the class
@@ -84,6 +67,19 @@ namespace til
 		uint32 GetWidth(uint32 a_Frame = 0);
 		uint32 GetHeight(uint32 a_Frame = 0);
 
+		struct BufferICO
+		{
+			byte* buffer;
+			uint32 width, height, pitch;
+			uint32 pitchy;
+			uint32 datasize, offset;
+			uint32 bytespp, bitspp;
+			color_32b* colors;
+			uint16 palette;
+			byte* andmask;
+			BufferICO* next;
+		};
+
 	private:
 
 		/*!
@@ -91,7 +87,7 @@ namespace til
 			These functions are internal and shouldn't be called by developers.
 		*/
 		//@{
-		
+
 		void AddBuffer(uint32 a_Width, uint32 a_Height);
 		void ReleaseMemory(BufferICO* a_Buffer);
 		void ExpandPalette(BufferICO* a_Buffer);

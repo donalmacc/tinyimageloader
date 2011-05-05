@@ -259,6 +259,8 @@ namespace til
 	*/
 	void TIL_ClearDebug();
 
+	void TIL_SetPixelDataFunc(PixelDataFunc a_Func);
+
 }; // namespace til
 
 #endif

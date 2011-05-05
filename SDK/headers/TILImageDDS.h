@@ -89,6 +89,7 @@ namespace til
 		//@}
 
 		uint32 m_Width, m_Height, m_Depth;
+		uint32 m_PitchX, m_PitchY;
 		uint32 m_MipMaps;
 		bool m_CubeMap;
 		uint32 m_Format;

@@ -157,7 +157,7 @@ namespace til
 
 	void ImageDDS::ColorFunc_A8B8G8R8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
 	{
-		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex];
 		byte* src = &a_Src[a_SrcIndex * 4];
 
 		*dst = Construct_32b_A8B8G8R8(src[0], src[1], src[2], a_Alpha);
@@ -165,7 +165,7 @@ namespace til
 
 	void ImageDDS::ColorFunc_A8R8G8B8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
 	{
-		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex];
 		byte* src = &a_Src[a_SrcIndex * 4];
 
 		*dst = Construct_32b_A8R8G8B8(src[0], src[1], src[2], a_Alpha);
@@ -173,7 +173,7 @@ namespace til
 
 	void ImageDDS::ColorFunc_B8G8R8A8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
 	{
-		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex];
 		byte* src = &a_Src[a_SrcIndex * 4];
 
 		*dst = Construct_32b_B8G8R8A8(src[0], src[1], src[2], a_Alpha);
@@ -181,7 +181,7 @@ namespace til
 
 	void ImageDDS::ColorFunc_R8G8B8A8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
 	{
-		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex];
 		byte* src = &a_Src[a_SrcIndex * 4];
 
 		*dst = Construct_32b_R8G8B8A8(src[0], src[1], src[2], a_Alpha);
@@ -189,7 +189,7 @@ namespace til
 
 	void ImageDDS::ColorFunc_B8G8R8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
 	{
-		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex];
 		byte* src = &a_Src[a_SrcIndex * 4];
 
 		*dst = Construct_32b_B8G8R8(src[0], src[1], src[2]);
@@ -197,7 +197,7 @@ namespace til
 
 	void ImageDDS::ColorFunc_R8G8B8(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
 	{
-		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex];
 		byte* src = &a_Src[a_SrcIndex * 4];
 
 		*dst = Construct_32b_R8G8B8(src[0], src[1], src[2]);
@@ -205,7 +205,7 @@ namespace til
 
 	void ImageDDS::ColorFunc_B5G6R5(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
 	{
-		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		color_16b* dst = (color_16b*)&a_Dst[a_DstIndex];
 		byte* src = &a_Src[a_SrcIndex * 4];
 
 		*dst = Construct_16b_B5G6R5(src[0], src[1], src[2]);
@@ -213,7 +213,7 @@ namespace til
 
 	void ImageDDS::ColorFunc_R5G6B5(byte* a_Dst, uint32 a_DstIndex, byte* a_Src, uint32 a_SrcIndex, byte& a_Alpha)
 	{
-		color_32b* dst = (color_32b*)&a_Dst[a_DstIndex * 4];
+		color_16b* dst = (color_16b*)&a_Dst[a_DstIndex];
 		byte* src = &a_Src[a_SrcIndex * 4];
 
 		*dst = Construct_16b_R5G6B5(src[0], src[1], src[2]);
@@ -426,7 +426,8 @@ namespace til
 
 		DDS_DEBUG("Blocks: %d", m_Blocks);
 
-		m_Pixels = new byte[m_Width * m_Height * m_BPP];
+		m_Pixels = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
+		//m_Pixels = new byte[m_Width * m_Height * m_BPP];
 
 		m_Colors = new byte[m_BPP * 8];
 
@@ -441,7 +442,8 @@ namespace til
 		}
 		else
 		{
-			TIL_ERROR_EXPLAIN("Unknown compression algorithm: %d", m_Format);
+			TIL_ERROR_EXPLAIN("Unknown or unhandled compression algorithm: %d", m_Format);
+			return false;
 		}
 
 		return true;
@@ -609,8 +611,7 @@ namespace til
 					uint32 curr = (2 * (4 * y + x));
 					uint32 enabled = ((bits & (0x3 << curr)) >> curr) + offset;
 
-					uint32 index = pos_x + (pos_y * m_Width);
-
+					uint32 index = ((pos_y * m_PitchX) + pos_x) * m_BPP;
 					(this->*m_ColorFunc)(m_Pixels, index, m_Colors, enabled, alpha);
 
 					pos_x++;
@@ -701,7 +702,7 @@ namespace til
 					uint32 curr = (2 * (4 * y + x));
 					uint32 enabled = ((bits & (0x3 << curr)) >> curr);
 
-					uint32 index = (pos_y * m_Width) + pos_x;
+					uint32 index = ((pos_y * m_PitchX) + pos_x) * m_BPP;
 					(this->*m_ColorFunc)(m_Pixels, index, m_Colors, enabled, alpha[bits_alpha + offset]);
 
 					pos_x++;

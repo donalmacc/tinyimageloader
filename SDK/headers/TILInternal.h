@@ -99,7 +99,10 @@ namespace til
 		*/
 		static FileStreamFunc g_FileFunc = OpenStreamDefault;
 
-		extern void SetPitch(uint32 a_Options, uint32 a_Width, uint32 a_Height, uint32& a_PitchX, uint32& a_PitchY);
+		extern byte* CreatePixels(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32& a_PitchX, uint32& a_PitchY);
+
+		extern byte* CreatePixelsDefault(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32& a_PitchX, uint32& a_PitchY);
+		static PixelDataFunc g_PixelFunc = CreatePixelsDefault;
 
 		/*inline void SetPitch(uint32 a_Options, uint32 a_Width, uint32 a_Height, uint32& a_PitchX, uint32& a_PitchY)
 		{

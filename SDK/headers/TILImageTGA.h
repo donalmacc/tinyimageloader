@@ -99,9 +99,10 @@ namespace til
 
 		//@}
 
+		byte* m_Data;
+
 		ColorType m_Type;
 		Compression m_Comp;
-		byte* m_Pixels;
 		byte* m_Target;
 		byte m_Src[4];
 		byte m_Depth;

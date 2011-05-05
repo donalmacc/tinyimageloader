@@ -89,11 +89,13 @@ namespace til
 
 	void ImageGIF::AddBuffer()
 	{
+		uint32 pitchx, pitchy;
+
 		if (m_First)
 		{
 			m_Current->next = new BufferLinked;
 			m_Current->next->next    = NULL;
-			m_Current->next->buffer  = new byte[m_LocalPitchX * m_LocalPitchY * m_BPP];
+			m_Current->next->buffer  = Internal::CreatePixels(m_Width, m_Height, m_BPP, pitchx, pitchy);
 			m_Current = m_Current->next;
 		}
 		else
@@ -101,7 +103,7 @@ namespace til
 			m_First = new BufferLinked;
 			m_Current = m_First;
 			m_Current->next    = NULL;
-			m_Current->buffer  = new byte[m_LocalPitchX * m_LocalPitchY * m_BPP];
+			m_Current->buffer  = Internal::CreatePixels(m_Width, m_Height, m_BPP, pitchx, pitchy);
 		}
 	}
 
@@ -395,7 +397,7 @@ namespace til
 
 		m_LocalWidth = m_Width;
 		m_LocalHeight = m_Height;
-		//Internal::SetPitch(a_Options, m_LocalWidth, m_LocalHeight, m_LocalPitchX, m_LocalPitchY);
+		Internal::CreatePixels(m_Width, m_Height, m_BPP, m_LocalPitchX, m_LocalPitchY);
 		m_LocalPitch = m_Width * m_BPP;
 
 		m_TotalBytes = m_Width * m_Height * m_BPP;
@@ -431,7 +433,7 @@ namespace til
 		while (1)
 		{
 			m_Frames++;
-			GIF_DEBUG("Images: %i", m_Frames);
+			GIF_DEBUG("Frame: %i", m_Frames);
 
 			AddBuffer();
 			target = m_Current->buffer;
@@ -555,15 +557,6 @@ namespace til
 					if (!m_Transparency || code != m_TransparentIndex)
 					{
 						ColorFunc(dst, code);
-
-						/*if (m_BPP == 2)
-						{
-							*(color_16b*)dst = *(color_16b*)&m_CurrentColors[code * m_BPP];
-						}
-						else if (m_BPP == 4)
-						{
-							*(color_32b*)dst = *(color_32b*)&m_CurrentColors[code * m_BPP];
-						}*/
 					}
 
 					first = code;
@@ -750,14 +743,16 @@ namespace til
 
 	void ImageGIF::ColorFunc(byte* a_Dst, int32 a_Code)
 	{
-		if (m_BPP == 2)
+		/*if (m_BPP == 2)
 		{
 			*(color_16b*)a_Dst = *(color_16b*)&m_CurrentColors[a_Code * m_BPP];
 		}
 		else if (m_BPP == 4)
 		{
 			*(color_32b*)a_Dst = *(color_32b*)&m_CurrentColors[a_Code * m_BPP];
-		}
+		}*/
+
+		memcpy(a_Dst, &m_CurrentColors[a_Code * m_BPP], m_BPP);
 	}
 
 }; // namespace til

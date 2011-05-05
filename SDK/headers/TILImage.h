@@ -33,6 +33,7 @@
 #include "TILSettings.h"
 #include "TILColors.h"
 #include "TILFileStream.h"
+#include "TILPixelData.h"
 
 namespace til
 {

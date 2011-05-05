@@ -946,30 +946,45 @@ namespace til
 		}
 
 		void NextFrame(byte** a_Data)
+		//void NextFrame(PixelData** a_Data)
 		{
 			if (data_offset > 0)
 			{
 				if (chunk_idat) { curr++; }
 				chunk_idat = false;
 
-				uint32 bytes = w * h * bpp;
-				a_Data[curr] = new byte[bytes_total];
+				//int32 bytes = w * h * bpp;
+				//a_Data[curr] = new byte[bytes_total];
+				a_Data[curr] = Internal::CreatePixels(w, h, bpp, px, py);
 			
 				if (dispose == APNG_DISPOSE_OP_NONE)
 				{
+					PNG_DEBUG("Dispose method: %s", "APNG_DISPOSE_OP_NONE");
+
 					if (curr > 1)
 					{
 						memcpy(a_Data[curr], a_Data[curr - 1], bytes_total);
+						//memcpy(a_Data[curr]->GetData(), a_Data[curr - 1])
+						//a_Data[curr]->CopyFrom(a_Data[curr - 1]);
 					}
 				}
 				else if (dispose == APNG_DISPOSE_OP_PREVIOUS)
 				{
+					PNG_DEBUG("Dispose method: %s", "APNG_DISPOSE_OP_PREVIOUS");
+
 					memcpy(a_Data[curr], frame_prev, bytes_total);
+					//memcpy(a_Data[curr], a_Data[curr - 1], bytes_total);
+					//a_Data[curr]->CopyFrom(a_Data[curr - 1]);
 				}
 				else
 				{
+					PNG_DEBUG("Dispose method: %s", "Other");
+
 					memset(a_Data[curr], 0, bytes_total);
+					//a_Data[curr]->Clear();
 				}
+
+				memcpy(a_Data[curr], frame_prev, bytes_total);
 
 				PNG_DEBUG("Filling index %i", curr);
 
@@ -980,12 +995,14 @@ namespace til
 
 				PNG_DEBUG("Size: (%i, %i) Offset: (%i, %i)", w, h, ox, oy);
 
+				//byte* dst = a_Data[curr]->GetData();
 				byte* dst = a_Data[curr];
-				instance->Decompile(dst, final, w, h, pitch, image_bpp, ox, oy);
+				instance->Decompile(dst, final, w, h, pitchx, image_bpp, ox, oy);
 
 				if (dispose != APNG_DISPOSE_OP_PREVIOUS)
 				{
 					memcpy(frame_prev, a_Data[curr], bytes_total);
+					//frame_prev->CopyFrom(a_Data[curr]);
 				}
 
 				curr++;
@@ -995,6 +1012,7 @@ namespace til
 				if (dispose == APNG_DISPOSE_OP_NONE)
 				{
 					memcpy(frame_prev, a_Data[curr], bytes_total);
+					//frame_prev->CopyFrom(a_Data[curr]);
 				}
 			}
 
@@ -1005,6 +1023,7 @@ namespace til
 		}
 
 		byte* frame_prev;
+		//PixelData* frame_prev;
 
 		ImagePNG* instance;
 
@@ -1018,10 +1037,11 @@ namespace til
 
 		uint8 bpp, image_bpp;
 		uint32 w, h;
+		uint32 px, py;
 		uint32 ox, oy;
 
 		uint32 bytes_total;
-		uint32 pitch;
+		uint32 pitchx, pitchy;
 
 		word delay_num, delay_den;
 
@@ -1055,14 +1075,7 @@ namespace til
 		if (out) { delete out; }
 
 		if (m_Ani) { delete m_Ani; }
-		if (m_Pixels) 
-		{ 
-			for (uint32 i = 0; i < m_Frames; i++)
-			{
-				delete m_Pixels[i];
-			}
-			delete m_Pixels; 
-		}
+		if (m_Pixels) { delete [] m_Pixels; }
 		if (m_Huffman) { delete m_Huffman; }
 	}
 
@@ -1146,7 +1159,7 @@ namespace til
 			int32 c = GetByte();
 			if (c != png_sig[i])
 			{
-				TIL_ERROR_EXPLAIN("Bad PNG signature.", 0);
+				TIL_ERROR_EXPLAIN("Bad PNG signature (0x%x vs 0x%x at %i)", png_sig[i], c, i);
 				return false;
 			}
 		}
@@ -1371,15 +1384,16 @@ namespace til
 
 					PNG_DEBUG("Frames: %i", m_Frames);
 
-					/*m_Pixels = new byte*[m_Frames];
-					m_Pixels[0] = new byte[m_Width * m_Height * m_BPP];*/
-
 					m_Ani = new AnimationData;
 					m_Ani->bpp = m_BPP;
-					m_Ani->pitch = m_Width * 4;
+					m_Ani->pitchx = m_Width * 4;
 					m_Ani->bytes_total = m_Width * m_Height * m_BPP;
-					m_Ani->frame_prev = new byte[m_Ani->bytes_total];
+					m_Ani->frame_prev = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_Ani->pitchx, m_Ani->pitchy);
 					memset(m_Ani->frame_prev, 0, m_Ani->bytes_total);
+					//m_Ani->frame_prev = new byte[m_Ani->bytes_total];
+					//memset(m_Ani->frame_prev, 0, m_Ani->bytes_total);
+					//m_Ani->frame_prev = Internal::CreatePixels(m_Width, m_Height, m_BPP);
+					//m_Ani->frame_prev->Clear();
 					m_Ani->image_bpp = (uint8)img_n;
 					m_Ani->num_plays = (uint32)GetDWord();
 					m_Ani->instance = this;
@@ -1546,31 +1560,52 @@ namespace til
 						if (!m_Pixels)
 						{
 							m_Pixels = new byte*[m_Frames];
-							m_Pixels[0] = new byte[m_Width * m_Height * m_BPP];
-							memset(m_Pixels[0], 0, m_Width * m_Height * m_BPP);
+							//m_Pixels[0] = new byte[m_Width * m_Height * m_BPP];
+							//memset(m_Pixels[0], 0, m_Width * m_Height * m_BPP);
+							m_Pixels[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
 						}
+
+						/*if (!m_Data)
+						{
+							m_Data = new PixelData*[m_Frames];
+							m_Data[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP);
+							m_Data[0]->Clear();
+						}*/
+
 						if (m_Ani->index == 2 && m_Ani->chunk_idat)
 						{
 							Compose();
 						}
+
+						//m_Ani->NextFrame(m_Data);
 						m_Ani->NextFrame(m_Pixels);
 					}
 					else
 					{
+						PNG_DEBUG("Hacky APNG detected.");
+
 						if (ioff > 0)
 						{
 							if (!m_Pixels)
 							{
 								m_Frames++;
 								m_Pixels = new byte*[m_Frames];
-								m_Pixels[0] = new byte[m_Width * m_Height * m_BPP];
-								memset(m_Pixels[0], 0, m_Width * m_Height * m_BPP);
+								//m_Pixels[0] = new byte[m_Width * m_Height * m_BPP];
+								//memset(m_Pixels[0], 0, m_Width * m_Height * m_BPP);
+								m_Pixels[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
 							}
+
+							/*if (!m_Data)
+							{
+								m_Data = new PixelData*[m_Frames];
+								m_Data[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP);
+								m_Data[0]->Clear();
+							}*/
 
 							Compose();
 						}
 					}
-					PNG_DEBUG("Frame: (%i / %i)", m_Ani->curr, m_Frames);
+					PNG_DEBUG("Frame: (%i / %i)", m_Ani->curr + 1, m_Frames);
 
 					//m_Ani->curr++;		
 
@@ -1691,22 +1726,26 @@ namespace til
 				{	
 					PNG_DEBUG("Found tag 'IEND'", 0);
 
-					/*if (m_Ani && m_Ani->chunk_idat) 
-					{
-						m_Frames++;
-					}*/
-
 					if (!m_Pixels)
+					//if (!m_Data)
 					{
 						m_Pixels = new byte*[m_Frames];
+						m_Pixels[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
+
+						/*m_Pixels = new byte*[m_Frames];
 						m_Pixels[0] = new byte[m_Width * m_Height * m_BPP];
-						memset(m_Pixels[0], 0, m_Width * m_Height * m_BPP);
+						memset(m_Pixels[0], 0, m_Width * m_Height * m_BPP);*/
+
+						/*m_Data = new PixelData*[m_Frames];
+						m_Data[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP);
+						m_Data[0]->Clear();*/
 
 						Compose();
 					}
 
 					if (m_Ani) 
 					{ 
+						//m_Ani->NextFrame(m_Data); 
 						m_Ani->NextFrame(m_Pixels); 
 					}
 
@@ -1768,6 +1807,7 @@ namespace til
 		}
 
 		byte* write = m_Pixels[0]; // first is default image
+		//byte* write = m_Data[0]->GetData();
 
 		Decompile(write, target, m_Width, m_Height, m_Pitch, img_n);
 
@@ -1817,6 +1857,7 @@ namespace til
 	{
 		if (a_Frame > m_Frames - 1) { a_Frame = m_Frames - 1; }
 		return m_Pixels[a_Frame];
+		//return m_Data[a_Frame]->GetData();
 	}
 
 	til::uint32 ImagePNG::GetHeight(uint32 a_Frame /*= 0*/)

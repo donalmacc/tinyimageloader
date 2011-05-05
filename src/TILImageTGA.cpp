@@ -38,7 +38,7 @@ namespace til
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-	int g_Depth;
+	static int g_Depth;
 
 #endif
 
@@ -157,7 +157,7 @@ namespace til
 
 	ImageTGA::~ImageTGA()
 	{
-		if (m_Pixels) { delete m_Pixels; }
+		if (m_Data) { delete m_Data; }
 	}
 
 	bool ImageTGA::CompileUncompressed()
@@ -178,6 +178,8 @@ namespace til
 
 			m_Target -= m_Pitch;
 		}
+
+		delete src;
 
 		return false;
 	}
@@ -319,13 +321,13 @@ namespace til
 		m_Width = (uint32)width;
 		m_Height = (uint32)height;
 
-		//Internal::SetPitch(a_Options, m_Width, m_Height, m_PitchX, m_PitchY);
-		m_PitchX = m_Width;
-		m_PitchY = m_Height;
-
-		m_Pixels = new byte[m_PitchX * m_PitchY * m_BPP];
+		m_Data = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
 		m_Pitch = m_PitchX * m_BPP;
-		m_Target = m_Pixels + ((m_Height - 1) * m_Pitch);
+
+		//m_Pixels = new byte[m_PitchX * m_PitchY * m_BPP];
+		//m_Pitch = m_PitchX * m_BPP;
+		m_Target = m_Data + ((m_Height - 1) * m_Pitch);
+		//m_Target = m_Data->GetData() + ((m_Height - 1) * m_Data->GetSizeHor());
 
 		switch (m_BPPIdent)
 		{
@@ -386,7 +388,8 @@ namespace til
 
 	byte* ImageTGA::GetPixels( uint32 a_Frame /*= 0*/ )
 	{
-		return m_Pixels;
+		//return m_Pixels;
+		return m_Data;
 	}
 
 	uint32 ImageTGA::GetWidth(uint32 a_Frame)

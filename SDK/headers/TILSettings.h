@@ -289,6 +289,9 @@ namespace til
 		int source_line;    /**< The line the message came from. */
 	};
 
+	//! Pixel data function
+	typedef byte* (*PixelDataFunc)(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32& a_PitchX, uint32& a_PitchY);
+
 	//! Message function
 	/*! 
 		\param MessageData* A pointer containing the message data.

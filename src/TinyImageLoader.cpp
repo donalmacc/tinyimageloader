@@ -445,6 +445,20 @@ namespace til
 			return NULL;
 		}
 
+		byte* CreatePixels(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32& a_PitchX, uint32& a_PitchY)
+		{
+			return g_PixelFunc(a_Width, a_Height, a_BPP, a_PitchX, a_PitchY);
+		}
+
+		byte* CreatePixelsDefault(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32& a_PitchX, uint32& a_PitchY)
+		{
+			a_PitchX = a_Width;
+			a_PitchY = a_Height;
+			byte* result = new byte[a_PitchX * a_BPP * a_PitchY];
+			memset(result, 0, a_PitchX * a_BPP * a_PitchY);
+			return result;
+		}
+
 		void AddDebug(char* a_Message, char* a_File, int a_Line, ...)
 		{
 			va_list args;
@@ -473,6 +487,11 @@ namespace til
 			g_ErrorFunc(&g_Msg);
 		}
 
+	}
+
+	void TIL_SetPixelDataFunc(PixelDataFunc a_Func)
+	{
+		g_PixelFunc = a_Func;
 	}
 
 }; // namespace til

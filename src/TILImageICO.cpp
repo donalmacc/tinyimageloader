@@ -44,9 +44,9 @@ namespace til
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-	typedef uint8* (*ColorFuncRow)(uint8*, uint8*, uint8*, BufferICO*);
+	typedef uint8* (*ColorFuncRow)(uint8*, uint8*, uint8*, ImageICO::BufferICO*);
 
-	uint8* ColorFunc_4b_A8B8G8R8_Row(uint8* a_Dst, uint8* a_Src, uint8* a_AndMask, BufferICO* a_Buffer)
+	uint8* ColorFunc_4b_A8B8G8R8_Row(uint8* a_Dst, uint8* a_Src, uint8* a_AndMask, ImageICO::BufferICO* a_Buffer)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
@@ -113,7 +113,7 @@ namespace til
 		}
 	}
 
-	uint8* ColorFunc_1b_A8B8G8R8_Row(uint8* a_Dst, uint8* a_Src, uint8* a_AndMask, BufferICO* a_Buffer)
+	uint8* ColorFunc_1b_A8B8G8R8_Row(uint8* a_Dst, uint8* a_Src, uint8* a_AndMask, ImageICO::BufferICO* a_Buffer)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
