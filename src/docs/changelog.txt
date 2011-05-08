@@ -1,12 +1,15 @@
 /*!
 \page changelog Changelog
 
-\section version164 Changes in 1.6.4
+\section version170 Changes in 1.7.0
 
 	- Removed safe version of string functions in favor of standards compliance
 	- Fixed bugs when compiling with G++
+	- Fixed a bug that could cause a crash when an image can not be loaded
 	- Moved implementation specific image functions from static functions to class functions
 	- Added Internal namespace
+	- DDS: Added support for multiple levels of detail
+	- DDS: Added support for cubemaps
 
 \section version163 Changes in 1.6.3 (2011-03-23)
 

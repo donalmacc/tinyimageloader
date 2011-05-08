@@ -36,6 +36,8 @@
 	calls himself Seniltai. For his game, he implemented a DDS loader, but he 
 	didn't bother decompiling the images by hand.
 
+	Many thanks also to the 
+
 	-knight666
 
 */
@@ -61,30 +63,46 @@ namespace til
 	#define DDS_TYPE(a, b, c, d)       (((d) << 24) + ((c) << 16) + ((b) << 8) + (a))
 	#define DDS_FOURCC(a, b, c, d)     (((d) << 24) + ((c) << 16) + ((b) << 8) + (a))
 
-	static const uint32 DDS_FOURCC_DDS  = DDS_FOURCC('D', 'D', 'S', ' ');
-	static const uint32 DDS_FOURCC_DXT1 = DDS_FOURCC('D', 'X', 'T', '1');
-	static const uint32 DDS_FOURCC_DXT2 = DDS_FOURCC('D', 'X', 'T', '2');
-	static const uint32 DDS_FOURCC_DXT3 = DDS_FOURCC('D', 'X', 'T', '3');
-	static const uint32 DDS_FOURCC_DXT4 = DDS_FOURCC('D', 'X', 'T', '4');
-	static const uint32 DDS_FOURCC_DXT5 = DDS_FOURCC('D', 'X', 'T', '5');
-	static const uint32 DDS_FOURCC_RXGB = DDS_FOURCC('R', 'X', 'G', 'B');
-	static const uint32 DDS_FOURCC_ATI1 = DDS_FOURCC('A', 'T', 'I', '1');
-	static const uint32 DDS_FOURCC_ATI2 = DDS_FOURCC('A', 'T', 'I', '2');
+	static const uint32 DDS_FOURCC_DDS                = DDS_FOURCC('D', 'D', 'S', ' ');
 
-	#define DDSD_CAPS          0x00000001
-	#define DDSD_HEIGHT        0x00000002
-	#define DDSD_WIDTH         0x00000004
-	#define DDSD_PITCH         0x00000008
-	#define DDSD_PIXELFORMAT   0x00001000
-	#define DDSD_MIPMAPCOUNT   0x00020000
-	#define DDSD_LINEARSIZE    0x00080000
-	#define DDSD_DEPTH         0x00800000
+	static const uint32 DDS_FOURCC_UNCOMPRESSED       = 0;
+	static const uint32 DDS_FOURCC_DXT1               = DDS_FOURCC('D', 'X', 'T', '1');
+	static const uint32 DDS_FOURCC_DXT2               = DDS_FOURCC('D', 'X', 'T', '2');
+	static const uint32 DDS_FOURCC_DXT3               = DDS_FOURCC('D', 'X', 'T', '3');
+	static const uint32 DDS_FOURCC_DXT4               = DDS_FOURCC('D', 'X', 'T', '4');
+	static const uint32 DDS_FOURCC_DXT5               = DDS_FOURCC('D', 'X', 'T', '5');
+	static const uint32 DDS_FOURCC_RXGB               = DDS_FOURCC('R', 'X', 'G', 'B');
+	static const uint32 DDS_FOURCC_ATI1               = DDS_FOURCC('A', 'T', 'I', '1');
+	static const uint32 DDS_FOURCC_ATI2               = DDS_FOURCC('A', 'T', 'I', '2');
 
-	#define DDSCAPS_COMPLEX    0x00000008
-	#define DDSCAPS_TEXTURE    0x00001000
-	#define DDSCAPS_MIPMAP     0x00400000
-	#define DDSCAPS2_CUBEMAP   0x00000200
-	#define DDSCAPS2_VOLUME    0x00200000
+	static const uint32 DDS_FOURCC_R16F               = 0x0000006F; // 16-bit float Red
+	static const uint32 DDS_FOURCC_G16R16F            = 0x00000070; // 16-bit float Red/Green
+	static const uint32 DDS_FOURCC_A16B16G16R16F      = 0x00000071; // 16-bit float RGBA
+	static const uint32 DDS_FOURCC_R32F               = 0x00000072; // 32-bit float Red
+	static const uint32 DDS_FOURCC_G32R32F            = 0x00000073; // 32-bit float Red/Green
+	static const uint32 DDS_FOURCC_A32B32G32R32F      = 0x00000074; // 32-bit float RGBA
+
+	#define DDSD_CAPS                    0x00000001
+	#define DDSD_HEIGHT                  0x00000002
+	#define DDSD_WIDTH                   0x00000004
+	#define DDSD_PITCH                   0x00000008
+	#define DDSD_PIXELFORMAT             0x00001000
+	#define DDSD_MIPMAPCOUNT             0x00020000
+	#define DDSD_LINEARSIZE              0x00080000
+	#define DDSD_DEPTH                   0x00800000
+
+	#define DDSCAPS_COMPLEX              0x00000008
+	#define DDSCAPS_TEXTURE              0x00001000
+	#define DDSCAPS_MIPMAP               0x00400000
+		
+	#define DDSCAPS2_CUBEMAP             0x00000200
+	#define DDSCAPS2_CUBEMAP_POSITIVEX   0x00000400
+	#define DDSCAPS2_CUBEMAP_NEGATIVEX   0x00000800
+	#define DDSCAPS2_CUBEMAP_POSITIVEY   0x00001000
+	#define DDSCAPS2_CUBEMAP_NEGATIVEY   0x00002000
+	#define DDSCAPS2_CUBEMAP_POSITIVEZ   0x00004000
+	#define DDSCAPS2_CUBEMAP_NEGATIVEZ   0x00008000
+	#define DDSCAPS2_VOLUME              0x00200000
 
 	struct DDPixelFormat
 	{
@@ -228,6 +246,9 @@ namespace til
 		m_Colors = NULL;
 		m_Alpha = NULL;
 		m_ColorFunc = NULL;
+		m_MipMap = NULL;
+		m_MipMapCurrent = 0;
+		m_MipMapTotal = 0;
 	}
 
 	ImageDDS::~ImageDDS()
@@ -247,56 +268,6 @@ namespace til
 		{
 			TIL_ERROR_EXPLAIN("%s is not a DDS file or header is invalid.", m_FileName);
 			return false;
-		}
-
-		switch (m_BPPIdent)
-		{
-
-		case BPP_32B_A8B8G8R8:
-			{
-				m_ColorFunc = &ImageDDS::ColorFunc_A8B8G8R8;
-				break;
-			}
-		case BPP_32B_A8R8G8B8:
-			{
-				m_ColorFunc = &ImageDDS::ColorFunc_A8R8G8B8;
-				break;
-			}
-		case BPP_32B_B8G8R8A8:
-			{
-				m_ColorFunc = &ImageDDS::ColorFunc_B8G8R8A8;
-				break;
-			}
-		case BPP_32B_R8G8B8A8:
-			{
-				m_ColorFunc = &ImageDDS::ColorFunc_R8G8B8A8;
-				break;
-			}
-		case BPP_32B_B8G8R8:
-			{
-				m_ColorFunc = &ImageDDS::ColorFunc_B8G8R8;
-				break;
-			}
-		case BPP_32B_R8G8B8:
-			{
-				m_ColorFunc = &ImageDDS::ColorFunc_R8G8B8;
-				break;
-			}
-		case BPP_16B_B5G6R5:
-			{
-				m_ColorFunc = &ImageDDS::ColorFunc_B5G6R5;
-				break;
-			}
-		case BPP_16B_R5G6B5:
-			{
-				m_ColorFunc = &ImageDDS::ColorFunc_R5G6B5;
-				break;
-			}
-		default:
-			{
-				TIL_ERROR_EXPLAIN("Unknown color depth: %i", m_BPPIdent);
-				return false;
-			}
 		}
 
 		DDSurfaceDesc ddsd;
@@ -364,9 +335,15 @@ namespace til
 					m_BlockSize = 16;
 					break;
 				}
+			case DDS_FOURCC_A16B16G16R16F:
+				{
+					DDS_DEBUG("Format: A16B16G16R16F");
+					m_BlockSize = 16;
+					break;
+				}
 			default:
 				{
-					TIL_ERROR_EXPLAIN("Unknown FourCC in DDS file: %d", ddsd.format.fourCC);
+					TIL_ERROR_EXPLAIN("Unknown format: 0x%x", ddsd.format.fourCC);
 					return false;
 				}
 				
@@ -374,6 +351,8 @@ namespace til
 		}
 		else
 		{
+			DDS_DEBUG("Format: Uncompressed");
+
 			if (ddsd.format.bpp == 32)
 			{
 				if (ddsd.format.redMask == 0x00ff0000)
@@ -405,68 +384,146 @@ namespace til
 
 		m_InternalBPP = ddsd.format.bpp;
 
+		m_Offset = 0;
 		m_Width = ddsd.width;
 		m_Height = ddsd.height;
 		m_Depth = ddsd.depth;
-		m_MipMaps = (ddsd.mipMapLevels >= 1 ? ddsd.mipMapLevels : 1) - 1;
+
+		m_MipMapTotal = (ddsd.mipMapLevels >= 1 ? ddsd.mipMapLevels : 1);
 
 		DDS_DEBUG("Dimensions: (%d, %d)", m_Width, m_Height);
 		DDS_DEBUG("Depth: %d", m_Depth);
-		DDS_DEBUG("Mipmaps: %d", m_MipMaps);
+		DDS_DEBUG("Mipmaps: %d", m_MipMapTotal);
 
-		m_CubeMap = false;
+		m_CubeMap = 1;
 		if ((ddsd.caps.caps2 & DDSCAPS2_CUBEMAP) == DDSCAPS2_CUBEMAP)
 		{
 			DDS_DEBUG("Cubemap");
-			m_CubeMap = true;
+
+			if (ddsd.caps.caps2 & DDSCAPS2_CUBEMAP_POSITIVEX) { DDS_DEBUG("+X"); m_CubeMap++; }
+			if (ddsd.caps.caps2 & DDSCAPS2_CUBEMAP_NEGATIVEX) { DDS_DEBUG("-X"); m_CubeMap++; }
+			if (ddsd.caps.caps2 & DDSCAPS2_CUBEMAP_POSITIVEY) { DDS_DEBUG("+Y"); m_CubeMap++; }
+			if (ddsd.caps.caps2 & DDSCAPS2_CUBEMAP_NEGATIVEY) { DDS_DEBUG("-Y"); m_CubeMap++; }
+			if (ddsd.caps.caps2 & DDSCAPS2_CUBEMAP_POSITIVEZ) { DDS_DEBUG("+Z"); m_CubeMap++; }			
+			if (ddsd.caps.caps2 & DDSCAPS2_CUBEMAP_NEGATIVEZ) { DDS_DEBUG("-Z"); m_CubeMap++; }
+
+			m_CubeMap--;
 		}
 
-		ReadData();
-		GetOffsets();
+		m_MipMap = new MipMap[m_MipMapTotal * m_CubeMap];
 
-		DDS_DEBUG("Blocks: %d", m_Blocks);
+		switch (m_BPPIdent)
+		{
+
+		case BPP_32B_A8B8G8R8:
+			{
+				m_ColorFunc = &ImageDDS::ColorFunc_A8B8G8R8;
+				break;
+			}
+		case BPP_32B_A8R8G8B8:
+			{
+				m_ColorFunc = &ImageDDS::ColorFunc_A8R8G8B8;
+				break;
+			}
+		case BPP_32B_B8G8R8A8:
+			{
+				m_ColorFunc = &ImageDDS::ColorFunc_B8G8R8A8;
+				break;
+			}
+		case BPP_32B_R8G8B8A8:
+			{
+				m_ColorFunc = &ImageDDS::ColorFunc_R8G8B8A8;
+				break;
+			}
+		case BPP_32B_B8G8R8:
+			{
+				m_ColorFunc = &ImageDDS::ColorFunc_B8G8R8;
+				break;
+			}
+		case BPP_32B_R8G8B8:
+			{
+				m_ColorFunc = &ImageDDS::ColorFunc_R8G8B8;
+				break;
+			}
+		case BPP_16B_B5G6R5:
+			{
+				m_ColorFunc = &ImageDDS::ColorFunc_B5G6R5;
+				break;
+			}
+		case BPP_16B_R5G6B5:
+			{
+				m_ColorFunc = &ImageDDS::ColorFunc_R5G6B5;
+				break;
+			}
+		default:
+			{
+				TIL_ERROR_EXPLAIN("Unknown color depth: %i", m_BPPIdent);
+				return false;
+			}
+		}
 
 		m_Pixels = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
-		//m_Pixels = new byte[m_Width * m_Height * m_BPP];
 
+		m_Data = new byte[m_Width * m_Height * m_BlockSize];
 		m_Colors = new byte[m_BPP * 8];
-
-		if (m_Format == DDS_FOURCC_DXT1)
-		{
-			DecompressDXT1();
-		}
-		else if (m_Format == DDS_FOURCC_DXT5)
+		if (m_Format == DDS_FOURCC_DXT5)
 		{
 			m_Alpha = new byte[16 * sizeof(dword)];
-			DecompressDXT5();
 		}
-		else
+
+		for (uint32 j = 0; j < m_CubeMap; j++)
 		{
-			TIL_ERROR_EXPLAIN("Unknown or unhandled compression algorithm: %d", m_Format);
-			return false;
+			uint32 w = m_Width;
+			uint32 h = m_Height;
+
+			for (int i = 0; i < m_MipMapTotal; i++)
+			{
+				w = (1 > w) ? 1 : w; 
+				h = (1 > h) ? 1 : h;
+
+				if (m_Format == DDS_FOURCC_DXT1 || m_Format == DDS_FOURCC_DXT3 || m_Format == DDS_FOURCC_DXT5)
+				{
+					m_MipMapSize = ((w + 3) >> 2) * ((h + 3) >> 2) * m_BlockSize;
+				}
+				else
+				{
+					m_MipMapSize = w * h * m_BlockSize;
+				}
+
+				if (m_MipMapSize > m_Width * m_Height * m_BlockSize)
+				{
+					int shit = 1;
+				}
+
+				GetBlocks(w, h);
+				AddMipMap(w, h);
+
+				DDS_DEBUG("Mipmap %i x %i - reading %i bytes", w, h, m_MipMapSize);
+
+				m_Stream->ReadByte(m_Data, m_MipMapSize);
+
+				if (m_Format == DDS_FOURCC_DXT1)
+				{
+					DecompressDXT1();
+				}
+				else if (m_Format == DDS_FOURCC_DXT5)
+				{
+					DecompressDXT5();
+				}
+				else
+				{
+					TIL_ERROR_EXPLAIN("Unknown or unhandled compression algorithm: %d", m_Format);
+					return false;
+				}
+
+				m_MipMapCurrent++;
+
+				w >>= 1;
+				h >>= 1;
+			}
 		}
 
 		return true;
-	}
-
-	uint32 ImageDDS::GetFrameCount()
-	{
-		return 1;
-	}
-
-	byte* ImageDDS::GetPixels(uint32 a_Frame /*= 0*/)
-	{
-		return m_Pixels;
-	}
-
-	uint32 ImageDDS::GetWidth(uint32 a_Frame /*= 0*/)
-	{
-		return m_Width;
-	}
-
-	uint32 ImageDDS::GetHeight(uint32 a_Frame /*= 0*/)
-	{
-		return m_Height;
 	}
 
 	void ImageDDS::GetOffsets()
@@ -486,7 +543,7 @@ namespace til
 
 		for (uint32 i = 0; i < faces; i++)
 		{
-			uint32 count = m_MipMaps;
+			uint32 count = m_MipMapTotal;
 			uint32 size = 0;
 
 			for (uint32 m = 0; m < count; m++)
@@ -495,7 +552,7 @@ namespace til
 				uint32 h = m_Height;
 				uint32 d = m_Depth;
 
-				for (uint32 m = 0; m < m_MipMaps; m++)
+				for (uint32 m = 0; m < m_MipMapTotal; m++)
 				{
 					w = (w / 2);
 					h = (h / 2);
@@ -532,11 +589,11 @@ namespace til
 		//return size;
 	}
 
-	void ImageDDS::ReadData()
+	void ImageDDS::GetBlocks(uint32 a_Width, uint32 a_Height)
 	{
-		int powres = 1 << m_MipMaps;
-		int nW = m_Width / powres;
-		int nH = m_Height / powres;
+		int powres = 1 << m_MipMapTotal;
+		int nW = a_Width / powres;
+		int nH = a_Height / powres;
 		int nD = m_Depth / powres;
 
 		m_Blocks = 0;
@@ -545,13 +602,13 @@ namespace til
 		if (m_Format == DDS_FOURCC_DXT1)
 		{
 			//m_Size = (((nW + 3) / 4) * ((nH + 3) / 4) * 8);
-			m_Blocks = (m_Width / 4) * (m_Height / 4);
+			m_Blocks = (a_Width / 4) * (a_Height / 4);
 		}
 		// 4x4 blocks, 16 bytes per block
 		else if (m_Format == DDS_FOURCC_DXT5 || m_Format == DDS_FOURCC_DXT3)
 		{
 			//m_Size = (((nW + 3) / 4) * ((nH + 3) / 4) * 16);
-			m_Blocks = (m_Width / 4) * (m_Height / 4);
+			m_Blocks = (a_Width / 4) * (a_Height / 4);
 		}
 		else if (m_Depth > 0)
 		{
@@ -573,16 +630,29 @@ namespace til
 			m_Size *= 6;
 		}
 
-		m_Data = new byte[m_Size];
-		m_Stream->ReadByte(m_Data, m_Size);
+		//m_Data = new byte[m_Size];
+		//m_Stream->ReadByte(m_Data, m_Size);
+	}
+
+	void ImageDDS::AddMipMap(uint32 a_Width, uint32 a_Height)
+	{
+		MipMap* curr = &m_MipMap[m_MipMapCurrent];
+		curr->width = a_Width;
+		curr->height = a_Height;
+		curr->data = Internal::CreatePixels(a_Width, a_Height, m_BPP, curr->pitchx, curr->pitchy);
+		//curr->data = new byte[curr->width * m_BPP * curr->height * 2];
+		//curr->data = new byte[1024 * 1024 * m_BPP];
+		//curr->pitchx = 512;
 	}
 
 	void ImageDDS::DecompressDXT1()
 	{
-		uint32 pitch_blocks = m_Width / 4;
 		uint32 curr = 0;
 
 		DataDXT1* src = (DataDXT1*)m_Data;
+		MipMap* dst = &m_MipMap[m_MipMapCurrent];
+
+		uint32 pitch_blocks = dst->width / 4;
 
 		uint32 glob_x = 0;
 		uint32 glob_y = 0;
@@ -611,8 +681,8 @@ namespace til
 					uint32 curr = (2 * (4 * y + x));
 					uint32 enabled = ((bits & (0x3 << curr)) >> curr) + offset;
 
-					uint32 index = ((pos_y * m_PitchX) + pos_x) * m_BPP;
-					(this->*m_ColorFunc)(m_Pixels, index, m_Colors, enabled, alpha);
+					uint32 index = ((pos_y * dst->pitchx) + pos_x) * m_BPP;
+					(this->*m_ColorFunc)(dst->data, index, m_Colors, enabled, alpha);
 
 					pos_x++;
 				}
@@ -635,10 +705,12 @@ namespace til
 
 	void ImageDDS::DecompressDXT5()
 	{
-		uint32 pitch_blocks = m_Width / 4;
 		uint32 curr = 0;
 
 		DataDXT5* src = (DataDXT5*)m_Data;
+		MipMap* dst = &m_MipMap[m_MipMapCurrent];
+
+		uint32 pitch_blocks = dst->width / 4;
 
 		uint32 glob_x = 0;
 		uint32 glob_y = 0;
@@ -702,8 +774,8 @@ namespace til
 					uint32 curr = (2 * (4 * y + x));
 					uint32 enabled = ((bits & (0x3 << curr)) >> curr);
 
-					uint32 index = ((pos_y * m_PitchX) + pos_x) * m_BPP;
-					(this->*m_ColorFunc)(m_Pixels, index, m_Colors, enabled, alpha[bits_alpha + offset]);
+					uint32 index = ((pos_y * dst->pitchx) + pos_x) * m_BPP;
+					(this->*m_ColorFunc)(dst->data, index, m_Colors, enabled, alpha[bits_alpha + offset]);
 
 					pos_x++;
 				}
@@ -737,6 +809,29 @@ namespace til
 		colors[5] = colors[1];
 		colors[6] = Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(Blend_16b_R5G6B5(a_Color0, a_Color1, 0x80));
 		colors[7] = 0;
+	}
+
+	uint32 ImageDDS::GetFrameCount()
+	{
+		return m_MipMapTotal * m_CubeMap;
+	}
+
+	byte* ImageDDS::GetPixels(uint32 a_Frame /*= 0*/)
+	{
+		//return m_Pixels;
+		return m_MipMap[a_Frame].data;
+	}
+
+	uint32 ImageDDS::GetWidth(uint32 a_Frame /*= 0*/)
+	{
+		//return m_Width;
+		return m_MipMap[a_Frame].width;
+	}
+
+	uint32 ImageDDS::GetHeight(uint32 a_Frame /*= 0*/)
+	{
+		//return m_Height;
+		return m_MipMap[a_Frame].height;
 	}
 
 }; // namespace til

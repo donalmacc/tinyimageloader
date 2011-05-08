@@ -1,0 +1,4 @@
+/*!
+\page example2 Example: Loading images directly from a zip file
+
+*/

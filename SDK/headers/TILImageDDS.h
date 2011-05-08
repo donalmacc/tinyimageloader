@@ -80,18 +80,30 @@ namespace til
 
 		ImageDDS::ColorFunc m_ColorFunc;
 
-		void ReadData();
+		void GetBlocks(uint32 a_Width, uint32 a_Height);
 		void GetOffsets();
 		void ConstructColors(color_16b a_Color0, color_16b a_Color1);
 		void DecompressDXT1();
 		void DecompressDXT5();
+		void AddMipMap(uint32 a_Width, uint32 a_Height);
+
+		struct MipMap
+		{
+			uint32 width, height;
+			uint32 pitchx, pitchy;
+			byte* data;
+		};
 
 		//@}
 
+		uint32 m_Offset;
 		uint32 m_Width, m_Height, m_Depth;
 		uint32 m_PitchX, m_PitchY;
-		uint32 m_MipMaps;
-		bool m_CubeMap;
+		MipMap* m_MipMap;
+		uint32 m_MipMapSize;
+		uint32 m_MipMapTotal;
+		uint32 m_MipMapCurrent;
+		uint32 m_CubeMap;
 		uint32 m_Format;
 		uint32 m_InternalDepth, m_InternalBPP;
 		uint32 m_Size, m_Blocks;

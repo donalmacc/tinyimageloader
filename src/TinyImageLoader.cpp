@@ -359,25 +359,22 @@ namespace til
 
 		result->Load(a_Stream);
 
-		if (!result->SetBPP(a_Options & TIL_DEPTH_MASK))
+		if (result && !result->SetBPP(a_Options & TIL_DEPTH_MASK))
 		{
 			TIL_ERROR_EXPLAIN("Invalid bit-depth option: %i.", a_Options & TIL_DEPTH_MASK);
 			delete result;
-			a_Stream->Close();
-			delete a_Stream;
-			return NULL;
+			result = NULL;
 		}
 
-		if (!result->Parse(a_Options & (TIL_DEPTH_MASK)))
+		if (result && !result->Parse(a_Options & (TIL_DEPTH_MASK)))
 		{
 			TIL_ERROR_EXPLAIN("Could not parse file.");
 			delete result;
-			a_Stream->Close();
-			delete a_Stream;
-			return NULL;
+			result = NULL;
 		}
 
 		a_Stream->Close();
+		//delete a_Stream;
 
 		return result;
 	}
@@ -424,6 +421,11 @@ namespace til
 	void TIL_SetFileStreamFunc(FileStreamFunc a_Func)
 	{
 		Internal::g_FileFunc = a_Func;
+	}
+
+	void TIL_SetPixelDataFunc(PixelDataFunc a_Func)
+	{
+		Internal::g_PixelFunc = a_Func;
 	}
 
 	void TIL_ClearDebug()
@@ -487,11 +489,6 @@ namespace til
 			g_ErrorFunc(&g_Msg);
 		}
 
-	}
-
-	void TIL_SetPixelDataFunc(PixelDataFunc a_Func)
-	{
-		g_PixelFunc = a_Func;
 	}
 
 }; // namespace til

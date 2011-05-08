@@ -9,9 +9,9 @@ namespace TILFW
 	static unsigned int g_TextureTotal;
 	static unsigned int g_TextureCurrent = 0;
 	static til::Image* g_Load;
-	float g_PosX, g_PosY;
-	float g_ScaleX, g_ScaleY;
-	float g_Scale = 1.f;
+	static float g_PosX, g_PosY;
+	static float g_ScaleX, g_ScaleY;
+	static float g_Scale = 1.f;
 	bool g_Change = true;
 
 	static FILE* g_Log;
@@ -64,7 +64,7 @@ namespace TILFW
 		til::TIL_SetDebugFunc(LoggingFunc);
 		til::TIL_SetErrorFunc(LoggingFunc);
 
-		til::TIL_SetPixelDataFunc(PixelFunc);
+		//til::TIL_SetPixelDataFunc(PixelFunc);
 
 		// Set up projection
 		// Now we can draw quads using screen coordinates
@@ -93,8 +93,15 @@ namespace TILFW
 			//g_Load = til::TIL_Load("media\\TGA\\glass_container_full.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\TGA\\earth.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\DDS\\blood_stain_large.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\DDS\\HDRCube512.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			
+			g_Load = til::TIL_Load("media\\DDS\\water_castlebase_cubemap.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\DDS\\grace_cube.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+
 			//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			g_Load = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			
+			//g_Load = til::TIL_Load("media\\DDS\\khergit_lady_dress_b.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		}
 		else
 		{

@@ -30,8 +30,6 @@
 #include "TILImage.h"
 #include "TILInternal.h"
 
-//#include <stdlib.h>
-
 namespace til
 {
 
@@ -44,7 +42,7 @@ namespace til
 	Image::~Image()
 	{ 
 		if (m_FileName) { delete m_FileName; }
-		if (m_Stream) { delete m_Stream; }
+		//if (m_Stream) { delete m_Stream; }
 	}
 
 	void Image::Load(FileStream* a_Stream)

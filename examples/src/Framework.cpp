@@ -259,7 +259,7 @@ namespace TILFW
 				if (g_Active)
 				{
 					Framework::Render();
-
+						
 					SwapBuffers(g_WindowContext);
 				}
 			}
