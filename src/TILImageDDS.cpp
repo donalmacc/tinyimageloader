@@ -353,15 +353,22 @@ namespace til
 		{
 			DDS_DEBUG("Format: Uncompressed");
 
+			m_Format = DDS_FOURCC_UNCOMPRESSED;
+
+			m_InternalBPP = ddsd.format.bpp >> 3;
+			m_BlockSize = m_InternalBPP;
+
 			if (ddsd.format.bpp == 32)
 			{
 				if (ddsd.format.redMask == 0x00ff0000)
 				{
 					m_InternalDepth = TIL_DEPTH_A8R8G8B8;
+					DDS_DEBUG("Depth: A8R8G8B8");
 				}
 				else
 				{
 					m_InternalDepth = TIL_DEPTH_A8B8G8R8;
+					DDS_DEBUG("Depth: A8B8G8R8");
 				}
 			}
 			else if (ddsd.format.bpp == 24)
@@ -369,10 +376,12 @@ namespace til
 				if (ddsd.format.redMask == 0x00ff0000)
 				{
 					m_InternalDepth = TIL_DEPTH_R8G8B8;
+					DDS_DEBUG("Depth: R8G8B8");
 				}
 				else
 				{
 					m_InternalDepth = TIL_DEPTH_B8G8R8;
+					DDS_DEBUG("Depth: B8G8R8");
 				}
 			}
 			else
@@ -381,8 +390,6 @@ namespace til
 				return false;
 			}
 		}
-
-		m_InternalBPP = ddsd.format.bpp;
 
 		m_Offset = 0;
 		m_Width = ddsd.width;
@@ -471,6 +478,8 @@ namespace til
 			m_Alpha = new byte[16 * sizeof(dword)];
 		}
 
+		// decompress
+
 		for (uint32 j = 0; j < m_CubeMap; j++)
 		{
 			uint32 w = m_Width;
@@ -492,7 +501,8 @@ namespace til
 
 				if (m_MipMapSize > m_Width * m_Height * m_BlockSize)
 				{
-					int shit = 1;
+					TIL_ERROR_EXPLAIN("Write buffer not big enough.");
+					return false;
 				}
 
 				GetBlocks(w, h);
@@ -510,9 +520,13 @@ namespace til
 				{
 					DecompressDXT5();
 				}
+				else if (m_Format == DDS_FOURCC_UNCOMPRESSED)
+				{
+					DecompressUncompressed();
+				}
 				else
 				{
-					TIL_ERROR_EXPLAIN("Unknown or unhandled compression algorithm: %d", m_Format);
+					TIL_ERROR_EXPLAIN("Unknown or unhandled compression algorithm: 0x%x", m_Format);
 					return false;
 				}
 
@@ -610,7 +624,11 @@ namespace til
 			//m_Size = (((nW + 3) / 4) * ((nH + 3) / 4) * 16);
 			m_Blocks = (a_Width / 4) * (a_Height / 4);
 		}
-		else if (m_Depth > 0)
+		else
+		{
+			m_Blocks = a_Width * a_Height;
+		}
+		/*else if (m_Depth > 0)
 		{
 			// Width   Height   Depth   Width*Height*Depth     Width*Height*Depth
 			// ----- * ------ * ----- = ------------         = ------------
@@ -628,7 +646,7 @@ namespace til
 		if (m_CubeMap)
 		{
 			m_Size *= 6;
-		}
+		}*/
 
 		//m_Data = new byte[m_Size];
 		//m_Stream->ReadByte(m_Data, m_Size);
@@ -793,6 +811,39 @@ namespace til
 			}
 
 			src++;
+		}
+	}
+
+	void ImageDDS::DecompressUncompressed()
+	{
+		/*byte* src = m_Data;
+		byte* dst = m_MipMap[m_MipMapCurrent].data;
+
+		for (int i = 0; i < m_Blocks * m_BlockSize; i++) { *dst++ = *src++; }*/
+
+		byte* read = m_Data;
+		byte src[4];
+		MipMap* dst = &m_MipMap[m_MipMapCurrent];
+
+		if (m_InternalDepth == TIL_DEPTH_A8R8G8B8)
+		{
+			for (uint32 y = 0; y < dst->height; y++)
+			{
+				uint32 index_y = (y * dst->pitchx);
+
+				for (uint32 x = 0; x < dst->width; x++)
+				{
+					src[0] = read[2];
+					src[1] = read[1];
+					src[2] = read[0];
+					src[3] = read[3];
+
+					uint32 index = index_y + x;
+					(this->*m_ColorFunc)(dst->data, index * m_BPP, src, 0, src[3]);
+
+					read += 4;
+				}
+			}
 		}
 	}
 

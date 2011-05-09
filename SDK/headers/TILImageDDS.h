@@ -80,12 +80,14 @@ namespace til
 
 		ImageDDS::ColorFunc m_ColorFunc;
 
+		void AddMipMap(uint32 a_Width, uint32 a_Height);
 		void GetBlocks(uint32 a_Width, uint32 a_Height);
 		void GetOffsets();
 		void ConstructColors(color_16b a_Color0, color_16b a_Color1);
+
 		void DecompressDXT1();
 		void DecompressDXT5();
-		void AddMipMap(uint32 a_Width, uint32 a_Height);
+		void DecompressUncompressed();
 
 		struct MipMap
 		{
