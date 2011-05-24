@@ -17,7 +17,7 @@ namespace TILFW
 	static FILE* g_Log;
 	static char* g_LogPath;
 
-	void LoggingFunc(til::MessageData* a_Data)
+	void CustomLoggingFunc(til::MessageData* a_Data)
 	{
 		fopen_s(&g_Log, g_LogPath, "a");
 		char msg[1024];
@@ -26,17 +26,18 @@ namespace TILFW
 		fclose(g_Log);
 	}
 
-	til::byte* PixelFunc(til::uint32 a_Width, til::uint32 a_Height, til::uint8 a_BPP, til::uint32& a_PitchX, til::uint32& a_PitchY)
+	void CustomPitchFunc(til::uint32 a_Width, til::uint32 a_Height, til::uint8 a_BPP, til::uint32& a_PitchX, til::uint32& a_PitchY)
 	{
-		til::uint32 high = (a_Width > a_Height) ? a_Width : a_Height;
+		/*til::uint32 high = (a_Width > a_Height) ? a_Width : a_Height;
 
 		til::uint32 closest = 0;
 		while (high >>= 1) { closest++; }
 
-		a_PitchX = 1 << (closest + 1);
-		a_PitchY = a_PitchX;
+		a_PitchX = 1 << closest;
+		a_PitchY = a_PitchX;*/
 
-		return new til::byte[a_PitchX * a_PitchY * a_BPP];
+		a_PitchX = a_Width;
+		a_PitchY = a_Height;
 	}
 
 	//! Setting up some stuff
@@ -61,10 +62,9 @@ namespace TILFW
 
 		// We want to handle incoming debug messages
 
-		til::TIL_SetDebugFunc(LoggingFunc);
-		til::TIL_SetErrorFunc(LoggingFunc);
-
-		//til::TIL_SetPixelDataFunc(PixelFunc);
+		til::TIL_SetDebugFunc(CustomLoggingFunc);
+		til::TIL_SetErrorFunc(CustomLoggingFunc);
+		til::TIL_SetPitchFunc(CustomPitchFunc);
 
 		// Set up projection
 		// Now we can draw quads using screen coordinates
@@ -98,6 +98,7 @@ namespace TILFW
 			//g_Load = til::TIL_Load("media\\DDS\\water_castlebase_cubemap.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			g_Load = til::TIL_Load("media\\DDS\\grace_cube.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 
+			//g_Load = til::TIL_Load("media\\GIF\\ibDZsI.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			
@@ -135,7 +136,8 @@ namespace TILFW
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			glTexImage2D(
 				GL_TEXTURE_2D, 0, GL_RGBA,
-				g_Load->GetWidth(i), g_Load->GetHeight(i),
+				//g_Load->GetWidth(i), g_Load->GetHeight(i),
+				g_Load->GetPitchX(i), g_Load->GetPitchY(i),
 				0,
 				GL_RGBA, GL_UNSIGNED_BYTE, g_Load->GetPixels(i)
 			);
@@ -174,8 +176,8 @@ namespace TILFW
 		{
 			g_TextureCurrent = g_TextureCurrent % g_TextureTotal;
 
-			g_ScaleX = (float)g_Load->GetWidth(g_TextureCurrent) * g_Scale;
-			g_ScaleY = (float)g_Load->GetHeight(g_TextureCurrent) * g_Scale;
+			g_ScaleX = (float)g_Load->GetPitchX(g_TextureCurrent) * g_Scale;
+			g_ScaleY = (float)g_Load->GetPitchY(g_TextureCurrent) * g_Scale;
 			g_PosX = ((float)s_WindowWidth / 2.f) - (g_ScaleX / 2.f);
 			g_PosY = ((float)s_WindowHeight / 2.f) - (g_ScaleY / 2.f);
 		}

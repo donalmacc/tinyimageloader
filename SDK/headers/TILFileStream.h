@@ -155,12 +155,22 @@ namespace til
 		*/
 		virtual bool Close() = 0;
 
+		//! Returns whether the stream can be reused
+		/*!
+			\note When a stream is used for more than one file it should 
+			not be deleted. It is then up to to the developer to release
+			the handle to the stream.
+
+			\return True if reusable, otherwise false
+		*/
+		virtual bool IsReusable() = 0; 
+
 		//! Get the full path
 		/*!
 			\note This string should always end with an image file extension, 
 			otherwise TinyImageLoader can't load it.
 
-			\return a string with the full path to the file
+			\return String with the full path to the file
 		*/
 		const char* GetFilePath();
 

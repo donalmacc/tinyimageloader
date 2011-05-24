@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.4</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.7.0</span></div>
   </td>
  </tr>
  </tbody>
@@ -137,6 +137,8 @@ typedef <a class="el" href="namespacetil.html#a763060f68abe34e71c760cbc58131389"
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8eb2d871b8a6ffb55b3eeb720207a6cb"></a><!-- doxytag: member="til::color_32b" ref="a8eb2d871b8a6ffb55b3eeb720207a6cb" args="" -->
 typedef <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">color_32b</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">32-bit color <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a343edff033b74784340740c51411eb5b">PitchFunc</a> )(<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Width, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Height, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_BPP, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> &amp;a_PitchX, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> &amp;a_PitchY)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Pitch data function.  <a href="#a343edff033b74784340740c51411eb5b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a4cd3def0937f0e817958cdcc44241549">MessageFunc</a> )(<a class="el" href="structtil_1_1_message_data.html">MessageData</a> *a_Data)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Message function.  <a href="#a4cd3def0937f0e817958cdcc44241549"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classtil_1_1_file_stream.html">FileStream</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#ad2bb0fc50e3103fc00335b66adf272c8">FileStreamFunc</a> )(const char *a_Path, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Options)</td></tr>
@@ -177,6 +179,8 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the length of the debug string.  <a href="#a3ffda784e3632247d9759e5d3ac5bfbd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#ab47ef180dfcddf277bb0332181206100">TIL_ClearDebug</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the debug string.  <a href="#ab47ef180dfcddf277bb0332181206100"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a9fe7da11935463fefdaf5c63ca24aa4e">TIL_SetPitchFunc</a> (<a class="el" href="namespacetil.html#a343edff033b74784340740c51411eb5b">PitchFunc</a> a_Func)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the pitch function to be used internally.  <a href="#a9fe7da11935463fefdaf5c63ca24aa4e"></a><br/></td></tr>
 <tr><td colspan="2"><div class="groupHeader">16-bit RGB</div></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">color_16b</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a7e42efe1f69a94e67190c1434fd002f4">Construct_16b_R5G6B5</a> (<a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Red, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Green, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_Blue)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a 16-bit RGB color.  <a href="#a7e42efe1f69a94e67190c1434fd002f4"></a><br/></td></tr>
@@ -277,6 +281,31 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <p>Message functions are used for logging. You can create your own and attach them to TinyImageLoader. </p>
+
+</div>
+</div>
+<a class="anchor" id="a343edff033b74784340740c51411eb5b"></a><!-- doxytag: member="til::PitchFunc" ref="a343edff033b74784340740c51411eb5b" args=")(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32 &amp;a_PitchX, uint32 &amp;a_PitchY)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* <a class="el" href="namespacetil.html#a343edff033b74784340740c51411eb5b">til::PitchFunc</a>)(<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Width, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Height, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_BPP, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> &amp;a_PitchX, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> &amp;a_PitchY)</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Pitch data function. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_Width</td><td>The width of the image </td></tr>
+    <tr><td class="paramname">a_Height</td><td>The height of the image </td></tr>
+    <tr><td class="paramname">a_BPP</td><td>The amount of bytes per pixel </td></tr>
+    <tr><td class="paramname">a_PitchX</td><td>The horizontal pitch </td></tr>
+    <tr><td class="paramname">a_PitchY</td><td>The vertical pitch </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1692,6 +1721,56 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a8d2e2ab942bb94b188587509ccb754de"></a><!-- doxytag: member="til::TIL_Load" ref="a8d2e2ab942bb94b188587509ccb754de" args="(FileStream *a_Stream, uint32 a_Options)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classtil_1_1_image.html">Image</a> * til::TIL_Load </td>
+          <td>(</td>
+          <td class="paramtype">FileStream *&#160;</td>
+          <td class="paramname"><em>a_Stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32&#160;</td>
+          <td class="paramname"><em>a_Options</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Main interface for loading images. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_Stream</td><td>A <a class="el" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">FileStream</a> handle that does file reading. </td></tr>
+    <tr><td class="paramname">a_Options</td><td>A combination of loading options.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>An instance of <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a> or NULL on failure.</dd></dl>
+<p>A color depth is required, or the function returns NULL.</p>
+<p>And a color depth option:</p>
+<ul>
+<li><a class="el" href="_t_i_l_settings_8h.html#a58c600319f21b801f568a6a3d9bb8498" title="32-bit ARGB color depth">TIL_DEPTH_A8R8G8B8</a></li>
+<li><a class="el" href="_t_i_l_settings_8h.html#aa41c714a49a57e84fe823a09e898c074" title="32-bit ABGR color depth">TIL_DEPTH_A8B8G8R8</a></li>
+<li><a class="el" href="_t_i_l_settings_8h.html#a7680a63e7db6fd73c8f86dc664230603" title="32-bit RGBA color depth">TIL_DEPTH_R8G8B8A8</a></li>
+<li><a class="el" href="_t_i_l_settings_8h.html#a309fc72c68361d00c16ca31594e46347" title="32-bit BGRA color depth">TIL_DEPTH_B8G8R8A8</a></li>
+<li><a class="el" href="_t_i_l_settings_8h.html#ad3ddbb7aac9818550ea9f8d4f7785e4c" title="32-bit RGB color depth">TIL_DEPTH_R8G8B8</a></li>
+<li><a class="el" href="_t_i_l_settings_8h.html#abec87556ef2dbb71ca9a5f45c573cd3c" title="32-bit BGR color depth">TIL_DEPTH_B8G8R8</a></li>
+<li><a class="el" href="_t_i_l_settings_8h.html#a77a6c97d164dff0f9ad8abf92af7e344" title="16-bit RGB color depth">TIL_DEPTH_R5G6B5</a></li>
+<li><a class="el" href="_t_i_l_settings_8h.html#a1e6113bd728b3fe56f7cf3ead15fb4f0" title="16-bit BGR color depth">TIL_DEPTH_B5G6R5</a></li>
+</ul>
+<p>/code MyStream* stream = new MyStream(); stream-&gt;Open("MyFile.png", TIL_ADDWORKINGDIR); <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a>* load = til::TIL_Load(stream, TIL_DEPTH_A8B8G8R8); /endcode </p>
+
+</div>
+</div>
 <a class="anchor" id="abd175aec954bbd694f5d76913e49781f"></a><!-- doxytag: member="til::TIL_Load" ref="abd175aec954bbd694f5d76913e49781f" args="(const char *a_FileName, uint32 a_Options=(TIL_FILE_ABSOLUTEPATH|TIL_DEPTH_A8R8G8B8))" -->
 <div class="memitem">
 <div class="memproto">
@@ -1745,56 +1824,6 @@ Functions</h2></td></tr>
 <li><a class="el" href="_t_i_l_settings_8h.html#a1e6113bd728b3fe56f7cf3ead15fb4f0" title="16-bit BGR color depth">TIL_DEPTH_B5G6R5</a></li>
 </ul>
 <p>/code <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a>* load = <a class="el" href="namespacetil.html#a8d2e2ab942bb94b188587509ccb754de" title="Main interface for loading images.">til::TIL_Load</a>("MyFile.png", TIL_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8); /endcode </p>
-
-</div>
-</div>
-<a class="anchor" id="a8d2e2ab942bb94b188587509ccb754de"></a><!-- doxytag: member="til::TIL_Load" ref="a8d2e2ab942bb94b188587509ccb754de" args="(FileStream *a_Stream, uint32 a_Options)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classtil_1_1_image.html">Image</a> * til::TIL_Load </td>
-          <td>(</td>
-          <td class="paramtype">FileStream *&#160;</td>
-          <td class="paramname"><em>a_Stream</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32&#160;</td>
-          <td class="paramname"><em>a_Options</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Main interface for loading images. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">a_Stream</td><td>A <a class="el" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">FileStream</a> handle that does file reading. </td></tr>
-    <tr><td class="paramname">a_Options</td><td>A combination of loading options.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>An instance of <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a> or NULL on failure.</dd></dl>
-<p>A color depth is required, or the function returns NULL.</p>
-<p>And a color depth option:</p>
-<ul>
-<li><a class="el" href="_t_i_l_settings_8h.html#a58c600319f21b801f568a6a3d9bb8498" title="32-bit ARGB color depth">TIL_DEPTH_A8R8G8B8</a></li>
-<li><a class="el" href="_t_i_l_settings_8h.html#aa41c714a49a57e84fe823a09e898c074" title="32-bit ABGR color depth">TIL_DEPTH_A8B8G8R8</a></li>
-<li><a class="el" href="_t_i_l_settings_8h.html#a7680a63e7db6fd73c8f86dc664230603" title="32-bit RGBA color depth">TIL_DEPTH_R8G8B8A8</a></li>
-<li><a class="el" href="_t_i_l_settings_8h.html#a309fc72c68361d00c16ca31594e46347" title="32-bit BGRA color depth">TIL_DEPTH_B8G8R8A8</a></li>
-<li><a class="el" href="_t_i_l_settings_8h.html#ad3ddbb7aac9818550ea9f8d4f7785e4c" title="32-bit RGB color depth">TIL_DEPTH_R8G8B8</a></li>
-<li><a class="el" href="_t_i_l_settings_8h.html#abec87556ef2dbb71ca9a5f45c573cd3c" title="32-bit BGR color depth">TIL_DEPTH_B8G8R8</a></li>
-<li><a class="el" href="_t_i_l_settings_8h.html#a77a6c97d164dff0f9ad8abf92af7e344" title="16-bit RGB color depth">TIL_DEPTH_R5G6B5</a></li>
-<li><a class="el" href="_t_i_l_settings_8h.html#a1e6113bd728b3fe56f7cf3ead15fb4f0" title="16-bit BGR color depth">TIL_DEPTH_B5G6R5</a></li>
-</ul>
-<p>/code MyStream* stream = new MyStream(); stream-&gt;Open("MyFile.png", TIL_ADDWORKINGDIR); <a class="el" href="classtil_1_1_image.html" title="The virtual interface for loading images and extracting image data.">til::Image</a>* load = til::TIL_Load(stream, TIL_DEPTH_A8B8G8R8); /endcode </p>
 
 </div>
 </div>
@@ -1891,6 +1920,32 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a9fe7da11935463fefdaf5c63ca24aa4e"></a><!-- doxytag: member="til::TIL_SetPitchFunc" ref="a9fe7da11935463fefdaf5c63ca24aa4e" args="(PitchFunc a_Func)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void til::TIL_SetPitchFunc </td>
+          <td>(</td>
+          <td class="paramtype">PitchFunc&#160;</td>
+          <td class="paramname"><em>a_Func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Set the pitch function to be used internally. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_Func</td><td>The pitch function to attach</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Standard, the width and height of an image are the same as its horizontal and vertical pitch. However, in some cases you might want to have a different policy in place. For instance, when you're loading textures on a platform that doesn't support non-power-of-two textures, you can attach a pitch function that always sets the pitch to a power of two. </p>
+
+</div>
+</div>
 <a class="anchor" id="a23d6a0255921e477f4f04e27c28c3945"></a><!-- doxytag: member="til::TIL_SetWorkingDirectory" ref="a23d6a0255921e477f4f04e27c28c3945" args="(const char *a_Path, size_t a_Length)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1965,7 +2020,7 @@ Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:49:43 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri May 13 2011 13:49:22 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

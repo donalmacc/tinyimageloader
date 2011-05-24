@@ -105,11 +105,14 @@ namespace til
 
 		bool Parse(uint32 a_Options);
 
+		uint32 GetFrameCount();
+		byte* GetPixels(uint32 a_Frame = 0);
+
 		uint32 GetWidth(uint32 a_Frame = 0);
 		uint32 GetHeight(uint32 a_Frame = 0);
 
-		uint32 GetFrameCount();
-		byte* GetPixels(uint32 a_Frame = 0);
+		uint32 GetPitchX(uint32 a_Frame = 0);
+		uint32 GetPitchY(uint32 a_Frame = 0);
 
 	private:
 

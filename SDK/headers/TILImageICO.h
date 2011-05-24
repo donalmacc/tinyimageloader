@@ -67,6 +67,11 @@ namespace til
 		uint32 GetWidth(uint32 a_Frame = 0);
 		uint32 GetHeight(uint32 a_Frame = 0);
 
+		uint32 GetPitchX(uint32 a_Frame = 0);
+		uint32 GetPitchY(uint32 a_Frame = 0);
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 		struct BufferICO
 		{
 			byte* buffer;
@@ -79,6 +84,8 @@ namespace til
 			byte* andmask;
 			BufferICO* next;
 		};
+
+#endif
 
 	private:
 

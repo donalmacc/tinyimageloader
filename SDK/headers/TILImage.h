@@ -184,6 +184,34 @@ namespace til
 		*/
 		virtual uint32 GetHeight(uint32 a_Frame = 0) = 0;
 
+		//! Get the horizontal pitch of a frame
+		/*!
+			\param a_Frame The frame of an animation or subimage to return
+
+			\return Horizontal pitch in pixels
+
+			The pitch can be different than the width of an image. This is the case
+			when you've attached your own pitch function using #TIL_SetPitchFunc. 
+
+			It is advised to use this function in favor of #GetWidth when you
+			are using TinyImageLoader to load textures.
+		*/
+		virtual uint32 GetPitchX(uint32 a_Frame = 0) = 0;
+
+		//! Get the vertical pitch of a frame
+		/*!
+			\param a_Frame The frame of an animation or subimage to return
+
+			\return Vertical pitch in pixels
+
+			The pitch can be different than the height of an image. This is the case
+			when you've attached your own pitch function using #TIL_SetPitchFunc. 
+
+			It is advised to use this function in favor of #GetHeight when you
+			are using TinyImageLoader to load textures.
+		*/
+		virtual uint32 GetPitchY(uint32 a_Frame = 0) = 0;
+
 	protected:
 
 		FileStream* m_Stream; //!< The file interface

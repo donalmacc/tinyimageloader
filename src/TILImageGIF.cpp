@@ -398,16 +398,16 @@ namespace til
 		m_LocalWidth = m_Width;
 		m_LocalHeight = m_Height;
 		Internal::CreatePixels(m_Width, m_Height, m_BPP, m_LocalPitchX, m_LocalPitchY);
-		m_LocalPitch = m_Width * m_BPP;
+		//m_LocalPitch = m_Width * m_BPP;
+		m_LocalPitch = m_LocalPitchX * m_BPP;
 
-		m_TotalBytes = m_Width * m_Height * m_BPP;
+		//m_TotalBytes = m_Width * m_Height * m_BPP;
+		m_TotalBytes = m_LocalPitchX * m_LocalPitchY * m_BPP;
 		m_PrevBuffer = new byte[m_TotalBytes];
 		Internal::MemSet(m_PrevBuffer, 0, m_TotalBytes);
 
 		GIF_DEBUG("Width: %i", m_Width);
 		GIF_DEBUG("Height: %i", m_Height);
-		
-		//m_Buffer = new byte[m_Width * m_Height * m_BPP];
 		
 		//bool global_colortable = (m_Buffer[8] & 0x80) == 0x80;
 		//bool interlaced = (m_Buffer[8] & 0x40) == 0x40;
@@ -549,8 +549,15 @@ namespace til
 					if (width-- == 0)
 					{
 						target += m_LocalPitch;
-						dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP;
-						width = m_LocalWidth - 1;
+						//dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP;
+						//dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP);
+						//int32 xy = (int32)((m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP);
+						int32 xy = (int32)((m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP));
+						//if (xy < 0) { xy += m_LocalPitchX; }
+						//if (xy < 0) { xy = 0; }
+						dst = target + xy;
+						//width = m_LocalWidth - 1;
+						width = m_LocalWidth;
 					}
 
 					//if (code != 127)
@@ -597,8 +604,15 @@ namespace til
 						if (width-- == 0)
 						{
 							target += m_LocalPitch;
-							dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP;
+							
+							//int32 xy = (int32)((m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP);
+							int32 xy = (int32)((m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP));
+							//if (xy < 0) { xy += m_LocalPitchX; }
+							//dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP;
+							//dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP);
+							dst = target + xy;
 							width = m_LocalWidth - 1;
+							//width = m_LocalWidth;
 						}
 
 						sp--;
@@ -718,15 +732,6 @@ namespace til
 		return m_Delay;
 	}
 
-	uint32 ImageGIF::GetWidth(uint32 a_Frame)
-	{
-		return m_Width;
-	}
-	uint32 ImageGIF::GetHeight(uint32 a_Frame)
-	{
-		return m_Height;
-	}
-
 	void ImageGIF::ReleaseMemory(BufferLinked* a_Buffer)
 	{
 		if (a_Buffer) 
@@ -753,6 +758,25 @@ namespace til
 		}*/
 
 		memcpy(a_Dst, &m_CurrentColors[a_Code * m_BPP], m_BPP);
+	}
+
+	uint32 ImageGIF::GetWidth(uint32 a_Frame)
+	{
+		return m_Width;
+	}
+	uint32 ImageGIF::GetHeight(uint32 a_Frame)
+	{
+		return m_Height;
+	}
+
+	uint32 ImageGIF::GetPitchX(uint32 a_Frame /*= 0*/)
+	{
+		return m_LocalPitchX;
+	}
+
+	uint32 ImageGIF::GetPitchY(uint32 a_Frame /*= 0*/)
+	{
+		return m_LocalPitchY;
 	}
 
 }; // namespace til

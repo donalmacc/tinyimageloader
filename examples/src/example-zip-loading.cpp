@@ -168,13 +168,11 @@ public:
 					}
 				}
 			}
-		}
-		else
-		{
-			return false;
-		}
 
-		return true;
+			return true;
+		}
+		
+		return false;
 	}
 
 	bool EndOfFile()
@@ -301,7 +299,7 @@ namespace TILFW
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			glTexImage2D(
 				GL_TEXTURE_2D, 0, GL_RGBA, 
-				g_Load->GetWidth(i), g_Load->GetHeight(i),
+				g_Load->GetPitchX(i), g_Load->GetPitchY(i),
 				0, 
 				GL_RGBA, GL_UNSIGNED_BYTE, g_Load->GetPixels(i)
 			);

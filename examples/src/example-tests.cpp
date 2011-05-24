@@ -59,8 +59,8 @@ namespace TILFW
 		til::Image* load_png = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		til::TIL_Release(load_png);
 
-		til::Image* load_gif = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-		til::TIL_Release(load_gif);
+		//til::Image* load_gif = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		//til::TIL_Release(load_gif);
 
 		til::Image* load_ico = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		til::TIL_Release(load_ico);
@@ -68,8 +68,11 @@ namespace TILFW
 		til::Image* load_tga = til::TIL_Load("media\\TGA\\earth.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		til::TIL_Release(load_tga);
 
-		til::Image* load_dds = til::TIL_Load("media\\DDS\\assaultrifle01.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-		til::TIL_Release(load_dds);
+		til::Image* load_dds1 = til::TIL_Load("media\\DDS\\assaultrifle01.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		til::TIL_Release(load_dds1);
+
+		til::Image* load_dds2 = til::TIL_Load("media\\DDS\\grace_cube.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		til::TIL_Release(load_dds2);
 
 		til::TIL_ShutDown();
 

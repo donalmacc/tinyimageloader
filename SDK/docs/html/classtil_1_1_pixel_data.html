@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.4</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.7.0</span></div>
   </td>
  </tr>
  </tbody>
@@ -78,38 +78,54 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9542ea472c128ff0ccc2215e9d25f52"></a><!-- doxytag: member="til::PixelData::PixelData" ref="af9542ea472c128ff0ccc2215e9d25f52" args="(uint32 a_Width, uint32 a_Height, uint32 a_ColorOption, bool a_PixelFunction)" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>PixelData</b> (<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Width, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Height, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_ColorOption, bool a_PixelFunction)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1e69c2aa4963fdb9175a9a3323a78346"></a><!-- doxytag: member="til::PixelData::CreateData" ref="a1e69c2aa4963fdb9175a9a3323a78346" args="()" -->
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CreateData</b> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a663877b68887e332bc6a7c7a54be909c"></a><!-- doxytag: member="til::PixelData::PixelFunction" ref="a663877b68887e332bc6a7c7a54be909c" args="(byte *a_Src, uint32 a_SrcIndex)" -->
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PixelFunction</b> (<a class="el" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc">byte</a> *a_Src, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_SrcIndex)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9853d3855b60471f072d6c2ba59b23fa"></a><!-- doxytag: member="til::PixelData::WritePixel" ref="a9853d3855b60471f072d6c2ba59b23fa" args="(byte *a_Src, uint32 a_Count, uint32 a_Repeat=1, uint32 a_DstIndex=0)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>WritePixel</b> (<a class="el" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc">byte</a> *a_Src, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Count, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Repeat=1, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_DstIndex=0)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a219e3d08dc6b98dfa2ba9ddee57ab45a"></a><!-- doxytag: member="til::PixelData::WritePixel16b" ref="a219e3d08dc6b98dfa2ba9ddee57ab45a" args="(color_16b a_Src, uint32 a_Count, uint32 a_Repeat=1, uint32 a_DstIndex=0)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>WritePixel16b</b> (<a class="el" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45">color_16b</a> a_Src, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Count, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Repeat=1, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_DstIndex=0)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad68b594d927d92346aa6bb4c26663f3b"></a><!-- doxytag: member="til::PixelData::WritePixel32b" ref="ad68b594d927d92346aa6bb4c26663f3b" args="(color_32b a_Src, uint32 a_Count, uint32 a_Repeat=1, uint32 a_DstIndex=0)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>WritePixel32b</b> (<a class="el" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">color_32b</a> a_Src, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Count, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Repeat=1, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_DstIndex=0)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a23bcb5be198826c0721ec967d01f5e6d"></a><!-- doxytag: member="til::PixelData::PixelData" ref="a23bcb5be198826c0721ec967d01f5e6d" args="(uint32 a_Width, uint32 a_Height, uint8 a_BPP)" -->
+&#160;</td><td class="memItemRight" valign="bottom"><b>PixelData</b> (<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Width, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Height, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_BPP)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a1d5cc99661ca23ad7c4020854f8a4f"></a><!-- doxytag: member="til::PixelData::Init" ref="a7a1d5cc99661ca23ad7c4020854f8a4f" args="()" -->
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Init</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a14c9b2ed34d6fb9509b2e3aaeb40f288"></a><!-- doxytag: member="til::PixelData::CreateData" ref="a14c9b2ed34d6fb9509b2e3aaeb40f288" args="()" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CreateData</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a74d28879a165a501b7421cf273954754"></a><!-- doxytag: member="til::PixelData::Clear" ref="a74d28879a165a501b7421cf273954754" args="()" -->
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afa9a87223730bcf63d92a6299beb919b"></a><!-- doxytag: member="til::PixelData::CopyFrom" ref="afa9a87223730bcf63d92a6299beb919b" args="(PixelData *a_Other)" -->
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>CopyFrom</b> (<a class="el" href="classtil_1_1_pixel_data.html">PixelData</a> *a_Other)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2606943366212b60ea13e2a3bbf2e0a"></a><!-- doxytag: member="til::PixelData::GetData" ref="ae2606943366212b60ea13e2a3bbf2e0a" args="()" -->
+<a class="el" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc">byte</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetData</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f7138ca88e804fd1f52d79a9cd58fbb"></a><!-- doxytag: member="til::PixelData::GetOffsetX" ref="a6f7138ca88e804fd1f52d79a9cd58fbb" args="()" -->
+<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetOffsetX</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af22b155b358cc20bb9523e0b2a2ea9c3"></a><!-- doxytag: member="til::PixelData::GetOffsetY" ref="af22b155b358cc20bb9523e0b2a2ea9c3" args="()" -->
+<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetOffsetY</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a72b53a80e8b9bdbfede0b31dc8857794"></a><!-- doxytag: member="til::PixelData::GetWidth" ref="a72b53a80e8b9bdbfede0b31dc8857794" args="()" -->
+<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetWidth</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad4919fabb104ba339e72aa4f48a3d83f"></a><!-- doxytag: member="til::PixelData::GetHeight" ref="ad4919fabb104ba339e72aa4f48a3d83f" args="()" -->
+<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetHeight</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab02fba0764b825eaa7b8c12ece7fbb33"></a><!-- doxytag: member="til::PixelData::GetSizeHor" ref="ab02fba0764b825eaa7b8c12ece7fbb33" args="()" -->
+<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSizeHor</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad6d11b62c78a5463788251a24ca6342c"></a><!-- doxytag: member="til::PixelData::GetSizeVer" ref="ad6d11b62c78a5463788251a24ca6342c" args="()" -->
+<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSizeVer</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca70c98146a98f7215fa2f8190769ea2"></a><!-- doxytag: member="til::PixelData::GetPitchHor" ref="aca70c98146a98f7215fa2f8190769ea2" args="()" -->
+<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetPitchHor</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2d7835aa2147d225380577b597dfb27"></a><!-- doxytag: member="til::PixelData::GetPitchVer" ref="af2d7835aa2147d225380577b597dfb27" args="()" -->
+<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetPitchVer</b> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0a05c47df0db7ea026f222f08881e38"></a><!-- doxytag: member="til::PixelData::GetSizeInBytes" ref="ac0a05c47df0db7ea026f222f08881e38" args="()" -->
+<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSizeInBytes</b> ()</td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9522283a6a3bef3ad62a1c81034b3bb2"></a><!-- doxytag: member="til::PixelData::m_Data" ref="a9522283a6a3bef3ad62a1c81034b3bb2" args="" -->
 <a class="el" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc">byte</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Data</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99d2d60ba7d3a43b89a4d5f13b85e46a"></a><!-- doxytag: member="til::PixelData::m_Write" ref="a99d2d60ba7d3a43b89a4d5f13b85e46a" args="" -->
-<a class="el" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc">byte</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>m_Write</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d17d387c2050ab99b8b643b663d0abf"></a><!-- doxytag: member="til::PixelData::m_PixelIndex" ref="a1d17d387c2050ab99b8b643b663d0abf" args="" -->
-<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_PixelIndex</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5e5fff1c84b287d53e8de5f529665ae"></a><!-- doxytag: member="til::PixelData::m_BPP" ref="ad5e5fff1c84b287d53e8de5f529665ae" args="" -->
 <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_BPP</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1643cefffb8c74e055e20389f14e9bb"></a><!-- doxytag: member="til::PixelData::m_Width" ref="ac1643cefffb8c74e055e20389f14e9bb" args="" -->
 <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_Width</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada310282c335c46d85b18bf1c45b6cec"></a><!-- doxytag: member="til::PixelData::m_Height" ref="ada310282c335c46d85b18bf1c45b6cec" args="" -->
 <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_Height</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9109906c27376a6ec88acd2d91a06342"></a><!-- doxytag: member="til::PixelData::m_OffsetX" ref="a9109906c27376a6ec88acd2d91a06342" args="" -->
+<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_OffsetX</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f68f784fc1ef981560cd8bb37506ac0"></a><!-- doxytag: member="til::PixelData::m_OffsetY" ref="a8f68f784fc1ef981560cd8bb37506ac0" args="" -->
+<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_OffsetY</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4d099b744425dc41094ca507a24fb37"></a><!-- doxytag: member="til::PixelData::m_PitchHor" ref="af4d099b744425dc41094ca507a24fb37" args="" -->
 <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_PitchHor</b></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa81f26faf20ac86efd9f7700b531fc0a"></a><!-- doxytag: member="til::PixelData::m_PitchVer" ref="aa81f26faf20ac86efd9f7700b531fc0a" args="" -->
 <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_PitchVer</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afca8cb46c45229a5e9e3d0c9164c0679"></a><!-- doxytag: member="til::PixelData::m_PixelFunction" ref="afca8cb46c45229a5e9e3d0c9164c0679" args="" -->
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_PixelFunction</b></td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>SDK/headers/<a class="el" href="_t_i_l_pixel_data_8h_source.html">TILPixelData.h</a></li>
@@ -130,7 +146,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_PixelFunction</b></
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:49:43 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri May 13 2011 13:49:22 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

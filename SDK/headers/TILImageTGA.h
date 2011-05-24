@@ -69,6 +69,9 @@ namespace til
 
 		uint32 GetWidth(uint32 a_Frame = 0);
 		uint32 GetHeight(uint32 a_Frame = 0);
+
+		uint32 GetPitchX(uint32 a_Frame = 0);
+		uint32 GetPitchY(uint32 a_Frame = 0);
 		
 	private:
 

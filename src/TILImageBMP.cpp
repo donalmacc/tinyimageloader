@@ -232,7 +232,7 @@ namespace til
 
 		m_Pixels = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
 
-		m_Pixels = new byte[m_PitchX * m_PitchY * m_BPP];
+		//m_Pixels = new byte[m_PitchX * m_PitchY * m_BPP];
 		uint32 total = (m_Width * m_Height) >> 1;
 
 		uint32 pitch = m_PitchX * m_BPP;
@@ -336,6 +336,16 @@ namespace til
 	uint32 ImageBMP::GetHeight(uint32 a_Frame)
 	{
 		return m_Height;
+	}
+
+	uint32 ImageBMP::GetPitchX(uint32 a_Frame /*= 0*/)
+	{
+		return m_PitchX;
+	}
+
+	uint32 ImageBMP::GetPitchY(uint32 a_Frame /*= 0*/)
+	{
+		return m_PitchY;
 	}
 
 }; // namespace til

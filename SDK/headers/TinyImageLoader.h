@@ -259,7 +259,17 @@ namespace til
 	*/
 	void TIL_ClearDebug();
 
-	void TIL_SetPixelDataFunc(PixelDataFunc a_Func);
+	//! Set the pitch function to be used internally
+	/*!
+		\param a_Func The pitch function to attach
+
+		Standard, the width and height of an image are the same as its horizontal
+		and vertical pitch. However, in some cases you might want to have a
+		different policy in place. For instance, when you're loading textures
+		on a platform that doesn't support non-power-of-two textures, you can 
+		attach a pitch function that always sets the pitch to a power of two.
+	*/
+	void TIL_SetPitchFunc(PitchFunc a_Func);
 
 }; // namespace til
 

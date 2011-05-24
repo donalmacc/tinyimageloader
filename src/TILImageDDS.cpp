@@ -257,6 +257,7 @@ namespace til
 		if (m_Pixels) { delete m_Pixels; }
 		if (m_Colors) { delete m_Colors; }
 		if (m_Alpha) { delete m_Alpha; }
+		if (m_MipMap) { delete [] m_MipMap; }
 	}
 
 	bool ImageDDS::Parse(uint32 a_ColorDepth)
@@ -485,7 +486,7 @@ namespace til
 			uint32 w = m_Width;
 			uint32 h = m_Height;
 
-			for (int i = 0; i < m_MipMapTotal; i++)
+			for (uint32 i = 0; i < m_MipMapTotal; i++)
 			{
 				w = (1 > w) ? 1 : w; 
 				h = (1 > h) ? 1 : h;
@@ -522,7 +523,10 @@ namespace til
 				}
 				else if (m_Format == DDS_FOURCC_UNCOMPRESSED)
 				{
-					DecompressUncompressed();
+					if (!DecompressUncompressed())
+					{
+						return false;
+					}
 				}
 				else
 				{
@@ -538,69 +542,6 @@ namespace til
 		}
 
 		return true;
-	}
-
-	void ImageDDS::GetOffsets()
-	{
-		uint32 size = 128; // sizeof(DDSHeader);
-		uint32 faces = 1;
-
-		if (m_CubeMap)
-		{
-			faces = 6;
-		}
-
-		/*if (header.hasDX10Header())
-		{
-			size += 20; // sizeof(DDSHeader10);
-		}*/
-
-		for (uint32 i = 0; i < faces; i++)
-		{
-			uint32 count = m_MipMapTotal;
-			uint32 size = 0;
-
-			for (uint32 m = 0; m < count; m++)
-			{
-				uint32 w = m_Width;
-				uint32 h = m_Height;
-				uint32 d = m_Depth;
-
-				for (uint32 m = 0; m < m_MipMapTotal; m++)
-				{
-					w = (w / 2);
-					h = (h / 2);
-					d = (d / 2);
-				}
-
-				if (m_Format)
-				{
-					// @@ How are 3D textures aligned?
-					w = (w + 3) / 4;
-					h = (h + 3) / 4;
-					size += m_BlockSize * w * h;
-				}
-				else
-				{
-					// Align pixels to bytes.
-					uint32 byteCount = (m_InternalBPP + 7) / 8;
-
-					// Align pitch to 4 bytes.
-					uint32 pitch = 4 * ((w * byteCount + 3) / 4);
-
-					size += pitch * h * d;
-				}
-			}
-
-			int i = 0;
-		}
-
-		/*for (uint m = 0; m < mipmap; m++)
-		{
-			size += mipmapSize(m);
-		}*/
-
-		//return size;
 	}
 
 	void ImageDDS::GetBlocks(uint32 a_Width, uint32 a_Height)
@@ -628,28 +569,6 @@ namespace til
 		{
 			m_Blocks = a_Width * a_Height;
 		}
-		/*else if (m_Depth > 0)
-		{
-			// Width   Height   Depth   Width*Height*Depth     Width*Height*Depth
-			// ----- * ------ * ----- = ------------         = ------------
-			// 2^i     2^i		2^i     2^i*2^i*2^i		       2^(i+i+i)
-
-			m_Size = (((m_Width * m_Height * m_Depth) / (powres * powres * powres)) * m_InternalBPP);
-		}
-		// No 3d image loaded, so mipmapping is different.
-		else 
-		{
-			m_Size = (((m_Width * m_Height) / (powres * powres)) * m_InternalBPP);
-		}
-		m_Size = m_Blocks * m_BlockSize;
-
-		if (m_CubeMap)
-		{
-			m_Size *= 6;
-		}*/
-
-		//m_Data = new byte[m_Size];
-		//m_Stream->ReadByte(m_Data, m_Size);
 	}
 
 	void ImageDDS::AddMipMap(uint32 a_Width, uint32 a_Height)
@@ -658,9 +577,6 @@ namespace til
 		curr->width = a_Width;
 		curr->height = a_Height;
 		curr->data = Internal::CreatePixels(a_Width, a_Height, m_BPP, curr->pitchx, curr->pitchy);
-		//curr->data = new byte[curr->width * m_BPP * curr->height * 2];
-		//curr->data = new byte[1024 * 1024 * m_BPP];
-		//curr->pitchx = 512;
 	}
 
 	void ImageDDS::DecompressDXT1()
@@ -814,29 +730,39 @@ namespace til
 		}
 	}
 
-	void ImageDDS::DecompressUncompressed()
+	bool ImageDDS::DecompressUncompressed()
 	{
-		/*byte* src = m_Data;
-		byte* dst = m_MipMap[m_MipMapCurrent].data;
-
-		for (int i = 0; i < m_Blocks * m_BlockSize; i++) { *dst++ = *src++; }*/
-
 		byte* read = m_Data;
 		byte src[4];
 		MipMap* dst = &m_MipMap[m_MipMapCurrent];
 
-		if (m_InternalDepth == TIL_DEPTH_A8R8G8B8)
+		if (m_BPP == 4)
 		{
+			uint32 r, g, b, a;
+
+			if (m_InternalDepth == TIL_DEPTH_A8R8G8B8)
+			{
+				r = 2;
+				g = 1;
+				b = 0;
+				a = 3;
+			}
+			else
+			{
+				TIL_ERROR_EXPLAIN("Unsupported bit depth: %i", m_InternalDepth);
+				return false;
+			}
+
 			for (uint32 y = 0; y < dst->height; y++)
 			{
 				uint32 index_y = (y * dst->pitchx);
 
 				for (uint32 x = 0; x < dst->width; x++)
 				{
-					src[0] = read[2];
-					src[1] = read[1];
-					src[2] = read[0];
-					src[3] = read[3];
+					src[0] = read[r];
+					src[1] = read[g];
+					src[2] = read[b];
+					src[3] = read[a];
 
 					uint32 index = index_y + x;
 					(this->*m_ColorFunc)(dst->data, index * m_BPP, src, 0, src[3]);
@@ -845,6 +771,18 @@ namespace til
 				}
 			}
 		}
+		else if (m_BPP == 2)
+		{
+			TIL_ERROR_EXPLAIN("Unsupported bit depth: %i", m_BPP);
+			return false;
+		}
+		else
+		{
+			TIL_ERROR_EXPLAIN("Unsupported bit depth: %i", m_BPP);
+			return false;
+		}
+		
+		return true;
 	}
 
 	void ImageDDS::ConstructColors(color_16b a_Color0, color_16b a_Color1)
@@ -869,20 +807,27 @@ namespace til
 
 	byte* ImageDDS::GetPixels(uint32 a_Frame /*= 0*/)
 	{
-		//return m_Pixels;
 		return m_MipMap[a_Frame].data;
 	}
 
 	uint32 ImageDDS::GetWidth(uint32 a_Frame /*= 0*/)
 	{
-		//return m_Width;
 		return m_MipMap[a_Frame].width;
 	}
 
 	uint32 ImageDDS::GetHeight(uint32 a_Frame /*= 0*/)
 	{
-		//return m_Height;
 		return m_MipMap[a_Frame].height;
+	}
+
+	uint32 ImageDDS::GetPitchX(uint32 a_Frame /*= 0*/)
+	{
+		return m_MipMap[a_Frame].pitchx;
+	}
+
+	uint32 ImageDDS::GetPitchY(uint32 a_Frame /*= 0*/)
+	{
+		return m_MipMap[a_Frame].pitchy;
 	}
 
 }; // namespace til

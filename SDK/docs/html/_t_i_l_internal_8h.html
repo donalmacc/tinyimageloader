@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.4</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.7.0</span></div>
   </td>
  </tr>
  </tbody>
@@ -93,8 +93,12 @@ Internal</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a debug message to the logging stack.  <a href="#aa053a80c7c66d6fbd804433c21964388"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">FileStream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil_1_1_internal.html#abe109996a081e702d7a07e7d1a0c53b9">til::Internal::OpenStreamDefault</a> (const char *a_Path, uint32 a_Options)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default <a class="el" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">FileStream</a> function.  <a href="#abe109996a081e702d7a07e7d1a0c53b9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a26619cf0061c3c8a5eb388afaaf50895"></a><!-- doxytag: member="TILInternal.h::SetPitch" ref="a26619cf0061c3c8a5eb388afaaf50895" args="(uint32 a_Options, uint32 a_Width, uint32 a_Height, uint32 &amp;a_PitchX, uint32 &amp;a_PitchY)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>til::Internal::SetPitch</b> (uint32 a_Options, uint32 a_Width, uint32 a_Height, uint32 &amp;a_PitchX, uint32 &amp;a_PitchY)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afd372de3ff3ad87f673cd5586a991132"></a><!-- doxytag: member="TILInternal.h::GetPitch" ref="afd372de3ff3ad87f673cd5586a991132" args="(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32 &amp;a_PitchX, uint32 &amp;a_PitchY)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>til::Internal::GetPitch</b> (uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32 &amp;a_PitchX, uint32 &amp;a_PitchY)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7a3fc2f03b761bffaa34b3ba81fcaa88"></a><!-- doxytag: member="TILInternal.h::CreatePixels" ref="a7a3fc2f03b761bffaa34b3ba81fcaa88" args="(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32 &amp;a_PitchX, uint32 &amp;a_PitchY)" -->
+byte *&#160;</td><td class="memItemRight" valign="bottom"><b>til::Internal::CreatePixels</b> (uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32 &amp;a_PitchX, uint32 &amp;a_PitchY)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa503a2627abe360a9dbeb34b904a2dbf"></a><!-- doxytag: member="TILInternal.h::CreatePixelsDefault" ref="aa503a2627abe360a9dbeb34b904a2dbf" args="(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32 &amp;a_PitchX, uint32 &amp;a_PitchY)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>til::Internal::CreatePixelsDefault</b> (uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32 &amp;a_PitchX, uint32 &amp;a_PitchY)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b34eff5aebdd257bce1e035276373af"></a><!-- doxytag: member="TILInternal.h::MemCpy" ref="a0b34eff5aebdd257bce1e035276373af" args="(uint8 *a_Dst, uint8 *a_Src, uint32 a_Size)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>til::Internal::MemCpy</b> (uint8 *a_Dst, uint8 *a_Src, uint32 a_Size)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9cf08068b4d76a0fe9da650c916929c7"></a><!-- doxytag: member="TILInternal.h::MemSet" ref="a9cf08068b4d76a0fe9da650c916929c7" args="(byte *a_Dst, byte a_Value, uint32 a_Size)" -->
@@ -117,7 +121,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>til::Internal::MemSet
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:49:42 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri May 13 2011 13:49:22 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

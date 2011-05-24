@@ -289,8 +289,15 @@ namespace til
 		int source_line;    /**< The line the message came from. */
 	};
 
-	//! Pixel data function
-	typedef byte* (*PixelDataFunc)(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32& a_PitchX, uint32& a_PitchY);
+	//! Pitch data function
+	/*!
+		\param a_Width The width of the image
+		\param a_Height The height of the image
+		\param a_BPP The amount of bytes per pixel
+		\param a_PitchX The horizontal pitch
+		\param a_PitchY The vertical pitch
+	*/
+	typedef void (*PitchFunc)(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32& a_PitchX, uint32& a_PitchY);
 
 	//! Message function
 	/*! 

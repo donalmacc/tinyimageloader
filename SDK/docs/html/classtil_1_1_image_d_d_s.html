@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.4</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.7.0</span></div>
   </td>
  </tr>
  </tbody>
@@ -67,6 +67,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">til::ImageDDS Class Reference</div>  </div>
@@ -89,6 +90,9 @@ Inheritance diagram for til::ImageDDS:</div>
 
 <p><a href="classtil_1_1_image_d_d_s-members.html">List of all members.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>MipMap</b></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_image_d_d_s.html#a616b077809ea2a4ebde9fa53651c198a">GetFrameCount</a> ()</td></tr>
@@ -99,6 +103,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the width of a frame.  <a href="#adde03a6b7297091d566c20ae2e24d35d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_image_d_d_s.html#a9ae6dc6b71a3a056eecd8b756d9089e8">GetHeight</a> (<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Frame=0)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the height of a frame.  <a href="#a9ae6dc6b71a3a056eecd8b756d9089e8"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_image_d_d_s.html#aa55805f8f0ffea1415c1830b11cfdd92">GetPitchX</a> (<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Frame=0)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the horizontal pitch of a frame.  <a href="#aa55805f8f0ffea1415c1830b11cfdd92"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_image_d_d_s.html#a54d6f5ec59453f9b35ea2f83c968a262">GetPitchY</a> (<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Frame=0)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the vertical pitch of a frame.  <a href="#a54d6f5ec59453f9b35ea2f83c968a262"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_image_d_d_s.html#a65def4c46d0da0c6600310c3dcb86cef">Parse</a> (<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_ColorDepth)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses the actual image data.  <a href="#a65def4c46d0da0c6600310c3dcb86cef"></a><br/></td></tr>
 </table>
@@ -153,6 +161,66 @@ Public Member Functions</h2></td></tr>
 <p>Some formats support multiple frames or images with different dimensions. You can call this function with a frame number to get the correct dimensions. </p>
 
 <p>Implements <a class="el" href="classtil_1_1_image.html#ad623add911ba5230f56a4cc58af75ec1">til::Image</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa55805f8f0ffea1415c1830b11cfdd92"></a><!-- doxytag: member="til::ImageDDS::GetPitchX" ref="aa55805f8f0ffea1415c1830b11cfdd92" args="(uint32 a_Frame=0)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> til::ImageDDS::GetPitchX </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td>
+          <td class="paramname"><em>a_Frame</em> = <code>0</code></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get the horizontal pitch of a frame. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_Frame</td><td>The frame of an animation or subimage to return</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>Horizontal pitch in pixels</dd></dl>
+<p>The pitch can be different than the width of an image. This is the case when you've attached your own pitch function using <a class="el" href="namespacetil.html#a9fe7da11935463fefdaf5c63ca24aa4e" title="Set the pitch function to be used internally.">TIL_SetPitchFunc</a>.</p>
+<p>It is advised to use this function in favor of <a class="el" href="classtil_1_1_image_d_d_s.html#adde03a6b7297091d566c20ae2e24d35d" title="Get the width of a frame.">GetWidth</a> when you are using TinyImageLoader to load textures. </p>
+
+<p>Implements <a class="el" href="classtil_1_1_image.html#a96c361ce746853f2f429e8fdf54806b2">til::Image</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a54d6f5ec59453f9b35ea2f83c968a262"></a><!-- doxytag: member="til::ImageDDS::GetPitchY" ref="a54d6f5ec59453f9b35ea2f83c968a262" args="(uint32 a_Frame=0)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> til::ImageDDS::GetPitchY </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td>
+          <td class="paramname"><em>a_Frame</em> = <code>0</code></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Get the vertical pitch of a frame. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">a_Frame</td><td>The frame of an animation or subimage to return</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>Vertical pitch in pixels</dd></dl>
+<p>The pitch can be different than the height of an image. This is the case when you've attached your own pitch function using <a class="el" href="namespacetil.html#a9fe7da11935463fefdaf5c63ca24aa4e" title="Set the pitch function to be used internally.">TIL_SetPitchFunc</a>.</p>
+<p>It is advised to use this function in favor of <a class="el" href="classtil_1_1_image_d_d_s.html#a9ae6dc6b71a3a056eecd8b756d9089e8" title="Get the height of a frame.">GetHeight</a> when you are using TinyImageLoader to load textures. </p>
+
+<p>Implements <a class="el" href="classtil_1_1_image.html#ad3d3ac86302614d5a36686c145417c05">til::Image</a>.</p>
 
 </div>
 </div>
@@ -263,7 +331,7 @@ Public Member Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:49:43 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri May 13 2011 13:49:22 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

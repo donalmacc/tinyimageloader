@@ -72,6 +72,8 @@ namespace til
 
 		bool Close();
 
+		bool IsReusable() { return false; }
+
 	private:
 
 		FILE* m_Handle;

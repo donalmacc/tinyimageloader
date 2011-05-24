@@ -374,7 +374,11 @@ namespace til
 		}
 
 		a_Stream->Close();
-		//delete a_Stream;
+		if (!a_Stream->IsReusable())
+		{
+			delete a_Stream;
+			a_Stream = NULL;
+		}
 
 		return result;
 	}
@@ -423,7 +427,7 @@ namespace til
 		Internal::g_FileFunc = a_Func;
 	}
 
-	void TIL_SetPixelDataFunc(PixelDataFunc a_Func)
+	void TIL_SetPitchFunc(PitchFunc a_Func)
 	{
 		Internal::g_PixelFunc = a_Func;
 	}
@@ -449,16 +453,30 @@ namespace til
 
 		byte* CreatePixels(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32& a_PitchX, uint32& a_PitchY)
 		{
-			return g_PixelFunc(a_Width, a_Height, a_BPP, a_PitchX, a_PitchY);
+			g_PixelFunc(a_Width, a_Height, a_BPP, a_PitchX, a_PitchY);
+
+			if (a_PitchX < a_Width)
+			{
+				TIL_ERROR_EXPLAIN("Horizontal pitch is smaller than width.");
+				return NULL;
+			}
+			if (a_PitchY < a_Height)
+			{
+				TIL_ERROR_EXPLAIN("Vertical pitch is smaller than width.");
+				return NULL;
+			}
+
+			uint32 total = a_PitchX * a_BPP * a_PitchY;	
+			byte* result = new byte[total];
+			memset(result, 0, total);
+
+			return result;
 		}
 
-		byte* CreatePixelsDefault(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32& a_PitchX, uint32& a_PitchY)
+		void CreatePixelsDefault(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32& a_PitchX, uint32& a_PitchY)
 		{
 			a_PitchX = a_Width;
 			a_PitchY = a_Height;
-			byte* result = new byte[a_PitchX * a_BPP * a_PitchY];
-			memset(result, 0, a_PitchX * a_BPP * a_PitchY);
-			return result;
 		}
 
 		void AddDebug(char* a_Message, char* a_File, int a_Line, ...)

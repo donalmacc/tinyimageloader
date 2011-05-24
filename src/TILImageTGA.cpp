@@ -401,6 +401,16 @@ namespace til
 		return m_Height;
 	}
 
+	uint32 ImageTGA::GetPitchX(uint32 a_Frame /*= 0*/)
+	{
+		return m_PitchX;
+	}
+
+	uint32 ImageTGA::GetPitchY(uint32 a_Frame /*= 0*/)
+	{
+		return m_PitchY;
+	}
+
 }; // namespace til
 
 #endif

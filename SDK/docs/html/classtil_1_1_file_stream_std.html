@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.4</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.7.0</span></div>
   </td>
  </tr>
  </tbody>
@@ -107,6 +107,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for end of file.  <a href="#afe96b90d15f23582412eb2a03e9af254"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_file_stream_std.html#a13ecdaa29a9d998a77059f2a732dbca0">Close</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Close the stream.  <a href="#a13ecdaa29a9d998a77059f2a732dbca0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_file_stream_std.html#aa63d4d0f5b03a18829a7ce66906af51e">IsReusable</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the stream can be reused.  <a href="#aa63d4d0f5b03a18829a7ce66906af51e"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>ANSI C implementation of <a class="el" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">FileStream</a>. </p>
@@ -152,6 +154,28 @@ Public Member Functions</h2></td></tr>
 <dl class="return"><dt><b>Returns:</b></dt><dd>True if no more bytes can be read, otherwise false </dd></dl>
 
 <p>Implements <a class="el" href="classtil_1_1_file_stream.html#a693c2379367badd18d65d7f83512f595">til::FileStream</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa63d4d0f5b03a18829a7ce66906af51e"></a><!-- doxytag: member="til::FileStreamStd::IsReusable" ref="aa63d4d0f5b03a18829a7ce66906af51e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool til::FileStreamStd::IsReusable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline, virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns whether the stream can be reused. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>When a stream is used for more than one file it should not be deleted. It is then up to to the developer to release the handle to the stream.</dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>True if reusable, otherwise false </dd></dl>
+
+<p>Implements <a class="el" href="classtil_1_1_file_stream.html#a43cc5b7118fa1eb692c1a34fc1b6c5c6">til::FileStream</a>.</p>
 
 </div>
 </div>
@@ -427,7 +451,7 @@ Public Member Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:49:43 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri May 13 2011 13:49:22 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

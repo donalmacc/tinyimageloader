@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.4</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.7.0</span></div>
   </td>
  </tr>
  </tbody>
@@ -85,8 +85,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00022"></a>00022 <span class="comment">        THE SOFTWARE.</span>
 <a name="l00023"></a>00023 <span class="comment">*/</span>
 <a name="l00024"></a>00024 
-<a name="l00025"></a>00025 <span class="preprocessor">#ifndef _TILIMAGEDATA_H_</span>
-<a name="l00026"></a>00026 <span class="preprocessor"></span><span class="preprocessor">#define _TILIMAGEDATA_H_</span>
+<a name="l00025"></a>00025 <span class="preprocessor">#ifndef _TILPIXELDATA_H_</span>
+<a name="l00026"></a>00026 <span class="preprocessor"></span><span class="preprocessor">#define _TILPIXELDATA_H_</span>
 <a name="l00027"></a>00027 <span class="preprocessor"></span>
 <a name="l00028"></a>00028 <span class="preprocessor">#include &quot;<a class="code" href="_t_i_l_settings_8h.html" title="Settings and global defines.">TILSettings.h</a>&quot;</span>
 <a name="l00029"></a>00029 
@@ -98,32 +98,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00035"></a>00035         
 <a name="l00036"></a>00036         <span class="keyword">public</span>:
 <a name="l00037"></a>00037         
-<a name="l00038"></a>00038                 <a class="code" href="classtil_1_1_pixel_data.html">PixelData</a>(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Width, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Height, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_ColorOption, <span class="keywordtype">bool</span> a_PixelFunction);
+<a name="l00038"></a>00038                 <a class="code" href="classtil_1_1_pixel_data.html">PixelData</a>(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Width, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Height, <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> a_BPP);
 <a name="l00039"></a>00039                 ~<a class="code" href="classtil_1_1_pixel_data.html">PixelData</a>();
 <a name="l00040"></a>00040 
-<a name="l00041"></a>00041                 <span class="keyword">virtual</span> <span class="keywordtype">bool</span> CreateData();
+<a name="l00041"></a>00041                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> Init();
 <a name="l00042"></a>00042 
-<a name="l00043"></a>00043                 <span class="keyword">virtual</span> <span class="keywordtype">void</span> PixelFunction(<a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* a_Src, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_SrcIndex);
+<a name="l00043"></a>00043                 <span class="keywordtype">bool</span> CreateData();
 <a name="l00044"></a>00044 
-<a name="l00045"></a>00045                 <span class="keywordtype">void</span> WritePixel(<a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* a_Src, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Count, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Repeat = 1, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_DstIndex = 0);
-<a name="l00046"></a>00046                 <span class="keywordtype">void</span> WritePixel16b(<a class="code" href="namespacetil.html#a952afde951048a62d0f970dc6ca89a45" title="16-bit color">color_16b</a> a_Src, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Count, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Repeat = 1, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_DstIndex = 0);
-<a name="l00047"></a>00047                 <span class="keywordtype">void</span> WritePixel32b(<a class="code" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb" title="32-bit color">color_32b</a> a_Src, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Count, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_Repeat = 1, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> a_DstIndex = 0);
-<a name="l00048"></a>00048         
-<a name="l00049"></a>00049         <span class="keyword">protected</span>:
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051                 <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* m_Data;
-<a name="l00052"></a>00052                 <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* m_Write;
-<a name="l00053"></a>00053                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> m_PixelIndex;
-<a name="l00054"></a>00054                 <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> m_BPP;
-<a name="l00055"></a>00055                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> m_Width, m_Height;
-<a name="l00056"></a>00056                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> m_PitchHor, m_PitchVer;
-<a name="l00057"></a>00057                 <span class="keywordtype">bool</span> m_PixelFunction;
-<a name="l00058"></a>00058         
-<a name="l00059"></a>00059         }; <span class="comment">// class ImageData</span>
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061 }; <span class="comment">// namespace til</span>
+<a name="l00045"></a>00045                 <span class="keyword">virtual</span> <span class="keywordtype">bool</span> Clear();
+<a name="l00046"></a>00046                 <span class="keyword">virtual</span> <span class="keywordtype">bool</span> CopyFrom(<a class="code" href="classtil_1_1_pixel_data.html">PixelData</a>* a_Other);
+<a name="l00047"></a>00047 
+<a name="l00048"></a>00048                 <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* GetData() { <span class="keywordflow">return</span> m_Data; }
+<a name="l00049"></a>00049                 <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> GetOffsetX() { <span class="keywordflow">return</span> m_OffsetX; }
+<a name="l00050"></a>00050                 <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> GetOffsetY() { <span class="keywordflow">return</span> m_OffsetY; }
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052                 <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> GetWidth() { <span class="keywordflow">return</span> m_Width; }
+<a name="l00053"></a>00053                 <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> GetHeight() { <span class="keywordflow">return</span> m_Height; }
+<a name="l00054"></a>00054                 <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> GetSizeHor() { <span class="keywordflow">return</span> m_PitchHor * m_BPP; }
+<a name="l00055"></a>00055                 <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> GetSizeVer() { <span class="keywordflow">return</span> m_PitchVer * m_BPP; }
+<a name="l00056"></a>00056                 <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> GetPitchHor() { <span class="keywordflow">return</span> m_PitchHor; }
+<a name="l00057"></a>00057                 <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> GetPitchVer() { <span class="keywordflow">return</span> m_PitchVer; }
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059                 <span class="comment">//inline uint32 GetStartByte() { return m_OffsetY * m_PitchHor * m_BPP; }</span>
+<a name="l00060"></a>00060                 <span class="comment">//inline uint32 GetNextLineByte() { return m_PitchHor * m_BPP; }</span>
+<a name="l00061"></a>00061                 <span class="keyword">inline</span> <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> GetSizeInBytes() { <span class="keywordflow">return</span> m_PitchHor * m_BPP * m_PitchVer; }
 <a name="l00062"></a>00062         
-<a name="l00063"></a>00063 <span class="preprocessor">#endif</span>
+<a name="l00063"></a>00063         <span class="keyword">protected</span>:
+<a name="l00064"></a>00064 
+<a name="l00065"></a>00065                 <a class="code" href="namespacetil.html#a5f3ec10aca1a788b495a0bd3787bc2dc" title="smallest chunk of data">byte</a>* m_Data;
+<a name="l00066"></a>00066                 <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">uint8</a> m_BPP;
+<a name="l00067"></a>00067                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> m_Width, m_Height;
+<a name="l00068"></a>00068                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> m_OffsetX, m_OffsetY;
+<a name="l00069"></a>00069                 <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">uint32</a> m_PitchHor, m_PitchVer;
+<a name="l00070"></a>00070         
+<a name="l00071"></a>00071         }; <span class="comment">// class ImageData</span>
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073 }; <span class="comment">// namespace til</span>
+<a name="l00074"></a>00074         
+<a name="l00075"></a>00075 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
 <!-- window showing the filter options -->
@@ -140,7 +152,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:49:42 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri May 13 2011 13:49:21 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

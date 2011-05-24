@@ -12,4 +12,5 @@
 	-# \ref changelog
     \section Examples
     -# \ref example1
+    -# \ref example2
 */

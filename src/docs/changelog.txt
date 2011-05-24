@@ -8,6 +8,9 @@
 	- Fixed a bug that could cause a crash when an image can not be loaded
 	- Moved implementation specific image functions from static functions to class functions
 	- Added Internal namespace
+	- Added #til::TIL_SetPitchFunc function
+	- Added #til::Image::GetPitchX function
+	- Added #til::Image::GetPitchY function
 	- DDS: Added support for multiple levels of detail
 	- DDS: Added support for cubemaps
 

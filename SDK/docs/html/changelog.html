@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.4</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.7.0</span></div>
   </td>
  </tr>
  </tbody>
@@ -56,13 +56,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Changelog </div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><h2><a class="anchor" id="version164"></a>
-Changes in 1.6.4</h2>
+<div class="textblock"><h2><a class="anchor" id="version170"></a>
+Changes in 1.7.0</h2>
 <ul>
 <li>Removed safe version of string functions in favor of standards compliance</li>
 <li>Fixed bugs when compiling with G++</li>
+<li>Fixed a bug that could cause a crash when an image can not be loaded</li>
 <li>Moved implementation specific image functions from static functions to class functions</li>
 <li>Added Internal namespace</li>
+<li>Added <a class="el" href="namespacetil.html#a9fe7da11935463fefdaf5c63ca24aa4e" title="Set the pitch function to be used internally.">til::TIL_SetPitchFunc</a> function</li>
+<li>Added <a class="el" href="classtil_1_1_image.html#a96c361ce746853f2f429e8fdf54806b2" title="Get the horizontal pitch of a frame.">til::Image::GetPitchX</a> function</li>
+<li>Added <a class="el" href="classtil_1_1_image.html#ad3d3ac86302614d5a36686c145417c05" title="Get the vertical pitch of a frame.">til::Image::GetPitchY</a> function</li>
+<li>DDS: Added support for multiple levels of detail</li>
+<li>DDS: Added support for cubemaps</li>
 </ul>
 <h2><a class="anchor" id="version163"></a>
 Changes in 1.6.3 (2011-03-23)</h2>
@@ -113,7 +119,7 @@ Changes in 1.6.0 (2011-03-03)</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:49:43 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri May 13 2011 13:49:22 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

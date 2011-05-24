@@ -57,6 +57,9 @@ namespace til
 		uint32 GetWidth(uint32 a_Frame = 0);
 		uint32 GetHeight(uint32 a_Frame = 0);
 
+		uint32 GetPitchX(uint32 a_Frame = 0);
+		uint32 GetPitchY(uint32 a_Frame = 0);
+
 		bool Parse(uint32 a_ColorDepth);
 
 	private:
@@ -82,12 +85,11 @@ namespace til
 
 		void AddMipMap(uint32 a_Width, uint32 a_Height);
 		void GetBlocks(uint32 a_Width, uint32 a_Height);
-		void GetOffsets();
 		void ConstructColors(color_16b a_Color0, color_16b a_Color1);
 
 		void DecompressDXT1();
 		void DecompressDXT5();
-		void DecompressUncompressed();
+		bool DecompressUncompressed();
 
 		struct MipMap
 		{

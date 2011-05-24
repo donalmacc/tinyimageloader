@@ -482,6 +482,17 @@ namespace til
 		return m_Images;
 	}
 
+	void ImageICO::ReleaseMemory(BufferICO* a_Buffer)
+	{
+		if (a_Buffer && a_Buffer->next) 
+		{
+			ReleaseMemory(a_Buffer->next); 
+		}
+		delete a_Buffer->next;
+		delete a_Buffer->buffer;
+		if (a_Buffer->colors) { delete a_Buffer->colors; }
+	}
+
 	byte* ImageICO::GetPixels(uint32 a_Frame /*= 0*/)
 	{
 		if (a_Frame >= 0 && a_Frame < m_Images)
@@ -518,15 +529,24 @@ namespace til
 		return 0;
 	}
 
-	void ImageICO::ReleaseMemory(BufferICO* a_Buffer)
+	uint32 ImageICO::GetPitchX(uint32 a_Frame /*= 0*/)
 	{
-		if (a_Buffer && a_Buffer->next) 
+		if (a_Frame >= 0 && a_Frame < m_Images)
 		{
-			ReleaseMemory(a_Buffer->next); 
+			BufferICO* current = m_First;
+			for (uint32 i = 0; i < a_Frame; i++) { current = current->next; }
+			return current->pitch;
 		}
-		delete a_Buffer->next;
-		delete a_Buffer->buffer;
-		if (a_Buffer->colors) { delete a_Buffer->colors; }
+	}
+
+	uint32 ImageICO::GetPitchY(uint32 a_Frame /*= 0*/)
+	{
+		if (a_Frame >= 0 && a_Frame < m_Images)
+		{
+			BufferICO* current = m_First;
+			for (uint32 i = 0; i < a_Frame; i++) { current = current->next; }
+			return current->pitchy;
+		}
 	}
 
 }; // namespace til

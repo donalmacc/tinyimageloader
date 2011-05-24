@@ -1,4 +1,48 @@
 /*!
 \page example2 Example: Loading images directly from a zip file
 
+	This example shows you how you can use TinyImageLoader, zlib and libzip to
+	load an image directly from a zip archive.
+	
+	Refer to \ref example1 for an example of how to load an image the normal
+	way.
+
+\section intro Introduction
+
+	Zip archives behave like a miniature filesystem. It has a root, a number of
+	folders and number of files. TinyImageLoader exposes its file loading
+	interface through the #til::FileStream interface.
+
+\section notes Notes
+
+	When extending the FileStream interface, you must take care of the following
+	things:
+
+	- Make sure the m_FilePath variable contains a valid path to the file you're
+	loading
+	- Handle both #TIL_FILE_ABSOLUTEPATH and #TIL_FILE_ADDWORKINGDIR or ignore
+	it altogether
+	- Implement all the reading functions (#til::FileStream::Read,
+	#til::FileStream::ReadByte, #til::FileStream::ReadWord,
+	#til::FileStream::ReadDWord)
+	- Return at least false on #til::FileStream::EndOfFile
+	- Implement #til::FileStream::IsReusable
+	- Close the stream neatly in #til::FileStream::Close
+	
+\section code Code
+
+	Reading directly from a zip archive means we have to open a handle to the
+	archive, find the file we want to load and unpack it on the fly.
+
+	We'll start by creating a child class of #til::FileStream called
+	FileStreamZip.
+	
+	\code
+	class FileStreamZip : public til::FileStream
+	{
+	\endcode
+	
+	In the constructor we'll set up some stuff, including the maximum buffer
+	size, and alloate the buffer.
+
 */

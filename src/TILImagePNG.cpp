@@ -1386,7 +1386,8 @@ namespace til
 
 					m_Ani = new AnimationData;
 					m_Ani->bpp = m_BPP;
-					m_Ani->pitchx = m_Width * 4;
+					//m_Ani->pitchx = m_Width * 4;
+					m_Ani->pitchx = m_PitchX * 4;
 					m_Ani->bytes_total = m_Width * m_Height * m_BPP;
 					m_Ani->frame_prev = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_Ani->pitchx, m_Ani->pitchy);
 					memset(m_Ani->frame_prev, 0, m_Ani->bytes_total);
@@ -1792,8 +1793,6 @@ namespace til
 
 		// create png image
 
-		m_Pitch = m_Width * 4;
-
 		if (img_out_n != img_n && img_out_n != img_n + 1)
 		{
 			TIL_ERROR_EXPLAIN("Wrong bitdepth.", 0);
@@ -1809,6 +1808,7 @@ namespace til
 		byte* write = m_Pixels[0]; // first is default image
 		//byte* write = m_Data[0]->GetData();
 
+		m_Pitch = m_PitchX * 4;
 		Decompile(write, target, m_Width, m_Height, m_Pitch, img_n);
 
 		if (has_trans)
@@ -1868,6 +1868,16 @@ namespace til
 	til::uint32 ImagePNG::GetWidth(uint32 a_Frame /*= 0*/)
 	{
 		return m_Width;
+	}
+
+	til::uint32 ImagePNG::GetPitchX(uint32 a_Frame /*= 0*/)
+	{
+		return m_PitchX;
+	}
+
+	til::uint32 ImagePNG::GetPitchY(uint32 a_Frame /*= 0*/)
+	{
+		return m_PitchY;
 	}
 
 }; // namespace til

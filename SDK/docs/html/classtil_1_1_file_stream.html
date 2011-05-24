@@ -19,7 +19,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.6.4</span></div>
+   <div id="projectname">TinyImageLoader&#160;<span id="projectnumber">1.7.0</span></div>
   </td>
  </tr>
  </tbody>
@@ -108,6 +108,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for end of file.  <a href="#a693c2379367badd18d65d7f83512f595"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_file_stream.html#a247dffc5fa0875cbafb48c63baa03493">Close</a> ()=0</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Close the stream.  <a href="#a247dffc5fa0875cbafb48c63baa03493"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_file_stream.html#a43cc5b7118fa1eb692c1a34fc1b6c5c6">IsReusable</a> ()=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the stream can be reused.  <a href="#a43cc5b7118fa1eb692c1a34fc1b6c5c6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classtil_1_1_file_stream.html#aa23341a3ae37398e1222897dfaeb8d23">GetFilePath</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the full path.  <a href="#aa23341a3ae37398e1222897dfaeb8d23"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pro-attribs"></a>
@@ -186,7 +188,29 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 
 <p>Get the full path. </p>
 <dl class="note"><dt><b>Note:</b></dt><dd>This string should always end with an image file extension, otherwise TinyImageLoader can't load it.</dd></dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>a string with the full path to the file </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>String with the full path to the file </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a43cc5b7118fa1eb692c1a34fc1b6c5c6"></a><!-- doxytag: member="til::FileStream::IsReusable" ref="a43cc5b7118fa1eb692c1a34fc1b6c5c6" args="()=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool til::FileStream::IsReusable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Returns whether the stream can be reused. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>When a stream is used for more than one file it should not be deleted. It is then up to to the developer to release the handle to the stream.</dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>True if reusable, otherwise false </dd></dl>
+
+<p>Implemented in <a class="el" href="classtil_1_1_file_stream_std.html#aa63d4d0f5b03a18829a7ce66906af51e">til::FileStreamStd</a>.</p>
 
 </div>
 </div>
@@ -462,7 +486,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Wed Apr 13 2011 19:49:43 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri May 13 2011 13:49:22 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
