@@ -59,8 +59,6 @@
 namespace til
 {
 
-	#define PNG_TYPE(a, b, c, d)           (((a) << 24) + ((b) << 16) + ((c) << 8) + (d))
-
 	// fast-way is faster to check than jpeg huffman, but slow way is slower
 	#define ZFAST_BITS     9 // accelerate all cases in default tables
 	#define ZFAST_MASK     ((1 << ZFAST_BITS) - 1)
@@ -946,15 +944,12 @@ namespace til
 		}
 
 		void NextFrame(byte** a_Data)
-		//void NextFrame(PixelData** a_Data)
 		{
 			if (data_offset > 0)
 			{
 				if (chunk_idat) { curr++; }
 				chunk_idat = false;
 
-				//int32 bytes = w * h * bpp;
-				//a_Data[curr] = new byte[bytes_total];
 				a_Data[curr] = Internal::CreatePixels(w, h, bpp, px, py);
 			
 				if (dispose == APNG_DISPOSE_OP_NONE)
@@ -964,8 +959,6 @@ namespace til
 					if (curr > 1)
 					{
 						memcpy(a_Data[curr], a_Data[curr - 1], bytes_total);
-						//memcpy(a_Data[curr]->GetData(), a_Data[curr - 1])
-						//a_Data[curr]->CopyFrom(a_Data[curr - 1]);
 					}
 				}
 				else if (dispose == APNG_DISPOSE_OP_PREVIOUS)
@@ -973,8 +966,6 @@ namespace til
 					PNG_DEBUG("Dispose method: %s", "APNG_DISPOSE_OP_PREVIOUS");
 
 					memcpy(a_Data[curr], frame_prev, bytes_total);
-					//memcpy(a_Data[curr], a_Data[curr - 1], bytes_total);
-					//a_Data[curr]->CopyFrom(a_Data[curr - 1]);
 				}
 				else if (dispose == APNG_DISPOSE_OP_BACKGROUND)
 				{
@@ -987,10 +978,7 @@ namespace til
 					PNG_DEBUG("Dispose method: %s", "Other");
 
 					memset(a_Data[curr], 0, bytes_total);
-					//a_Data[curr]->Clear();
 				}
-
-				//memcpy(a_Data[curr], frame_prev, bytes_total);
 
 				PNG_DEBUG("Filling index %i", curr);
 
@@ -1007,7 +995,6 @@ namespace til
 				if (dispose != APNG_DISPOSE_OP_PREVIOUS)
 				{
 					memcpy(frame_prev, a_Data[curr], bytes_total);
-					//frame_prev->CopyFrom(a_Data[curr]);
 				}
 
 				curr++;
@@ -1017,7 +1004,6 @@ namespace til
 				if (dispose == APNG_DISPOSE_OP_NONE)
 				{
 					memcpy(frame_prev, a_Data[curr], bytes_total);
-					//frame_prev->CopyFrom(a_Data[curr]);
 				}
 			}
 
@@ -1028,7 +1014,6 @@ namespace til
 		}
 
 		byte* frame_prev;
-		//PixelData* frame_prev;
 
 		ImagePNG* instance;
 
@@ -1560,8 +1545,6 @@ namespace til
 						if (!m_Pixels)
 						{
 							m_Pixels = new byte*[m_Frames];
-							//m_Pixels[0] = new byte[m_Width * m_Height * m_BPP];
-							//memset(m_Pixels[0], 0, m_Width * m_Height * m_BPP);
 							m_Pixels[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
 						}
 
@@ -1582,17 +1565,8 @@ namespace til
 							{
 								m_Frames++;
 								m_Pixels = new byte*[m_Frames];
-								//m_Pixels[0] = new byte[m_Width * m_Height * m_BPP];
-								//memset(m_Pixels[0], 0, m_Width * m_Height * m_BPP);
 								m_Pixels[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
 							}
-
-							/*if (!m_Data)
-							{
-								m_Data = new PixelData*[m_Frames];
-								m_Data[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP);
-								m_Data[0]->Clear();
-							}*/
 
 							Compose();
 						}
@@ -1719,18 +1693,9 @@ namespace til
 					PNG_DEBUG("Found tag 'IEND'", 0);
 
 					if (!m_Pixels)
-					//if (!m_Data)
 					{
 						m_Pixels = new byte*[m_Frames];
 						m_Pixels[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
-
-						/*m_Pixels = new byte*[m_Frames];
-						m_Pixels[0] = new byte[m_Width * m_Height * m_BPP];
-						memset(m_Pixels[0], 0, m_Width * m_Height * m_BPP);*/
-
-						/*m_Data = new PixelData*[m_Frames];
-						m_Data[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP);
-						m_Data[0]->Clear();*/
 
 						Compose();
 					}

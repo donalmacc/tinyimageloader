@@ -68,7 +68,7 @@ namespace TILFW
 
 		// We can set a custom pitch function
 
-		til::TIL_SetPitchFunc(CustomPitchFunc);
+		//til::TIL_SetPitchFunc(CustomPitchFunc);
 
 		// Set up projection
 		// Now we can draw quads using screen coordinates
@@ -86,7 +86,10 @@ namespace TILFW
 
 		if (a_Commands == 1)
 		{
-			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\ICO\\icon.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			g_Load = til::TIL_Load("media\\ICO\\WglFontDemoDoc.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+
 			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 				
 			//g_Load = til::TIL_Load("media\\PNG\\APNG\\dNhrL.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
@@ -100,7 +103,9 @@ namespace TILFW
 			//g_Load = til::TIL_Load("media\\DDS\\grace_cube.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 
 			//g_Load = til::TIL_Load("media\\GIF\\ibDZsI.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+
+			//g_Load = til::TIL_Load("media\\BMP\\bat_ball.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			
 			//g_Load = til::TIL_Load("media\\DDS\\khergit_lady_dress_b.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
@@ -225,10 +230,14 @@ namespace TILFW
 		// important for font rendering
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		DisplayText(10, 20, "Dimensions: (%i x %i)", g_Load->GetWidth(), g_Load->GetHeight());
-		DisplayText(10, 40, "Pitch: (%i x %i)", g_Load->GetPitchX(), g_Load->GetPitchY());
+		DisplayText(10, 20, "Dimensions: (%i x %i)", g_Load->GetWidth(g_TextureCurrent), g_Load->GetHeight(g_TextureCurrent));
+		DisplayText(10, 40, "Pitch: (%i x %i)", g_Load->GetPitchX(g_TextureCurrent), g_Load->GetPitchY(g_TextureCurrent));
 		DisplayText(10, 60, "Frames: %i", g_Load->GetFrameCount());
 		DisplayText(10, 80, "Current frame: %i", g_TextureCurrent + 1);
+		DisplayText(10, 100, "Size: %.2f", g_Scale);
+
+		DisplayText(10, s_WindowHeight - 40, "Change frame: (Q, W)", 0);
+		DisplayText(10, s_WindowHeight - 20, "Change size: (O, P)", 0);
 	}
 
 	void Framework::CloseDown()

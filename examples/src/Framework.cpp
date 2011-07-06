@@ -316,7 +316,7 @@ namespace TILFW
 
 									for (std::vector<TextData*>::iterator it = m_TextList.begin(); it != m_TextList.end(); it++)
 									{
-										glRasterPos3i((*it)->x, (*it)->y, 0);
+										glRasterPos3i((*it)->x, (*it)->y, 1);
 										glCallLists(strlen((*it)->msg), GL_UNSIGNED_BYTE, (*it)->msg);
 									}
 

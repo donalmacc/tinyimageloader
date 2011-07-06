@@ -23,6 +23,8 @@
 */
 
 /*!
+	http://users.ox.ac.uk/~orie1330/bmploader.html
+	
 	\file TILImageBMP.h
 */
 
@@ -154,10 +156,20 @@ namespace til
 
 	bool ImageBMP::Parse(uint32 a_Options)
 	{
-		byte header[3];         m_Stream->ReadByte(header, 2);
-		dword size =            GetDWord();
-		dword unused;           m_Stream->ReadDWord(&unused);
+		// bmp file header
+
+		byte header[2];
+		m_Stream->ReadByte(header, 2);
+
+		dword size = GetDWord();
+
+		dword unused;
+		m_Stream->ReadDWord(&unused);
+
 		dword pixel_offset =    GetDWord();
+		BMP_DEBUG("Pixel offset: %i", pixel_offset);
+
+		// bitmap info header
 
 		dword header_size =     GetDWord();
 		switch (header_size)
@@ -187,9 +199,14 @@ namespace til
 		dword height =          GetDWord();
 		m_Height =              (uint32)height;
 
+		BMP_DEBUG("Dimensions: (%i, %i)", m_Width, m_Height);
+
 		word color_planes;      m_Stream->ReadWord(&color_planes);
+		BMP_DEBUG("Color plane: %i", color_planes);
+
 		word bpp;               m_Stream->ReadWord(&bpp);
 		BMP_DEBUG("BPP: %i", bpp);
+
 		word bytesperpixel = bpp >> 3;
 
 		dword compression =      GetDWord();
@@ -218,30 +235,37 @@ namespace til
 			return false;
 		}
 
-		dword raw_size =        GetDWord();
+		dword raw_size = GetDWord();
 		BMP_DEBUG("Raw size: %i", raw_size);
 
 		dword XPelsPerMeter = GetDWord();
 		dword YPelsPermeter = GetDWord();
 
 		dword colors_used = GetDWord();
-		dword colors_important = GetDWord();
-
 		BMP_DEBUG("Colors used: %i", colors_used);
+
+		dword colors_important = GetDWord();
 		BMP_DEBUG("Colors important: %i", colors_important);
 
-		m_Pixels = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
+		// create pixels
 
-		//m_Pixels = new byte[m_PitchX * m_PitchY * m_BPP];
+		m_Pixels = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
 		uint32 total = (m_Width * m_Height) >> 1;
 
 		uint32 pitch = m_PitchX * m_BPP;
 
 		m_Target = m_Pixels + ((m_Height - 1) * pitch);
 		
+		// pitch needs to be aligned to 32 bits
 		uint32 readpitch = m_Width * bytesperpixel;
-		uint32 readbytes = readpitch * m_Height;
+		readpitch += (readpitch % 4);
+
+		uint32 readbytes = raw_size;
 		m_ReadData = new byte[readbytes];
+
+		// read data
+
+		m_Stream->Seek(pixel_offset, TIL_FILE_SEEK_START);
 		m_Stream->ReadByte(m_ReadData, readbytes);
 
 		byte* read = m_ReadData;

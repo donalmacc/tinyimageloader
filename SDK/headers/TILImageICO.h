@@ -77,6 +77,7 @@ namespace til
 			byte* buffer;
 			uint32 width, height, pitch;
 			uint32 pitchy;
+			uint32 readpx, readpy;
 			uint32 datasize, offset;
 			uint32 bytespp, bitspp;
 			color_32b* colors;

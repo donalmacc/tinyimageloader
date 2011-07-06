@@ -337,18 +337,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="Data"
-			>
-			<File
-				RelativePath="..\src\TILPixelData.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\SDK\headers\TILPixelData.h"
-				>
-			</File>
-		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

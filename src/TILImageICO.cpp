@@ -25,10 +25,11 @@
 #include "TILImageICO.h"
 #include "TILInternal.h"
 
-//#include <windows.h>
-//#include <wingdi.h>
-
 #if (TIL_FORMAT & TIL_FORMAT_ICO)
+
+#if (TIL_FORMAT & TIL_FORMAT_PNG)
+	#include "TILImagePNG.h"
+#endif
 
 #if (TIL_RUN_TARGET == TIL_TARGET_DEVEL)
 	#define ICO_DEBUG(msg, ...)        TIL_PRINT_DEBUG("ICO: "msg, ##__VA_ARGS__)
@@ -65,7 +66,7 @@ namespace til
 					}
 					else
 					{
-						*dst = 0xFFFF00FF;
+						*dst = 0x00000000;
 					}
 					dst++;
 
@@ -75,7 +76,7 @@ namespace til
 					}
 					else
 					{
-						*dst = 0xFFFF00FF;
+						*dst = 0x00000000;
 					}
 					dst++;
 
@@ -103,11 +104,23 @@ namespace til
 		}
 		else
 		{
-			for (uint32 j = 0; j < a_Buffer->width; j++)
+			if (a_Buffer->bytespp > 3)
 			{
-				*dst++ = AlphaBlend_32b_A8B8G8R8(src[2], src[1], src[0], src[3]);
-				src += 4;
+				for (uint32 j = 0; j < a_Buffer->width; j++)
+				{
+					*dst++ = AlphaBlend_32b_A8B8G8R8(src[2], src[1], src[0], src[3]);
+					src += a_Buffer->bytespp;
+				}
 			}
+			else
+			{
+				for (uint32 j = 0; j < a_Buffer->width; j++)
+				{
+					*dst++ = AlphaBlend_32b_A8B8G8R8(src[2], src[1], src[0], 255);
+					src += a_Buffer->bytespp;
+				}
+			}
+			
 
 			return (uint8*)dst;
 		}
@@ -178,46 +191,24 @@ namespace til
 		for (int i = 0; i < a_Buffer->palette; i++)
 		{
 			byte read[4];
-#ifdef OLDMETHOD
-			fread(read, 1, 4, m_Handle);
-#else
 			m_Stream->ReadByte(read, 4);
-#endif
-			*dst++ = Construct_32b_A8R8G8B8(read[0], read[1], read[2], (a_Buffer->palette == 16) ? 255 : read[3]);
+			*dst++ = Construct_32b_A8R8G8B8(read[0], read[1], read[2], (a_Buffer->palette > 0) ? 255 : read[3]);
 		}
 	}
 
 	bool ImageICO::Parse(uint32 a_ColorDepth)
 	{
-
-#ifdef OLDMETHOD
-
-		m_Handle = fopen(m_Stream->GetFilePath(), "rb");
-
-#endif
 		// empty anyway
-#ifdef OLDMETHOD
-		fseek(m_Handle, 2, SEEK_CUR);
-#else
 		m_Stream->Seek(2, TIL_FILE_SEEK_CURR);
-#endif
 
-#ifdef OLDMETHOD
-		word header;          fread(&header, 2, 1, m_Handle);
-#else
 		word header;          m_Stream->ReadWord(&header);
-#endif
 		if (header != 1 && header != 2)
 		{
 			TIL_ERROR_EXPLAIN("Not a valid ICO file!");
 			return false;
 		}
 
-#ifdef OLDMETHOD
-		word imagecount;      fread(&imagecount, 2, 1, m_Handle);
-#else
 		word imagecount;      m_Stream->ReadWord(&imagecount);
-#endif
 		m_Images = imagecount;
 
 		byte width, height, palette, reserved;
@@ -226,20 +217,6 @@ namespace til
 
 		for (uint16 i = 0; i < imagecount; i++)
 		{
-
-#ifdef OLDMETHOD
-			fread(&width, 1, 1, m_Handle);
-			fread(&height, 1, 1, m_Handle);
-
-			fread(&palette, 1, 1, m_Handle);
-			fread(&reserved, 1, 1, m_Handle);
-
-			fread(&planes, 2, 1, m_Handle);
-			fread(&bpp, 2, 1, m_Handle);
-
-			fread(&datasize, 4, 1, m_Handle);
-			fread(&offset, 4, 1, m_Handle);
-#else
 			m_Stream->ReadByte(&width);
 			m_Stream->ReadByte(&height);
 
@@ -251,9 +228,12 @@ namespace til
 
 			m_Stream->ReadDWord(&datasize);
 			m_Stream->ReadDWord(&offset);
-#endif
 
-			AddBuffer(width, height);
+			unsigned long w = (width == 0) ? 256 : width;
+			unsigned long h = (height == 0) ? 256 : height;
+
+			AddBuffer(w, h);
+
 			m_Current->offset    = offset;
 			m_Current->datasize  = datasize;
 			m_Current->palette   = palette;
@@ -298,35 +278,24 @@ namespace til
 
 			//unsigned long size2 = sizeof(BITMAPINFOHEADER);
 
-#ifdef OLDMETHOD
-			fseek(m_Handle, cur->offset, SEEK_SET);
-#else
-			//m_Stream->Seek(cur->offset, TIL_FILE_SEEK_CURR);
 			m_Stream->Seek(cur->offset, TIL_FILE_SEEK_START);
-#endif
 
 			//BITMAPINFOHEADER bleh;
 			//fread(&bleh, sizeof(bleh), 1, m_Handle);
 
-#ifdef OLDMETHOD
-			dword size;     fread(&size, 4, 1, m_Handle);
-			int32 width;     fread(&width, 4, 1, m_Handle);
-			int32 height;    fread(&height, 4, 1, m_Handle);
-			word planes;   fread(&planes, 2, 1, m_Handle);
-			word bitcount; fread(&bitcount, 2, 1, m_Handle);
-#else
-			dword size;      m_Stream->ReadDWord(&size);
-			int32 width;     m_Stream->Read(&width, sizeof(int32));
-			int32 height;    m_Stream->Read(&height, sizeof(int32));
-			word planes;     m_Stream->ReadWord(&planes);
-			word bitcount;   m_Stream->ReadWord(&bitcount);
-#endif
+			dword size;           m_Stream->ReadDWord(&size);
+			int32 width;          m_Stream->Read(&width, sizeof(int32));
+			int32 height;         m_Stream->Read(&height, sizeof(int32));
+			word planes;          m_Stream->ReadWord(&planes);
+			word bitcount;        m_Stream->ReadWord(&bitcount);
+			dword compression;    m_Stream->ReadDWord(&compression);
+			dword sizeimage;      m_Stream->ReadDWord(&sizeimage);
+			int32 xpermeter;      m_Stream->Read(&xpermeter, sizeof(int32));
+			int32 ypermeter;      m_Stream->Read(&ypermeter, sizeof(int32));
+			dword colorused;      m_Stream->ReadDWord(&colorused);
+			dword colorimportant; m_Stream->ReadDWord(&colorimportant);
 
-#ifdef OLDMETHOD
-			fseek(m_Handle, 24, SEEK_CUR);
-#else
-			m_Stream->Seek(24, TIL_FILE_SEEK_CURR);
-#endif
+			//m_Stream->Seek(24, TIL_FILE_SEEK_CURR);
 
 			ICO_DEBUG("Image: %i", i);
 			ICO_DEBUG("Dimensions: (%i, %i)", cur->width, cur->height);
@@ -350,11 +319,13 @@ namespace til
 			g_ColorFuncRow =  ColorFunc_4b_A8B8G8R8_Row;
 
 			uint32 pitch = cur->pitch * m_BPP;
-			cur->pitchy = cur->pitch * m_BPP;
+			cur->pitchy = cur->height;
 
 			byte* src;
 
 			byte* target = cur->buffer + ((cur->height - 1) * pitch);
+
+			ICO_DEBUG("Palette: %i", cur->palette);
 
 			if (cur->palette > 0)
 			{
@@ -368,26 +339,17 @@ namespace til
 
 				}*/
 
-				int div = 1;
+				int div = 1; // palette = 256
 				if (cur->palette == 16) { div = 2; }
 
-				cur->pitch = cur->width / div;
-				cur->pitchy = cur->height / div;
-				//cur->pitchy = cur->height;
+				cur->readpx = cur->width / div;
+				cur->readpy = cur->height / div;
 
-				src = new byte[cur->width * cur->pitchy * cur->bytespp];
-#ifdef OLDMETHOD
-				fread(src, cur->bytespp, cur->width * cur->pitchy, m_Handle); 
-#else
-				m_Stream->Read(src, cur->bytespp, cur->width * cur->pitchy);
-#endif
+				src = new byte[cur->width * cur->readpy * cur->bytespp];
+				m_Stream->Read(src, cur->bytespp, cur->width * cur->readpy);
 
 				cur->andmask = new byte[(cur->width / 8) * cur->height];
-#ifdef OLDMETHOD
-				fread(cur->andmask, 1, (cur->width / 8) * cur->height, m_Handle);
-#else
 				m_Stream->Read(cur->andmask, sizeof(byte), (cur->width / 8) * cur->height);
-#endif
 
 				byte* read = src;
 				byte* andmask = cur->andmask;
@@ -396,26 +358,26 @@ namespace til
 
 				if (cur->palette == 16)
 				{
-					for (uint32 y = 0; y < cur->pitchy; y++)
+					for (uint32 y = 0; y < cur->readpy; y++)
 					{
 						g_ColorFuncRow(target, read, andmask, cur);
 						target -= pitch;
-						read += cur->pitch;
+						read += cur->readpx;
 						andmask += cur->width / 8;
 
 						g_ColorFuncRow(target, read, andmask, cur);
 						target -= pitch;
-						read += cur->pitch;
+						read += cur->readpx;
 						andmask += cur->width / 8;
 					}
 				}
 				else
 				{
-					for (uint32 y = 0; y < cur->pitchy; y++)
+					for (uint32 y = 0; y < cur->height; y++)
 					{
 						g_ColorFuncRow(target, read, andmask, cur);
 						target -= pitch;
-						read += cur->pitch;
+						read += cur->readpx;
 						andmask += cur->width / 8;
 					}
 				}
@@ -435,43 +397,63 @@ namespace til
 			}
 			else
 			{
-				//fseek(m_Handle, cur->offset + 36, SEEK_SET);
+				m_Stream->Seek(cur->offset, TIL_FILE_SEEK_START);
 
-				src = new byte[cur->width * cur->bytespp];
+				dword png_header;
+				m_Stream->ReadDWord(&png_header);
 
-				for (uint32 y = 0; y < cur->height; y++)
+				if (png_header == PNG_TYPE('G', 'N', 'P', 0x89))
 				{
-#ifdef OLDMETHOD
-					fread(src, cur->width, cur->bytespp, m_Handle); 
+
+#if (TIL_FORMAT & TIL_FORMAT_PNG)
+
+					ICO_DEBUG("Loading PNG.");
+
+					m_Stream->Seek(cur->offset, TIL_FILE_SEEK_START);
+
+					ImagePNG* png_compressed = new ImagePNG();
+					png_compressed->Load(m_Stream);
+					png_compressed->SetBPP(a_ColorDepth);
+					png_compressed->Parse(a_ColorDepth);
+
+					Internal::MemCpy(
+						cur->buffer, 
+						png_compressed->GetPixels(), 
+						png_compressed->GetPitchX() * png_compressed->GetPitchY() * m_BPP
+					);
+
+					delete png_compressed;
+
 #else
-					m_Stream->Read(src, cur->bytespp, cur->width);
+
+					TIL_ERROR_EXPLAIN("Can't parse ICO without PNG loader.", 0);
+					Internal::MemSet(cur->buffer, 0, cur->width * cur->height * cur->bytespp);
+
 #endif
 
-					g_ColorFuncRow(target, src, NULL, cur);
-					target -= pitch;
 				}
-
-				delete src;
-			}
-
-			/*for (uint32 y = 0; y < cur->height / 2; y++)
-			{
-				fread(src, cur->width, cur->bytespp, m_Handle); 
-
-				g_ColorFuncRow(target, src, cur);
-				target -= pitch;
-
-				if (cur->palette > 0)
+				else
 				{
-					g_ColorFuncRow(target, src + (cur->width / 2), cur);
-					target -= pitch;
+					ICO_DEBUG("Loading uncompressed data.");
+
+					m_Stream->Seek(cur->offset + 40, TIL_FILE_SEEK_START);
+
+					src = new byte[cur->width * cur->height * bpp];
+					m_Stream->Read(src, bpp, cur->width * cur->height);
+
+					byte* read = src;
+
+					for (uint32 y = 0; y < cur->height; y++)
+					{
+						g_ColorFuncRow(target, read, NULL, cur);
+
+						target -= pitch;
+						read += cur->pitch * cur->bytespp;
+					}
+
+					delete src;
 				}
-			}*/
-
-			//uint32 offset = datasize - current;
-
-			//fseek(m_Handle, datasize, SEEK_SET);
-			//fseek(m_Handle, offset, SEEK_CUR);
+			}
 		}
 
 		return true;
@@ -497,6 +479,7 @@ namespace til
 	{
 		if (a_Frame >= 0 && a_Frame < m_Images)
 		{
+			//if (a_Frame == 6) { a_Frame--; }
 			BufferICO* current = m_First;
 			for (uint32 i = 0; i < a_Frame; i++) { current = current->next; }
 			return current->buffer;
@@ -537,6 +520,8 @@ namespace til
 			for (uint32 i = 0; i < a_Frame; i++) { current = current->next; }
 			return current->pitch;
 		}
+
+		return 0;
 	}
 
 	uint32 ImageICO::GetPitchY(uint32 a_Frame /*= 0*/)
@@ -547,6 +532,8 @@ namespace til
 			for (uint32 i = 0; i < a_Frame; i++) { current = current->next; }
 			return current->pitchy;
 		}
+
+		return 0;
 	}
 
 }; // namespace til
