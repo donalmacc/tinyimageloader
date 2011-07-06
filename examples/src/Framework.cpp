@@ -50,6 +50,7 @@ namespace TILFW
 	HWND         g_Window;
 	MSG          g_MSG;
 	HDC          g_WindowContext;
+	GLuint       g_FontBase = 1000;
 
 	const float frame_physics = (1000.f / 60.f);
 
@@ -100,7 +101,7 @@ namespace TILFW
 
 #endif
 
-	int Framework::Exec(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+	int Framework::Exec(int argc, char** argv)
 	{
 		Framework::Setup();
 
@@ -142,6 +143,7 @@ namespace TILFW
 			NULL, 
 			NULL, 
 			temp.hInstance, 
+			//GetModuleHandle(NULL),
 			NULL
 		);
 		if (!g_Window)
@@ -214,19 +216,46 @@ namespace TILFW
 
 		// convert windows command line to c-style
 
-		int argv;
+		/*int argv;
 		wchar_t** argc = CommandLineToArgvW(GetCommandLineW(), &argv);
 		char** cmdline = new char*[argv];
 		for (int i = 0; i < argv; i++)
 		{
 			cmdline[i] = new char[wcslen(argc[i]) + 1];
 			wcstombs(cmdline[i], argc[i], wcslen(argc[i]) + 1);
-		}
+		}*/
 
-		Framework::Init((const char**)cmdline, argv);
+		//Framework::Init((const char**)cmdline, argv);
+		Framework::Init((const char**)argv, argc);
 
 		ShowWindow(g_Window, 1);
 		UpdateWindow(g_Window);
+
+		// initialize font
+
+		HFONT oldfont;
+
+		g_FontBase = glGenLists(96);					
+		HFONT font_text = CreateFont(
+			18,
+			0,
+			0,
+			0,
+			FW_BOLD,				// bold
+			FALSE,					// italic
+			FALSE,					// underline
+			FALSE,					// strikeout
+			ANSI_CHARSET,	
+			OUT_TT_PRECIS,	
+			CLIP_DEFAULT_PRECIS,
+			ANTIALIASED_QUALITY,
+			FF_DONTCARE | DEFAULT_PITCH,	
+			"Arial"
+		);	
+		oldfont = (HFONT)SelectObject(g_WindowContext, font_text);
+		wglUseFontBitmaps(g_WindowContext, 0, 127, g_FontBase);
+
+		// start
 
 		s_Exit = false;
 
@@ -259,6 +288,44 @@ namespace TILFW
 				if (g_Active)
 				{
 					Framework::Render();
+
+					// render text
+
+					glColor3f(1.f, 1.f, 1.f);
+
+					glViewport(0, 0, s_WindowWidth, s_WindowHeight);
+
+					glMatrixMode(GL_PROJECTION);
+					glPushMatrix();
+						glLoadIdentity();
+						gluOrtho2D(
+							0, s_WindowWidth, 
+							s_WindowHeight, 0
+						);
+
+						glMatrixMode(GL_MODELVIEW);
+						glPushMatrix();
+							glLoadIdentity();
+								
+								glPushAttrib(GL_LIST_BIT);   
+								glListBase(g_FontBase); 
+
+									for (std::vector<TextData*>::iterator it = m_TextList.begin(); it != m_TextList.end(); it++)
+									{
+										glRasterPos3i((*it)->x, (*it)->y, 0);
+										glCallLists(strlen((*it)->msg), GL_UNSIGNED_BYTE, (*it)->msg);
+									}
+
+									m_TextList.clear();
+
+								glPopAttrib();
+						glPopMatrix();
+
+					glMatrixMode(GL_PROJECTION);
+					glPopMatrix();
+					glMatrixMode(GL_MODELVIEW);
+
+					//glColor3f(0.f, 0.f, 0.f);
 						
 					SwapBuffers(g_WindowContext);
 				}
@@ -272,6 +339,24 @@ namespace TILFW
 		DestroyWindow(g_Window);
 
 		return 0;
+	}
+
+	void Framework::DisplayText(unsigned int a_X, unsigned int a_Y, const char* a_Text, ...)
+	{
+		TextData* data = new TextData;
+		data->x = a_X;
+		data->y = a_Y;
+
+		char msg[256];
+		va_list args;
+		va_start(args, a_Text);
+		vsprintf(msg, a_Text, args);
+		va_end(args);
+
+		data->msg = new char[strlen(msg) + 1];
+		strcpy(data->msg, msg);
+
+		m_TextList.push_back(data);
 	}
 
 }; // namespace TILFW

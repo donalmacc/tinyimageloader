@@ -976,6 +976,12 @@ namespace til
 					//memcpy(a_Data[curr], a_Data[curr - 1], bytes_total);
 					//a_Data[curr]->CopyFrom(a_Data[curr - 1]);
 				}
+				else if (dispose == APNG_DISPOSE_OP_BACKGROUND)
+				{
+					PNG_DEBUG("Dispose method: %s", "APNG_DISPOSE_OP_BACKGROUND");
+
+					memset(a_Data[curr], 0, bytes_total);
+				}
 				else
 				{
 					PNG_DEBUG("Dispose method: %s", "Other");
@@ -984,7 +990,7 @@ namespace til
 					//a_Data[curr]->Clear();
 				}
 
-				memcpy(a_Data[curr], frame_prev, bytes_total);
+				//memcpy(a_Data[curr], frame_prev, bytes_total);
 
 				PNG_DEBUG("Filling index %i", curr);
 
@@ -993,11 +999,13 @@ namespace til
 				uint32 len = decompress.GetLength();
 				byte* final = decompress.GetData();
 
+				PNG_DEBUG("ZLib length: %i", len);
 				PNG_DEBUG("Size: (%i, %i) Offset: (%i, %i)", w, h, ox, oy);
 
 				//byte* dst = a_Data[curr]->GetData();
-				byte* dst = a_Data[curr];
-				instance->Decompile(dst, final, w, h, pitchx, image_bpp, ox, oy);
+				//byte* dst = a_Data[curr];
+				//instance->Decompile(dst, final, w, h, pitchx, image_bpp, ox, oy);
+				instance->Decompile(a_Data[curr], final, w, h, pitchx * image_bpp, image_bpp, ox, oy);
 
 				if (dispose != APNG_DISPOSE_OP_PREVIOUS)
 				{
@@ -1566,19 +1574,11 @@ namespace til
 							m_Pixels[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_PitchX, m_PitchY);
 						}
 
-						/*if (!m_Data)
-						{
-							m_Data = new PixelData*[m_Frames];
-							m_Data[0] = Internal::CreatePixels(m_Width, m_Height, m_BPP);
-							m_Data[0]->Clear();
-						}*/
-
 						if (m_Ani->index == 2 && m_Ani->chunk_idat)
 						{
 							Compose();
 						}
 
-						//m_Ani->NextFrame(m_Data);
 						m_Ani->NextFrame(m_Pixels);
 					}
 					else
@@ -1746,7 +1746,6 @@ namespace til
 
 					if (m_Ani) 
 					{ 
-						//m_Ani->NextFrame(m_Data); 
 						m_Ani->NextFrame(m_Pixels); 
 					}
 

@@ -247,10 +247,10 @@ namespace til
 
 	void AddDebugDefault(MessageData* a_Data)
 	{
-		sprintf(g_DebugTemp, "%s", a_Data->message);
+		/*sprintf(g_DebugTemp, "%s", a_Data->message);
 		strcat(g_DebugTemp, g_LineFeed);
 
-		bool resize = false;
+		bool resize = false;*/
 
 		/*while (strlen(g_DebugTemp) + strlen(g_Debug) >= g_DebugMaxSize) 
 		{ 
@@ -262,12 +262,43 @@ namespace til
 			g_Debug = (char*)realloc(g_Debug, g_DebugMaxSize);
 		}*/
 
+		/*if (strlen(g_DebugTemp) + strlen(g_Debug) >= g_DebugMaxSize) 
+		{ 
+			TIL_ClearDebug();
+		}
+
+		strcat(g_Debug, g_DebugTemp);*/
+
+		sprintf(g_DebugTemp, "%s", a_Data->message);
+		strcat(g_DebugTemp, g_LineFeed);
+
 		if (strlen(g_DebugTemp) + strlen(g_Debug) >= g_DebugMaxSize) 
 		{ 
 			TIL_ClearDebug();
 		}
 
 		strcat(g_Debug, g_DebugTemp);
+
+		/*sprintf(
+			g_DebugTemp,
+			"%s (in file %s at line %i)", 
+			a_Data->message, 
+			a_Data->source_file, 
+			a_Data->source_line
+		);
+		strcat(g_DebugTemp, g_LineFeed);
+
+		bool resize = false;
+		while (strlen(g_DebugTemp) + strlen(g_Debug) >= g_DebugMaxSize) { g_DebugMaxSize *= 2; resize = true; }
+		if (resize)
+		{
+			char* move = new char[g_DebugMaxSize];
+			strcpy(move, g_Debug);
+			delete g_Debug;
+			g_Debug = move;
+		}
+
+		strcat(g_Debug, g_DebugTemp);*/
 	}
 
 	void PixelDefault(uint8 a_ColorWidth, uint8* a_Dst, uint8* a_Src, uint32 a_Index, uint32 a_Count)

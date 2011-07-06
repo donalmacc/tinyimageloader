@@ -44,23 +44,22 @@ namespace TILFW
 
 	void Framework::Init(const char** a_CommandLine, int a_Commands)
 	{
+		_CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_LEAK_CHECK_DF);
+
 		_CrtMemCheckpoint(&TILFW::g_MemStart);
 
 		// Initialize TinyImageLoader
 
 		til::TIL_Init();
 
-		//til::TIL_SetDebugFunc(MyDebug);
-		//til::TIL_SetErrorFunc(MyError);
-
 		til::Image* load_bmp = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		til::TIL_Release(load_bmp);
 
-		til::Image* load_png = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-		til::TIL_Release(load_png);
-
 		//til::Image* load_gif = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		//til::TIL_Release(load_gif);
+
+		til::Image* load_png = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+		til::TIL_Release(load_png);
 
 		til::Image* load_ico = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		til::TIL_Release(load_ico);
@@ -109,11 +108,11 @@ namespace TILFW
 
 };
 
-int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int main(int argc, char** argv)
 {
 	TILFW::Framework* app = new TILFW::Framework;
 
-	app->Exec(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+	app->Exec(argc, argv);
 	delete app;
 
 	return 0;

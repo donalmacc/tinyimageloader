@@ -254,7 +254,7 @@ namespace til
 	ImageDDS::~ImageDDS()
 	{
 		if (m_Data) { delete m_Data; }
-		if (m_Pixels) { delete m_Pixels; }
+		if (m_Pixels) { delete [] m_Pixels; }
 		if (m_Colors) { delete m_Colors; }
 		if (m_Alpha) { delete m_Alpha; }
 		if (m_MipMap) { delete [] m_MipMap; }

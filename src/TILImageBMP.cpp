@@ -101,7 +101,7 @@ namespace til
 	ImageBMP::~ImageBMP()
 	{
 		if (m_ReadData) { delete m_ReadData; }
-		if (m_Pixels) { delete m_Pixels; }
+		if (m_Pixels) { delete [] m_Pixels; }
 	}
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

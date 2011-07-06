@@ -165,6 +165,7 @@
 			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(SolutionDir)int\$(ConfigurationName)"
 			ConfigurationType="1"
+			UseOfATL="1"
 			CharacterSet="2"
 			>
 			<Tool
@@ -204,7 +205,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="TinyImageLoader_dv.lib Framework_d.lib psapi.lib"
-				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
+				OutputFile="$(OutDir)\$(ProjectName)_dv.exe"
 				AdditionalLibraryDirectories="$(SolutionDir)bin; $(SolutionDir)SDK"
 				GenerateDebugInformation="true"
 				TargetMachine="1"

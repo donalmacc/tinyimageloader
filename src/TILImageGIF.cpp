@@ -736,13 +736,18 @@ namespace til
 	{
 		if (a_Buffer) 
 		{
+			if (a_Buffer->buffer)
+			{
+				delete a_Buffer->buffer;
+				a_Buffer->buffer = NULL;
+			}			
+			
 			if (a_Buffer->next)
 			{
 				ReleaseMemory(a_Buffer->next); 
 				delete a_Buffer->next;
+				a_Buffer->next = NULL;
 			}
-
-			delete a_Buffer->buffer;
 		}
 	}
 
