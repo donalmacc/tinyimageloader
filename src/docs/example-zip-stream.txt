@@ -29,7 +29,9 @@
 	- Implement #til::FileStream::IsReusable
 	- Close the stream neatly in #til::FileStream::Close
 	
-\section code Code
+	Please refer to the documentation for the exact implementation.
+	
+\section code Opening a handle
 
 	Reading directly from a zip archive means we have to open a handle to the
 	archive, find the file we want to load and unpack it on the fly.
@@ -44,5 +46,20 @@
 	
 	In the constructor we'll set up some stuff, including the maximum buffer
 	size, and alloate the buffer.
+	
+	Next, we open a handle to the zip archive, so we can read from it.
+	
+	\code
+    FileStreamZip* stream = new FileStreamZip();
+	stream->OpenZip("media\\ZIP\\zipped.zip", TIL_FILE_ADDWORKINGDIR);
+	\endcode
+	
+	There are multiple images in the archive, because it acts as a miniature
+	filesystem. Therefor, #til::FileStream::IsReusable returns true and we will
+	close the stream ourselves.
+	
+\section reading Reading
+	
+	
 
 */

@@ -100,6 +100,7 @@ Setup</h2>
 </li>
 </ul>
 <p>You are free to set these things as you like, of course, but this is how I prefer it. :)</p>
+<p>You can compile TinyImageLoader for three levels: <b>release</b>, <b>debug</b> and <b>devel</b>. Devel is the same as debug, except that it posts messages to the debug callback. Debug does not post these messages. It is avised to always compile your program with either the debug or the release version of TinyImageLoader. Devel is only for developers of TinyImageLoader.</p>
 <h2><a class="anchor" id="startup"></a>
 Setting up TinyImageLoader</h2>
 <p>The first thing we need to do is initialize TinyImageLoader. </p>
@@ -108,7 +109,7 @@ Setting up TinyImageLoader</h2>
 Logging</h2>
 <p>By default, TinyImageLoader posts its errors and warning to an internal expanding string. This may not be desirable, as it takes memory you don't have any control over. Therefor, TinyImageLoader comes with a series of callbacks you can use to control the logging behavior.</p>
 <p>In this example we will output all debug and error messages to a log.</p>
-<p>We open our log by using a TinyImageLoader function to attach the working directory. </p>
+<p>We open our log by using a TinyImageLoader function to attach the working directory.</p>
 <div class="fragment"><pre class="fragment">        g_LogPath = <span class="keyword">new</span> <span class="keywordtype">char</span>[<a class="code" href="_t_i_l_settings_8h.html#aa7da87a80d18c2e139c10d0a6a982286">TIL_MAX_PATH</a>];
         <a class="code" href="namespacetil.html#a0a78aac0d1be8f1403da0a7eff6334ca" title="Adds working directory to a path.">til::TIL_AddWorkingDirectory</a>(g_LogPath, <a class="code" href="_t_i_l_settings_8h.html#aa7da87a80d18c2e139c10d0a6a982286">TIL_MAX_PATH</a>, <span class="stringliteral">&quot;til.log&quot;</span>);
         fopen_s(&amp;g_Log, g_LogPath, <span class="stringliteral">&quot;w+&quot;</span>);
@@ -142,6 +143,7 @@ Setting up OpenGL</h2>
 <h2><a class="anchor" id="loading"></a>
 Loading a file</h2>
 <p>Now we are ready to load a file. We are going to load an image as an OpenGL texture with an alpha component, so we are using the OpenGL color format GL_RGBA while we are using the TinyImageLoader format <a class="el" href="_t_i_l_settings_8h.html#aa41c714a49a57e84fe823a09e898c074" title="32-bit ABGR color depth">TIL_DEPTH_A8B8G8R8</a>. This is because TinyImageLoader uses big-endianness for its color components, while OpenGL prefers little-endianness. The data remains the same, it's just the order that is different.</p>
+<p>If a file has been dragged onto the executable, TinyImageLoader tries to load it. Otherwise it loads an image verified to work.</p>
 <div class="fragment"><pre class="fragment">        <span class="keywordflow">if</span> (a_Commands == 1)
         {
                 g_Load = <a class="code" href="namespacetil.html#a8d2e2ab942bb94b188587509ccb754de" title="Main interface for loading images.">til::TIL_Load</a>(<span class="stringliteral">&quot;media\\PNG\\avatar.png&quot;</span>, <a class="code" href="_t_i_l_settings_8h.html#a46033ff709c68056a163fefecfae188a" title="The image path is relative to the working directory.">TIL_FILE_ADDWORKINGDIR</a> | <a class="code" href="_t_i_l_settings_8h.html#aa41c714a49a57e84fe823a09e898c074" title="32-bit ABGR color depth">TIL_DEPTH_A8B8G8R8</a>);
@@ -216,7 +218,7 @@ Cleaning up</h2>
         <a class="code" href="namespacetil.html#a777e336727a478c4c4bdfd8c0e3603d7" title="Shuts down TinyImageLoader.">til::TIL_ShutDown</a>();
 </pre></div><h2><a class="anchor" id="code"></a>
 Code</h2>
-<p>Check out the source for this example in example-opengl-texture.cpp. </p>
+<p>Check out the source for this example at /examples/src/example-opengl-texture.cpp. </p>
 </div></div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -232,7 +234,7 @@ Code</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri May 13 2011 13:49:22 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu May 26 2011 17:59:14 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

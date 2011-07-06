@@ -13,4 +13,5 @@
     \section Examples
     -# \ref example1
     -# \ref example2
+    -# \ref example3
 */

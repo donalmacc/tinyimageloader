@@ -1,0 +1,80 @@
+/*!
+\page example3 Example: Setting the pitch when loading
+
+	This example shows you how you can use TinyImageLoader to load images with
+	a specified width and height.
+
+	Refer to \ref example1 for an example of how to load an image the normal
+	way.
+	
+	If no pitch function has been set, the horizontal and vertical pitch are
+	identical to the width and height, respectively.
+
+\section intro Introduction
+
+	Sometimes, you might need a specific width and height to your images. For
+	instance, some graphics cards only support textures that have a width and
+	height that is a power of two (16, 32, 64, 128, etc.) It can be a pain to
+	load an image, rearrange the pixel data and upload it to the videocard.
+	
+	With TinyImageLoader, you can convert the image to the correct bit depth and
+	set the pitch while you're loading it. You do this by attaching a pitch
+	function.
+
+\section writing Writing a pitch function
+
+	Your function will receive the following parameters:
+	
+	- Real width of the image
+	- Real height of the image
+	- Amount of bytes per pixel
+	- Target horizontal pitch
+	- Target vertical pitch
+	
+	Your function will set the horizontal pitch and the vertical pitch. If
+	either of the pitches is smaller than the actual width or height of the
+	image, TinyImageLoader will post an error and loading the image will be
+	cancelled.
+	
+	Here we will write a pitch function that returns the width and height as a
+	power of two:
+	
+	\code
+ 	void CustomPitchFunc(til::uint32 a_Width, til::uint32 a_Height, til::uint8 a_BPP, til::uint32& a_PitchX, til::uint32& a_PitchY)
+	{
+	    // determine which is greater
+		til::uint32 high = (a_Width > a_Height) ? a_Width : a_Height;
+
+		// find the closest power of two
+		til::uint32 closest = 0;
+		til::uint32 move = high;
+		while (move >>= 1) { closest++; }
+		if (high - (1 << closest) > 0) { closest++; }
+
+		// shift by the found number of bits
+		a_PitchX = 1 << closest;
+		a_PitchY = a_PitchX;
+	}
+	\endcode
+	
+	Then we attach the function to TinyImageLoader:
+	
+	\code
+	til::TIL_SetPitchFunc(CustomPitchFunc);
+	\endcode
+	
+\section loading Loading changes
+
+	There's one thing that still needs to be changed: instead of using GetWidth
+	and GetHeight on the image handle, we must now use GetPitchX and GetPitchY to
+	get the correct dimensions.
+	
+	\code
+	glTexImage2D(
+		GL_TEXTURE_2D, 0, GL_RGBA,
+		g_Load->GetPitchX(i), g_Load->GetPitchY(i),
+		0,
+		GL_RGBA, GL_UNSIGNED_BYTE, g_Load->GetPixels(i)
+	);
+	\endcode
+*/

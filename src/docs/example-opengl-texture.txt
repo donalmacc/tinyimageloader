@@ -45,6 +45,12 @@
 
 	You are free to set these things as you like, of course, but this is how I
 	prefer it. :)
+	
+	You can compile TinyImageLoader for three levels: <b>release</b>, <b>debug</b>
+	and <b>devel</b>. Devel is the same as debug, except that it posts messages
+	to the debug callback. Debug does not post these messages. It is avised to
+	always compile your program with either the debug or the release version of
+	TinyImageLoader. Devel is only for developers of TinyImageLoader.
 
 \section startup Setting up TinyImageLoader
 
@@ -60,10 +66,11 @@
 	have any control over. Therefor, TinyImageLoader comes with a series of
 	callbacks you can use to control the logging behavior.
 	
-	In this example we will output all debug and error messages to a log.
+	In this example we will output all debug and error messages to a log. 
 
 	We open our log by using a TinyImageLoader function to attach the working
 	directory.
+	
 	\code
 	g_LogPath = new char[TIL_MAX_PATH];
 	til::TIL_AddWorkingDirectory(g_LogPath, TIL_MAX_PATH, "til.log");
@@ -122,6 +129,9 @@
 	the TinyImageLoader format #TIL_DEPTH_A8B8G8R8. This is because TinyImageLoader uses
 	big-endianness for its color components, while OpenGL prefers little-endianness. The data
 	remains the same, it's just the order that is different.
+	
+	If a file has been dragged onto the executable, TinyImageLoader tries to load it.
+	Otherwise it loads an image verified to work.
 
 	\code
 	if (a_Commands == 1)
@@ -163,9 +173,6 @@
 	\code
 	for (unsigned int i = 0; i < g_TextureTotal; i++)
 	{
-		glEnable(GL_TEXTURE_2D);
-		glGenTextures(1, &g_Texture[i]);
-
 		glBindTexture(GL_TEXTURE_2D, g_Texture[i]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -177,7 +184,6 @@
 			0,
 			GL_RGBA, GL_UNSIGNED_BYTE, g_Load->GetPixels(i)
 		);
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	\endcode
 	
@@ -230,5 +236,5 @@
 	
 	\section code Code
 	
-	Check out the source for this example in example-opengl-texture.cpp.
+	Check out the source for this example at /examples/src/example-opengl-texture.cpp.
 */

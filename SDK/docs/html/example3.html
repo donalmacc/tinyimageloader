@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>TinyImageLoader: Example: Loading images directly from a zip file</title>
+<title>TinyImageLoader: Example: Setting the pitch when loading</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -53,33 +53,55 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">Example: Loading images directly from a zip file </div>  </div>
+<div class="title">Example: Setting the pitch when loading </div>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><p>This example shows you how you can use TinyImageLoader, zlib and libzip to load an image directly from a zip archive.</p>
+<div class="textblock"><p>This example shows you how you can use TinyImageLoader to load images with a specified width and height.</p>
 <p>Refer to <a class="el" href="example1.html">Example: Loading an OpenGL texture</a> for an example of how to load an image the normal way.</p>
+<p>If no pitch function has been set, the horizontal and vertical pitch are identical to the width and height, respectively.</p>
 <h2><a class="anchor" id="intro"></a>
 Introduction</h2>
-<p>Zip archives behave like a miniature filesystem. It has a root, a number of folders and number of files. TinyImageLoader exposes its file loading interface through the <a class="el" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">til::FileStream</a> interface.</p>
-<h2><a class="anchor" id="notes"></a>
-Notes</h2>
-<p>When extending the FileStream interface, you must take care of the following things:</p>
+<p>Sometimes, you might need a specific width and height to your images. For instance, some graphics cards only support textures that have a width and height that is a power of two (16, 32, 64, 128, etc.) It can be a pain to load an image, rearrange the pixel data and upload it to the videocard.</p>
+<p>With TinyImageLoader, you can convert the image to the correct bit depth and set the pitch while you're loading it. You do this by attaching a pitch function.</p>
+<h2><a class="anchor" id="writing"></a>
+Writing a pitch function</h2>
+<p>Your function will receive the following parameters:</p>
 <ul>
-<li>Make sure the m_FilePath variable contains a valid path to the file you're loading</li>
-<li>Handle both <a class="el" href="_t_i_l_settings_8h.html#a35df91f5e83de2ea6177f37406e487d9" title="The image path is absolute.">TIL_FILE_ABSOLUTEPATH</a> and <a class="el" href="_t_i_l_settings_8h.html#a46033ff709c68056a163fefecfae188a" title="The image path is relative to the working directory.">TIL_FILE_ADDWORKINGDIR</a> or ignore it altogether</li>
-<li>Implement all the reading functions (<a class="el" href="classtil_1_1_file_stream.html#a26c0a9cc315418ab156ee3a56aad1be2" title="Read data.">til::FileStream::Read</a>, <a class="el" href="classtil_1_1_file_stream.html#aeddef50dcb9b7353799800cccf942551" title="Read a number of bytes.">til::FileStream::ReadByte</a>, <a class="el" href="classtil_1_1_file_stream.html#aada6e2d7cd5fe720527b09da42f78222" title="Read a number of words.">til::FileStream::ReadWord</a>, <a class="el" href="classtil_1_1_file_stream.html#a0a4a3add4a7fa4fd46e5ae4b38dbd9d3" title="Read a number of dwords.">til::FileStream::ReadDWord</a>)</li>
-<li>Return at least false on <a class="el" href="classtil_1_1_file_stream.html#a693c2379367badd18d65d7f83512f595" title="Check for end of file.">til::FileStream::EndOfFile</a></li>
-<li>Implement <a class="el" href="classtil_1_1_file_stream.html#a43cc5b7118fa1eb692c1a34fc1b6c5c6" title="Returns whether the stream can be reused.">til::FileStream::IsReusable</a></li>
-<li>Close the stream neatly in <a class="el" href="classtil_1_1_file_stream.html#a247dffc5fa0875cbafb48c63baa03493" title="Close the stream.">til::FileStream::Close</a></li>
+<li>Real width of the image</li>
+<li>Real height of the image</li>
+<li>Amount of bytes per pixel</li>
+<li>Target horizontal pitch</li>
+<li>Target vertical pitch</li>
 </ul>
-<h2><a class="anchor" id="code"></a>
-Code</h2>
-<p>Reading directly from a zip archive means we have to open a handle to the archive, find the file we want to load and unpack it on the fly.</p>
-<p>We'll start by creating a child class of <a class="el" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">til::FileStream</a> called FileStreamZip.</p>
-<div class="fragment"><pre class="fragment">        <span class="keyword">class </span>FileStreamZip : <span class="keyword">public</span> til::FileStream
+<p>Your function will set the horizontal pitch and the vertical pitch. If either of the pitches is smaller than the actual width or height of the image, TinyImageLoader will post an error and loading the image will be cancelled.</p>
+<p>Here we will write a pitch function that returns the width and height as a power of two:</p>
+<div class="fragment"><pre class="fragment">        <span class="keywordtype">void</span> CustomPitchFunc(<a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">til::uint32</a> a_Width, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">til::uint32</a> a_Height, <a class="code" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8" title="8-bit unsigned integer">til::uint8</a> a_BPP, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">til::uint32</a>&amp; a_PitchX, <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">til::uint32</a>&amp; a_PitchY)
         {
-</pre></div><p>In the constructor we'll set up some stuff, including the maximum buffer size, and alloate the buffer. </p>
-</div></div>
+            <span class="comment">// determine which is greater</span>
+                <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">til::uint32</a> high = (a_Width &gt; a_Height) ? a_Width : a_Height;
+
+                <span class="comment">// find the closest power of two</span>
+                <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">til::uint32</a> closest = 0;
+                <a class="code" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c" title="32-bit unsigned integer">til::uint32</a> move = high;
+                <span class="keywordflow">while</span> (move &gt;&gt;= 1) { closest++; }
+                <span class="keywordflow">if</span> (high - (1 &lt;&lt; closest) &gt; 0) { closest++; }
+
+                <span class="comment">// shift by the found number of bits</span>
+                a_PitchX = 1 &lt;&lt; closest;
+                a_PitchY = a_PitchX;
+        }
+</pre></div><p>Then we attach the function to TinyImageLoader:</p>
+<div class="fragment"><pre class="fragment">        <a class="code" href="namespacetil.html#a9fe7da11935463fefdaf5c63ca24aa4e" title="Set the pitch function to be used internally.">til::TIL_SetPitchFunc</a>(CustomPitchFunc);
+</pre></div><h2><a class="anchor" id="loading"></a>
+Loading a file</h2>
+<p>There's one thing that still needs to be changed: instead of using GetWidth and GetHeight on the image handle, we must now use GetPitchX and GetPitchY to get the correct dimensions.</p>
+<div class="fragment"><pre class="fragment">        glTexImage2D(
+                GL_TEXTURE_2D, 0, GL_RGBA,
+                g_Load-&gt;GetPitchX(i), g_Load-&gt;GetPitchY(i),
+                0,
+                GL_RGBA, GL_UNSIGNED_BYTE, g_Load-&gt;GetPixels(i)
+        );
+</pre></div> </div></div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"

@@ -229,13 +229,6 @@ namespace til
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{
-					/**dst =
-						(((palette[(i * 3) + 0] * 0xF800) >> 8) & 0xF800) |
-						(((palette[(i * 3) + 1] * 0x07E0) >> 8) & 0x07E0) |
-						(((palette[(i * 3) + 2] * 0x001F) >> 8) & 0x001F);
-
-					dst += m_BPP;*/
-
 					*dst++ = Construct_16b_R5G6B5(
 						m_Palette[(i * 3) + 0],
 						m_Palette[(i * 3) + 1],
@@ -252,13 +245,6 @@ namespace til
 
 				for (uint32 i = 0; i < m_ColorTableSize; i++)
 				{
-					/**dst =
-						(((palette[(i * 3) + 0] * 0xF800) >> 8) & 0xF800) |
-						(((palette[(i * 3) + 1] * 0x07E0) >> 8) & 0x07E0) |
-						(((palette[(i * 3) + 2] * 0x001F) >> 8) & 0x001F);
-
-					dst += m_BPP;*/
-
 					*dst++ = Construct_16b_B5G6R5(
 						m_Palette[(i * 3) + 0],
 						m_Palette[(i * 3) + 1],
@@ -599,16 +585,9 @@ namespace til
 						{
 							target += m_LocalPitch;
 							
-							//int32 xy = (int32)((m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP);
 							int32 xy = (int32)((m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP));
-							//if (xy < 0) { xy += m_LocalPitchX; }
-							//dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP;
-							//dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP);
 							dst = target + xy;
 							width = m_LocalWidth - 1;
-							//dst -= (m_LocalPitchX - m_LocalWidth) * m_BPP;
-							//dst -= 4;
-							//width = m_LocalWidth;
 						}
 
 						sp--;
