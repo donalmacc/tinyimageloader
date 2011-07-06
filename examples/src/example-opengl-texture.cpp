@@ -68,7 +68,7 @@ namespace TILFW
 
 		// We can set a custom pitch function
 
-		//til::TIL_SetPitchFunc(CustomPitchFunc);
+		til::TIL_SetPitchFunc(CustomPitchFunc);
 
 		// Set up projection
 		// Now we can draw quads using screen coordinates
@@ -78,10 +78,7 @@ namespace TILFW
 			glOrtho(0, s_WindowWidth, s_WindowHeight, 0, -1, 1);
 		glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
-		glClearColor(0.f, 0.f, 0.f, 0.f);
-		// Make sure the quads show up
-		glDisable(GL_DEPTH_TEST);
-		//glDisable(GL_CULL_FACE);
+		glClearColor(0.f, 0.f, 0.f, 1.f);
 
 		// Load an image
 		// Note: OpenGL reverses the pixel components
@@ -93,7 +90,7 @@ namespace TILFW
 			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 				
 			//g_Load = til::TIL_Load("media\\PNG\\APNG\\dNhrL.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			g_Load = til::TIL_Load("media\\PNG\\APNG\\Animated_PNG_example_bouncing_beach_ball.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\PNG\\APNG\\Animated_PNG_example_bouncing_beach_ball.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\TGA\\glass_container_full.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\TGA\\earth.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\DDS\\blood_stain_large.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
@@ -103,7 +100,7 @@ namespace TILFW
 			//g_Load = til::TIL_Load("media\\DDS\\grace_cube.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 
 			//g_Load = til::TIL_Load("media\\GIF\\ibDZsI.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			
 			//g_Load = til::TIL_Load("media\\DDS\\khergit_lady_dress_b.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
@@ -225,9 +222,13 @@ namespace TILFW
 
 		glDisable(GL_BLEND);
 
+		// important for font rendering
+		glBindTexture(GL_TEXTURE_2D, 0);
+
 		DisplayText(10, 20, "Dimensions: (%i x %i)", g_Load->GetWidth(), g_Load->GetHeight());
-		DisplayText(10, 40, "Frames: %i", g_Load->GetFrameCount());
-		DisplayText(10, 60, "Current frame: %i", g_TextureCurrent + 1);
+		DisplayText(10, 40, "Pitch: (%i x %i)", g_Load->GetPitchX(), g_Load->GetPitchY());
+		DisplayText(10, 60, "Frames: %i", g_Load->GetFrameCount());
+		DisplayText(10, 80, "Current frame: %i", g_TextureCurrent + 1);
 	}
 
 	void Framework::CloseDown()

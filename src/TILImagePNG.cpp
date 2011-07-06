@@ -1002,9 +1002,6 @@ namespace til
 				PNG_DEBUG("ZLib length: %i", len);
 				PNG_DEBUG("Size: (%i, %i) Offset: (%i, %i)", w, h, ox, oy);
 
-				//byte* dst = a_Data[curr]->GetData();
-				//byte* dst = a_Data[curr];
-				//instance->Decompile(dst, final, w, h, pitchx, image_bpp, ox, oy);
 				instance->Decompile(a_Data[curr], final, w, h, pitchx * image_bpp, image_bpp, ox, oy);
 
 				if (dispose != APNG_DISPOSE_OP_PREVIOUS)
@@ -1394,15 +1391,9 @@ namespace til
 
 					m_Ani = new AnimationData;
 					m_Ani->bpp = m_BPP;
-					//m_Ani->pitchx = m_Width * 4;
-					m_Ani->pitchx = m_PitchX * 4;
-					m_Ani->bytes_total = m_Width * m_Height * m_BPP;
 					m_Ani->frame_prev = Internal::CreatePixels(m_Width, m_Height, m_BPP, m_Ani->pitchx, m_Ani->pitchy);
+					m_Ani->bytes_total = m_Ani->pitchx * m_Ani->pitchy * m_BPP;
 					memset(m_Ani->frame_prev, 0, m_Ani->bytes_total);
-					//m_Ani->frame_prev = new byte[m_Ani->bytes_total];
-					//memset(m_Ani->frame_prev, 0, m_Ani->bytes_total);
-					//m_Ani->frame_prev = Internal::CreatePixels(m_Width, m_Height, m_BPP);
-					//m_Ani->frame_prev->Clear();
 					m_Ani->image_bpp = (uint8)img_n;
 					m_Ani->num_plays = (uint32)GetDWord();
 					m_Ani->instance = this;

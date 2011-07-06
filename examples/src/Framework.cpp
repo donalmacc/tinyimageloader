@@ -208,6 +208,9 @@ namespace TILFW
 			return -1;
 		}
 
+		glEnable(GL_DEPTH_TEST);
+		glShadeModel(GL_SMOOTH);
+
 		for (int i = 0; i < 256; i++) 
 		{ 
 			Framework::s_KeysPressed[i] = false; 
@@ -254,6 +257,8 @@ namespace TILFW
 		);	
 		oldfont = (HFONT)SelectObject(g_WindowContext, font_text);
 		wglUseFontBitmaps(g_WindowContext, 0, 127, g_FontBase);
+		SelectObject(g_WindowContext, oldfont);
+		DeleteObject(font_text);	
 
 		// start
 
@@ -291,8 +296,6 @@ namespace TILFW
 
 					// render text
 
-					glColor3f(1.f, 1.f, 1.f);
-
 					glViewport(0, 0, s_WindowWidth, s_WindowHeight);
 
 					glMatrixMode(GL_PROJECTION);
@@ -306,9 +309,10 @@ namespace TILFW
 						glMatrixMode(GL_MODELVIEW);
 						glPushMatrix();
 							glLoadIdentity();
-								
+
 								glPushAttrib(GL_LIST_BIT);   
 								glListBase(g_FontBase); 
+									glColor3f(1.f, 1.f, 1.f);
 
 									for (std::vector<TextData*>::iterator it = m_TextList.begin(); it != m_TextList.end(); it++)
 									{
@@ -316,16 +320,14 @@ namespace TILFW
 										glCallLists(strlen((*it)->msg), GL_UNSIGNED_BYTE, (*it)->msg);
 									}
 
-									m_TextList.clear();
-
 								glPopAttrib();
+
+								m_TextList.clear();
 						glPopMatrix();
 
 					glMatrixMode(GL_PROJECTION);
 					glPopMatrix();
 					glMatrixMode(GL_MODELVIEW);
-
-					//glColor3f(0.f, 0.f, 0.f);
 						
 					SwapBuffers(g_WindowContext);
 				}

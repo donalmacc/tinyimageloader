@@ -445,7 +445,7 @@ namespace til
 
 			m_Pitch = m_LocalPitch;
 			byte* dst = target + (m_OffsetY * m_LocalPitch) + (m_OffsetX * m_BPP);
-			int width = m_LocalWidth - 1;
+			int width = m_LocalWidth;
 
 			uint32 pixels_total = m_Width * m_Height;
 			uint32 pixels_found = 0;
@@ -549,15 +549,9 @@ namespace til
 					if (width-- == 0)
 					{
 						target += m_LocalPitch;
-						//dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP;
-						//dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP);
-						//int32 xy = (int32)((m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP) - m_BPP);
 						int32 xy = (int32)((m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP));
-						//if (xy < 0) { xy += m_LocalPitchX; }
-						//if (xy < 0) { xy = 0; }
 						dst = target + xy;
-						//width = m_LocalWidth - 1;
-						width = m_LocalWidth;
+						width = m_LocalWidth - 1;
 					}
 
 					//if (code != 127)
@@ -612,6 +606,8 @@ namespace til
 							//dst = target + (m_OffsetY * m_Pitch) + (m_OffsetX * m_BPP);
 							dst = target + xy;
 							width = m_LocalWidth - 1;
+							//dst -= (m_LocalPitchX - m_LocalWidth) * m_BPP;
+							//dst -= 4;
 							//width = m_LocalWidth;
 						}
 
