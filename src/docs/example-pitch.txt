@@ -17,6 +17,9 @@
 	height that is a power of two (16, 32, 64, 128, etc.) It can be a pain to
 	load an image, rearrange the pixel data and upload it to the videocard.
 	
+	Another usage example is that older API's may require padding of image data.
+	They prefer things to be aligned on a 32-bit boundary, for instance.
+	
 	With TinyImageLoader, you can convert the image to the correct bit depth and
 	set the pitch while you're loading it. You do this by attaching a pitch
 	function.
@@ -42,7 +45,7 @@
 	\code
  	void CustomPitchFunc(til::uint32 a_Width, til::uint32 a_Height, til::uint8 a_BPP, til::uint32& a_PitchX, til::uint32& a_PitchY)
 	{
-	    // determine which is greater
+		// determine which is greater
 		til::uint32 high = (a_Width > a_Height) ? a_Width : a_Height;
 
 		// find the closest power of two
@@ -57,9 +60,11 @@
 	}
 	\endcode
 	
-	Then we attach the function to TinyImageLoader:
+	After initializing TinyImageLoader, we attach our custom pitch function.
 	
 	\code
+	til::TIL_Init();
+	
 	til::TIL_SetPitchFunc(CustomPitchFunc);
 	\endcode
 	

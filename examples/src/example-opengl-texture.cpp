@@ -86,29 +86,7 @@ namespace TILFW
 
 		if (a_Commands == 1)
 		{
-			g_Load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\ICO\\icon.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\ICO\\WglFontDemoDoc.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-
-			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-				
-			//g_Load = til::TIL_Load("media\\PNG\\APNG\\dNhrL.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\PNG\\APNG\\Animated_PNG_example_bouncing_beach_ball.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\TGA\\glass_container_full.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\TGA\\earth.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\DDS\\blood_stain_large.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\DDS\\HDRCube512.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			
-			//g_Load = til::TIL_Load("media\\DDS\\water_castlebase_cubemap.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\DDS\\grace_cube.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-
-			//g_Load = til::TIL_Load("media\\GIF\\ibDZsI.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\GIF\\rolypolypandap1.gif", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-
-			//g_Load = til::TIL_Load("media\\BMP\\bat_ball.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			//g_Load = til::TIL_Load("media\\BMP\\concrete.bmp", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			
-			//g_Load = til::TIL_Load("media\\DDS\\khergit_lady_dress_b.dds", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		}
 		else
 		{
@@ -172,7 +150,6 @@ namespace TILFW
 			g_Change = true;
 		}
 
-		
 		if (s_KeysReleased['O'] || s_KeysReleased[VK_UP])
 		{
 			g_Scale += 0.05f;
@@ -249,9 +226,6 @@ namespace TILFW
 
 		glDisable(GL_BLEND);
 
-		// important for font rendering
-		glBindTexture(GL_TEXTURE_2D, 0);
-
 		DisplayText(10, 20, "Dimensions: (%i x %i)", g_Load->GetWidth(g_TextureCurrent), g_Load->GetHeight(g_TextureCurrent));
 		DisplayText(10, 40, "Pitch: (%i x %i)", g_Load->GetPitchX(g_TextureCurrent), g_Load->GetPitchY(g_TextureCurrent));
 		DisplayText(10, 60, "Frames: %i", g_Load->GetFrameCount());
@@ -259,8 +233,8 @@ namespace TILFW
 		DisplayText(10, 100, "Size: %.2f", g_Scale);
 
 		DisplayText(10, s_WindowHeight - 60, "Set size: (1, 2, 3, 4)", 0);
-		DisplayText(10, s_WindowHeight - 40, "Change frame: (Q, W)", 0);
-		DisplayText(10, s_WindowHeight - 20, "Change size: (O, P)", 0);
+		DisplayText(10, s_WindowHeight - 40, "Change frame: (<-, ->)", 0);
+		DisplayText(10, s_WindowHeight - 20, "Change size: (^, v)", 0);
 	}
 
 	void Framework::CloseDown()

@@ -296,6 +296,7 @@ namespace TILFW
 
 					// render text
 
+					glBindTexture(GL_TEXTURE_2D, 0);
 					glViewport(0, 0, s_WindowWidth, s_WindowHeight);
 
 					glMatrixMode(GL_PROJECTION);

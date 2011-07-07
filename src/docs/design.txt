@@ -10,10 +10,11 @@
 	An interface that makes it as easy as possible to load an image.
 	
 	- include TinyImageLoader.h
-	- call til::TIL_Init
-	- call til::TIL_Load
+	- initialize TinyImageLoader with til::TIL_Init
+	- load images with til::TIL_Load
 	- extract data
-	- call til::TIL_ShutDown
+	- clean up with til::TIL_Release
+	- close TinyImageLoader with til::TIL_ShutDown
 	
 	TinyImageLoader knows it is only a middleman. It exposes all its methods
 	without fluff. There is no multiple inheritance. There is only the Image
