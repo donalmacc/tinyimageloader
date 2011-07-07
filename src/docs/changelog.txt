@@ -3,19 +3,22 @@
 
 \section version170 Changes in 1.7.0
 
-	- Removed safe version of string functions in favor of standards compliance
-	- Changed Examples Framework to open a console window for output
 	- Fixed bugs when compiling with G++
 	- Fixed a bug that could cause a crash when an image can not be loaded
+	- BMP: Fixed a bug where non-power of two images were off due to padding
+	- GIF: Fixed a bug that offset the image by one pixel
+	- ICO: Added support for PNG images
+	- ICO: Added support for all output color depths
+	- DDS: Added support for multiple levels of detail
+	- DDS: Added support for cubemaps
+ 	- Removed safe version of string functions in favor of standards compliance
+	- Changed examples framework to open a console window for output
 	- Moved implementation specific image functions from static functions to class functions
-	- Added text rendering functionality to example framework
+	- Added text rendering functionality to examples framework
 	- Added Internal namespace
 	- Added #til::TIL_SetPitchFunc function
 	- Added #til::Image::GetPitchX function
 	- Added #til::Image::GetPitchY function
-	- GIF: Fixed a bug that offset the image by one pixel
-	- DDS: Added support for multiple levels of detail
-	- DDS: Added support for cubemaps
 
 \section version163 Changes in 1.6.3 (2011-03-23)
 

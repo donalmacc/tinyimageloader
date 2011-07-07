@@ -72,13 +72,20 @@ Notes</h2>
 <li>Implement <a class="el" href="classtil_1_1_file_stream.html#a43cc5b7118fa1eb692c1a34fc1b6c5c6" title="Returns whether the stream can be reused.">til::FileStream::IsReusable</a></li>
 <li>Close the stream neatly in <a class="el" href="classtil_1_1_file_stream.html#a247dffc5fa0875cbafb48c63baa03493" title="Close the stream.">til::FileStream::Close</a></li>
 </ul>
+<p>Please refer to the documentation for the exact implementation.</p>
 <h2><a class="anchor" id="code"></a>
 Code</h2>
 <p>Reading directly from a zip archive means we have to open a handle to the archive, find the file we want to load and unpack it on the fly.</p>
 <p>We'll start by creating a child class of <a class="el" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">til::FileStream</a> called FileStreamZip.</p>
 <div class="fragment"><pre class="fragment">        <span class="keyword">class </span>FileStreamZip : <span class="keyword">public</span> til::FileStream
         {
-</pre></div><p>In the constructor we'll set up some stuff, including the maximum buffer size, and alloate the buffer. </p>
+</pre></div><p>In the constructor we'll set up some stuff, including the maximum buffer size, and alloate the buffer.</p>
+<p>Next, we open a handle to the zip archive, so we can read from it.</p>
+<div class="fragment"><pre class="fragment">    FileStreamZip* stream = <span class="keyword">new</span> FileStreamZip();
+        stream-&gt;OpenZip(<span class="stringliteral">&quot;media\\ZIP\\zipped.zip&quot;</span>, <a class="code" href="_t_i_l_settings_8h.html#a46033ff709c68056a163fefecfae188a" title="The image path is relative to the working directory.">TIL_FILE_ADDWORKINGDIR</a>);
+</pre></div><p>There are multiple images in the archive, because it acts as a miniature filesystem. Therefor, <a class="el" href="classtil_1_1_file_stream.html#a43cc5b7118fa1eb692c1a34fc1b6c5c6" title="Returns whether the stream can be reused.">til::FileStream::IsReusable</a> returns true and we will close the stream ourselves.</p>
+<h2><a class="anchor" id="reading"></a>
+Reading</h2>
 </div></div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -94,7 +101,7 @@ Code</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu May 26 2011 17:59:14 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 7 2011 12:47:59 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

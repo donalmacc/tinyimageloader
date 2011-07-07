@@ -199,7 +199,7 @@ namespace til
 	void ImagePNG::ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
-		*dst += Construct_32b_A8R8G8B8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
+		*dst = Construct_32b_A8R8G8B8(a_Src[0], a_Src[1], a_Src[2], a_Src[3]);
 	}
 
 	void ImagePNG::ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src)

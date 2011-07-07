@@ -80,11 +80,6 @@ namespace til
 					}
 					dst++;
 
-					/*
-					*dst++ = a_Buffer->colors[(*src & 0xF0) >> 4];
-					*dst++ = a_Buffer->colors[(*src & 0x0F)     ];
-					*/
-
 					src++;
 				}
 				andmask++;
@@ -184,16 +179,36 @@ namespace til
 
 	void ImageICO::ExpandPalette(BufferICO* a_Buffer)
 	{
-		a_Buffer->colors = new color_32b[a_Buffer->palette];
+		a_Buffer->colors = new byte[a_Buffer->palette * m_BPP];
 
-		color_32b* dst = a_Buffer->colors;
+		switch (m_BPPIdent)
+		{
+			case BPP_32B_A8B8G8R8:
+				{
+					color_32b* dst = (color_32b*)a_Buffer->colors;
 
-		for (int i = 0; i < a_Buffer->palette; i++)
+					for (int i = 0; i < a_Buffer->palette; i++)
+					{
+						byte read[4];
+						m_Stream->ReadByte(read, 4);
+						*dst++ = Construct_32b_A8R8G8B8(read[0], read[1], read[2], (a_Buffer->palette > 0) ? 255 : read[3]);
+					}
+
+					break;
+				}
+			default:
+				{
+					TIL_ERROR_EXPLAIN("Unhandled color format: %i", m_BPPIdent);
+					break;
+				}
+		}
+
+		/*for (int i = 0; i < a_Buffer->palette; i++)
 		{
 			byte read[4];
 			m_Stream->ReadByte(read, 4);
 			*dst++ = Construct_32b_A8R8G8B8(read[0], read[1], read[2], (a_Buffer->palette > 0) ? 255 : read[3]);
-		}
+		}*/
 	}
 
 	bool ImageICO::Parse(uint32 a_ColorDepth)
@@ -256,6 +271,56 @@ namespace til
 				m_Current->bitspp = bpp;
 			}
 		}
+
+		switch (m_BPPIdent)
+		{
+		case BPP_32B_A8R8G8B8:
+			{
+				m_ColorFunc = &ImageICO::ColorFunc_A8R8G8B8;
+				break;
+			}
+		case BPP_32B_A8B8G8R8:
+			{
+				m_ColorFunc = &ImageICO::ColorFunc_A8B8G8R8;
+				break;
+			}
+		case BPP_32B_B8G8R8A8:
+			{
+				m_ColorFunc = &ImageICO::ColorFunc_B8G8R8A8;
+				break;
+			}
+		case BPP_32B_R8G8B8A8:
+			{
+				m_ColorFunc = &ImageICO::ColorFunc_R8G8B8A8;
+				break;
+			}
+		case BPP_32B_R8G8B8:
+			{
+				m_ColorFunc = &ImageICO::ColorFunc_R8G8B8;
+				break;
+			}
+		case BPP_32B_B8G8R8:
+			{
+				m_ColorFunc = &ImageICO::ColorFunc_B8G8R8;
+				break;
+			}
+		case BPP_16B_R5G6B5:
+			{
+				m_ColorFunc = &ImageICO::ColorFunc_R5G6B5;
+				break;
+			}
+		case BPP_16B_B5G6R5:
+			{
+				m_ColorFunc = &ImageICO::ColorFunc_B5G6R5;
+				break;
+			}
+		
+		default:
+			{
+				TIL_ERROR_EXPLAIN("Unhandled color format: %i", m_BPPIdent);
+				break;
+			}
+		};
 
 		BufferICO* cur = m_First;
 		for (uint32 i = 0; i < m_Images; cur = cur->next, i++)
@@ -331,14 +396,6 @@ namespace til
 			{
 				ExpandPalette(cur);
 
-				/*for(i=0;i<(icon.bWidth/8)*icon.bHeight;i++)
-					*(icon.icAND+i)=getc(fp);*/
-
-				/*for (int i = 0; i < (cur->width / 8) * cur->height; i++)
-				{
-
-				}*/
-
 				int div = 1; // palette = 256
 				if (cur->palette == 16) { div = 2; }
 
@@ -360,12 +417,14 @@ namespace til
 				{
 					for (uint32 y = 0; y < cur->readpy; y++)
 					{
-						g_ColorFuncRow(target, read, andmask, cur);
+						//g_ColorFuncRow(target, read, andmask, cur);
+						WriteColumnAnd(target, read, cur->width, cur->colors, andmask);
 						target -= pitch;
 						read += cur->readpx;
 						andmask += cur->width / 8;
 
-						g_ColorFuncRow(target, read, andmask, cur);
+						//g_ColorFuncRow(target, read, andmask, cur);
+						WriteColumnAnd(target, read, cur->width, cur->colors, andmask);
 						target -= pitch;
 						read += cur->readpx;
 						andmask += cur->width / 8;
@@ -375,7 +434,9 @@ namespace til
 				{
 					for (uint32 y = 0; y < cur->height; y++)
 					{
-						g_ColorFuncRow(target, read, andmask, cur);
+						//g_ColorFuncRow(target, read, andmask, cur);
+						WriteColumnPalette(target, read, cur->width, cur->colors);
+
 						target -= pitch;
 						read += cur->readpx;
 						andmask += cur->width / 8;
@@ -384,16 +445,6 @@ namespace til
 
 				delete src;
 				delete cur->andmask;
-
-				/*for(i=0,y=(icon.bHeight)-1;y>-1;y--)
-					for(x=0;x<icon.bWidth;x+=8,i++){
-						for(z=0;z<8;z++){
-							if(!(getbits(icon.icAND[i],z,1)))
-								drwpoint(AND,0x00,x+z+icon.x,y+icon.y);
-						}
-					}*/
-
-
 			}
 			else
 			{
@@ -445,7 +496,8 @@ namespace til
 
 					for (uint32 y = 0; y < cur->height; y++)
 					{
-						g_ColorFuncRow(target, read, NULL, cur);
+						//g_ColorFuncRow(target, read, NULL, cur);
+						(this->*m_ColorFunc)(target, read, cur->width, bpp);
 
 						target -= pitch;
 						read += cur->pitch * cur->bytespp;
@@ -534,6 +586,238 @@ namespace til
 		}
 
 		return 0;
+	}
+
+	void ImageICO::WriteColumnAnd(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint8* a_Palette, uint8* a_AndMask)
+	{
+		uint32 bpp = m_BPP;
+
+		for (uint32 i = 0; i < a_Width; i += 8)
+		{
+			for (int32 j = 1; j < 8; j += 2)
+			{
+				if (GETBIT(*a_AndMask, j    ) == 0) 
+				{ 
+					Internal::MemCpy(a_Dst, &a_Palette[((*a_Src & 0xF0) >> 4) * bpp], bpp);
+				}
+				else
+				{
+					Internal::MemSet(a_Dst, 0, bpp);
+				}
+				a_Dst += bpp;
+
+				if (GETBIT(*a_AndMask, j - 1) == 0) 
+				{
+					Internal::MemCpy(a_Dst, &a_Palette[((*a_Src & 0x0F)     ) * bpp], bpp);
+				}
+				else
+				{
+					Internal::MemSet(a_Dst, 0, bpp);
+				}
+				a_Dst += bpp;
+
+				a_Src++;
+			}
+
+			a_AndMask++;
+		}
+	}
+
+	void ImageICO::WriteColumnPalette(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint8* a_Palette)
+	{
+		uint32 bpp = m_BPP;
+
+		for (uint32 i = 0; i < a_Width; i++)
+		{
+			Internal::MemCpy(a_Dst, &a_Palette[*a_Src * bpp], bpp);
+
+			a_Dst += bpp;
+			a_Src++;
+		}
+	}
+
+	void ImageICO::ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		byte* src = a_Src;
+
+		if (a_BPP > 3)
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_A8R8G8B8(src[0], src[1], src[2], src[3]);
+				src += 4;
+			}
+		}
+		else
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_A8R8G8B8(src[0], src[1], src[2], 255);
+				src += 3;
+			}
+		}
+	}
+
+	void ImageICO::ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		byte* src = a_Src;
+
+		if (a_BPP > 3)
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_A8B8G8R8(src[0], src[1], src[2], src[3]);
+				src += 4;
+			}
+		}
+		else
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_A8B8G8R8(src[0], src[1], src[2], 255);
+				src += 3;
+			}
+		}
+	}
+
+	void ImageICO::ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		byte* src = a_Src;
+
+		if (a_BPP > 3)
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_R8G8B8A8(src[0], src[1], src[2], src[3]);
+				src += 4;
+			}
+		}
+		else
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_R8G8B8A8(src[0], src[1], src[2], 255);
+				src += 3;
+			}
+		}
+	}
+
+	void ImageICO::ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		byte* src = a_Src;
+
+		if (a_BPP > 3)
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_B8G8R8A8(src[0], src[1], src[2], src[3]);
+				src += 4;
+			}
+		}
+		else
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_B8G8R8A8(src[0], src[1], src[2], 255);
+				src += 3;
+			}
+		}
+	}
+
+	void ImageICO::ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		byte* src = a_Src;
+
+		if (a_BPP > 3)
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_R8G8B8(src[0], src[1], src[2], src[3]);
+				src += 4;
+			}
+		}
+		else
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_R8G8B8(src[0], src[1], src[2], 255);
+				src += 3;
+			}
+		}
+	}
+
+	void ImageICO::ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP)
+	{
+		color_32b* dst = (color_32b*)a_Dst;
+		byte* src = a_Src;
+
+		if (a_BPP > 3)
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_B8G8R8(src[0], src[1], src[2], src[3]);
+				src += 4;
+			}
+		}
+		else
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_32b_B8G8R8(src[0], src[1], src[2], 255);
+				src += 3;
+			}
+		}
+	}
+
+	void ImageICO::ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP)
+	{
+		color_16b* dst = (color_16b*)a_Dst;
+		byte* src = a_Src;
+
+		if (a_BPP > 3)
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_16b_R5G6B5(src[0], src[1], src[2], src[3]);
+				src += 4;
+			}
+		}
+		else
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_16b_R5G6B5(src[0], src[1], src[2], 255);
+				src += 3;
+			}
+		}
+	}
+
+	void ImageICO::ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP)
+	{
+		color_16b* dst = (color_16b*)a_Dst;
+		byte* src = a_Src;
+
+		if (a_BPP > 3)
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_16b_B5G6R5(src[0], src[1], src[2], src[3]);
+				src += 4;
+			}
+		}
+		else
+		{
+			for (uint32 x = 0; x < a_Width; x++)
+			{
+				*dst++ = AlphaBlend_16b_B5G6R5(src[0], src[1], src[2], 255);
+				src += 3;
+			}
+		}
 	}
 
 }; // namespace til

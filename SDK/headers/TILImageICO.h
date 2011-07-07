@@ -32,12 +32,6 @@
 
 #include "TILImage.h"
 
-//#define OLDMETHOD
-
-#ifdef OLDMETHOD
-	#include <stdio.h>
-#endif
-
 #if (TIL_FORMAT & TIL_FORMAT_ICO)
 
 namespace til
@@ -80,7 +74,7 @@ namespace til
 			uint32 readpx, readpy;
 			uint32 datasize, offset;
 			uint32 bytespp, bitspp;
-			color_32b* colors;
+			byte* colors;
 			uint16 palette;
 			byte* andmask;
 			BufferICO* next;
@@ -96,9 +90,25 @@ namespace til
 		*/
 		//@{
 
+		typedef void (ImageICO::*ColorFunc)(uint8*, uint8*, uint32, uint32);
+
+		void ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP);
+		void ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP);
+		void ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP);
+		void ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP);
+		void ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP);
+		void ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP);
+		void ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP);
+		void ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP);
+
+		ColorFunc m_ColorFunc;
+
 		void AddBuffer(uint32 a_Width, uint32 a_Height);
 		void ReleaseMemory(BufferICO* a_Buffer);
 		void ExpandPalette(BufferICO* a_Buffer);
+		void WriteColumnAnd(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint8* a_Palette, uint8* a_AndMask);
+		void WriteColumnPalette(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint8* a_Palette);
+		void WriteColumnUncompressed(uint8* a_Dst, uint8* a_Src, uint32 a_Width, uint32 a_BPP);
 		
 		//@}
 

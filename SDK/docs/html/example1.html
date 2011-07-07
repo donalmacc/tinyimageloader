@@ -164,9 +164,6 @@ Uploading image data to OpenGL</h2>
 <p>Now we can loop over our image data.</p>
 <div class="fragment"><pre class="fragment">        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; g_TextureTotal; i++)
         {
-                glEnable(GL_TEXTURE_2D);
-                glGenTextures(1, &amp;g_Texture[i]);
-
                 glBindTexture(GL_TEXTURE_2D, g_Texture[i]);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -178,7 +175,6 @@ Uploading image data to OpenGL</h2>
                         0,
                         GL_RGBA, GL_UNSIGNED_BYTE, g_Load-&gt;GetPixels(i)
                 );
-                glBindTexture(GL_TEXTURE_2D, 0);
         }
 </pre></div><p>Success! We now have an OpenGL texture. :)</p>
 <h2><a class="anchor" id="render"></a>
@@ -234,7 +230,7 @@ Code</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu May 26 2011 17:59:14 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 7 2011 12:47:59 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

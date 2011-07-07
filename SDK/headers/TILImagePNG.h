@@ -34,7 +34,9 @@
 
 #if (TIL_FORMAT & TIL_FORMAT_PNG)
 
-#define PNG_TYPE(a, b, c, d)           (((a) << 24) + ((b) << 16) + ((c) << 8) + (d))
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+	#define PNG_TYPE(a, b, c, d)           (((a) << 24) + ((b) << 16) + ((c) << 8) + (d))
+#endif
 
 namespace til
 {

@@ -86,9 +86,9 @@ namespace TILFW
 
 		if (a_Commands == 1)
 		{
-			//g_Load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			g_Load = til::TIL_Load("media\\ICO\\d8eba2bcc1af567ce8f596f3005980dadd13f704.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 			//g_Load = til::TIL_Load("media\\ICO\\icon.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			g_Load = til::TIL_Load("media\\ICO\\WglFontDemoDoc.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
+			//g_Load = til::TIL_Load("media\\ICO\\WglFontDemoDoc.ico", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 
 			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 				
@@ -153,7 +153,7 @@ namespace TILFW
 
 	void Framework::Tick(float a_DT)
 	{
-		if (s_KeysReleased['q'] || s_KeysReleased['Q']) 
+		if (s_KeysReleased['Q'] || s_KeysReleased[VK_LEFT]) 
 		{ 
 			if (g_TextureCurrent == 0)
 			{ 
@@ -165,25 +165,47 @@ namespace TILFW
 			}
 			g_Change = true;
 		}
-		if (s_KeysReleased['w'] || s_KeysReleased['W']) 
+		if (s_KeysReleased['W'] || s_KeysReleased[VK_RIGHT]) 
 		{ 
 			g_TextureCurrent++;
 			if (g_TextureCurrent == g_TextureTotal) { g_TextureCurrent = 0; }
 			g_Change = true;
 		}
+
 		
-		if (s_KeysReleased['O'])
+		if (s_KeysReleased['O'] || s_KeysReleased[VK_UP])
 		{
 			g_Scale += 0.05f;
 			g_Change = true;
 		}
-		if (s_KeysReleased['P'])
+		if (s_KeysReleased['P'] || s_KeysReleased[VK_DOWN])
 		{
 			if (g_Scale > 0.05f)
 			{
 				g_Scale -= 0.05f;
 				g_Change = true;
 			}
+		}
+
+		if (s_KeysReleased['1'])
+		{
+			g_Scale = 1.f;
+			g_Change = true;
+		}
+		else if (s_KeysReleased['2'])
+		{
+			g_Scale = 2.f;
+			g_Change = true;
+		}
+		else if (s_KeysReleased['3'])
+		{
+			g_Scale = 4.f;
+			g_Change = true;
+		}
+		else if (s_KeysReleased['4'])
+		{
+			g_Scale = 8.f;
+			g_Change = true;
 		}
 
 		if (g_Change)
@@ -236,6 +258,7 @@ namespace TILFW
 		DisplayText(10, 80, "Current frame: %i", g_TextureCurrent + 1);
 		DisplayText(10, 100, "Size: %.2f", g_Scale);
 
+		DisplayText(10, s_WindowHeight - 60, "Set size: (1, 2, 3, 4)", 0);
 		DisplayText(10, s_WindowHeight - 40, "Change frame: (Q, W)", 0);
 		DisplayText(10, s_WindowHeight - 20, "Change size: (O, P)", 0);
 	}
