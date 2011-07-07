@@ -136,16 +136,14 @@ typedef <a class="el" href="namespacetil.html#a763060f68abe34e71c760cbc58131389"
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8eb2d871b8a6ffb55b3eeb720207a6cb"></a><!-- doxytag: member="til::color_32b" ref="a8eb2d871b8a6ffb55b3eeb720207a6cb" args="" -->
 typedef <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">color_32b</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">32-bit color <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a343edff033b74784340740c51411eb5b">PitchFunc</a> )(<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Width, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Height, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_BPP, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> &amp;a_PitchX, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> &amp;a_PitchY)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Pitch data function.  <a href="#a343edff033b74784340740c51411eb5b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a4cd3def0937f0e817958cdcc44241549">MessageFunc</a> )(<a class="el" href="structtil_1_1_message_data.html">MessageData</a> *a_Data)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Message function.  <a href="#a4cd3def0937f0e817958cdcc44241549"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a343edff033b74784340740c51411eb5b">PitchFunc</a> )(<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Width, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Height, <a class="el" href="namespacetil.html#a7a75b0e7e2cd3f19ea51c8c02fd242f8">uint8</a> a_BPP, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> &amp;a_PitchX, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> &amp;a_PitchY)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Pitch data function.  <a href="#a343edff033b74784340740c51411eb5b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classtil_1_1_file_stream.html">FileStream</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#ad2bb0fc50e3103fc00335b66adf272c8">FileStreamFunc</a> )(const char *a_Path, <a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Options)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classtil_1_1_file_stream.html" title="The virtual interface for reading data from files.">FileStream</a> creation function.  <a href="#ad2bb0fc50e3103fc00335b66adf272c8"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">color_32b</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#ab1b5d89f866ea66b4b24c12d971da24a">Construct_32b_R8G8B8</a> (<a class="el" href="namespacetil.html#a7f7e0b26e2259ef9f20954c310c78e41">color_8b</a> a_Color)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a 32-bit RGB color from an 8-bit RGB color.  <a href="#ab1b5d89f866ea66b4b24c12d971da24a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a0a78aac0d1be8f1403da0a7eff6334ca">TIL_AddWorkingDirectory</a> (char *a_Dst, size_t a_MaxLength, const char *a_Path)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds working directory to a path.  <a href="#a0a78aac0d1be8f1403da0a7eff6334ca"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetil.html#a84a20b430c5ae27956968ef6d7a6425b">TIL_Init</a> (<a class="el" href="namespacetil.html#a20db61688ed403d11f057a508d87e54c">uint32</a> a_Settings=TIL_SETTINGS)</td></tr>
@@ -1317,32 +1315,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab1b5d89f866ea66b4b24c12d971da24a"></a><!-- doxytag: member="til::Construct_32b_R8G8B8" ref="ab1b5d89f866ea66b4b24c12d971da24a" args="(color_8b a_Color)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacetil.html#a8eb2d871b8a6ffb55b3eeb720207a6cb">color_32b</a> til::Construct_32b_R8G8B8 </td>
-          <td>(</td>
-          <td class="paramtype">color_8b&#160;</td>
-          <td class="paramname"><em>a_Color</em></td><td>)</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Construct a 32-bit RGB color from an 8-bit RGB color. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">a_Color</td><td>An 8-bit RGB color</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>32-bit color </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="ae14596c98e011e44e22c8cca0ddccc7e"></a><!-- doxytag: member="til::Construct_32b_R8G8B8A8" ref="ae14596c98e011e44e22c8cca0ddccc7e" args="(uint8 a_Red, uint8 a_Green, uint8 a_Blue, uint8 a_Alpha)" -->
 <div class="memitem">
 <div class="memproto">
@@ -2019,7 +1991,7 @@ Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 7 2011 14:32:59 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 7 2011 16:03:31 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

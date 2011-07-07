@@ -289,6 +289,14 @@ namespace til
 		int source_line;    /**< The line the message came from. */
 	};
 
+	//! Message function
+	/*! 
+		\param MessageData* A pointer containing the message data.
+
+		Message functions are used for logging. You can create your own and attach them to TinyImageLoader.
+	*/
+	typedef void (*MessageFunc)(MessageData* a_Data);
+
 	//! Pitch data function
 	/*!
 		\param a_Width The width of the image
@@ -298,14 +306,6 @@ namespace til
 		\param a_PitchY The vertical pitch
 	*/
 	typedef void (*PitchFunc)(uint32 a_Width, uint32 a_Height, uint8 a_BPP, uint32& a_PitchX, uint32& a_PitchY);
-
-	//! Message function
-	/*! 
-		\param MessageData* A pointer containing the message data.
-
-		Message functions are used for logging. You can create your own and attach them to TinyImageLoader.
-	*/
-	typedef void (*MessageFunc)(MessageData* a_Data);
 
 	class FileStream;
 	//! FileStream creation function

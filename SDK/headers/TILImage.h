@@ -42,26 +42,6 @@ namespace til
 	// the class
 	class DoxygenSaysWhat;
 
-	//! Construct a 32-bit RGB color from an 8-bit RGB color
-	/*!
-		\param a_Color An 8-bit RGB color
-
-		\return 32-bit color
-	*/
-	inline color_32b Construct_32b_R8G8B8(color_8b a_Color)
-	{
-		
-		color_32b r = (a_Color & 0xD0) >> 5;
-		color_32b g = (a_Color & 0x1C) >> 2;
-		color_32b b = (a_Color & 0x03);	
-
-		return (
-			(((r * 0x0000FF00) >> 8) & 0x000000FF) |
-			(((g * 0x00FF0000) >> 8) & 0x0000FF00) |
-			(((b * 0xFF000000) >> 8) & 0x00FF0000)
-		);
-	}
-
 	/*!
 		\brief The virtual interface for loading images and extracting image data.
 

@@ -17,13 +17,13 @@
 	Download GLEW from their website:
 	
 	- http://glew.sourceforge.net/
-	- Direct link: http://sourceforge.net/projects/glew/files/glew/1.5.8/glew-1.5.8-win32.zip/download
+	- Direct link: http://sourceforge.net/projects/glew/files/glew/1.6.0/glew-1.6.0-win32.zip/download
 	
 	Installation:
 	
 	- Extract the archive to third-party\\GLEW
 	
-	TinyImageLoader has been tested against GLEW 1.5.7.
+	TinyImageLoader has been tested against GLEW 1.6.0.
 	
 \section ZLib
 

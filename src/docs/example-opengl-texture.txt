@@ -16,10 +16,10 @@
 \section input Key binding
 	
 	Use the following keys in this example:
-	- Q: Go to the next frame (if it exists)
-	- W: Go to the previous frame (if it exists)
-	- O: Zoom out on the image
-	- P: Zoom in on the image
+	- Right Arrow Key: Go to the next frame (if it exists)
+	- Left Arrow Key: Go to the previous frame (if it exists)
+	- Up Arrow Key: Zoom in on the image
+	- Down Arrow Key: Zoom out on the image
 
 \section setup Setup
 	
@@ -146,6 +146,18 @@
 
 	If the file could not be loaded, TIL_Load returns NULL and posts an error message to the
 	log.
+	
+	You can retrieve the error message in the following manner, if you haven't attached a custom
+	logging function:
+	
+	\code
+	if (!g_Load)
+	{
+	    const char* error_msg = (const char*)til::TIL_GetError();
+	    // print it to the console
+	    printf("%s", error_msg);
+	}
+	\endcode
 	
 \section uploading Uploading image data to OpenGL
 	

@@ -64,10 +64,10 @@ Introduction</h2>
 Key binding</h2>
 <p>Use the following keys in this example:</p>
 <ul>
-<li>Q: Go to the next frame (if it exists)</li>
-<li>W: Go to the previous frame (if it exists)</li>
-<li>O: Zoom out on the image</li>
-<li>P: Zoom in on the image</li>
+<li>Right Arrow Key: Go to the next frame (if it exists)</li>
+<li>Left Arrow Key: Go to the previous frame (if it exists)</li>
+<li>Up Arrow Key: Zoom in on the image</li>
+<li>Down Arrow Key: Zoom out on the image</li>
 </ul>
 <h2><a class="anchor" id="setup"></a>
 Setup</h2>
@@ -153,7 +153,14 @@ Loading a file</h2>
                 g_Load = <a class="code" href="namespacetil.html#a8d2e2ab942bb94b188587509ccb754de" title="Main interface for loading images.">til::TIL_Load</a>(a_CommandLine[1], <a class="code" href="_t_i_l_settings_8h.html#a35df91f5e83de2ea6177f37406e487d9" title="The image path is absolute.">TIL_FILE_ABSOLUTEPATH</a> | <a class="code" href="_t_i_l_settings_8h.html#aa41c714a49a57e84fe823a09e898c074" title="32-bit ABGR color depth">TIL_DEPTH_A8B8G8R8</a>);
         }
 </pre></div><p>If the file could not be loaded, TIL_Load returns NULL and posts an error message to the log.</p>
-<h2><a class="anchor" id="uploading"></a>
+<p>You can retrieve the error message in the following manner, if you haven't attached a custom logging function:</p>
+<div class="fragment"><pre class="fragment">        <span class="keywordflow">if</span> (!g_Load)
+        {
+            <span class="keyword">const</span> <span class="keywordtype">char</span>* error_msg = (<span class="keyword">const</span> <span class="keywordtype">char</span>*)<a class="code" href="namespacetil.html#a194b32071f97f5607de361743f895c54" title="Get the errors as a string.">til::TIL_GetError</a>();
+            <span class="comment">// print it to the console</span>
+            printf(<span class="stringliteral">&quot;%s&quot;</span>, error_msg);
+        }
+</pre></div><h2><a class="anchor" id="uploading"></a>
 Uploading image data to OpenGL</h2>
 <p>We now have our image data loaded and converted to the right pixel depth by TinyImageLoader. We are ready to upload the data to OpenGL.</p>
 <p>What you have to keep in mind is that not all formats are created equally. Most formats only allow you to define a single image, while others also allow a series of frames (GIF, PNG) and some allow multiple levels of detail (ICO, DDS).</p>
@@ -230,7 +237,7 @@ Code</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 7 2011 14:32:59 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 7 2011 16:03:31 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

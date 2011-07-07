@@ -43,103 +43,6 @@
 namespace til
 {
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-	typedef uint8* (*ColorFuncRow)(uint8*, uint8*, uint8*, ImageICO::BufferICO*);
-
-	uint8* ColorFunc_4b_A8B8G8R8_Row(uint8* a_Dst, uint8* a_Src, uint8* a_AndMask, ImageICO::BufferICO* a_Buffer)
-	{
-		color_32b* dst = (color_32b*)a_Dst;
-
-		uint8* src = a_Src;
-		uint8* andmask = a_AndMask;
-
-		if (a_Buffer->palette == 16)
-		{
-			for (uint32 i = 0; i < a_Buffer->width; i += 8)
-			{
-				for (int32 j = 1; j < 8; j += 2)
-				{
-					if (GETBIT(*andmask, j    ) == 0) 
-					{ 
-						*dst = a_Buffer->colors[(*src & 0xF0) >> 4];
-					}
-					else
-					{
-						*dst = 0x00000000;
-					}
-					dst++;
-
-					if (GETBIT(*andmask, j - 1) == 0) 
-					{ 
-						*dst = a_Buffer->colors[(*src & 0x0F)     ]; 
-					}
-					else
-					{
-						*dst = 0x00000000;
-					}
-					dst++;
-
-					src++;
-				}
-				andmask++;
-			}
-
-			return (uint8*)dst;
-		}
-		else if (a_Buffer->palette == 256)
-		{
-			for (uint32 i = 0; i < a_Buffer->width; i++)
-			{
-				*dst++ = a_Buffer->colors[*src];
-				src++;
-			}
-
-			return (uint8*)dst;
-		}
-		else
-		{
-			if (a_Buffer->bytespp > 3)
-			{
-				for (uint32 j = 0; j < a_Buffer->width; j++)
-				{
-					*dst++ = AlphaBlend_32b_A8B8G8R8(src[2], src[1], src[0], src[3]);
-					src += a_Buffer->bytespp;
-				}
-			}
-			else
-			{
-				for (uint32 j = 0; j < a_Buffer->width; j++)
-				{
-					*dst++ = AlphaBlend_32b_A8B8G8R8(src[2], src[1], src[0], 255);
-					src += a_Buffer->bytespp;
-				}
-			}
-			
-
-			return (uint8*)dst;
-		}
-	}
-
-	uint8* ColorFunc_1b_A8B8G8R8_Row(uint8* a_Dst, uint8* a_Src, uint8* a_AndMask, ImageICO::BufferICO* a_Buffer)
-	{
-		color_32b* dst = (color_32b*)a_Dst;
-
-		uint8* src = a_Src;
-
-		for (uint32 j = 0; j < a_Buffer->width; j++)
-		{
-			//*dst++ = AlphaBlend_32b_A8B8G8R8(src[2], src[1], src[0], src[3]);
-			src++;
-		}
-
-		return (uint8*)dst;
-	}
-
-	ColorFuncRow g_ColorFuncRow = NULL;
-
-#endif
-
 	ImageICO::ImageICO()
 	{
 		m_First = m_Current = NULL;
@@ -381,8 +284,6 @@ namespace til
 
 			uint32 current = 0;
 
-			g_ColorFuncRow =  ColorFunc_4b_A8B8G8R8_Row;
-
 			uint32 pitch = cur->pitch * m_BPP;
 			cur->pitchy = cur->height;
 
@@ -417,13 +318,11 @@ namespace til
 				{
 					for (uint32 y = 0; y < cur->readpy; y++)
 					{
-						//g_ColorFuncRow(target, read, andmask, cur);
 						WriteColumnAnd(target, read, cur->width, cur->colors, andmask);
 						target -= pitch;
 						read += cur->readpx;
 						andmask += cur->width / 8;
 
-						//g_ColorFuncRow(target, read, andmask, cur);
 						WriteColumnAnd(target, read, cur->width, cur->colors, andmask);
 						target -= pitch;
 						read += cur->readpx;
@@ -434,7 +333,6 @@ namespace til
 				{
 					for (uint32 y = 0; y < cur->height; y++)
 					{
-						//g_ColorFuncRow(target, read, andmask, cur);
 						WriteColumnPalette(target, read, cur->width, cur->colors);
 
 						target -= pitch;
@@ -496,7 +394,6 @@ namespace til
 
 					for (uint32 y = 0; y < cur->height; y++)
 					{
-						//g_ColorFuncRow(target, read, NULL, cur);
 						(this->*m_ColorFunc)(target, read, cur->width, bpp);
 
 						target -= pitch;
@@ -645,7 +542,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_A8R8G8B8(src[0], src[1], src[2], src[3]);
+				*dst++ = AlphaBlend_32b_A8R8G8B8(src[2], src[1], src[0], src[3]);
 				src += 4;
 			}
 		}
@@ -653,7 +550,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_A8R8G8B8(src[0], src[1], src[2], 255);
+				*dst++ = AlphaBlend_32b_A8R8G8B8(src[2], src[1], src[0], 255);
 				src += 3;
 			}
 		}
@@ -668,7 +565,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_A8B8G8R8(src[0], src[1], src[2], src[3]);
+				*dst++ = AlphaBlend_32b_A8B8G8R8(src[2], src[1], src[0], src[3]);
 				src += 4;
 			}
 		}
@@ -676,7 +573,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_A8B8G8R8(src[0], src[1], src[2], 255);
+				*dst++ = AlphaBlend_32b_A8B8G8R8(src[2], src[1], src[0], 255);
 				src += 3;
 			}
 		}
@@ -691,7 +588,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_R8G8B8A8(src[0], src[1], src[2], src[3]);
+				*dst++ = AlphaBlend_32b_R8G8B8A8(src[2], src[1], src[0], src[3]);
 				src += 4;
 			}
 		}
@@ -699,7 +596,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_R8G8B8A8(src[0], src[1], src[2], 255);
+				*dst++ = AlphaBlend_32b_R8G8B8A8(src[2], src[1], src[0], 255);
 				src += 3;
 			}
 		}
@@ -714,7 +611,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_B8G8R8A8(src[0], src[1], src[2], src[3]);
+				*dst++ = AlphaBlend_32b_B8G8R8A8(src[2], src[1], src[0], src[3]);
 				src += 4;
 			}
 		}
@@ -722,7 +619,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_B8G8R8A8(src[0], src[1], src[2], 255);
+				*dst++ = AlphaBlend_32b_B8G8R8A8(src[2], src[1], src[0], 255);
 				src += 3;
 			}
 		}
@@ -737,7 +634,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_R8G8B8(src[0], src[1], src[2], src[3]);
+				*dst++ = AlphaBlend_32b_R8G8B8(src[2], src[1], src[0], src[3]);
 				src += 4;
 			}
 		}
@@ -745,7 +642,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_R8G8B8(src[0], src[1], src[2], 255);
+				*dst++ = AlphaBlend_32b_R8G8B8(src[2], src[1], src[0], 255);
 				src += 3;
 			}
 		}
@@ -760,7 +657,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_B8G8R8(src[0], src[1], src[2], src[3]);
+				*dst++ = AlphaBlend_32b_B8G8R8(src[2], src[1], src[0], src[3]);
 				src += 4;
 			}
 		}
@@ -768,7 +665,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_32b_B8G8R8(src[0], src[1], src[2], 255);
+				*dst++ = AlphaBlend_32b_B8G8R8(src[2], src[1], src[0], 255);
 				src += 3;
 			}
 		}
@@ -783,7 +680,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_16b_R5G6B5(src[0], src[1], src[2], src[3]);
+				*dst++ = AlphaBlend_16b_R5G6B5(src[2], src[1], src[0], src[3]);
 				src += 4;
 			}
 		}
@@ -791,7 +688,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_16b_R5G6B5(src[0], src[1], src[2], 255);
+				*dst++ = AlphaBlend_16b_R5G6B5(src[2], src[1], src[0], 255);
 				src += 3;
 			}
 		}
@@ -806,7 +703,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_16b_B5G6R5(src[0], src[1], src[2], src[3]);
+				*dst++ = AlphaBlend_16b_B5G6R5(src[2], src[1], src[0], src[3]);
 				src += 4;
 			}
 		}
@@ -814,7 +711,7 @@ namespace til
 		{
 			for (uint32 x = 0; x < a_Width; x++)
 			{
-				*dst++ = AlphaBlend_16b_B5G6R5(src[0], src[1], src[2], 255);
+				*dst++ = AlphaBlend_16b_B5G6R5(src[2], src[1], src[0], 255);
 				src += 3;
 			}
 		}

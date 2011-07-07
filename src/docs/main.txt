@@ -5,6 +5,7 @@
 	platform, device-independent, fast and free (as in freedom).
 
 	\section General
+	-# \ref formats
 	-# \ref design
 	-# \ref thirdparty
 	-# \ref bugs

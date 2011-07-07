@@ -62,10 +62,11 @@ Simple interface</h2>
 <p>An interface that makes it as easy as possible to load an image.</p>
 <ul>
 <li>include <a class="el" href="_tiny_image_loader_8h.html" title="The main include for using TinyImageLoader in your project.">TinyImageLoader.h</a></li>
-<li>call <a class="el" href="namespacetil.html#a84a20b430c5ae27956968ef6d7a6425b" title="Initializes TinyImageLoader.">til::TIL_Init</a></li>
-<li>call <a class="el" href="namespacetil.html#a8d2e2ab942bb94b188587509ccb754de" title="Main interface for loading images.">til::TIL_Load</a></li>
+<li>initialize TinyImageLoader with <a class="el" href="namespacetil.html#a84a20b430c5ae27956968ef6d7a6425b" title="Initializes TinyImageLoader.">til::TIL_Init</a></li>
+<li>load images with <a class="el" href="namespacetil.html#a8d2e2ab942bb94b188587509ccb754de" title="Main interface for loading images.">til::TIL_Load</a></li>
 <li>extract data</li>
-<li>call <a class="el" href="namespacetil.html#a777e336727a478c4c4bdfd8c0e3603d7" title="Shuts down TinyImageLoader.">til::TIL_ShutDown</a></li>
+<li>clean up with <a class="el" href="namespacetil.html#a8fd384196869e66fbb9377e720986d6e" title="Releases the handle to a til::Image.">til::TIL_Release</a></li>
+<li>close TinyImageLoader with <a class="el" href="namespacetil.html#a777e336727a478c4c4bdfd8c0e3603d7" title="Shuts down TinyImageLoader.">til::TIL_ShutDown</a></li>
 </ul>
 <p>TinyImageLoader knows it is only a middleman. It exposes all its methods without fluff. There is no multiple inheritance. There is only the Image interface with its clear and descriptive method names.</p>
 <p>You can keep the Image handles around after loading or you can copy the data to your own data structures. The choice is up to you.</p>
@@ -90,7 +91,7 @@ Speed</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 7 2011 14:32:59 for TinyImageLoader by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Thu Jul 7 2011 16:03:31 for TinyImageLoader by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>
