@@ -44,107 +44,226 @@ namespace til
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-	uint8* ImageTGA::ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
-		for (int j = 0; j < a_Unique; j++)
+		if (a_BPP > 2)
 		{
-			color_32b comp = AlphaBlend_32b_A8R8G8B8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
-			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
-			a_Src += g_Depth;
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = AlphaBlend_32b_A8R8G8B8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				a_Src += g_Depth;
+			}
+		}
+		else
+		{
+			color_16b* src = (color_16b*)a_Src;
+
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = Convert_From_16b_B5G5R5A1_To_32b_A8R8G8B8(*src);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				src++;
+			}
 		}
 		return (uint8*)dst;
 	}
 
-	uint8* ImageTGA::ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
-		for (int j = 0; j < a_Unique; j++)
+		if (a_BPP > 2)
 		{
-			color_32b comp = AlphaBlend_32b_A8B8G8R8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
-			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
-			a_Src += g_Depth;
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = AlphaBlend_32b_A8B8G8R8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				a_Src += g_Depth;
+			}
 		}
+		else
+		{
+			color_16b* src = (color_16b*)a_Src;
+
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = Convert_From_16b_B5G5R5A1_To_32b_A8B8G8R8(*src);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				src++;
+			}
+		}
+		
 		return (uint8*)dst;
 	}
 
-	uint8* ImageTGA::ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
-		for (int j = 0; j < a_Unique; j++)
+		if (a_BPP > 2)
 		{
-			color_32b comp = AlphaBlend_32b_R8G8B8A8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
-			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
-			a_Src += g_Depth;
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = AlphaBlend_32b_R8G8B8A8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				a_Src += g_Depth;
+			}
 		}
+		else
+		{
+			color_16b* src = (color_16b*)a_Src;
+
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = Convert_From_16b_B5G5R5A1_To_32b_R8G8B8A8(*src);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				src++;
+			}
+		}
+		
 		return (uint8*)dst;
 	}
 
-	uint8* ImageTGA::ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
-		for (int j = 0; j < a_Unique; j++)
+		if (a_BPP > 2)
 		{
-			color_32b comp = AlphaBlend_32b_B8G8R8A8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
-			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
-			a_Src += g_Depth;
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = AlphaBlend_32b_B8G8R8A8(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				a_Src += g_Depth;
+			}
 		}
+		else
+		{
+			color_16b* src = (color_16b*)a_Src;
+
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = Convert_From_16b_B5G5R5A1_To_32b_B8G8R8A8(*src);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				src++;
+			}
+		}
+		
 		return (uint8*)dst;
 	}
 
-	uint8* ImageTGA::ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
-		for (int j = 0; j < a_Unique; j++)
+		if (a_BPP > 2)
 		{
-			color_32b comp = AlphaBlend_32b_R8G8B8(a_Src[2], a_Src[1], a_Src[0], 255);
-			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
-			a_Src += g_Depth;
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = AlphaBlend_32b_R8G8B8(a_Src[2], a_Src[1], a_Src[0], 255);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				a_Src += g_Depth;
+			}
 		}
+		else
+		{
+			color_16b* src = (color_16b*)a_Src;
+
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = Convert_From_16b_B5G5R5A1_To_32b_R8G8B8(*src);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				src++;
+			}
+		}
+		
 		return (uint8*)dst;
 	}
 
-	uint8* ImageTGA::ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique)
 	{
 		color_32b* dst = (color_32b*)a_Dst;
 
-		for (int j = 0; j < a_Unique; j++)
+		if (a_BPP > 2)
 		{
-			color_32b comp = AlphaBlend_32b_B8G8R8(a_Src[2], a_Src[1], a_Src[0], 255);
-			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
-			a_Src += g_Depth;
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = AlphaBlend_32b_B8G8R8(a_Src[2], a_Src[1], a_Src[0], 255);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				a_Src += g_Depth;
+			}
 		}
+		else
+		{
+			color_16b* src = (color_16b*)a_Src;
+
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_32b comp = Convert_From_16b_B5G5R5A1_To_32b_B8G8R8(*src);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				src++;
+			}
+		}
+		
 		return (uint8*)dst;
 	}
 
-	uint8* ImageTGA::ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique)
 	{
 		color_16b* dst = (color_16b*)a_Dst;
 
-		for (int j = 0; j < a_Unique; j++)
+		if (a_BPP > 2)
 		{
-			color_16b comp = AlphaBlend_16b_R5G6B5(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
-			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
-			a_Src += g_Depth;
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_16b comp = AlphaBlend_16b_R5G6B5(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				a_Src += g_Depth;
+			}
 		}
+		else
+		{
+			color_16b* src = (color_16b*)a_Src;
+
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_16b comp = Convert_From_16b_B5G5R5A1_To_16b_R5G6B5(*src);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				src++;
+			}
+		}
+		
 		return (uint8*)dst;
 	}
 
-	uint8* ImageTGA::ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique)
+	uint8* ImageTGA::ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique)
 	{
 		color_16b* dst = (color_16b*)a_Dst;
 
-		for (int j = 0; j < a_Unique; j++)
+		if (a_BPP > 2)
 		{
-			color_16b comp = AlphaBlend_16b_B5G6R5(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
-			for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
-			a_Src += g_Depth;
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_16b comp = AlphaBlend_16b_B5G6R5(a_Src[2], a_Src[1], a_Src[0], (g_Depth > 3) ? a_Src[3] : 255);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				a_Src += g_Depth;
+			}
 		}
+		else
+		{
+			color_16b* src = (color_16b*)a_Src;
+
+			for (int j = 0; j < a_Unique; j++)
+			{
+				color_16b comp = Convert_From_16b_B5G5R5A1_To_16b_B5G6R5(*src);
+				for (int i = 0; i < a_Repeat; i++) { *dst++ = comp; }
+				src++;
+			}
+		}
+		
 		return (uint8*)dst;
 	}
 
@@ -174,7 +293,7 @@ namespace til
 			m_Stream->Read(src, m_Width, m_Depth);
 
 			uint8* src_copy = src;
-			dst = (this->*m_ColorFunc)(dst, src_copy, 1, m_Width);
+			dst = (this->*m_ColorFunc)(dst, src_copy, m_Depth, 1, m_Width);
 
 			m_Target -= m_Pitch;
 		}
@@ -222,7 +341,7 @@ namespace til
 					unique = count;
 				}
 
-				dst = (this->*m_ColorFunc)(dst, src_color, repeat, unique);
+				dst = (this->*m_ColorFunc)(dst, src_color, m_BPP, repeat, unique);
 
 				x += count;
 			}

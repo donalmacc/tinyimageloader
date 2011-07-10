@@ -81,16 +81,16 @@ namespace til
 		*/
 		//@{
 
-		typedef uint8* (ImageTGA::*ColorFunc)(uint8*, uint8*, int, int);
+		typedef uint8* (ImageTGA::*ColorFunc)(uint8*, uint8*, uint32, int, int);
 
-		uint8* ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique);
-		uint8* ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique);
-		uint8* ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique);
-		uint8* ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique);
-		uint8* ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique);
-		uint8* ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique);
-		uint8* ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique);
-		uint8* ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src, int a_Repeat, int a_Unique);
+		uint8* ColorFunc_A8R8G8B8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique);
+		uint8* ColorFunc_A8B8G8R8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique);
+		uint8* ColorFunc_R8G8B8A8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique);
+		uint8* ColorFunc_B8G8R8A8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique);
+		uint8* ColorFunc_R8G8B8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique);
+		uint8* ColorFunc_B8G8R8(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique);
+		uint8* ColorFunc_R5G6B5(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique);
+		uint8* ColorFunc_B5G6R5(uint8* a_Dst, uint8* a_Src, uint32 a_BPP, int a_Repeat, int a_Unique);
 
 		ImageTGA::ColorFunc m_ColorFunc;
 

@@ -134,9 +134,9 @@ namespace til
 	inline color_32b Convert_From_16b_R5G6B5_To_32b_A8B8G8R8(color_16b a_Color)
 	{
 		return (
-			(((a_Color & 0x001F) * 0xFF) / 0x001F) << 16 |
+			(((a_Color & 0x001F) * 0xFF) / 0x001F) << 0  |
 			(((a_Color & 0x07E0) * 0xFF) / 0x07E0) << 8  |
-			(((a_Color & 0xF800) * 0xFF) / 0xF800)       |
+			(((a_Color & 0xF800) * 0xFF) / 0xF800) << 16 |
 			0xFF000000
 		);	
 	}
@@ -238,15 +238,155 @@ namespace til
 	inline color_32b Convert_From_16b_B5G6R5_To_32b_A8B8G8R8(color_16b a_Color)
 	{
 		return (
-			(((a_Color & 0xF800) * 0xFF) / 0xF800) << 16 |
+			(((a_Color & 0xF800) * 0xFF) / 0xF800)       |
 			(((a_Color & 0x07E0) * 0xFF) / 0x07E0) << 8  |
-			(((a_Color & 0x001F) * 0xFF) / 0x001F)       |
+			(((a_Color & 0x001F) * 0xFF) / 0x001F) << 16 |
 			0xFF000000
 		);
 	}
 
 	//@}
 
+	/////////////////////////////////////////////////////
+	/*!
+		@name 16-bit BGRA
+	*/
+	//@{
+	/////////////////////////////////////////////////////
+
+	//! Convert a 16-bit BGRA color to a 32-bit ARGB color
+	/*!
+		\param a_Color a 16-bit BGRA color
+
+		\return 32-bit ARGB color
+	*/
+
+	inline color_32b Convert_From_16b_B5G5R5A1_To_32b_A8R8G8B8(color_16b a_Color)
+	{
+		return (
+			0xFF000000 |
+			(((a_Color & 0x001F) * 0xFF) / 0x001F)       |
+			(((a_Color & 0x03E0) * 0xFF) / 0x03E0) << 8  |
+			(((a_Color & 0x7c00) * 0xFF) / 0x7c00) << 16
+		);
+	}
+
+	//! Convert a 16-bit BGRA color to a 32-bit ABGR color
+	/*!
+		\param a_Color a 16-bit BGRA color
+
+		\return 32-bit ABGR color
+	*/
+
+	inline color_32b Convert_From_16b_B5G5R5A1_To_32b_A8B8G8R8(color_16b a_Color)
+	{
+		return (
+			0xFF000000 |
+			(((a_Color & 0x001F) * 0xFF) / 0x001F) << 16 |
+			(((a_Color & 0x03E0) * 0xFF) / 0x03E0) << 8  |
+			(((a_Color & 0x7c00) * 0xFF) / 0x7c00)
+		);
+	}
+
+	//! Convert a 16-bit BGRA color to a 32-bit RGBA color
+	/*!
+		\param a_Color a 16-bit RGBA color
+
+		\return 32-bit RGBA color
+	*/
+
+	inline color_32b Convert_From_16b_B5G5R5A1_To_32b_R8G8B8A8(color_16b a_Color)
+	{
+		return (
+			(((a_Color & 0x7c00) * 0xFF) / 0x7c00) << 24  |
+			(((a_Color & 0x03E0) * 0xFF) / 0x03E0) << 16  |
+			(((a_Color & 0x001F) * 0xFF) / 0x001F) << 8   |
+			0x000000FF
+		);
+	}
+
+	//! Convert a 16-bit BGRA color to a 32-bit BGRA color
+	/*!
+		\param a_Color a 16-bit BGRA color
+
+		\return 32-bit BGRA color
+	*/
+
+	inline color_32b Convert_From_16b_B5G5R5A1_To_32b_B8G8R8A8(color_16b a_Color)
+	{
+		return (
+			(((a_Color & 0x7c00) * 0xFF) / 0x7c00) << 8   |
+			(((a_Color & 0x03E0) * 0xFF) / 0x03E0) << 16  |
+			(((a_Color & 0x001F) * 0xFF) / 0x001F) << 24  |
+			0x000000FF
+		);
+	}
+
+	//! Convert a 16-bit BGRA color to a 32-bit RGB color
+	/*!
+		\param a_Color a 16-bit BGRA color
+
+		\return 32-bit RGB color
+	*/
+
+	inline color_32b Convert_From_16b_B5G5R5A1_To_32b_R8G8B8(color_16b a_Color)
+	{
+		return (
+			(((a_Color & 0x7c00) * 0xFF) / 0x7c00) << 16  |
+			(((a_Color & 0x03E0) * 0xFF) / 0x03E0) << 8   |
+			(((a_Color & 0x001F) * 0xFF) / 0x001F)	
+		);
+	}
+
+	//! Convert a 16-bit BGRA color to a 32-bit BGR color
+	/*!
+		\param a_Color a 16-bit BGRA color
+
+		\return 32-bit BGR color
+	*/
+
+	inline color_32b Convert_From_16b_B5G5R5A1_To_32b_B8G8R8(color_16b a_Color)
+	{
+		return (
+			(((a_Color & 0x001F) * 0xFF) / 0x001F) << 16  |
+			(((a_Color & 0x03E0) * 0xFF) / 0x03E0) << 8   |
+			(((a_Color & 0x7c00) * 0xFF) / 0x7c00)
+		);
+	}
+
+	//! Convert a 16-bit BGRA color to a 16-bit RGB color
+	/*!
+		\param a_Color a 16-bit BGRA color
+
+		\return 16-bit RGB color
+	*/
+
+	inline color_16b Convert_From_16b_B5G5R5A1_To_16b_R5G6B5(color_16b a_Color)
+	{
+		color_16b r = ((( (((a_Color & 0x001F) * 0xFF) / 0x001F) * 0xF800) >> 8) & 0xF800);
+		color_16b g = ((( (((a_Color & 0x03E0) * 0xFF) / 0x03E0) * 0x07E0) >> 8) & 0x07E0);
+		color_16b b = ((( (((a_Color & 0x7c00) * 0xFF) / 0x7c00) * 0x001F) >> 8) & 0x001F);
+
+		return r | g | b;
+	}
+
+	//! Convert a 16-bit BGRA color to a 16-bit BGR color
+	/*!
+		\param a_Color a 16-bit BGRA color
+
+		\return 16-bit BGR color
+	*/
+
+	inline color_16b Convert_From_16b_B5G5R5A1_To_16b_B5G6R5(color_16b a_Color)
+	{
+		color_16b r = ((( (((a_Color & 0x001F) * 0xFF) / 0x001F ) * 0x001F) >> 8) & 0x001F);
+		color_16b g = ((( (((a_Color & 0x03E0) * 0xFF) / 0x03E0 ) * 0x07E0) >> 8) & 0x07E0);
+		color_16b b = ((( (((a_Color & 0x7c00) * 0xFF) / 0x7c00 ) * 0xF800) >> 8) & 0xF800);
+
+		return r | g | b;
+	}
+
+	//@}
 	
 	/////////////////////////////////////////////////////
 	/*!
