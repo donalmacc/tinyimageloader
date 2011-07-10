@@ -86,8 +86,7 @@ namespace TILFW
 
 		if (a_Commands == 1)
 		{
-			//g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
-			g_Load = til::TIL_Load("media\\TGA\\oldBrickDiffuseM.tga", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8R8G8B8);
+			g_Load = til::TIL_Load("media\\PNG\\avatar.png", TIL_FILE_ADDWORKINGDIR | TIL_DEPTH_A8B8G8R8);
 		}
 		else
 		{
