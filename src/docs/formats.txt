@@ -1,0 +1,65 @@
+/*!
+\page formats Supported formats
+
+	TinyImageLoader supports the following formats.
+	
+\section png PNG
+
+	- 32-bit images
+	- Images with multiple IDAT chunks
+	- APNG (animated PNG), a Mozilla extension
+	- Images with both an IDAT chunk and APNG data
+
+	The full APNG specification is not yet implemented. There will be APNG
+	images that won't load correctly.
+	
+\section bmp BMP
+
+	- Windows v3 header
+	- Uncompressed RGB images
+	
+	There are many more options, but these are by far the most common one.
+	If you want compression, you won't use a BMP. That seems to be the general
+	consensus.
+	
+\section tga TGA
+
+	- Uncompressed images
+	- Run-length encoded images
+	
+	TGA also supports palettized and black and white images, but I've never seen
+	them in the wild.
+	
+\section gif GIF
+
+	- Palettized 256-color images
+	- Old GIF standard (GIF87A)
+	- New GIF standard (GIF89A)
+	- Animated GIF's
+	
+	TinyImageLoader implements the entire GIF specification.
+	Small spec, but limited in its usefulness.
+	
+\section ico ICO
+
+	- Palettized images with 16 colors
+	- Palettized images with 256 colors
+	- Uncompressed RGBA images
+	- Unoompressed RGB images
+	- PNG-compressed images
+	
+	The ICO standards are incomplete and full of gotcha's. Some images still
+	won't load fully.
+
+\section dds DDS
+
+	- Uncompressed images
+	- DXT1 compressed images
+	- DXT5 compressed images
+	- Levels of detail (mipmaps)
+	- Cubemaps
+	
+	There are many, many ways to compress DDS textures. TinyImageLoader will
+	one day support them all, but for now the most common types are fine.
+
+*/

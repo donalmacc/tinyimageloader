@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>TinyImageLoader: Class Hierarchy</title>
+<title>TinyImageLoader: Supported formats</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
@@ -28,9 +28,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li id="searchli">
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -50,37 +50,66 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-  <div id="navrow2" class="tabs2">
-    <ul class="tablist">
-      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
-      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li class="current"><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
-    </ul>
-  </div>
 </div>
 <div class="header">
   <div class="headertitle">
-<div class="title">Class Hierarchy</div>  </div>
+<div class="title">Supported formats </div>  </div>
 </div>
 <div class="contents">
-<div class="textblock">This inheritance list is sorted roughly, but not completely, alphabetically:</div><ul>
-<li><a class="el" href="classtil_1_1_file_stream.html">til::FileStream</a><ul>
-<li><a class="el" href="classtil_1_1_file_stream_std.html">til::FileStreamStd</a></li>
+<div class="textblock"><p>TinyImageLoader supports the following formats.</p>
+<h2><a class="anchor" id="png"></a>
+PNG</h2>
+<ul>
+<li>32-bit images</li>
+<li>Images with multiple IDAT chunks</li>
+<li>APNG (animated PNG), a Mozilla extension</li>
+<li>Images with both an IDAT chunk and APNG data</li>
 </ul>
-</li>
-<li><a class="el" href="classtil_1_1_image.html">til::Image</a><ul>
-<li><a class="el" href="classtil_1_1_image_b_m_p.html">til::ImageBMP</a></li>
-<li><a class="el" href="classtil_1_1_image_d_d_s.html">til::ImageDDS</a></li>
-<li><a class="el" href="classtil_1_1_image_g_i_f.html">til::ImageGIF</a></li>
-<li><a class="el" href="classtil_1_1_image_i_c_o.html">til::ImageICO</a></li>
-<li><a class="el" href="classtil_1_1_image_p_n_g.html">til::ImagePNG</a></li>
-<li><a class="el" href="classtil_1_1_image_t_g_a.html">til::ImageTGA</a></li>
+<p>The full APNG specification is not yet implemented. There will be APNG images that won't load correctly.</p>
+<h2><a class="anchor" id="bmp"></a>
+BMP</h2>
+<ul>
+<li>Windows v3 header</li>
+<li>Uncompressed RGB images</li>
 </ul>
-</li>
-<li><a class="el" href="structtil_1_1_message_data.html">til::MessageData</a></li>
+<p>There are many more options, but these are by far the most common one. If you want compression, you won't use a BMP. That seems to be the general consensus.</p>
+<h2><a class="anchor" id="tga"></a>
+TGA</h2>
+<ul>
+<li>Uncompressed images</li>
+<li>Run-length encoded images</li>
 </ul>
-</div>
+<p>TGA also supports palettized and black and white images, but I've never seen them in the wild.</p>
+<h2><a class="anchor" id="gif"></a>
+GIF</h2>
+<ul>
+<li>Palettized 256-color images</li>
+<li>Old GIF standard (GIF87A)</li>
+<li>New GIF standard (GIF89A)</li>
+<li>Animated GIF's</li>
+</ul>
+<p>TinyImageLoader implements the entire GIF specification. Small spec, but limited in its usefulness.</p>
+<h2><a class="anchor" id="ico"></a>
+ICO</h2>
+<ul>
+<li>Palettized images with 16 colors</li>
+<li>Palettized images with 256 colors</li>
+<li>Uncompressed RGBA images</li>
+<li>Unoompressed RGB images</li>
+<li>PNG-compressed images</li>
+</ul>
+<p>The ICO standards are incomplete and full of gotcha's. Some images still won't load fully.</p>
+<h2><a class="anchor" id="dds"></a>
+DDS</h2>
+<ul>
+<li>Uncompressed images</li>
+<li>DXT1 compressed images</li>
+<li>DXT5 compressed images</li>
+<li>Levels of detail (mipmaps)</li>
+<li>Cubemaps</li>
+</ul>
+<p>There are many, many ways to compress DDS textures. TinyImageLoader will one day support them all, but for now the most common types are fine. </p>
+</div></div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
